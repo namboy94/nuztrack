@@ -42,7 +42,9 @@ class SaveFile(JsonFile):
         save_file.json["title"] = title
         save_file.json["log"] = []
         save_file.json["pokemon"] = {}
+        save_file.json["team"] = []
         save_file.json["badges"] = 0
+        save_file.json["state"] = "ongoing"
         save_file.write()
         return save_file
 
@@ -86,6 +88,20 @@ class SaveFile(JsonFile):
         return active_pokemon
 
     @property
+    def team_pokemon(self) -> List[str]:
+        """
+        :return: The nicknames of the pokemon currently in the team
+        """
+        return self.json["team"]
+
+    @property
+    def boxed_pokemon(self) -> List[str]:
+        """
+        :return: The nicknames of the pokemon currently in the box
+        """
+        return [x for x in self.active_pokemon if x not in self.team_pokemon]
+
+    @property
     def dead_pokemon(self) -> List[str]:
         """
         :return: A list of nicknames of Pokemon that have died
@@ -106,6 +122,20 @@ class SaveFile(JsonFile):
             if "location" in entry:
                 locations.add(entry["location"])
         return list(locations)
+
+    @property
+    def state(self) -> str:
+        """
+        :return: The current state of the run
+        """
+        return self.json["state"]
+
+    @property
+    def log_messages(self) -> List[str]:
+        """
+        :return: A list of log messages
+        """
+        return [str(LogEntry(x)) for x in self.json["log"]]
 
     def get_unvisited_locations(self, all_locations: List[str]) -> List[str]:
         """
@@ -253,11 +283,7 @@ class SaveFile(JsonFile):
         :return: None
         """
         pokemon = self.get_pokemon(nickname)
-        old_level = pokemon["level"]
         pokemon["level"] = level
-        self._log("levelup", {
-            "nickname": nickname, "old": old_level, "new": level
-        })
 
     def __str__(self) -> str:
         """
@@ -266,12 +292,31 @@ class SaveFile(JsonFile):
         """
         string = f"{self.title} ({self.game})\n{'-'*80}\nLog:\n"
         for entry in self.json["log"]:
-            string += f"  {LogEntry(entry)}\n"
-        string += f"{'-'*80}\nActive:\n"
-        for pokemon in self.active_pokemon:
+            string += f"  {LogEntry(entry).__str__(True)}\n"
+        string += f"{'-'*80}\nTeam:\n"
+        for pokemon in self.team_pokemon:
+            string += f"  {pokemon}\n"
+        string += f"{'-' * 80}\nBox:\n"
+        for pokemon in self.boxed_pokemon:
             string += f"  {pokemon}\n"
         string += f"{'-' * 80}\nDead:\n"
         for pokemon in self.dead_pokemon:
             string += f"  {pokemon}\n"
         string += f"{'-' * 80}\n"
         return string
+
+    def add_to_team(self, nickname: str):
+        """
+        Adds a Pokemon to the team
+        :param nickname: The nickname of the Pokemon
+        :return: None
+        """
+        self.json["team"].append(nickname)
+
+    def remove_from_team(self, nickname: str):
+        """
+        Removes a Pokemon to the team
+        :param nickname: The nickname of the Pokemon
+        :return: None
+        """
+        self.json["team"].remove(nickname)

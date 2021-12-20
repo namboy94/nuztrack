@@ -1,0 +1,94 @@
+<head>
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <style>
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+            padding: 0;
+            background: #212121;
+        }
+        .main-container {
+            flex: 1;
+            margin-bottom: 0 !important;
+            display: flex;
+            min-width:70%;
+            padding-top: 3em;
+        }
+        .main-content {
+            padding: 1rem;
+            flex: 1;
+            background: #212121;
+        }
+        .top-navbar {
+            max-height: 3.25rem;
+        }
+        h2 {
+            background-color: #424242;
+            border-radius: 5px;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div id="navbar">
+        <nav class="navbar is-fixed-top is-dark top-navbar" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <h1 class="navbar-item">{{ title }}</h1>
+            </div>
+            <div class="navbar-menu" id="navbar-menu">
+                <div class="navbar-start">
+                    <h1 class="navbar-item">{{ game }}</h1>
+                    <h1 class="navbar-item" style="color: {{ {
+                    "Ongoing": "#fbd200",
+                    "Complete": "#008000",
+                    "Failed": "#ff0000"
+                    }[state] }}">{{ state }}</h1>
+                </div>
+                <div class="navbar-end">
+                    {% for badge in [1, 2, 3, 4, 5, 6, 7, 8] %}
+                        <h1 class="navbar-item" style="{% if badge <= badges %} background-color: #008000 {% endif %}">{{ badge }}</h1>
+                    {% endfor %}
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="container is-widescreen main-container">
+        <div class="content main-content">
+            <h2 style="color: white">Team Members</h2>
+            <div class="columns is-vcentered has-text-centered">
+            {% for pokemon in team_pokemon %}
+                <div class="column is-2">
+                    <div class="card" style="background-color: #424242">
+                        <div class="card-image">
+                            <figure class="image is-3by3">
+                              <img src="{{ pokemon.sprite_url }}" alt="{{ pokemon.species }}" style="max-height: 10em; max-width: 10em">
+                            </figure>
+                        </div>
+                        <div class="card-content">
+                            <div class="content" style="color: white">
+                                {{ pokemon.nickname }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+            <h2 style="color: white">Boxed Pokemon</h2>
+            {% for pokemon in box_pokemon %}
+                <img src="{{ pokemon.sprite_url }}" alt="{{ pokemon.species }}">
+            {% endfor %}
+            <h2 style="color: white">Dead Pokemon</h2>
+            {% for pokemon in dead_pokemon %}
+                <img src="{{ pokemon.sprite_url }}" alt="{{ pokemon.species }}">
+            {% endfor %}
+            <h2 style="color: white">Log</h2>
+            <ul>
+            {% for entry in log_entries %}
+                <li style="color: white">{{ entry }}</li>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+</body>

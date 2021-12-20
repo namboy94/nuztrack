@@ -52,6 +52,7 @@ class Config(JsonFile):
         :param path: The path to the save file
         :return: None
         """
+        path = os.path.abspath(path)
         if path in self.fifo_save_file_history:
             self.json["save_files"].remove(path)
         self.json["save_files"].append(path)

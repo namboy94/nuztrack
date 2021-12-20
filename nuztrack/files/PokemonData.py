@@ -56,6 +56,9 @@ class PokemonData(JsonFile):
         if "game_data" not in self.json:
             self.json["game_data"] = {}
 
+        if "sprites" not in self.json:
+            self.json["sprites"] = {}
+
         self.write()
 
     @property
@@ -150,6 +153,18 @@ class PokemonData(JsonFile):
         if game not in self.json["game_data"]:
             self.load_game_data(game)
         return self.json["game_data"][game]["encounters"].get(location, [])
+
+    def get_sprite(self, pokemon: str) -> str:
+        """
+        Fetches a URL to a sprite of a Pokemon
+        :param pokemon: The Pokemon to get a sprite for
+        :return: A URL to the sprite
+        """
+        if pokemon not in self.json["sprites"]:
+            self.json["sprites"][pokemon] = \
+                pokebase.pokemon(pokemon).sprites.front_default
+            self.write()
+        return self.json["sprites"][pokemon]
 
     @staticmethod
     def get_evolutions(species: str) -> List[str]:

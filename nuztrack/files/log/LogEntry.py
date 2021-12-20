@@ -18,6 +18,7 @@ along with nuztrack.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
 from typing import Dict, Any
+from colorama import Fore, Style
 
 
 class LogEntry:
@@ -26,14 +27,30 @@ class LogEntry:
         self.type = data["type"]
         self.data = data
 
-    def __str__(self) -> str:
+    def __str__(self, coloured: bool = False) -> str:
+        colour = ""
         if self.type == "encounter" and self.data["captured"]:
-            return f"Caught {self.data['pokemon']}"
-        if self.type == "encounter" and not self.data["captured"]:
-            return f"Failed to catch {self.data['pokemon']}"
+            string = f"Caught a {self.data['pokemon'].title()} " \
+                     f"at level {self.data['level']}"
+            colour = Fore.GREEN
+        elif self.type == "encounter" and not self.data["captured"]:
+            string = f"Failed to catch a {self.data['pokemon'].title()}"
+            colour = Fore.YELLOW
         elif self.type == "death":
-            return f"{self.data['pokemon']} died"
+            string = f"{self.data['pokemon']} died"
+            colour = Fore.RED
         elif self.type == "badge":
-            return f"Earned badge #{self.data['number']}"
+            string = f"Earned badge #{self.data['number']}"
+            colour = Fore.BLUE
+        elif self.type == "evolution":
+            string = f"{self.data['nickname']} evolved into a " \
+                     f"{self.data['new'].title()}"
+            colour = Fore.MAGENTA
+        elif self.type == "text":
+            string = self.data["text"]
         else:
-            return f"{self.type}"
+            string = f"{self.type}"
+        if coloured:
+            return colour + string + Style.RESET_ALL
+        else:
+            return string

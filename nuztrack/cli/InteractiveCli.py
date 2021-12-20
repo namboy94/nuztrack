@@ -16,8 +16,11 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with nuztrack.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
+import os
 
 from InquirerPy import inquirer
+
+from nuztrack.export.Exporter import Exporter
 from nuztrack.files.Config import Config
 from nuztrack.files.PokemonData import PokemonData
 from nuztrack.files.SaveFile import SaveFile
@@ -58,17 +61,21 @@ class InteractiveCli:
         :return: None
         """
         history = self.config.fifo_save_file_history
-        path = inquirer.select("Existing save files:", choices=history + ["New File"]).execute()
+        saves = [f"{SaveFile(x).title} ({x})" for x in history]
+        selected = inquirer.select("Existing save files:", choices=saves + ["New File"]).execute()
 
-        if path == "New File":
-            path = inquirer.filepath("Path to file").execute()
+        if selected == "New File":
+            path = os.path.abspath(inquirer.filepath("Path to file").execute())
             game = inquirer.select(
                 "Game", choices=self.pokemon_data.games
             ).execute()
             title = inquirer.text("Save Title").execute()
             SaveFile.create(path, game, title)
+        else:
+            path = history[saves.index(selected)]
 
         self.save_file = self.config.load_save_file(path)
+        self.pokemon_data.get_locations(self.save_file.game)
 
     def __main_loop(self):
         """
@@ -81,6 +88,7 @@ class InteractiveCli:
                     "Log Event",
                     "Edit Pokemon",
                     "Print Overview",
+                    "Export",
                     "Switch Save",
                     "Quit"
                 ]
@@ -94,6 +102,8 @@ class InteractiveCli:
                     self.__edit_pokemon()
                 elif mode == "Print Overview":
                     print(self.save_file)
+                elif mode == "Export":
+                    self.__export()
                 elif mode == "Switch Save":
                     self.save_file.write()
                     self.__select_save()
@@ -110,7 +120,7 @@ class InteractiveCli:
         Adds a log entry
         :return: None
         """
-        options = ["Encounter", "Death", "Badge"]
+        options = ["Encounter", "Death", "Badge", "Note"]
         mode = inquirer.select(
             "Select the event type to log", choices=options
         ).execute()
@@ -119,6 +129,8 @@ class InteractiveCli:
             self.__log_encounter()
         elif mode == "Death":
             self.__log_death()
+        elif mode == "Note":
+            self.save_file.log_text(inquirer.text("Note:").execute())
         else:
             if inquirer.confirm(
                     f"Add another badge? (Current: {self.save_file.badges})"
@@ -170,12 +182,14 @@ class InteractiveCli:
             validate=lambda x: x and x not in existing_nicknames
         ).execute()
         natures = {x: None for x in sorted(self.pokemon_data.natures)}
+        natures["N/A"] = None
         nature = inquirer.text(
             "Nature?",
             completer=natures,
             validate=lambda x: x in natures
         ).execute()
         abilities = {x: None for x in sorted(self.pokemon_data.abilities)}
+        abilities["N/A"] = None
         ability = inquirer.text(
             "Ability?",
             completer=abilities,
@@ -195,8 +209,6 @@ class InteractiveCli:
             "Who died?", choices=active_pokemon
         ).execute()
 
-        pokemon_data = self.save_file.get_pokemon(pokemon)
-
         locations = self.pokemon_data.get_locations(self.save_file.game) + \
             self.save_file.logged_locations
         completer = {x: None for x in locations}
@@ -204,8 +216,8 @@ class InteractiveCli:
             f"Where did {pokemon} die?", completer=completer
         ).execute()
         level = int(inquirer.number(
-            "Level?", min_allowed=pokemon_data["level"],
-            max_allowed=100, default=5
+            "Level?", min_allowed=1,
+            max_allowed=100,
         ).execute())
         opponent = inquirer.text("Opponent?", validate=lambda x: x).execute()
         description = inquirer.text(
@@ -221,12 +233,24 @@ class InteractiveCli:
         :return: None
         """
         active_pokemon = self.save_file.active_pokemon
+
+        if len(active_pokemon) == 0:
+            print("No Pokemon caught yet")
+            return
+
         pokemon = inquirer.select(
             "Select the Pokemon to modify", choices=active_pokemon
         ).execute()
         pokemon_data = self.save_file.get_pokemon(pokemon)
 
         options = ["Evolve", "Level Up"]
+        team = self.save_file.team_pokemon
+        box = self.save_file.boxed_pokemon
+        if pokemon in team and len(team) > 1:
+            options.append("Remove from Team")
+        if pokemon in box and len(team) < 6:
+            options.append("Add to Team")
+
         mode = inquirer.select(
             "Select the modification to perform", choices=options
         ).execute()
@@ -240,7 +264,17 @@ class InteractiveCli:
             self.save_file.evolve(pokemon, evo_target)
         elif mode == "Level Up":
             level = int(inquirer.number(
-                "Which level?", min_allowed=pokemon_data["level"],
+                "Which level?",
+                min_allowed=1,
                 max_allowed=100
             ).execute())
             self.save_file.level_up(pokemon, level)
+        elif mode == "Remove from Team":
+            self.save_file.remove_from_team(pokemon)
+        elif mode == "Add to Team":
+            self.save_file.add_to_team(pokemon)
+
+    def __export(self):
+        path = inquirer.filepath("Export to:").execute()
+        exporter = Exporter(self.save_file, self.pokemon_data)
+        exporter.export(path)
