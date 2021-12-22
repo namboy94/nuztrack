@@ -17,7 +17,16 @@ You should have received a copy of the GNU General Public License
 along with nuztrack.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
-from nuztrack.main import main
+from puffotter.init import cli_start
+from nuztrack import version, sentry_dsn
+from nuztrack.main import main, define_parser
 
 if __name__ == '__main__':
-    main()
+    cli_start(
+        main,
+        define_parser(),
+        "Thanks for using nuztrack!",
+        "nuztrack",
+        sentry_dsn,
+        version
+    )

@@ -17,16 +17,13 @@ You should have received a copy of the GNU General Public License
 along with nuztrack.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
-import pkg_resources
+from nuztrack.enums import NuzlockeRules
 
-
-version = pkg_resources.get_distribution("toktokkie").version
+DEFAULT_NUZLOCKE_RULES = [
+    NuzlockeRules.DEATH,
+    NuzlockeRules.FIRST_ENCOUNTER,
+    NuzlockeRules.NICKNAME_ALL
+]
 """
-The current version of the package
-"""
-
-
-sentry_dsn = "https://d46e818f49ac4ef4a84d95b86ce3d63b@sentry.namibsun.net/23"
-"""
-Sentry DSN used for exception logging
+The default Nuzlocke Rules
 """

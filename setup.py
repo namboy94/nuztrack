@@ -42,7 +42,8 @@ if __name__ == "__main__":
             "requests",
             "colorama",
             "pokebase",
-            "inquirerpy"
+            "inquirerpy",
+            "puffotter"
         ],
         test_suite='nose.collector',
         tests_require=['nose'],

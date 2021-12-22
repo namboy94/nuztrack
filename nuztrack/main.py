@@ -17,28 +17,47 @@ You should have received a copy of the GNU General Public License
 along with nuztrack.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
-import os
-from argparse import ArgumentParser
-from nuztrack.cli.InteractiveCli import InteractiveCli
-from nuztrack.files.Config import Config
-from nuztrack.files.PokemonData import PokemonData
+import sys
+from puffotter.init import argparse_add_verbosity
+from argparse import ArgumentParser, Namespace
+from nuztrack.config.Config import Config
+from nuztrack.tui.NuzlockeTui import NuzlockeTui
 
 
-def main():
+def main(args: Namespace):
     """
     The main method of the nuztrack program
+    :param args: The command line arguments
+    :return: None
+    """
+    config = Config()
+    try:
+        config.lock()
+    except OSError as e:
+        print(e)
+        sys.exit(1)
+
+    try:
+        if args.mode == "tui":
+            NuzlockeTui(config).start()
+        elif args.mode == "cli":
+            print("CLI not yet implemented")
+        elif args.mode == "gui":
+            print("GUI not yet implemented")
+        elif args.mode == "web":
+            print("Web UI not yet implemented")
+        else:
+            print("No valid mode selected")
+    finally:
+        config.unlock()
+
+
+def define_parser() -> ArgumentParser:
+    """
+    Defines the parser for the program
     :return: None
     """
     parser = ArgumentParser()
-    parser.add_argument("mode", choices={"cli"})
-    args = parser.parse_args()
-
-    config_dir = os.path.join(os.path.expanduser("~"), ".config/nuztrack")
-    os.makedirs(config_dir, exist_ok=True)
-    config = Config(os.path.join(config_dir, "config.json"))
-    pokemon_data = PokemonData(os.path.join(config_dir, "pokemon_data.json"))
-
-    if args.mode == "cli":
-        InteractiveCli(config, pokemon_data).start()
-    else:
-        print("No valid mode selected")
+    parser.add_argument("mode", choices={"cli", "tui", "cli", "web"})
+    argparse_add_verbosity(parser)
+    return parser
