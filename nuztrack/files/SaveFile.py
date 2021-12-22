@@ -20,6 +20,7 @@ LICENSE"""
 import time
 from typing import List, Dict, Any
 from nuztrack.files.JsonFile import JsonFile
+from nuztrack.files.PokemonData import PokemonData
 from nuztrack.files.log.LogEntry import LogEntry
 
 
@@ -45,6 +46,10 @@ class SaveFile(JsonFile):
         save_file.json["team"] = []
         save_file.json["badges"] = 0
         save_file.json["state"] = "ongoing"
+        save_file.json["blacklist"] = []
+        save_file.json["species_blacklist"] = []
+        save_file.json["duplicate_clause"] = False
+        save_file.json["duplicate_clause_blacklist"] = []
         save_file.write()
         return save_file
 
@@ -130,12 +135,52 @@ class SaveFile(JsonFile):
         """
         return self.json["state"]
 
+    @state.setter
+    def state(self, new_state: str):
+        """
+        Sets the state of the nuzlocke run
+        :param new_state: The new state
+        :return: None
+        """
+        self.json["state"] = new_state
+
     @property
     def log_messages(self) -> List[str]:
         """
         :return: A list of log messages
         """
         return [str(LogEntry(x)) for x in self.json["log"]]
+
+    @property
+    def blacklist(self) -> List[str]:
+        """
+        :return: A list of blacklisted nicknames
+        """
+        return self.json["blacklist"]
+
+    @property
+    def species_blacklist(self) -> List[str]:
+        """
+        :return: A list of blacklisted species
+        """
+        return self.json["species_blacklist"]
+
+    @property
+    def active_blacklist(self) -> List[str]:
+        """
+        :return: A list of nicknames that may not be used anymore because the
+                 associated Pokemon have been actively used.
+                 Useful for genlockes.
+        """
+        return self.team_pokemon + self.dead_pokemon + self.blacklist
+
+    @property
+    def duplicate_clause_blacklist(self) -> List[str]:
+        """
+        :return: A list of pokemon species that are affected by the
+                 duplicate clause
+        """
+        return self.json["duplicate_clause_blacklist"]
 
     def get_unvisited_locations(self, all_locations: List[str]) -> List[str]:
         """
@@ -145,7 +190,8 @@ class SaveFile(JsonFile):
         """
         unvisited = list(all_locations)
         for entry in self.json["log"]:
-            if entry["type"] in ["encounter"]:
+            if entry["type"] in ["encounter"] and \
+                    entry["location"] in unvisited:
                 unvisited.remove(entry["location"])
         return unvisited
 
@@ -226,6 +272,9 @@ class SaveFile(JsonFile):
             "in_team": False,
             "deceased": True
         }
+        if len(self.json["team"]) < 6:
+            self.add_to_team(nickname)
+        self.populate_duplicate_clause_blacklist()
 
     def log_death(
             self,
@@ -252,6 +301,8 @@ class SaveFile(JsonFile):
         })
         self.json["pokemon"][nickname]["deceased"] = True
         self.json["pokemon"][nickname]["level"] = level
+        if nickname in self.json["team"]:
+            self.json["team"].remove(nickname)
 
     def add_badge(self):
         """
@@ -293,15 +344,18 @@ class SaveFile(JsonFile):
         string = f"{self.title} ({self.game})\n{'-'*80}\nLog:\n"
         for entry in self.json["log"]:
             string += f"  {LogEntry(entry).__str__(True)}\n"
-        string += f"{'-'*80}\nTeam:\n"
-        for pokemon in self.team_pokemon:
-            string += f"  {pokemon}\n"
-        string += f"{'-' * 80}\nBox:\n"
-        for pokemon in self.boxed_pokemon:
-            string += f"  {pokemon}\n"
-        string += f"{'-' * 80}\nDead:\n"
-        for pokemon in self.dead_pokemon:
-            string += f"  {pokemon}\n"
+
+        for group_name, group in [
+            ("Team", self.team_pokemon),
+            ("Box", self.boxed_pokemon),
+            ("Dead", self.dead_pokemon)
+        ]:
+            string += f"{'-' * 80}\n{group_name}:\n"
+            for nickname in group:
+                pokemon = self.get_pokemon(nickname)
+                level = str(pokemon["level"]).ljust(2)
+                species = pokemon["pokemon"].title().ljust(12)
+                string += f"  {nickname.ljust(12)} ({species}| Lvl. {level})\n"
         string += f"{'-' * 80}\n"
         return string
 
@@ -320,3 +374,34 @@ class SaveFile(JsonFile):
         :return: None
         """
         self.json["team"].remove(nickname)
+
+    def populate_duplicate_clause_blacklist(self):
+        """
+        Populates the duplicate clause blacklist
+        :return: None
+        """
+        current = self.duplicate_clause_blacklist
+        species = self.species_blacklist
+        for nickname in self.owned_pokemon:
+            pokemon_data = self.get_pokemon(nickname)
+            species.append(pokemon_data["pokemon"])
+
+        for pokemon in species:
+            if pokemon not in current:
+                for evo in PokemonData.get_evolutions(pokemon):
+                    current.append(evo)
+        self.json["duplicate_clause_blacklist"] = current
+
+    def rename_pokemon(self, old_name: str, new_name: str):
+        """
+        Renames a Pokemon
+        :param old_name: The old nickname of the Pokemon
+        :param new_name: The new nickname of the Pokemon
+        :return: None
+        """
+        pokemon = self.get_pokemon(old_name)
+        self.json["pokemon"].pop(old_name)
+        self.json["pokemon"][new_name] = pokemon
+        if old_name in self.team_pokemon:
+            self.json["team"].remove(old_name)
+            self.json["team"].append(new_name)

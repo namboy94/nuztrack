@@ -37,6 +37,7 @@ class Config(JsonFile):
         for path in list(self.json["save_files"]):
             if not os.path.isfile(path):
                 self.json["save_files"].remove(path)
+        self.json["locks"] = self.json.get("locks", [])
         self.write()
 
     @property
@@ -68,7 +69,34 @@ class Config(JsonFile):
             return None
         else:
             path = self.json["save_files"][-1]
-            if not os.path.isfile(path):
+            if not os.path.isfile(path) or self.is_locked(path):
                 return None
             else:
                 return SaveFile(path)
+
+    def lock_file(self, path: str):
+        """
+        Locks a file for editing
+        :param path: The path to the locked file
+        :return: None
+        """
+        self.json["locks"].append(path)
+        self.write()
+
+    def is_locked(self, path: str) -> bool:
+        """
+        Checks if a file is locked
+        :param path: The path to the file to check
+        :return: True if locked, else False
+        """
+        return path in self.json["locks"]
+
+    def unlock_file(self, path: str):
+        """
+        Unlocks a file for editing
+        :param path: The path to the file to unlock
+        :return: None
+        """
+        if path in self.json["locks"]:
+            self.json["locks"].remove(path)
+            self.write()

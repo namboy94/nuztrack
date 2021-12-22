@@ -167,7 +167,7 @@ class PokemonData(JsonFile):
         return self.json["sprites"][pokemon]
 
     @staticmethod
-    def get_evolutions(species: str) -> List[str]:
+    def get_next_evolutions(species: str) -> List[str]:
         """
         Retrieves a list of possible evolutions for a Pokemon
         :param species: The species to analyze
@@ -184,5 +184,23 @@ class PokemonData(JsonFile):
                 for next_chain in chain.evolves_to:
                     evos += traverse_chain(next_chain)
                 return evos
+
+        return traverse_chain(evo_chain)
+
+    @staticmethod
+    def get_evolutions(species: str) -> List[str]:
+        """
+        Retrieves a list of possible evolutions for a Pokemon
+        :param species: The species to analyze
+        :return: The possible evolutions
+        """
+        species_data = pokebase.pokemon_species(species)
+        evo_chain = species_data.evolution_chain.chain
+
+        def traverse_chain(chain):
+            evos = [chain.species.name]
+            for next_chain in chain.evolves_to:
+                evos += traverse_chain(next_chain)
+            return evos
 
         return traverse_chain(evo_chain)

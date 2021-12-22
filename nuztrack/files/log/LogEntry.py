@@ -31,10 +31,12 @@ class LogEntry:
         colour = ""
         if self.type == "encounter" and self.data["captured"]:
             string = f"Caught a {self.data['pokemon'].title()} " \
-                     f"at level {self.data['level']}"
+                     f"at level {self.data['level']} " \
+                     f"(@{self.data['location']})"
             colour = Fore.GREEN
         elif self.type == "encounter" and not self.data["captured"]:
-            string = f"Failed to catch a {self.data['pokemon'].title()}"
+            string = f"Failed to catch a {self.data['pokemon'].title()} " \
+                     f"(@{self.data['location']})"
             colour = Fore.YELLOW
         elif self.type == "death":
             string = f"{self.data['pokemon']} died"
