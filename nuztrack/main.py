@@ -16,8 +16,9 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with nuztrack.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
-
+import os
 import sys
+from InquirerPy import inquirer
 from puffotter.init import argparse_add_verbosity
 from argparse import ArgumentParser, Namespace
 from nuztrack.config.Config import Config
@@ -35,7 +36,11 @@ def main(args: Namespace):
         config.lock()
     except OSError as e:
         print(e)
-        sys.exit(1)
+        if inquirer.confirm("Delete lockfile and continue?").execute():
+            os.remove(config.lockfile)
+            config.lock()
+        else:
+            sys.exit(1)
 
     try:
         if args.mode == "tui":
@@ -50,6 +55,7 @@ def main(args: Namespace):
             print("No valid mode selected")
     finally:
         config.unlock()
+        config.write()
 
 
 def define_parser() -> ArgumentParser:

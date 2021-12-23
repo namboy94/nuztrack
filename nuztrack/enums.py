@@ -29,8 +29,9 @@ class NuzlockeRules(Enum):
                       "area may be caught"
     DUPLICATE_CLAUSE = "Only the first non-duplicate encounter of any " \
                        "given area may be caught"
-    DUPLICATE_EVO_CLAUSE = "Encounters with species of the same " \
-                           "evolutionary line are considered duplicates"
+    DUPLICATE_CLAUSE_ENCOUNTERS = "Species that were encountered as the " \
+                                  "first encounter in another location may " \
+                                  "not be caught (see: duplicate clause)"
     NICKNAME_ALL = "The player must nickname every caught Pokemon"
     NICKNAME_TEAM = "The player must nickname every Pokemon that is part " \
                     "of the team at any point"
@@ -42,3 +43,12 @@ class NuzlockeRules(Enum):
     NO_POKEMART = "Pokemarts may not be used"
     NO_POKECENTER = "Pokecenters may not be used"
     WONDERLOCKE = "Any obtained Pokemon must be wonder-traded"
+
+
+class Genders(Enum):
+    """
+    Enumeration class that stores the possible genders for a Pokemon
+    """
+    MALE = "male"
+    FEMALE = "female"
+    NEUTRAL = "neutral"

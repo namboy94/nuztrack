@@ -17,6 +17,20 @@ You should have received a copy of the GNU General Public License
 along with nuztrack.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
+from dataclasses import dataclass
+from dataclasses_json import dataclass_json
+from nuztrack.enums import Genders
 
-class SaveStateSwitch(Exception):
-    pass
+
+@dataclass_json
+@dataclass
+class Encounter:
+    """
+    Class that encapsulates information about an encounter
+    """
+    location: str
+    pokedex_number: int
+    level: int
+    gender: Genders
+    obtained: bool
+    timestamp: str

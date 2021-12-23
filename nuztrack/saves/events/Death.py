@@ -17,6 +17,19 @@ You should have received a copy of the GNU General Public License
 along with nuztrack.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
+from dataclasses import dataclass
+from dataclasses_json import dataclass_json
 
-class SaveStateSwitch(Exception):
-    pass
+
+@dataclass_json
+@dataclass
+class Death:
+    """
+    Class that encapsulates information about the death of a Pokemon
+    """
+    location: str
+    nickname: str
+    level: int
+    opponent: str
+    description: str
+    timestamp: str

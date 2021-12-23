@@ -21,12 +21,12 @@ import os
 import logging
 from InquirerPy import inquirer
 from InquirerPy.base import Choice
-from typing import List, Callable
 from nuztrack.enums import NuzlockeRules
 from nuztrack.defaults import DEFAULT_NUZLOCKE_RULES
 from nuztrack.config.Config import Config
 from nuztrack.saves.SaveFile import SaveFile
 from nuztrack.exceptions import SaveStateSwitch
+from nuztrack.tui.SaveFileTui import SaveFileTui
 
 
 class NuzlockeTui:
@@ -41,7 +41,7 @@ class NuzlockeTui:
         """
         self.logger = logging.getLogger("NuzlockeTui")
         self.config = config
-        self.pokemon_data = self.config.create_pokemon_data()
+        self.pokemon_data = self.config.pokemon_data
 
     def start(self):
         """
@@ -50,7 +50,18 @@ class NuzlockeTui:
         """
         print("nuztrack - A nuzlocke tracker terminal application")
         save_file = self._select_save_file()
-        self._main_loop(save_file)
+        while True:
+            try:
+                SaveFileTui(self.config, self.pokemon_data, save_file).start()
+                break
+            except SaveStateSwitch:
+                save_file.write()
+                save_file = self._select_save_file()
+            except KeyboardInterrupt:
+                break
+            finally:
+                save_file.write()
+                self.pokemon_data.write()
 
     def _select_save_file(self) -> SaveFile:
         """
@@ -67,17 +78,16 @@ class NuzlockeTui:
 
         if selected == "New File":
             path = os.path.abspath(inquirer.filepath(
-
-
                 "Path to file",
                 validate=lambda x: os.path.abspath(x) not in paths
             ).execute())
             if not os.path.isfile(path):
                 self._create_new_save_file(path)
+            self.config.register_save(path)
         else:
             path = paths[titles.index(selected)]
 
-        return SaveFile(path)
+        return SaveFile(path, self.pokemon_data)
 
     def _create_new_save_file(self, path: str):
         """
@@ -127,69 +137,3 @@ class NuzlockeTui:
             extra_rules,
             blacklist_import
         )
-
-    def _main_loop(self, save_file: SaveFile):
-        """
-        The main loop of the TUI
-        :param save_file: The save file object to use
-        :return: None
-        """
-        try:
-            while True:
-                try:
-                    self._iteration(save_file)
-                except SaveStateSwitch as e:
-                    save_file = e.new_save
-        except KeyboardInterrupt:
-            pass
-        finally:
-            save_file.write()
-
-    # noinspection PyMethodMayBeStatic
-    def _iteration(self, save_file: SaveFile):
-        """
-        Executes one iteration of the main loop of the TUI
-        Traverses a tree-like structure to do this.
-        :return: None
-        """
-        selection_options = {
-            "Log Event": {
-                "Encounter": lambda x: None,
-                "Evolution": lambda x: None,
-                "Death": lambda x: None,
-                "Badge": lambda x: None,
-                "Note": lambda x: None
-            },
-            "Edit Pokemon": lambda x: None,
-            "Print": {
-                "Overview": lambda x: None,
-                "Log": lambda x: None
-            },
-            "Export": {
-                "Overview Image": lambda x: None,
-                "Log": lambda x: None,
-                "Blacklist": lambda x: None
-            },
-            "Switch Save": lambda x: None,
-            "Quit": lambda x: None
-        }
-
-        def __traverse(keys: List[str]) -> Callable[[SaveFile], None]:
-            """
-            Traverses the dictionary recursively until a callable function
-            is reached
-            :param keys: The previously visited dictionary keys
-            :return: The callable function
-            """
-            tree = dict(selection_options)
-            for key in keys:
-                tree = tree[key]
-            if isinstance(tree, Callable):
-                return tree
-            else:
-                selected_key = inquirer.select(
-                    "", choices=list(tree.keys())
-                ).execute()
-                return __traverse(keys + [selected_key])
-
-        __traverse([])(save_file)

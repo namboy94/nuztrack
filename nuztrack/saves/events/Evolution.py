@@ -17,6 +17,17 @@ You should have received a copy of the GNU General Public License
 along with nuztrack.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
+from dataclasses import dataclass
+from dataclasses_json import dataclass_json
 
-class SaveStateSwitch(Exception):
-    pass
+
+@dataclass_json
+@dataclass
+class Evolution:
+    """
+    Class that keeps track of an evolution
+    """
+    old_species: int
+    new_species: int
+    nickname: str
+    timestamp: str

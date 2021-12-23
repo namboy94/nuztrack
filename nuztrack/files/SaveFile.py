@@ -43,7 +43,6 @@ class SaveFile(JsonFile):
         save_file.json["title"] = title
         save_file.json["log"] = []
         save_file.json["pokemon"] = {}
-        save_file.json["team"] = []
         save_file.json["badges"] = 0
         save_file.json["state"] = "ongoing"
         save_file.json["blacklist"] = []

@@ -17,6 +17,22 @@ You should have received a copy of the GNU General Public License
 along with nuztrack.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
+from typing import List, Dict, Any
+from dataclasses import dataclass
+from dataclasses_json import dataclass_json
 
-class SaveStateSwitch(Exception):
-    pass
+
+@dataclass_json
+@dataclass
+class Pokemon:
+    """
+    Class that contains information about a Pokemon species
+    """
+    pokedex_number: int
+    name: str
+    sprite: str
+    types: List[str]
+    abilities: List[str]
+    colour: str
+    related_species: List[int]
+    next_evolutions: List[int]

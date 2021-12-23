@@ -20,8 +20,17 @@ LICENSE"""
 import os
 import json
 import logging
+from datetime import datetime
 from typing import List, Optional
+
+from nuztrack.saves.events.Death import Death
+from nuztrack.saves.events.Encounter import Encounter
 from nuztrack.enums import NuzlockeRules
+from nuztrack.data.PokemonData import PokemonData
+from nuztrack.saves.OwnedPokemon import OwnedPokemon
+from nuztrack.saves.events.Evolution import Evolution
+from nuztrack.saves.events.Milestone import Milestone
+from nuztrack.saves.events.Note import Note
 
 
 class SaveFile:
@@ -29,17 +38,31 @@ class SaveFile:
     Class that encapsulates the save data for a single nuzlocke run
     """
 
-    def __init__(self, path: str):
+    def __init__(self, path: str, pokemon_data: PokemonData):
         """
         Initializes the SaveFile object
         :param path: The path to the file path
+        :param pokemon_data: The pokemon data fetching object
         """
         self.logger = logging.getLogger("SaveFile")
         self.path = path
+        self.pokemon_data = pokemon_data
         self.__json = {}
         if os.path.isfile(path):
             with open(path, "r") as f:
                 self.__json = json.load(f)
+
+        for list_key in [
+            "encounters",
+            "owned_pokemon",
+            "nickname_blacklist",
+            "species_blacklist",
+            "deaths",
+            "evolutions",
+            "milestones"
+        ]:
+            if list_key not in self.__json:
+                self.__json[list_key] = []
 
     def write(self):
         """
@@ -98,3 +121,231 @@ class SaveFile:
         :return: The game which this save file keeps track of
         """
         return self.__json["game"]
+
+    @property
+    def generation(self) -> int:
+        """
+        :return: The generation of the game
+        """
+        return self.pokemon_data.get_generation(self.game)
+
+    @property
+    def enforced_rules(self) -> List[NuzlockeRules]:
+        """
+        :return: A list of enforced nuzlocke rules
+        """
+        return [NuzlockeRules[x] for x in self.__json["selected_rules"]]
+
+    @property
+    def species_blacklist(self) -> List[int]:
+        """
+        :return: A list of blacklisted species
+        """
+        return self.__json["species_blacklist"]
+
+    @property
+    def nickname_blacklist(self) -> List[str]:
+        """
+        :return: A list of blacklisted nicknames
+        """
+        return self.__json["nickname_blacklist"]
+
+    @property
+    def encounters(self) -> List[Encounter]:
+        """
+        :return: All registered encounters
+        """
+        return [Encounter.from_json(x) for x in self.__json["encounters"]]
+
+    @property
+    def custom_locations(self) -> List[str]:
+        """
+        :return: A list of custom locations
+        """
+        default_locations = self.pokemon_data.get_locations(self.game)
+        encounter_locations = [x.location for x in self.encounters]
+        return [x for x in encounter_locations if x not in default_locations]
+
+    @property
+    def owned_pokemon(self) -> List[OwnedPokemon]:
+        """
+        :return: The list of owned Pokemon objects, sorted by team members,
+                 reserves and deceased
+        """
+        team_pokemon = []
+        reserve_pokemon = []
+        dead_pokemon = []
+        for pokemon_data in self.__json["owned_pokemon"]:
+            pokemon = OwnedPokemon.from_json(pokemon_data)
+            if pokemon.in_team:
+                team_pokemon.append(pokemon)
+            elif pokemon.deceased:
+                dead_pokemon.append(pokemon)
+            else:
+                reserve_pokemon.append(pokemon)
+        return team_pokemon + reserve_pokemon + dead_pokemon
+
+    @property
+    def team(self) -> List[OwnedPokemon]:
+        """
+        :return: A list of Pokemon that are currently in the team
+        """
+        return [x for x in self.owned_pokemon if x.in_team]
+
+    @property
+    def unvisited_locations(self) -> List[str]:
+        """
+        :return: A list of locations that have not been visited yet
+        """
+        all_locations = self.pokemon_data.get_locations(self.game)
+        visited = [x.location for x in self.encounters]
+        return [x for x in all_locations if x not in visited]
+
+    @property
+    def milestones(self) -> List[Milestone]:
+        """
+        :return: The milestones (badges/league/trial pokemon etc)
+                 that have been registered
+        """
+        return [Milestone.from_json(x) for x in self.__json["milestones"]]
+
+    @property
+    def notes(self) -> List[Note]:
+        """
+        :return: The notes that have been registered
+        """
+        return [Note.from_json(x) for x in self.__json["notes"]]
+
+    def get_pokemon(self, nickname: str) -> OwnedPokemon:
+        """
+        Retrieves an OwnedPokemon object based on a nickname
+        :param nickname: The nickname
+        :return: The associated Pokemon
+        """
+        return {
+            x.nickname: x for x in self.owned_pokemon
+        }[nickname]
+
+    def is_capture_allowed(self, species: int) -> bool:
+        """
+        Checks if a capture is allowed
+        :param species: The species to check
+        :return: None
+        """
+        rules = self.enforced_rules
+
+        if species in self.species_blacklist:
+            return False
+
+        legendaries = \
+            [144, 145, 146, 150, 151] + \
+            [243, 244, 245, 249, 250, 251] + \
+            list(range(377, 387)) + \
+            list(range(480, 495)) + \
+            list(range(638, 650)) + \
+            list(range(716, 722)) + \
+            [772, 773] + list(range(785, 810)) + \
+            list(range(888, 899))
+        if NuzlockeRules.NO_LEGENDARIES in rules and species in legendaries:
+            return False
+
+        if NuzlockeRules.DUPLICATE_CLAUSE in rules:
+            caught_species = \
+                [x.pokedex_number for x in self.encounters if x.obtained]
+            if species in caught_species:
+                return False
+
+        if NuzlockeRules.DUPLICATE_CLAUSE_ENCOUNTERS in rules:
+            encountered_species = [x.pokedex_number for x in self.encounters]
+            if species in encountered_species:
+                return False
+
+        return True
+
+    def is_nickname_allowed(self, nickname: str) -> bool:
+        """
+        Checks if a nickname is allowed
+        :param nickname: The nickname to check
+        :return: True if the nickname is allowed, False otherwise
+        """
+        existing_nicknames = [
+            x.nickname for x in self.owned_pokemon
+            if x.nickname.lower() !=
+            self.pokemon_data.get_pokemon(x.pokedex_number).name
+        ]
+        return nickname not in existing_nicknames + self.nickname_blacklist
+
+    def register_encounter(self, encounter: Encounter):
+        """
+        Registers an encounter
+        :param encounter: The encounter to register
+        :return: None
+        """
+        self.__json["encounters"].append(encounter.to_json())
+
+    def register_catch(self, pokemon: OwnedPokemon):
+        """
+        Registers a Pokemon capture
+        :param pokemon: The caught Pokemon
+        :return: None
+        """
+        if len(self.team):
+            pokemon.in_team = True
+        self.__json["owned_pokemon"].append(pokemon.to_json())
+
+    def register_evolution(self, evolution: Evolution):
+        """
+        Registers the evolution of a Pokemon
+        :param evolution: The evolution to register
+        :return: None
+        """
+        self.__json["evolutions"].append(evolution.to_json())
+        pokemon = self.get_pokemon(evolution.nickname)
+        pokemon.pokedex_number = evolution.new_species
+        self.update_pokemon(pokemon)
+
+    def register_death(self, death: Death):
+        """
+        Registers a Pokemon's death
+        :param death: The death to register
+        :return: None
+        """
+        self.__json["deaths"].append(death.to_json())
+        pokemon = self.get_pokemon(death.nickname)
+        pokemon.deceased = True
+        pokemon.in_team = False
+        self.update_pokemon(pokemon)
+
+    def register_milestone(self, milestone: Milestone):
+        """
+        Adds a milestone
+        :param milestone: The milestone to register
+        :return: None
+        """
+        self.__json["milestones"].append(milestone.to_json())
+
+    def register_note(self, note: Note):
+        """
+        Adds a note
+        :param note: The note to register
+        :return: None
+        """
+        self.__json["notes"].append(note.to_json())
+
+    def update_pokemon(self, pokemon: OwnedPokemon):
+        """
+        Updates a Pokemon.
+        Every data point except the nickname ay be modified
+        :param pokemon: The new pokemon data
+        :return: None
+        """
+        nicknames = [x["nickname"] for x in self.__json["owned_pokemon"]]
+        index = nicknames.index(pokemon.nickname)
+        self.__json["owned_pokemon"][index] = pokemon.to_json()
+
+    @staticmethod
+    def create_timestamp() -> str:
+        """
+        :return: A current timestamp
+        """
+        return datetime.now().strftime("%Y-%m-%d:%H-%M-%S")

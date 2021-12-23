@@ -20,7 +20,7 @@ LICENSE"""
 import os
 import json
 from InquirerPy import inquirer
-from nuztrack.export.Exporter import Exporter
+from nuztrack._export.Exporter import Exporter
 from nuztrack.files.Config import Config
 from nuztrack.files.PokemonData import PokemonData
 from nuztrack.files.SaveFile import SaveFile

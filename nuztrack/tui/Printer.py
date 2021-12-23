@@ -17,6 +17,31 @@ You should have received a copy of the GNU General Public License
 along with nuztrack.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
+from nuztrack.saves.SaveFile import SaveFile
 
-class SaveStateSwitch(Exception):
-    pass
+
+class Printer:
+    """
+    Class that prints formatted messages based on a save file
+    """
+
+    def __init__(self, save_file: SaveFile):
+        """
+        Intializes the Printer object
+        :param save_file: The save file to analyze
+        """
+        self.save_file = save_file
+
+    def print_overview(self):
+        """
+        Prints an overview of the nuzlocke run
+        :return: None
+        """
+        pass
+
+    def print_log(self):
+        """
+        Prints the event log of the save file
+        :return: None
+        """
+        pass

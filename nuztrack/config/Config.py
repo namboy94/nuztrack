@@ -53,7 +53,7 @@ class Config:
         self.lockfile = os.path.join(self.config_dir, "lockfile")
         if os.path.isfile(self.data_file) and refresh_data:
             os.remove(self.data_file)
-        self.create_pokemon_data()
+        self.pokemon_data = PokemonData(self.data_file)
 
         self.__json = {}
         if os.path.isfile(self.config_file):
@@ -70,12 +70,13 @@ class Config:
         with open(self.config_file, "w") as f:
             json.dump(self.__json, f, indent=4)
 
-    def create_pokemon_data(self) -> PokemonData:
+    def register_save(self, path: str):
         """
-        Creates a PokemonData object
-        :return: The PokemonData object
+        Registers a save file
+        :param path: The path to the save file
+        :return: None
         """
-        return PokemonData(self.data_file)
+        self.__json["saves"].append(os.path.abspath(path))
 
     def get_stored_saves(self) -> List[SaveFile]:
         """
@@ -84,10 +85,11 @@ class Config:
         """
         saves = []
         for path in self.__json["saves"]:
-            try:
-                saves.append(SaveFile(path))
-            except (FileNotFoundError, JSONDecodeError):
-                self.logger.warning(f"Failed to load {path}")
+            if os.path.isfile(path):
+                try:
+                    saves.append(SaveFile(path, self.pokemon_data))
+                except JSONDecodeError:
+                    self.logger.warning(f"Failed to load {path}")
         return saves
 
     def lock(self):

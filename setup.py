@@ -43,7 +43,8 @@ if __name__ == "__main__":
             "colorama",
             "pokebase",
             "inquirerpy",
-            "puffotter"
+            "puffotter",
+            "dataclasses_json"
         ],
         test_suite='nose.collector',
         tests_require=['nose'],
