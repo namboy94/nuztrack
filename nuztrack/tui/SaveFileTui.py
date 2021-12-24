@@ -137,7 +137,7 @@ class SaveFileTui:
             validate=lambda x: self.save_file.is_capture_allowed(x),
             invalid_message="Invalid Pokemon selected"
         ).execute().lower()
-        if species == "Other":
+        if species == "other":
             all_pokemon = {
                 x.title(): None
                 for x in self.pokemon_data.get_all_pokemon_names()

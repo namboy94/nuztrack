@@ -289,7 +289,7 @@ class SaveFile:
         :param pokemon: The caught Pokemon
         :return: None
         """
-        if len(self.team):
+        if len(self.team) < 6:
             pokemon.in_team = True
         self.__json["owned_pokemon"].append(pokemon.to_json())
 

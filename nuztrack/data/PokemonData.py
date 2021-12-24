@@ -117,7 +117,10 @@ class PokemonData:
         :return: A list containing the names of all Pokemon
         """
         self._load_pokedex_data()
-        return [x[1] for x in sorted(self.__json["pokedex"].items())]
+        return [
+            Pokemon.from_json(x[1]).name
+            for x in sorted(self.__json["pokedex"].items())
+        ]
 
     def get_pokedex_number(self, species_name: str) -> int:
         """
