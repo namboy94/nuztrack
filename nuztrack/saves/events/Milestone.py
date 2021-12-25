@@ -18,15 +18,20 @@ along with nuztrack.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
 from dataclasses import dataclass
-from dataclasses_json import dataclass_json
+from nuztrack.saves.events.Event import Event
 
 
-@dataclass_json
 @dataclass
-class Milestone:
+class _Milestone:
+    """
+    Class that contains the attributes that are specific to a Milestone event.
+    """
+    description: str
+
+
+@dataclass
+class Milestone(Event, _Milestone):
     """
     Class that models a Milestone
     """
-    description: str
-    timestamp: str
-
+    pass

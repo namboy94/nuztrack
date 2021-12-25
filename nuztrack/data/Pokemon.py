@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with nuztrack.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
-from typing import List, Dict, Any
+from typing import List
 from dataclasses import dataclass
 from dataclasses_json import dataclass_json
 

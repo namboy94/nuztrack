@@ -20,9 +20,7 @@ LICENSE"""
 import os
 import json
 import logging
-from datetime import datetime
-from typing import List, Optional
-
+from typing import List, Optional, Dict, Any
 from nuztrack.saves.events.Death import Death
 from nuztrack.saves.events.Encounter import Encounter
 from nuztrack.enums import NuzlockeRules
@@ -60,7 +58,8 @@ class SaveFile:
             "species_blacklist",
             "deaths",
             "evolutions",
-            "milestones"
+            "milestones",
+            "notes"
         ]:
             if list_key not in self.__json:
                 self.__json[list_key] = []
@@ -76,6 +75,7 @@ class SaveFile:
     @classmethod
     def create(
             cls,
+            pokemon_data: PokemonData,
             path: str,
             title: str,
             game: str,
@@ -85,6 +85,7 @@ class SaveFile:
     ):
         """
         Creates a new SaveFile object based on some parameters
+        :param pokemon_data: The PokemonData object to use
         :param path: The path to the file
         :param title: The title of the save file
         :param game: The game title used
@@ -94,7 +95,7 @@ class SaveFile:
                                      continue a genlocke file
         :return: None
         """
-        data = {
+        data: Dict[str, Any] = {
             "title": title,
             "game": game,
             "selected_rules": [x.name for x in selected_rules],
@@ -104,8 +105,13 @@ class SaveFile:
             "encounters": []
         }
         if genlocke_import_file is not None:
-            pass
-            # TODO blacklist logic
+            old_save = cls(genlocke_import_file, pokemon_data)
+            for pokemon in old_save.owned_pokemon:
+                data["nickname_blacklist"].append(pokemon.nickname)
+                if NuzlockeRules.DUPLICATE_CLAUSE in selected_rules:
+                    data["species_blacklist"].append(pokemon.pokedex_number)
+            data["nickname_blacklist"] += old_save.nickname_blacklist
+            data["species_blacklist"] += old_save.species_blacklist
         with open(path, "w") as f:
             json.dump(data, f, indent=4)
 
@@ -219,7 +225,16 @@ class SaveFile:
 
     @property
     def events(self) -> List[Event]:
-        pass
+        """
+        :return: A list of all events, sorted by their timestamp
+        """
+        events: List[Event] = self.encounters
+        events += self.milestones
+        events += self.notes
+        events += [Evolution.from_json(x) for x in self.__json["evolutions"]]
+        events += [Death.from_json(x) for x in self.__json["deaths"]]
+        events.sort(key=lambda x: x.timestamp)
+        return events
 
     def get_pokemon(self, nickname: str) -> OwnedPokemon:
         """
@@ -344,6 +359,9 @@ class SaveFile:
         :param pokemon: The new pokemon data
         :return: None
         """
-        nicknames = [x["nickname"] for x in self.__json["owned_pokemon"]]
+        nicknames = [
+            OwnedPokemon.from_json(x).nickname
+            for x in self.__json["owned_pokemon"]
+        ]
         index = nicknames.index(pokemon.nickname)
         self.__json["owned_pokemon"][index] = pokemon.to_json()

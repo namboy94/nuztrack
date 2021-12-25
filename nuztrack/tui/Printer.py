@@ -70,22 +70,5 @@ class Printer:
         Prints the event log of the save file
         :return: None
         """
-        string = f"{self.save_file.title} ({self.save_file.game})\n" \
-                 f"{'-' * 80}\nLog:\n"
-
-        for entry in self.json["log"]:
-            string += f"  {LogEntry(entry).__str__(True)}\n"
-
-        for group_name, group in [
-            ("Team", self.team_pokemon),
-            ("Box", self.boxed_pokemon),
-            ("Dead", self.dead_pokemon)
-        ]:
-            string += f"{'-' * 80}\n{group_name}:\n"
-            for nickname in group:
-                pokemon = self.get_pokemon(nickname)
-                level = str(pokemon["level"]).ljust(2)
-                species = pokemon["pokemon"].title().ljust(12)
-                string += f"  {nickname.ljust(12)} ({species}| Lvl. {level})\n"
-        string += f"{'-' * 80}\n"
-        return string
+        for event in self.save_file.events:
+            print(event)

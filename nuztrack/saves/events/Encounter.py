@@ -18,19 +18,27 @@ along with nuztrack.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
 from dataclasses import dataclass
-from dataclasses_json import dataclass_json
+from typing import Optional
+from nuztrack.saves.events.Event import Event
 from nuztrack.enums import Genders
 
 
-@dataclass_json
 @dataclass
-class Encounter:
+class _Encounter:
     """
-    Class that encapsulates information about an encounter
+    Class that contains the attributes that are specific to an Encounter event.
     """
     location: str
     pokedex_number: int
     level: int
     gender: Genders
     obtained: bool
-    timestamp: str
+    nickname: Optional[str]
+
+
+@dataclass
+class Encounter(Event, _Encounter):
+    """
+    Class that contains information about an encounter
+    """
+    pass

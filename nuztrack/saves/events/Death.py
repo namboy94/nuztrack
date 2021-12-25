@@ -24,7 +24,7 @@ from nuztrack.saves.events.Event import Event
 @dataclass
 class _Death:
     """
-    Class that encapsulates information about the death of a Pokemon
+    Class that contains the attributes that are specific to a Death event.
     """
     location: str
     nickname: str
@@ -36,6 +36,6 @@ class _Death:
 @dataclass
 class Death(Event, _Death):
     """
-    Class that encapsulates information about the death of a Pokemon
+    Class that contains information about the death of a Pokemon
     """
     pass

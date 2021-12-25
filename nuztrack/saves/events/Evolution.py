@@ -18,16 +18,22 @@ along with nuztrack.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
 from dataclasses import dataclass
-from dataclasses_json import dataclass_json
+from nuztrack.saves.events.Event import Event
 
 
-@dataclass_json
 @dataclass
-class Evolution:
+class _Evolution:
     """
-    Class that keeps track of an evolution
+    Class that contains the attributes that are specific to an Evolution event.
     """
     old_species: int
     new_species: int
     nickname: str
-    timestamp: str
+
+
+@dataclass
+class Evolution(Event, _Evolution):
+    """
+    Class that keeps track of an evolution
+    """
+    pass

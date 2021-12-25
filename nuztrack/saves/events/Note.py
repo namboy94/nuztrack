@@ -18,14 +18,20 @@ along with nuztrack.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
 from dataclasses import dataclass
-from dataclasses_json import dataclass_json
+from nuztrack.saves.events.Event import Event
 
 
-@dataclass_json
 @dataclass
-class Note:
+class _Note:
+    """
+    Class that contains the attributes that are specific to a Note event.
+    """
+    text: str
+
+
+@dataclass
+class Note(Event, _Note):
     """
     Class that keeps track of user-created notes
     """
-    text: str
-    timestamp: str
+    pass

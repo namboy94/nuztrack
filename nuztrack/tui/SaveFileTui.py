@@ -90,8 +90,8 @@ class SaveFileTui:
                     inquirer.filepath("Destination:").execute()
                 )
             },
-            "Switch Save": lambda _: self._switch_save(),
-            "Quit": lambda _: self._quit()
+            "Switch Save": lambda: self._switch_save(),
+            "Quit": lambda: self._quit()
         }
 
         def __traverse(keys: List[str]) -> Callable[[], None]:
@@ -166,13 +166,24 @@ class SaveFileTui:
 
         caught = inquirer.confirm("Caught?").execute()
 
+        nickname = None
+        if caught:
+            species = self.pokemon_data.get_pokemon(pokedex_number)
+            default_nick = species.name.upper() \
+                if self.save_file.generation < 4 else species
+            nickname = inquirer.text(
+                "Nickname?",
+                validate=lambda x: x and self.save_file.is_nickname_allowed(x),
+                default=default_nick
+            ).execute()
+
         encounter = Encounter(
             location=location,
             pokedex_number=pokedex_number,
             level=level,
             gender=gender,
             obtained=caught,
-            timestamp=self.save_file.create_timestamp()
+            nickname=nickname
         )
         self.save_file.register_encounter(encounter)
 
@@ -220,7 +231,6 @@ class SaveFileTui:
             nature, ability = "N/A", "N/A"
 
         pokemon = OwnedPokemon(
-            location=encounter.location,
             pokedex_number=encounter.pokedex_number,
             nickname=nickname,
             level=encounter.level,
@@ -237,7 +247,7 @@ class SaveFileTui:
         Allows the user to register the evolution of a Pokemon
         :return: None
         """
-        pokemon = self._select_pokemon()
+        pokemon = self._select_pokemon(False)
         species = self.pokemon_data.get_pokemon(pokemon.pokedex_number)
         evo_target = inquirer.select(
             "Evolve into:",
@@ -249,8 +259,7 @@ class SaveFileTui:
         evolution = Evolution(
             old_species=species.pokedex_number,
             new_species=self.pokemon_data.get_pokedex_number(evo_target),
-            nickname=pokemon.nickname,
-            timestamp=self.save_file.create_timestamp()
+            nickname=pokemon.nickname
         )
         self.save_file.register_evolution(evolution)
 
@@ -280,8 +289,7 @@ class SaveFileTui:
             location=location,
             level=level,
             opponent=opponent,
-            description=description,
-            timestamp=self.save_file.create_timestamp()
+            description=description
         )
         self.save_file.register_death(death)
 
@@ -293,8 +301,7 @@ class SaveFileTui:
         description = \
             inquirer.text("Description:", validate=lambda x: x).execute()
         milestone = Milestone(
-            description=description,
-            timestamp=self.save_file.create_timestamp()
+            description=description
         )
         self.save_file.register_milestone(milestone)
 
@@ -304,10 +311,7 @@ class SaveFileTui:
         :return: None
         """
         text = inquirer.text("Text:", validate=lambda x: x).execute()
-        note = Note(
-            text=text,
-            timestamp=self.save_file.create_timestamp()
-        )
+        note = Note(text=text)
         self.save_file.register_note(note)
 
     def _edit_pokemon(self):
@@ -349,13 +353,18 @@ class SaveFileTui:
         """
         raise KeyboardInterrupt()
 
-    def _select_pokemon(self) -> OwnedPokemon:
+    def _select_pokemon(self, include_deceased: bool = True) -> OwnedPokemon:
         """
         Allows the user to select a Pokemon from the owned Pokemon
+        :param include_deceased: Whether or not to include deceased Pokemon
         :return: The selected Pokemon
         """
         owned_pokemon = self.save_file.owned_pokemon
-        choices = [x.as_line(self.pokemon_data) for x in owned_pokemon]
+        choices = [
+            x.as_line(self.pokemon_data)
+            for x in owned_pokemon
+            if include_deceased or not x.deceased
+        ]
         selection = \
             inquirer.select("Which Pokemon?", choices=choices).execute()
         selected = owned_pokemon[choices.index(selection)]

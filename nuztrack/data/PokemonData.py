@@ -152,6 +152,7 @@ class PokemonData:
             self.__json["game_data"] = {}
 
         if game not in self.__json["game_data"]:
+            self.logger.info(f"Downloading data for game {game}")
             locations = []
             encounters = {}
 
@@ -210,7 +211,7 @@ class PokemonData:
             pokemon_info = pokebase.pokemon(pokedex_number)
 
             def traverse_next_evos(chain):
-                if chain.species.name == species:
+                if chain.species.name == species.name:
                     return [x.species.id for x in chain.evolves_to]
                 else:
                     evos = []

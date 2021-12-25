@@ -52,6 +52,7 @@ class NuzlockeTui:
         save_file = self._select_save_file()
         while True:
             try:
+                self.pokemon_data.get_locations(save_file.game)
                 SaveFileTui(self.config, self.pokemon_data, save_file).start()
                 break
             except SaveStateSwitch:
@@ -130,6 +131,7 @@ class NuzlockeTui:
             previous_file = ""
         blacklist_import = previous_file if previous_file else None
         SaveFile.create(
+            self.pokemon_data,
             path,
             title,
             game,

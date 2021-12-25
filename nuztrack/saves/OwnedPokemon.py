@@ -27,9 +27,8 @@ from nuztrack.enums import Genders
 @dataclass
 class OwnedPokemon:
     """
-    Class that encapsulates information about an encounter
+    Class that encapsulates information about a Pokemon owned by the player
     """
-    location: str
     pokedex_number: int
     nickname: str
     level: int
