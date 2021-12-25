@@ -52,3 +52,12 @@ class Genders(Enum):
     MALE = "male"
     FEMALE = "female"
     NEUTRAL = "neutral"
+
+
+class RunState(Enum):
+    """
+    Enumeration that represents the different states of a nuzlocke run
+    """
+    COMPLETED = "completed"
+    ONGOING = "ongoing"
+    FAILED = "failed"

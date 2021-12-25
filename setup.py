@@ -44,7 +44,9 @@ if __name__ == "__main__":
             "pokebase",
             "inquirerpy",
             "puffotter",
-            "dataclasses_json"
+            "dataclasses_json",
+            "jinja2",
+            "imgkit"
         ],
         test_suite='nose.collector',
         tests_require=['nose'],

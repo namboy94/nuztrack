@@ -17,8 +17,12 @@ You should have received a copy of the GNU General Public License
 along with nuztrack.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
+from colorama import Fore
+from typing import TYPE_CHECKING
 from dataclasses import dataclass
 from nuztrack.saves.events.Event import Event
+if TYPE_CHECKING:
+    from nuztrack.saves.SaveFile import SaveFile
 
 
 @dataclass
@@ -34,4 +38,18 @@ class Note(Event, _Note):
     """
     Class that keeps track of user-created notes
     """
-    pass
+
+    def format_description(self, save: "SaveFile") -> str:
+        """
+        Creates a human-readable description of the event
+        :param save: The save file containing this event
+        :return: A human-readable description of the event
+        """
+        return self.text
+
+    @property
+    def event_colour(self) -> str:
+        """
+        :return: A fitting colour for the event
+        """
+        return Fore.LIGHTWHITE_EX

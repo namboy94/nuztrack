@@ -24,7 +24,7 @@ from nuztrack.data.PokemonData import PokemonData
 from nuztrack.export.Exporter import Exporter
 from nuztrack.saves.events.Death import Death
 from nuztrack.saves.events.Encounter import Encounter
-from nuztrack.enums import Genders
+from nuztrack.enums import Genders, RunState
 from nuztrack.config.Config import Config
 from nuztrack.saves.OwnedPokemon import OwnedPokemon
 from nuztrack.saves.SaveFile import SaveFile
@@ -76,7 +76,9 @@ class SaveFileTui:
             },
             "Edit Pokemon": lambda: self._edit_pokemon(),
             "Print": {
-                "Overview": lambda: self.printer.print_overview(),
+                "Overview": lambda: self.printer.print_all(),
+                "Captured Pokemon":
+                    lambda: self.printer.print_captured_pokemon(),
                 "Log": lambda: self.printer.print_log()
             },
             "Export": {
@@ -89,6 +91,9 @@ class SaveFileTui:
                 "Blacklist": lambda: self.exporter.export_blacklists(
                     inquirer.filepath("Destination:").execute()
                 )
+            },
+            "Edit Save": {
+                "Set Run State": lambda: self._set_state()
             },
             "Switch Save": lambda: self._switch_save(),
             "Quit": lambda: self._quit()
@@ -108,12 +113,21 @@ class SaveFileTui:
                 return tree
             else:
                 selected_key = inquirer.select(
-                    "", choices=list(tree.keys())
+                    "",
+                    choices=list(tree.keys()),
+                    keybindings={"skip": [{"key": "escape"}]},
+                    mandatory=False
                 ).execute()
+                if selected_key is None:
+                    raise KeyboardInterrupt("Reset Menu")
                 return __traverse(keys + [selected_key])
 
         while True:
-            __traverse([])()
+            try:
+                __traverse([])()
+            except KeyboardInterrupt as e:
+                if e.args != ("Reset Menu",):
+                    raise e
 
     def _register_encounter(self):
         """
@@ -369,3 +383,12 @@ class SaveFileTui:
             inquirer.select("Which Pokemon?", choices=choices).execute()
         selected = owned_pokemon[choices.index(selection)]
         return selected
+
+    def _set_state(self):
+        """
+        Allows the user to set the state of the nuzlocke run
+        :return: None
+        """
+        options = [x.value.title() for x in RunState]
+        selected = inquirer.select("New State:", choices=options).execute()
+        self.save_file.state = RunState(selected.lower())

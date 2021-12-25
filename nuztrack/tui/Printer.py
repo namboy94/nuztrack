@@ -17,6 +17,7 @@ You should have received a copy of the GNU General Public License
 along with nuztrack.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
+from colorama import Style
 from nuztrack.saves.SaveFile import SaveFile
 
 
@@ -32,13 +33,23 @@ class Printer:
         """
         self.save_file = save_file
 
-    def print_overview(self):
+    def print_all(self):
         """
-        Prints an overview of the nuzlocke run
+        Prints all data for the nuzlocke run
         :return: None
         """
-        string = f"{self.save_file.title} ({self.save_file.game})\n" \
-                 f"{'-' * 80}\nCaptured Pokemon:\n"
+        print(f"{self.save_file.title} ({self.save_file.game.title()}) "
+              f"[{self.save_file.state.value.title()}]")
+        print(f"{'-' * 80}")
+        self.print_captured_pokemon()
+        self.print_log()
+
+    def print_captured_pokemon(self):
+        """
+        Prints all captured Pokemon
+        :return: None
+        """
+        string = f"Captured Pokemon:"
 
         previous = None
         for pokemon in self.save_file.owned_pokemon:
@@ -70,5 +81,10 @@ class Printer:
         Prints the event log of the save file
         :return: None
         """
+        print(f"Event Log:")
         for event in self.save_file.events:
-            print(event)
+            print(event.timestamp + "   ", end="")
+            print(event.event_colour +
+                  event.format_description(self.save_file) +
+                  Style.RESET_ALL)
+        print(f"{'-' * 80}")

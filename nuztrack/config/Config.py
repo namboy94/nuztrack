@@ -61,6 +61,8 @@ class Config:
                 self.__json = json.load(f)
         if "saves" not in self.__json:
             self.__json["saves"] = []
+        if "previous_save" not in self.__json:
+            self.__json["previous_save"] = None
 
     def write(self):
         """
@@ -117,3 +119,32 @@ class Config:
         :return: None
         """
         return os.path.isfile(self.lockfile)
+
+    @property
+    def previous_save(self) -> Optional[str]:
+        """
+        :return: A path to the previously used save file, or None if no
+                 save file has been registered so far
+        """
+        path = self.__json["previous_save"]
+        return path if os.path.isfile(path) else None
+
+    @previous_save.setter
+    def previous_save(self, path: str):
+        """
+        Sets the previous save file path
+        :param path: The path to store
+        :return: None
+        """
+        self.__json["previous_save"] = path
+
+    def open_save_file(self, path: str) -> SaveFile:
+        """
+        Opens a save file based on a file path and stores it as the
+        last used save file
+        :param path: The path to open
+        :return: The opened SaveFile object
+        """
+        self.previous_save = path
+        save_file = SaveFile(path, self.pokemon_data)
+        return save_file

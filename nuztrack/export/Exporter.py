@@ -17,7 +17,9 @@ You should have received a copy of the GNU General Public License
 along with nuztrack.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
+import imgkit
 from nuztrack.saves.SaveFile import SaveFile
+from jinja2 import Environment, PackageLoader, select_autoescape
 
 
 class Exporter:
@@ -38,7 +40,17 @@ class Exporter:
         :param path: The path to the file to which the export is saved to
         :return: None
         """
-        pass
+        env = Environment(
+            loader=PackageLoader("nuztrack"),
+            autoescape=select_autoescape()
+        )
+        template = env.get_template("stats.html")
+
+        data = template.render(save_file=self.save_file)
+        tmpfile = "/tmp/export.html"
+        with open(tmpfile, "w") as f:
+            f.write(data)
+        imgkit.from_string(data, path)
 
     def export_log(self, path: str):
         """

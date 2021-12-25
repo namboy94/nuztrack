@@ -23,7 +23,7 @@ import logging
 from typing import List, Optional, Dict, Any
 from nuztrack.saves.events.Death import Death
 from nuztrack.saves.events.Encounter import Encounter
-from nuztrack.enums import NuzlockeRules
+from nuztrack.enums import NuzlockeRules, RunState
 from nuztrack.data.PokemonData import PokemonData
 from nuztrack.saves.OwnedPokemon import OwnedPokemon
 from nuztrack.saves.events.Event import Event
@@ -98,6 +98,7 @@ class SaveFile:
         data: Dict[str, Any] = {
             "title": title,
             "game": game,
+            "state": RunState.ONGOING.value(),
             "selected_rules": [x.name for x in selected_rules],
             "extra_rules": extra_rules,
             "nickname_blacklist": [],
@@ -121,6 +122,29 @@ class SaveFile:
         :return: The title of the save file
         """
         return self.__json["title"]
+
+    @property
+    def title_with_path(self) -> str:
+        """
+        :return: The title of the save file and the path to the save file
+        """
+        return f"{self.__json['title']} ({self.path})"
+
+    @property
+    def state(self) -> RunState:
+        """
+        :return: The state of the nuzlocke run
+        """
+        return RunState(self.__json["state"])
+
+    @state.setter
+    def state(self, state: RunState):
+        """
+        Sets the state of the nuzlocke run
+        :param state: The state to set
+        :return: None
+        """
+        self.__json["state"] = state.value
 
     @property
     def game(self) -> str:
@@ -200,6 +224,22 @@ class SaveFile:
         return [x for x in self.owned_pokemon if x.in_team]
 
     @property
+    def boxed_pokemon(self) -> List[OwnedPokemon]:
+        """
+        :return: A list of Pokemon that are currently in the PC box
+        """
+        return [
+            x for x in self.owned_pokemon if not x.in_team and not x.deceased
+        ]
+
+    @property
+    def dead_pokemon(self) -> List[OwnedPokemon]:
+        """
+        :return: A list of Pokemon that are deceased
+        """
+        return [x for x in self.owned_pokemon if x.deceased]
+
+    @property
     def unvisited_locations(self) -> List[str]:
         """
         :return: A list of locations that have not been visited yet
@@ -215,6 +255,21 @@ class SaveFile:
                  that have been registered
         """
         return [Milestone.from_json(x) for x in self.__json["milestones"]]
+
+    @property
+    def max_milestones(self) -> int:
+        """
+        :return: The maximum amount of milestones for the game
+        """
+        if self.generation == 2:
+            return 8 + 1 + 8 + 1
+        elif self.generation == 7:
+            if self.game in ["sun", "moon"]:
+                return 6 + 4 + 1
+            else:
+                return 7 + 5 + 1
+        else:
+            return 8 + 1
 
     @property
     def notes(self) -> List[Note]:

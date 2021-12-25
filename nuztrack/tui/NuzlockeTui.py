@@ -70,11 +70,18 @@ class NuzlockeTui:
         :return: None
         """
         existing_saves = self.config.get_stored_saves()
-        titles = [f"{x.title} ({x.path})" for x in existing_saves]
+        titles = [x.title_with_path for x in existing_saves]
         paths = [x.path for x in existing_saves]
+        default_path = self.config.previous_save
+        if os.path.isfile(default_path):
+            default_title = \
+                SaveFile(default_path, self.pokemon_data).title_with_path
+        else:
+            default_title = None
         selected = inquirer.select(
             "Existing save files:",
-            choices=titles + ["New File"]
+            choices=titles + ["New File"],
+            default=default_title
         ).execute()
 
         if selected == "New File":
@@ -88,7 +95,7 @@ class NuzlockeTui:
         else:
             path = paths[titles.index(selected)]
 
-        return SaveFile(path, self.pokemon_data)
+        return self.config.open_save_file(path)
 
     def _create_new_save_file(self, path: str):
         """

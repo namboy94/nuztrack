@@ -17,10 +17,13 @@ You should have received a copy of the GNU General Public License
 along with nuztrack.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
+from colorama import Fore
 from dataclasses import dataclass
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 from nuztrack.saves.events.Event import Event
 from nuztrack.enums import Genders
+if TYPE_CHECKING:
+    from nuztrack.saves.SaveFile import SaveFile
 
 
 @dataclass
@@ -41,4 +44,20 @@ class Encounter(Event, _Encounter):
     """
     Class that contains information about an encounter
     """
-    pass
+
+    def format_description(self, save: "SaveFile") -> str:
+        """
+        Creates a human-readable description of the event
+        :param save: The save file containing this event
+        :return: A human-readable description of the event
+        """
+        pokemon = save.pokemon_data.get_pokemon(self.pokedex_number)
+        return f"Encountered {'and caught ' if self.obtained else ''}" \
+               f"a level {self.level} {pokemon.name} at {self.location}"
+
+    @property
+    def event_colour(self) -> str:
+        """
+        :return: A fitting colour for the event
+        """
+        return Fore.LIGHTGREEN_EX if self.obtained else Fore.LIGHTYELLOW_EX

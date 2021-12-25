@@ -17,9 +17,12 @@ You should have received a copy of the GNU General Public License
 along with nuztrack.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
+from typing import TYPE_CHECKING
 from datetime import datetime
 from dataclasses import dataclass, field
 from dataclasses_json import dataclass_json
+if TYPE_CHECKING:
+    from nuztrack.saves.SaveFile import SaveFile
 
 
 @dataclass_json
@@ -31,3 +34,18 @@ class Event:
     timestamp: str = field(
         default_factory=lambda: datetime.now().strftime("%Y-%m-%d:%H-%M-%S")
     )
+
+    def format_description(self, save: "SaveFile") -> str:
+        """
+        Creates a human-readable description of the event
+        :param save: The save file containing this event
+        :return: A human-readable description of the event
+        """
+        raise NotImplementedError()
+
+    @property
+    def event_colour(self) -> str:
+        """
+        :return: A fitting colour for the event
+        """
+        raise NotImplementedError()
