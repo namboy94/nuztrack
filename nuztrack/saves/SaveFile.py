@@ -28,6 +28,7 @@ from nuztrack.saves.events.Encounter import Encounter
 from nuztrack.enums import NuzlockeRules
 from nuztrack.data.PokemonData import PokemonData
 from nuztrack.saves.OwnedPokemon import OwnedPokemon
+from nuztrack.saves.events.Event import Event
 from nuztrack.saves.events.Evolution import Evolution
 from nuztrack.saves.events.Milestone import Milestone
 from nuztrack.saves.events.Note import Note
@@ -216,6 +217,10 @@ class SaveFile:
         """
         return [Note.from_json(x) for x in self.__json["notes"]]
 
+    @property
+    def events(self) -> List[Event]:
+        pass
+
     def get_pokemon(self, nickname: str) -> OwnedPokemon:
         """
         Retrieves an OwnedPokemon object based on a nickname
@@ -342,10 +347,3 @@ class SaveFile:
         nicknames = [x["nickname"] for x in self.__json["owned_pokemon"]]
         index = nicknames.index(pokemon.nickname)
         self.__json["owned_pokemon"][index] = pokemon.to_json()
-
-    @staticmethod
-    def create_timestamp() -> str:
-        """
-        :return: A current timestamp
-        """
-        return datetime.now().strftime("%Y-%m-%d:%H-%M-%S")

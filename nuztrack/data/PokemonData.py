@@ -117,10 +117,9 @@ class PokemonData:
         :return: A list containing the names of all Pokemon
         """
         self._load_pokedex_data()
-        return [
-            Pokemon.from_json(x[1]).name
-            for x in sorted(self.__json["pokedex"].items())
-        ]
+        return [Pokemon.from_json(x[1]).name for x in sorted(
+            self.__json["pokedex"].items(), key=lambda x: int(x[0])
+        )]
 
     def get_pokedex_number(self, species_name: str) -> int:
         """
@@ -129,7 +128,7 @@ class PokemonData:
         :return: The associated pokedex number
         """
         name_map = {
-            Pokemon.from_json(y).name: x
+            Pokemon.from_json(y).name: int(x)
             for x, y in self.__json["pokedex"].items()
         }
         return name_map[species_name]
@@ -141,7 +140,7 @@ class PokemonData:
         :return: The Pokemon data
         """
         self._load_pokedex_data()
-        return Pokemon.from_json(self.__json["pokedex"][pokedex_number])
+        return Pokemon.from_json(self.__json["pokedex"][str(pokedex_number)])
 
     def _load_game_data(self, game: str):
         """
@@ -238,6 +237,6 @@ class PokemonData:
                 related_species=all_evolutions,
                 next_evolutions=traverse_next_evos(evo_chain)
             )
-            self.__json["pokedex"][pokedex_number] = pokemon.to_json()
+            self.__json["pokedex"][str(pokedex_number)] = pokemon.to_json()
         self.logger.info("Pokedex Data loaded.")
         self.write()

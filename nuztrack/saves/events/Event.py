@@ -17,16 +17,17 @@ You should have received a copy of the GNU General Public License
 along with nuztrack.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
 
-import pkg_resources
+from datetime import datetime
+from dataclasses import dataclass, field
+from dataclasses_json import dataclass_json
 
 
-version = pkg_resources.get_distribution("nuztrack").version
-"""
-The current version of the package
-"""
-
-
-sentry_dsn = "https://d46e818f49ac4ef4a84d95b86ce3d63b@sentry.namibsun.net/23"
-"""
-Sentry DSN used for exception logging
-"""
+@dataclass_json
+@dataclass
+class Event:
+    """
+    Class that defines default values for events and common methods
+    """
+    timestamp: str = field(
+        default_factory=lambda: datetime.now().strftime("%Y-%m-%d:%H-%M-%S")
+    )
