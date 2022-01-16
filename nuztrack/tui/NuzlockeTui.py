@@ -73,7 +73,7 @@ class NuzlockeTui:
         titles = [x.title_with_path for x in existing_saves]
         paths = [x.path for x in existing_saves]
         default_path = self.config.previous_save
-        if os.path.isfile(default_path):
+        if default_path is not None and os.path.isfile(default_path):
             default_title = \
                 SaveFile(default_path, self.pokemon_data).title_with_path
         else:

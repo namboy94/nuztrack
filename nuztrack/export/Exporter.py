@@ -16,6 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with nuztrack.  If not, see <http://www.gnu.org/licenses/>.
 LICENSE"""
+import json
 
 import imgkit
 from nuztrack.saves.SaveFile import SaveFile
@@ -66,4 +67,8 @@ class Exporter:
         :param path: The path to the file to which the export is saved to
         :return: None
         """
-        pass
+        with open(path, "w") as f:
+            json.dump({
+                "nicknames": self.save_file.nickname_blacklist,
+                "species": self.save_file.species_blacklist
+            }, f)

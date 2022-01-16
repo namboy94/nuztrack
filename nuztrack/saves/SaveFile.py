@@ -98,7 +98,7 @@ class SaveFile:
         data: Dict[str, Any] = {
             "title": title,
             "game": game,
-            "state": RunState.ONGOING.value(),
+            "state": RunState.ONGOING.value,
             "selected_rules": [x.name for x in selected_rules],
             "extra_rules": extra_rules,
             "nickname_blacklist": [],
@@ -107,14 +107,33 @@ class SaveFile:
         }
         if genlocke_import_file is not None:
             old_save = cls(genlocke_import_file, pokemon_data)
-            for pokemon in old_save.owned_pokemon:
+            for pokemon in old_save.team + old_save.dead_pokemon:
                 data["nickname_blacklist"].append(pokemon.nickname)
                 if NuzlockeRules.DUPLICATE_CLAUSE in selected_rules:
                     data["species_blacklist"].append(pokemon.pokedex_number)
             data["nickname_blacklist"] += old_save.nickname_blacklist
             data["species_blacklist"] += old_save.species_blacklist
+
         with open(path, "w") as f:
             json.dump(data, f, indent=4)
+
+        if genlocke_import_file is not None:
+            new_save = cls(path, pokemon_data)
+            old_save = cls(genlocke_import_file, pokemon_data)
+            for i, pokemon in enumerate(old_save.team):
+                species = pokemon_data.get_pokemon(pokemon.pokedex_number)
+                pokemon.level = 5
+                pokemon.pokedex_number = species.related_species[0]
+                new_save.register_encounter(Encounter(
+                    f"Import {i + 1}",
+                    pokemon.pokedex_number,
+                    level=pokemon.level,
+                    gender=pokemon.gender,
+                    obtained=True,
+                    nickname=pokemon.nickname
+                ))
+                new_save.register_catch(pokemon)
+            new_save.write()
 
     @property
     def title(self) -> str:
@@ -309,33 +328,33 @@ class SaveFile:
         """
         rules = self.enforced_rules
 
-        if species in self.species_blacklist:
-            return False
+        blacklist = list(self.species_blacklist)
 
-        legendaries = \
-            [144, 145, 146, 150, 151] + \
-            [243, 244, 245, 249, 250, 251] + \
-            list(range(377, 387)) + \
-            list(range(480, 495)) + \
-            list(range(638, 650)) + \
-            list(range(716, 722)) + \
-            [772, 773] + list(range(785, 810)) + \
-            list(range(888, 899))
-        if NuzlockeRules.NO_LEGENDARIES in rules and species in legendaries:
-            return False
+        if NuzlockeRules.NO_LEGENDARIES in rules:
+            blacklist += \
+                [144, 145, 146, 150, 151] + \
+                [243, 244, 245, 249, 250, 251] + \
+                list(range(377, 387)) + \
+                list(range(480, 495)) + \
+                list(range(638, 650)) + \
+                list(range(716, 722)) + \
+                [772, 773] + list(range(785, 810)) + \
+                list(range(888, 899))
 
         if NuzlockeRules.DUPLICATE_CLAUSE in rules:
-            caught_species = \
-                [x.pokedex_number for x in self.encounters if x.obtained]
-            if species in caught_species:
-                return False
+            blacklist += [
+                x.pokedex_number
+                for x in self.encounters
+                if x.obtained or
+                NuzlockeRules.DUPLICATE_CLAUSE_ENCOUNTERS in rules
+            ]
+        if NuzlockeRules.DUPLICATE_CLAUSE_EVOLUTIONS:
+            for pokedex_number in list(blacklist):
+                blacklist += self.pokemon_data.get_pokemon(
+                    pokedex_number
+                ).related_species
 
-        if NuzlockeRules.DUPLICATE_CLAUSE_ENCOUNTERS in rules:
-            encountered_species = [x.pokedex_number for x in self.encounters]
-            if species in encountered_species:
-                return False
-
-        return True
+        return species not in blacklist
 
     def is_nickname_allowed(self, nickname: str) -> bool:
         """
@@ -389,6 +408,7 @@ class SaveFile:
         pokemon = self.get_pokemon(death.nickname)
         pokemon.deceased = True
         pokemon.in_team = False
+        pokemon.level = death.level
         self.update_pokemon(pokemon)
 
     def register_milestone(self, milestone: Milestone):
@@ -407,16 +427,21 @@ class SaveFile:
         """
         self.__json["notes"].append(note.to_json())
 
-    def update_pokemon(self, pokemon: OwnedPokemon):
+    def update_pokemon(self, pokemon: OwnedPokemon, nickname: Optional[str] = None):
         """
         Updates a Pokemon.
-        Every data point except the nickname ay be modified
+        If no explicit nickname is provided, the nickname of the Pokemon
+        object is used, in which case the nickname may not have been changed
         :param pokemon: The new pokemon data
+        :param nickname: The explicit nickname
         :return: None
         """
+        if nickname is None:
+            nickname = pokemon.nickname
+
         nicknames = [
             OwnedPokemon.from_json(x).nickname
             for x in self.__json["owned_pokemon"]
         ]
-        index = nicknames.index(pokemon.nickname)
+        index = nicknames.index(nickname)
         self.__json["owned_pokemon"][index] = pokemon.to_json()

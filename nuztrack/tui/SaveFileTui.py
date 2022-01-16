@@ -145,22 +145,35 @@ class SaveFileTui:
             self.save_file.game, location
         ) + ["Other"]]
         encounters.sort()
+
+        all_pokemon = {
+            x.title(): None
+            for x in self.pokemon_data.get_all_pokemon_names()
+        }
+
         species = inquirer.select(
             "Which Pokemon?",
             choices=encounters,
-            validate=lambda x: self.save_file.is_capture_allowed(x),
+            validate=lambda x:
+            (x.lower().title() in all_pokemon or x.lower() == "other") and (
+                x.lower() == "other" or
+                self.save_file.is_capture_allowed(
+                    self.pokemon_data.get_pokedex_number(x.lower())
+                )
+            ),
             invalid_message="Invalid Pokemon selected"
         ).execute().lower()
         if species == "other":
-            all_pokemon = {
-                x.title(): None
-                for x in self.pokemon_data.get_all_pokemon_names()
-            }
             species = inquirer.text(
                 "Which Pokemon?",
                 completer=all_pokemon,
                 validate=lambda x:
-                    x in all_pokemon and self.save_file.is_capture_allowed(x),
+                x.lower().title() in all_pokemon
+                and (
+                    self.save_file.is_capture_allowed(
+                        self.pokemon_data.get_pokedex_number(x.lower())
+                    )
+                ),
                 invalid_message="Invalid Pokemon selected"
             ).execute().lower()
         pokedex_number = self.pokemon_data.get_pokedex_number(species)
@@ -184,7 +197,7 @@ class SaveFileTui:
         if caught:
             species = self.pokemon_data.get_pokemon(pokedex_number)
             default_nick = species.name.upper() \
-                if self.save_file.generation < 4 else species
+                if self.save_file.generation < 5 else species.name.title()
             nickname = inquirer.text(
                 "Nickname?",
                 validate=lambda x: x and self.save_file.is_nickname_allowed(x),
@@ -211,13 +224,6 @@ class SaveFileTui:
         :return:
         """
         species = self.pokemon_data.get_pokemon(encounter.pokedex_number)
-        default_nick = \
-            species.name.upper() if self.save_file.generation < 4 else species
-        nickname = inquirer.text(
-            "Nickname?",
-            validate=lambda x: x and self.save_file.is_nickname_allowed(x),
-            default=default_nick
-        ).execute()
 
         if self.save_file.generation >= 3:
             natures = {
@@ -246,7 +252,7 @@ class SaveFileTui:
 
         pokemon = OwnedPokemon(
             pokedex_number=encounter.pokedex_number,
-            nickname=nickname,
+            nickname=encounter.nickname,
             level=encounter.level,
             gender=encounter.gender,
             nature=nature,
@@ -334,7 +340,7 @@ class SaveFileTui:
         :return: None
         """
         pokemon = self._select_pokemon()
-        choices = ["Adjust Level"]
+        choices = ["Adjust Level", "Rename"]
         if pokemon.in_team:
             choices.append("Remove from team")
         elif not pokemon.deceased and len(self.save_file.team) < 6:
@@ -347,6 +353,13 @@ class SaveFileTui:
             pokemon.level = int(inquirer.number(
                 "Level?", min_allowed=1, max_allowed=100
             ).execute())
+        elif mode == "Rename":
+            old_nick = pokemon.nickname
+            pokemon.nickname = inquirer.text(
+                "New Name:",
+                validate=lambda x: x and self.save_file.is_nickname_allowed(x)
+            ).execute()
+            self.save_file.update_pokemon(pokemon, old_nick)
         elif mode == "Add to team":
             pokemon.in_team = True
         elif mode == "Remove from team":

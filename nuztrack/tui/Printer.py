@@ -70,9 +70,10 @@ class Printer:
                 previous = category
 
             level = str(pokemon.level).ljust(2)
-            species = species.name.title().ljust(12)
+            species_number = str(species.pokedex_number).ljust(3)
+            species_name = species.name.title().ljust(12)
             string += f"  {pokemon.nickname.ljust(12)} " \
-                      f"({species}| Lvl. {level})\n"
+                      f"(#{species_number} {species_name}| Lvl. {level})\n"
         string += f"{'-' * 80}\n"
         print(string)
 

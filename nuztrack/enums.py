@@ -29,9 +29,11 @@ class NuzlockeRules(Enum):
                       "area may be caught"
     DUPLICATE_CLAUSE = "Only the first non-duplicate encounter of any " \
                        "given area may be caught"
-    DUPLICATE_CLAUSE_ENCOUNTERS = "Species that were encountered as the " \
-                                  "first encounter in another location may " \
-                                  "not be caught (see: duplicate clause)"
+    DUPLICATE_CLAUSE_ENCOUNTERS = "The Duplicate clause is expanded to " \
+                                  "include encounters that were not " \
+                                  "successfully caught"
+    DUPLICATE_CLAUSE_EVOLUTIONS = "The Duplicate clause is expanded to " \
+                                  "include (pre-)evolutions of encounter"
     NICKNAME_ALL = "The player must nickname every caught Pokemon"
     NICKNAME_TEAM = "The player must nickname every Pokemon that is part " \
                     "of the team at any point"
