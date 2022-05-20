@@ -1,3 +1,0 @@
-# Feature Ideas
-
-Duplicate Clause
