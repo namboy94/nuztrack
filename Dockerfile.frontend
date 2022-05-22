@@ -1,0 +1,12 @@
+FROM ubuntu:22.04
+MAINTAINER Hermann Krumrey <hermann@krumreyh.com>
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt update && apt install -y npm && npm install -g serve
+ADD frontend nuztrack
+RUN cd nuztrack && npm install && npm run build && mv build /app
+RUN rm -rf nuztrack
+
+EXPOSE 3000
+CMD ["/usr/local/bin/serve", "-s", "/app", "-l", "3000"]
