@@ -4,16 +4,46 @@ import './App.css';
 import {Button} from "@mui/material";
 import axios from "axios";
 
+import {ReactKeycloakProvider, useKeycloak} from "@react-keycloak/web";
+import Keycloak from "keycloak-js";
+import {keycloak} from "./Keycloak";
+import {stringify} from "querystring";
+
 function App() {
+
+
+
   return (
-    <Button onClick={testCall} variant={"contained"}>Hello World</Button>
+      <div>
+        <Button onClick={testCall} variant={"contained"}>Hello World</Button>
+          <Button onClick={whoami} variant={"contained"}>Who Am I</Button>
+        <Button onClick={login} variant={"contained"}>Login</Button>
+        <Button onClick={logout} variant={"contained"}>Logout</Button>
+      </div>
   );
 }
 
 function testCall() {
-  axios.defaults.baseURL = "http://0.0.0.0:8080"
-  axios.get("/api/test")
-  axios.get("/api/count").then((resp) => window.alert(resp.data))
+  axios.defaults.baseURL = "http://localhost:8080"
+    //axios.defaults.headers = {"Authorization": "Bearer " + keycloak.token}
+
+  axios.get("/api/test", {"headers": {"Authorization": "Bearer " + keycloak.token}})
+  axios.get("/api/count", {"headers": {"Authorization": "Bearer " + keycloak.token}}).then((resp) => window.alert(resp.data))
+
 }
+
+function login() {
+}
+
+function logout() {
+
+}
+
+function whoami() {
+    keycloak.loadUserInfo().then(x => window.alert(stringify(x)))
+    window.alert(keycloak.profile)
+}
+
+
 
 export default App;
