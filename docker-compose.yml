@@ -40,6 +40,27 @@ services:
     volumes:
       - data:/var/lib/postgresql/data
     restart: always
+  auth:
+    image: "quay.io/keycloak/keycloak:18.0.0"
+    container_name: "nuztrack-auth"
+    command: start-dev
+    env_file: .env
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: db
+      DB_DATABASE: keycloak
+      DB_USER: ${POSTGRES_USER}
+      DB_SCHEMA: public
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    depends_on:
+      - db
+    networks:
+      - net
+    ports:
+      - "8081:8080"
+    restart: always
 volumes:
   logs: ~
   data: ~
