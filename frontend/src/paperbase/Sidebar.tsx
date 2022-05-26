@@ -18,6 +18,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import ImportExportIcon from '@mui/icons-material/ImportExport';
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 const categories = [
     {
@@ -34,6 +35,7 @@ const categories = [
     {
         id: 'Other',
         children: [
+            {id: 'Settings', icon: <SettingsIcon/>, path: "/settings"},
             {id: 'Export', icon: <ImportExportIcon/>, path: "/export"},
             {id: 'Close', icon: <ClearIcon/>, path: "/close"}
         ],
@@ -87,8 +89,8 @@ export default function Sidebar(props: DrawerProps) {
                             <ListItemText sx={{color: '#fff'}}>{id}</ListItemText>
                         </ListItem>
                         {children.map(({id: childId, icon, path}) => (
-                            <Link to={path}>
-                                <ListItem disablePadding key={childId}>
+                            <Link key={childId} to={path}>
+                                <ListItem disablePadding>
                                     <ListItemButton selected={path===location.pathname} sx={item}>
                                         <ListItemIcon>{icon}</ListItemIcon>
                                         <ListItemText>{childId}</ListItemText>

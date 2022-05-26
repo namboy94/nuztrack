@@ -3,11 +3,13 @@ import * as React from "react";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {useNavigate} from "react-router";
+import CreateNewRunDialog from "./CreateNewRunDialog";
 
 
 export function RunSelector() {
 
     const [runs, setRuns] = useState([])
+    const [dialogOpen, setDialogOpen] = useState(false)
     const navigate = useNavigate()
 
     const loadData = () => {
@@ -24,25 +26,32 @@ export function RunSelector() {
         navigate("/run")
     }
 
+    const createRun = () => {
+        selectRun("new")
+    }
+
     useEffect(() => {
         loadData()
     }, [])
 
     return (
-        <Grid container spacing={2} id="runs">
-            <Grid item xs={4}>
-                <Button variant="contained" onClick={() => console.log("Create")}>
-                    +
-                </Button>
-            </Grid>
-
-            {runs.map(({name, game}) =>
-                <Grid item xs={4} key={name + game}>
-                    <Button variant="contained" onClick={() => selectRun(name)}>
-                        {name} ({game})
+        <>
+            <Grid container spacing={2} id="runs">
+                <Grid item xs={4}>
+                    <Button variant="contained" onClick={() => setDialogOpen(true)}>
+                        +
                     </Button>
                 </Grid>
-            )}
-        </Grid>
+
+                {runs.map(({name, game}) =>
+                    <Grid item xs={4} key={name + game}>
+                        <Button variant="contained" onClick={() => selectRun(name)}>
+                            {name} ({game})
+                        </Button>
+                    </Grid>
+                )}
+            </Grid>
+            <CreateNewRunDialog open={dialogOpen} onClose={() => setDialogOpen(false)}/>
+        </>
     )
 }
