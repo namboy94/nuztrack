@@ -2,6 +2,7 @@ package net.namibsun.nuztrack.routes
 
 import net.namibsun.nuztrack.data.TestService
 import net.namibsun.nuztrack.data.TestTable
+import net.namibsun.nuztrack.model.NuzlockeRunInfo
 import net.namibsun.nuztrack.model.TestTO
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -26,6 +27,12 @@ class TestController(val service: TestService) {
     @ResponseBody
     fun y() : ResponseEntity<Int> {
         return ResponseEntity.ok(service.find().size)
+    }
+
+    @GetMapping("/api/runs")
+    @ResponseBody
+    fun runs() : List<NuzlockeRunInfo> {
+        return listOf(NuzlockeRunInfo("A", "B"), NuzlockeRunInfo("A", "B"))
     }
 
 }
