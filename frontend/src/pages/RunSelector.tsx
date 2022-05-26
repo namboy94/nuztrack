@@ -1,59 +1,48 @@
-import {Button, Card, Grid} from "@mui/material";
+import {Button, Grid} from "@mui/material";
 import * as React from "react";
+import {useEffect, useState} from "react";
 import axios from "axios";
-import {createAxios, keycloak} from "../util/keycloak";
-import {get} from "../util/api";
+import {useNavigate} from "react-router";
 
 
-const existing = [
-    {name: "Run 1", game: "Red"},
-    {name: "Run 2", game: "Blue"},
-    {name: "Run 1", game: "Red"},
-    {name: "Run 2", game: "Blue"},
-    {name: "Run 1", game: "Red"},
-    {name: "Run 2", game: "Blue"},
-    {name: "Run 1", game: "Red"},
-    {name: "Run 2", game: "Blue"},
-    {name: "Run 1", game: "Red"},
-    {name: "Run 2", game: "Blue"},
-    {name: "Run 1", game: "Red"},
-]
+export function RunSelector() {
 
+    const [runs, setRuns] = useState([])
+    const navigate = useNavigate()
 
-export class RunSelector extends React.Component {
-
-    state = {
-        error: null,
-        isLoaded: false,
-        runs: []
-    }
-
-    componentDidMount() {
+    const loadData = () => {
         axios.get("/api/runs").then(
-            result => {this.setState({isLoaded: true, runs: result.data})},
-            error => this.setState({isLoaded: true, error: error})
+            result => {
+                setRuns(result.data)
+            },
+            error => console.log(error)
         )
     }
 
-    render() {
-        const { error, isLoaded, runs } = this.state;
+    const selectRun = (id: string) => {
+        localStorage.setItem("runId", id)
+        navigate("/run")
+    }
 
-        if (error) {
-            return <h1>Error</h1>
-        }
-        if (!isLoaded) {
-            return <h1>Loading</h1>
-        }
-        return (
-            <Grid container spacing={2} id="runs">
-                {runs.map(({name, game}) =>
-                    <Grid item xs={4}>
-                        <Button variant="contained">
-                            {name} ({game})
-                        </Button>
-                    </Grid>
-                )}
+    useEffect(() => {
+        loadData()
+    }, [])
+
+    return (
+        <Grid container spacing={2} id="runs">
+            <Grid item xs={4}>
+                <Button variant="contained" onClick={() => console.log("Create")}>
+                    +
+                </Button>
             </Grid>
-        )
-    }
+
+            {runs.map(({name, game}) =>
+                <Grid item xs={4} key={name + game}>
+                    <Button variant="contained" onClick={() => selectRun(name)}>
+                        {name} ({game})
+                    </Button>
+                </Grid>
+            )}
+        </Grid>
+    )
 }

@@ -32,7 +32,7 @@ class TestController(val service: TestService) {
     @GetMapping("/api/runs")
     @ResponseBody
     fun runs() : List<NuzlockeRunInfo> {
-        return listOf(NuzlockeRunInfo("A", "B"), NuzlockeRunInfo("A", "B"))
+        return listOf(NuzlockeRunInfo("One", "Red"), NuzlockeRunInfo("Two", "Blue"))
     }
 
 }

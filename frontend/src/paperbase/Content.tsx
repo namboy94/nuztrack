@@ -13,57 +13,19 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import App from "../components/App";
 import {RunSelector} from "../pages/RunSelector";
+import {Close} from "../pages/Close";
 
 export default function Content() {
-  return (
-    <Paper sx={{ maxWidth: 936, margin: 'auto', overflow: 'hidden' }}>
+    return (
+        <Paper sx={{maxWidth: 936, margin: 'auto', overflow: 'hidden'}}>
 
-        <BrowserRouter>
-            <Routes>
-                <Route path="/" element={<RunSelector/>}/>
-                <Route path="/test" element={<h1>A</h1>}/>
-                <Route path="/test/x" element={<h1>B</h1>}/>
-            </Routes>
-        </BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<RunSelector/>}/>
+                    <Route path="/test" element={<h1>A</h1>}/>
+                    <Route path="/test/x" element={<h1>B</h1>}/>
+                    <Route path="/close" element={<Close/>}/>
+                </Routes>
 
-      {/*<AppBar*/}
-      {/*  position="static"*/}
-      {/*  color="default"*/}
-      {/*  elevation={0}*/}
-      {/*  sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.12)' }}*/}
-      {/*>*/}
-      {/*  <Toolbar>*/}
-      {/*    <Grid container spacing={2} alignItems="center">*/}
-      {/*      <Grid item>*/}
-      {/*        <SearchIcon color="inherit" sx={{ display: 'block' }} />*/}
-      {/*      </Grid>*/}
-      {/*      <Grid item xs>*/}
-      {/*        <TextField*/}
-      {/*          fullWidth*/}
-      {/*          placeholder="Search by email address, phone number, or user UID"*/}
-      {/*          InputProps={{*/}
-      {/*            disableUnderline: true,*/}
-      {/*            sx: { fontSize: 'default' },*/}
-      {/*          }}*/}
-      {/*          variant="standard"*/}
-      {/*        />*/}
-      {/*      </Grid>*/}
-      {/*      <Grid item>*/}
-      {/*        <Button variant="contained" sx={{ mr: 1 }}>*/}
-      {/*          Add user*/}
-      {/*        </Button>*/}
-      {/*        <Tooltip title="Reload">*/}
-      {/*          <IconButton>*/}
-      {/*            <RefreshIcon color="inherit" sx={{ display: 'block' }} />*/}
-      {/*          </IconButton>*/}
-      {/*        </Tooltip>*/}
-      {/*      </Grid>*/}
-      {/*    </Grid>*/}
-      {/*  </Toolbar>*/}
-      {/*</AppBar>*/}
-      {/*<Typography sx={{ my: 5, mx: 2 }} color="text.secondary" align="center">*/}
-      {/*  No users for this project yet*/}
-      {/*</Typography>*/}
-    </Paper>
-  );
+        </Paper>
+    );
 }
