@@ -1,24 +1,23 @@
 import {Button, Card, CardActions, CardContent, Grid, Typography} from "@mui/material";
 import * as React from "react";
-import {useEffect, useState} from "react";
-import axios from "axios";
+import {useState} from "react";
 import {useNavigate} from "react-router";
 import CreateNewRunDialog from "./dialogs/CreateNewRunDialog";
+import {useQuery} from "react-query";
+import {loadRuns} from "../api/run";
 
 
 export function RunSelector() {
 
-    const [runs, setRuns] = useState([])
-    const [dialogOpen, setDialogOpen] = useState(false)
     const navigate = useNavigate()
+    const [dialogOpen, setDialogOpen] = useState(false)
+    const runData = useQuery("runs", loadRuns)
 
-    const loadData = () => {
-        axios.get("/api/runs").then(
-            result => {
-                setRuns(result.data)
-            },
-            error => console.log(error)
-        )
+    if (runData.isLoading || runData.isIdle) {
+        return <h1>Loading...</h1>
+    }
+    if (runData.error || runData.data === undefined) {
+        return <h1>Error</h1>
     }
 
     const selectRun = (id: string) => {
@@ -26,19 +25,13 @@ export function RunSelector() {
         navigate("/run")
     }
 
-    const createRun = () => {
-        selectRun("new")
-    }
-
-    useEffect(() => {
-        loadData()
-    }, [])
+    console.log(runData.data)
 
     return (
         <>
             <Button variant="contained" onClick={() => setDialogOpen(true)}>Create</Button>
             <Grid container spacing={2} id="runs">
-                {runs.map(({name, game}) =>
+                {runData.data.map(({name, game, id}) =>
                     <Grid item xs={4} key={name + game}>
                         <Card>
                             <CardContent>

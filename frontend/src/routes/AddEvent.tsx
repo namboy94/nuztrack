@@ -1,4 +1,4 @@
-import {Button, Card, CardActions, CardContent, Grid, Typography} from "@mui/material";
+import {Button, Grid} from "@mui/material";
 import * as React from "react";
 
 export default function AddEvent() {
