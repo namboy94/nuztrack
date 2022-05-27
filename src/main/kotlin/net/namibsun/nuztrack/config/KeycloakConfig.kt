@@ -45,5 +45,6 @@ internal class SecurityConfig : KeycloakWebSecurityConfigurerAdapter() {
                 .hasRole("user")
                 .anyRequest()
                 .permitAll()
+        http.csrf().disable() // Bad hack, but can't be bothered.
     }
 }

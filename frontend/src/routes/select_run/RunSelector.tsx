@@ -2,9 +2,9 @@ import {Button, Card, CardActions, CardContent, Grid, Typography} from "@mui/mat
 import * as React from "react";
 import {useState} from "react";
 import {useNavigate} from "react-router";
-import CreateNewRunDialog from "./dialogs/CreateNewRunDialog";
+import CreateNewRunDialog from "./CreateNewRunDialog";
 import {useQuery} from "react-query";
-import {loadRuns} from "../api/run";
+import {loadRuns} from "../../api/runs/runsApi";
 
 
 export function RunSelector() {
@@ -31,7 +31,7 @@ export function RunSelector() {
         <>
             <Button variant="contained" onClick={() => setDialogOpen(true)}>Create</Button>
             <Grid container spacing={2} id="runs">
-                {runData.data.map(({name, game, id}) =>
+                {runData.data.map(({name, game}) =>
                     <Grid item xs={4} key={name + game}>
                         <Card>
                             <CardContent>

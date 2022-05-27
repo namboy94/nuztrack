@@ -1,7 +1,8 @@
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@mui/material";
 import React, {useState} from "react";
 import {useNavigate} from "react-router";
-import ErrorSnackbar from "./ErrorSnackbar";
+import ErrorSnackbar from "../generic/ErrorSnackbar";
+import {createRun} from "../../api/runs/runsApi";
 
 export interface CreateNewRunDialogProps {
     open: boolean;
@@ -19,14 +20,15 @@ export default function CreateNewRunDialog(props: CreateNewRunDialogProps) {
     const navigate = useNavigate()
 
 
-    const createRun = () => {
+    const createNewRun = () => {
         if (name === "" || game === "") {
             showError("The name and the game can not be empty")
             return
         }
-        // TODO API CALL & Custom Error Message
-        localStorage.setItem("runId", name + game)
-        navigate("/run")
+        createRun(name, game).then(result => {
+            localStorage.setItem("runId", name) // TODO Get actual ID
+            navigate("/run")
+        })
     }
 
     const showError = (message: string) => {
@@ -57,7 +59,7 @@ export default function CreateNewRunDialog(props: CreateNewRunDialogProps) {
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose}>Cancel</Button>
-                <Button onClick={createRun}>Create</Button>
+                <Button onClick={createNewRun}>Create</Button>
             </DialogActions>
             <ErrorSnackbar open={errorOpen} setOpen={setErrorOpen} message={errorMessage}/>
         </Dialog>

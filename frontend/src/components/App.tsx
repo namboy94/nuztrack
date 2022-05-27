@@ -5,7 +5,7 @@ import {ThemeProvider} from "@mui/material/styles";
 import {theme} from "../style/Theme";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
-import {RunSelector} from "../routes/RunSelector";
+import {RunSelector} from "../routes/select_run/RunSelector";
 import {Close} from "../routes/Close";
 import Paper from "@mui/material/Paper";
 import Sidebar from "./Sidebar";

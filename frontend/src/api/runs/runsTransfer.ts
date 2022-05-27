@@ -1,8 +1,11 @@
-export type NuzlockeRun = {
+export type NuzlockeRunBasicInfoTO = {
     id: number | null,
-    userName: string,
+    userName: string | null,
     name: string,
     game: string,
+}
+
+export type NuzlockeRulesTO = {
     death: boolean,
     mustNickname: boolean,
     onlyFirstEncounter: boolean,
@@ -18,3 +21,7 @@ export type NuzlockeRun = {
     noPokeMarts: boolean,
     noPokeCenters: boolean
 }
+
+export type NuzlockeRunTO = { runInfo: NuzlockeRunBasicInfoTO, rules: NuzlockeRulesTO }
+
+export type CreateNuzlockeRunTO = { name: string, game: string, rules: NuzlockeRulesTO }

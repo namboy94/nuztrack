@@ -9,5 +9,6 @@ class TestService(val db: TestRepositories) {
 
     fun set(x: TestTable) {
         db.save(x)
+        TestTable()
     }
 }
