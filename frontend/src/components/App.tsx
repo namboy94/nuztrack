@@ -12,6 +12,14 @@ import Paper from "@mui/material/Paper";
 import Sidebar from "./Sidebar";
 import Footer from "./Footer";
 import Header from "./Header";
+import AddEvent from "../routes/AddEvent";
+import Overview from "../routes/Overview";
+import Team from "../routes/Team";
+import Log from "../routes/Log";
+import Map from "../routes/Map";
+import Status from "../routes/Status";
+import Export from "../routes/Export";
+import Settings from "../routes/Settings";
 
 export default function App() {
     const [mobileOpen, setMobileOpen] = useState(false)
@@ -35,8 +43,14 @@ export default function App() {
                         <Paper sx={{maxWidth: 936, margin: 'auto', overflow: 'hidden'}}>
                             <Routes>
                                 <Route path="/" element={<RunSelector/>}/>
-                                <Route path="/test" element={<h1>A</h1>}/>
-                                <Route path="/test/x" element={<h1>B</h1>}/>
+                                <Route path="/add_event" element={<AddEvent/>}/>
+                                <Route path="/overview" element={<Overview/>}/>
+                                <Route path="/team" element={<Team/>}/>
+                                <Route path="/map" element={<Map/>}/>
+                                <Route path="/log" element={<Log/>}/>
+                                <Route path="/status" element={<Status/>}/>
+                                <Route path="/settings" element={<Settings/>}/>
+                                <Route path="/export" element={<Export/>}/>
                                 <Route path="/close" element={<Close/>}/>
                             </Routes>
                         </Paper>
