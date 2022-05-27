@@ -1,9 +1,9 @@
-import {Button, Grid} from "@mui/material";
+import {Button, Card, CardActions, CardContent, Grid, Typography} from "@mui/material";
 import * as React from "react";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {useNavigate} from "react-router";
-import CreateNewRunDialog from "./CreateNewRunDialog";
+import CreateNewRunDialog from "./dialogs/CreateNewRunDialog";
 
 
 export function RunSelector() {
@@ -36,18 +36,22 @@ export function RunSelector() {
 
     return (
         <>
+            <Button variant="contained" onClick={() => setDialogOpen(true)}>Create</Button>
             <Grid container spacing={2} id="runs">
-                <Grid item xs={4}>
-                    <Button variant="contained" onClick={() => setDialogOpen(true)}>
-                        +
-                    </Button>
-                </Grid>
-
                 {runs.map(({name, game}) =>
                     <Grid item xs={4} key={name + game}>
-                        <Button variant="contained" onClick={() => selectRun(name)}>
-                            {name} ({game})
-                        </Button>
+                        <Card>
+                            <CardContent>
+                                <Typography gutterBottom variant="h5" component="div">
+                                    {name} ({game})
+                                </Typography>
+                            </CardContent>
+                            <CardActions>
+                                <Button variant="contained" onClick={() => selectRun(name)}>
+                                    Select
+                                </Button>
+                            </CardActions>
+                        </Card>
                     </Grid>
                 )}
             </Grid>

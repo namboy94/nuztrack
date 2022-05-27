@@ -8,7 +8,6 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import HomeIcon from '@mui/icons-material/Home';
-import SettingsEthernetIcon from '@mui/icons-material/SettingsEthernet';
 import {Link, useLocation} from "react-router-dom";
 import PetsIcon from '@mui/icons-material/Pets';
 import AddIcon from '@mui/icons-material/Add';
@@ -63,7 +62,6 @@ export default function Sidebar(props: DrawerProps) {
     const location = useLocation();
 
     const runId: string | null = localStorage.getItem("runId")
-
     let sections = categories;
     if (runId === null) {
         sections = []
@@ -91,7 +89,7 @@ export default function Sidebar(props: DrawerProps) {
                         {children.map(({id: childId, icon, path}) => (
                             <Link key={childId} to={path}>
                                 <ListItem disablePadding>
-                                    <ListItemButton selected={path===location.pathname} sx={item}>
+                                    <ListItemButton selected={path === location.pathname} sx={item}>
                                         <ListItemIcon>{icon}</ListItemIcon>
                                         <ListItemText>{childId}</ListItemText>
                                     </ListItemButton>

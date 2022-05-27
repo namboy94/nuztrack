@@ -1,15 +1,6 @@
-import * as React from 'react';
-import {createTheme, ThemeProvider} from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import CssBaseline from '@mui/material/CssBaseline';
-import Box from '@mui/material/Box';
-import Sidebar from './Sidebar';
-import Content from './Content';
-import Header from './Header';
-import Footer from "./Footer";
-import {useState} from "react";
+import {createTheme} from "@mui/material/styles";
 
-let theme = createTheme({
+let themeData = createTheme({
     palette: {
         primary: {
             light: '#63ccff',
@@ -41,8 +32,8 @@ let theme = createTheme({
     },
 });
 
-theme = {
-    ...theme,
+themeData = {
+    ...themeData,
     components: {
         MuiDrawer: {
             styleOverrides: {
@@ -67,13 +58,13 @@ theme = {
         MuiTabs: {
             styleOverrides: {
                 root: {
-                    marginLeft: theme.spacing(1),
+                    marginLeft: themeData.spacing(1),
                 },
                 indicator: {
                     height: 3,
                     borderTopLeftRadius: 3,
                     borderTopRightRadius: 3,
-                    backgroundColor: theme.palette.common.white,
+                    backgroundColor: themeData.palette.common.white,
                 },
             },
         },
@@ -84,7 +75,7 @@ theme = {
                     margin: '0 16px',
                     minWidth: 0,
                     padding: 0,
-                    [theme.breakpoints.up('md')]: {
+                    [themeData.breakpoints.up('md')]: {
                         padding: 0,
                         minWidth: 0,
                     },
@@ -94,7 +85,7 @@ theme = {
         MuiIconButton: {
             styleOverrides: {
                 root: {
-                    padding: theme.spacing(1),
+                    padding: themeData.spacing(1),
                 },
             },
         },
@@ -125,7 +116,7 @@ theme = {
             styleOverrides: {
                 primary: {
                     fontSize: 14,
-                    fontWeight: theme.typography.fontWeightMedium,
+                    fontWeight: themeData.typography.fontWeightMedium,
                 },
             },
         },
@@ -134,7 +125,7 @@ theme = {
                 root: {
                     color: 'inherit',
                     minWidth: 'auto',
-                    marginRight: theme.spacing(2),
+                    marginRight: themeData.spacing(2),
                     '& svg': {
                         fontSize: 20,
                     },
@@ -152,40 +143,4 @@ theme = {
     },
 };
 
-export default function Dashboard() {
-
-    const [mobileOpen, setMobileOpen] = useState(false)
-
-    const drawerWidth = 256;
-
-    const handleDrawerToggle = () => {
-        setMobileOpen(!mobileOpen)
-    };
-
-    return (
-        <ThemeProvider theme={theme}>
-            <Box sx={{display: 'flex', minHeight: '100vh'}}>
-                <CssBaseline/>
-                <Box
-                    component="nav"
-                    sx={{width: {sm: drawerWidth}, flexShrink: {sm: 0}}}
-                >
-                    <Sidebar
-                        PaperProps={{style: {width: drawerWidth}}}
-                        sx={{display: {sm: 'block', xs: 'none'}}}
-                    />
-                </Box>
-                <Box sx={{flex: 1, display: 'flex', flexDirection: 'column'}}>
-                    <Header onDrawerToggle={handleDrawerToggle}/>
-                    <Box component="main" sx={{flex: 1, py: 6, px: 4, bgcolor: '#eaeff1'}}>
-                        <Content/>
-                    </Box>
-                    <Box component="footer" sx={{p: 2, bgcolor: '#eaeff1'}}>
-                        <Footer/>
-                    </Box>
-                </Box>
-            </Box>
-        </ThemeProvider>
-    );
-
-}
+export const theme = themeData
