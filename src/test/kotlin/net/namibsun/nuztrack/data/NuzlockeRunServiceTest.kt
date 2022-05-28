@@ -60,6 +60,7 @@ class NuzlockeRunServiceTest {
 
     @Test
     fun createRun_valid() {
+        @Suppress("RemoveExplicitTypeArguments")
         whenever(repository.save(any<NuzlockeRun>())).thenReturn(exampleOne)
 
         val result = service.createRun(

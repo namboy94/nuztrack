@@ -27,7 +27,9 @@ internal class SecurityConfig : KeycloakWebSecurityConfigurerAdapter() {
     // Submits the KeycloakAuthenticationProvider to the AuthenticationManager
     @Autowired
     @Throws(Exception::class)
-    fun configureGlobal(auth: AuthenticationManagerBuilder) {
+    fun configureGlobal(
+            @Suppress("SpringJavaInjectionPointsAutowiringInspection") auth: AuthenticationManagerBuilder
+    ) {
         val keycloakAuthenticationProvider = keycloakAuthenticationProvider()
         keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(SimpleAuthorityMapper())
         auth.authenticationProvider(keycloakAuthenticationProvider)

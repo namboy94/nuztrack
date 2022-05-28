@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository
 import org.springframework.stereotype.Service
 import javax.persistence.*
 
+@Suppress("JpaDataSourceORMInspection")
 @Entity
 @Table(name = "runs")
 class NuzlockeRun(
