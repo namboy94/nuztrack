@@ -18,6 +18,9 @@ import ImportExportIcon from '@mui/icons-material/ImportExport';
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
 import SettingsIcon from '@mui/icons-material/Settings';
+import {useQuery} from "react-query";
+import {loadRun} from "../api/runs/runsApi";
+import {performLoadingCheck} from "../util/loading";
 
 const categories = [
     {
@@ -56,17 +59,27 @@ const itemCategory = {
     px: 3,
 };
 
-export default function Sidebar(props: DrawerProps) {
+export interface SidebarProps extends DrawerProps {
+    runid: number
+}
+
+export default function Sidebar(props: SidebarProps) {
 
     const {...other} = props;
     const location = useLocation();
 
-    const runId: string | null = localStorage.getItem("runId")
     let sections = categories;
-    if (runId === null) {
+    const runInfo = useQuery(`runs/${props.runid}`, () => loadRun(props.runid))
+
+    const loadingCheck = performLoadingCheck([runInfo])
+    if (loadingCheck !== null) {
+        return loadingCheck
+    }
+
+    if (runInfo.data === undefined) {
         sections = []
     } else {
-        sections[0]["id"] = runId
+        sections[0]["id"] = runInfo.data.name
     }
 
     return (

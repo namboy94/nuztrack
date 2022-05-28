@@ -1,12 +1,30 @@
-import {Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@mui/material";
+import {
+    Button,
+    Checkbox,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    FormControlLabel,
+    FormGroup,
+    InputLabel,
+    MenuItem,
+    Select,
+    TextField
+} from "@mui/material";
 import React, {useState} from "react";
-import {useNavigate} from "react-router";
 import ErrorSnackbar from "../generic/ErrorSnackbar";
 import {createRun} from "../../api/runs/runsApi";
+import {useQuery} from "react-query";
+import {loadGames} from "../../api/games/gamesApi";
+import {loadRules} from "../../api/rules/rulesApi";
+import {performLoadingCheck} from "../../util/loading";
 
 export interface CreateNewRunDialogProps {
     open: boolean;
     onClose: () => void;
+    setRunId: (id: number) => void;
+    selectRun: (id: number) => void;
 }
 
 export default function CreateNewRunDialog(props: CreateNewRunDialogProps) {
@@ -16,19 +34,27 @@ export default function CreateNewRunDialog(props: CreateNewRunDialogProps) {
 
     const [name, setName] = useState("")
     const [game, setGame] = useState("")
+    const [selectedRules, setSelectedRules] = useState([""])
+    const [rulesAreInitialized, setRulesAreInitialized] = useState(false)
 
-    const navigate = useNavigate()
+    const games = useQuery("games", loadGames)
+    const rules = useQuery("rules", loadRules)
 
+    const loadCheck = performLoadingCheck([games, rules])
+    if (loadCheck !== null) {
+        return loadCheck
+    }
+
+    if (!rulesAreInitialized) {
+        setRulesAreInitialized(true)
+        setSelectedRules(rules.data!.defaultRules)
+    }
+    const ruleKeys: string[] = Array.from(rules.data!.rules.keys());
 
     const createNewRun = () => {
-        if (name === "" || game === "") {
-            showError("The name and the game can not be empty")
-            return
-        }
-        createRun(name, game).then(result => {
-            localStorage.setItem("runId", name) // TODO Get actual ID
-            navigate("/run")
-        })
+        createRun(name, game, selectedRules).then(result => {
+            props.selectRun(result.id)
+        }, error => showError(error.toString()))
     }
 
     const showError = (message: string) => {
@@ -41,21 +67,41 @@ export default function CreateNewRunDialog(props: CreateNewRunDialogProps) {
         onClose()
     }
 
+    const handleRuleSelection = (key: string, newState: boolean) => {
+        if (selectedRules.includes(key) && !newState) {
+            setSelectedRules(previous => previous.filter(x => x !== key))
+        }
+        if (!selectedRules.includes(key) && newState) {
+            setSelectedRules(previous => [...previous, key])
+        }
+    }
+
     return (
         <Dialog open={open} onClose={handleClose}>
             <DialogTitle>Create Run</DialogTitle>
             <DialogContent>
+                <InputLabel>Name</InputLabel>
                 <TextField
                     onChange={(x) => setName(x.target.value)}
                     autoFocus margin="dense" fullWidth variant="standard"
-                    id="name" label="Name" type="text" required
+                    id="name" type="text" required
 
                 />
-                <TextField
-                    onChange={(x) => setGame(x.target.value)}
-                    autoFocus margin="dense" fullWidth variant="standard"
-                    id="game" label="Game" type="text" required
-                />
+                <InputLabel>Game</InputLabel>
+                <Select fullWidth value={game} onChange={x => setGame(x.target.value)}>
+                    {games.data!.games.map((x: string) => <MenuItem value={x} key={x}>{x}</MenuItem>)}
+                </Select>
+                <FormGroup>
+                    {ruleKeys.map(key =>
+                        <FormControlLabel key={key} control={
+                            <Checkbox
+                                name={key}
+                                checked={selectedRules.includes(key)}
+                                value={selectedRules.includes(key)}
+                                onChange={x => handleRuleSelection(key, x.target.checked)}/>
+                        } label={rules.data!.rules.get(key)}/>
+                    )}
+                </FormGroup>
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose}>Cancel</Button>

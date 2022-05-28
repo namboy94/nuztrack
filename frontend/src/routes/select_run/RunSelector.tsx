@@ -5,50 +5,74 @@ import {useNavigate} from "react-router";
 import CreateNewRunDialog from "./CreateNewRunDialog";
 import {useQuery} from "react-query";
 import {loadRuns} from "../../api/runs/runsApi";
+import {performLoadingCheck} from "../../util/loading";
+import {NuzlockeRunTO} from "../../api/runs/runsTransfer";
+import DeleteRunDialog from "./DeleteRunDialog";
 
+export interface RunSelectorProps {
+    setRunId: (id: number) => void
+}
 
-export function RunSelector() {
+export function RunSelector(props: RunSelectorProps) {
 
     const navigate = useNavigate()
-    const [dialogOpen, setDialogOpen] = useState(false)
+
+    const [displayedRuns, setDisplayedRuns] = useState<NuzlockeRunTO[]>([])
+    const [initialized, setInitialized] = useState(false)
+
+    const [createDialogOpen, setCreateDialogOpen] = useState(false)
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+    const [runToDelete, setRunToDelete] = useState<NuzlockeRunTO | null>(null)
+
+
     const runData = useQuery("runs", loadRuns)
 
-    if (runData.isLoading || runData.isIdle) {
-        return <h1>Loading...</h1>
-    }
-    if (runData.error || runData.data === undefined) {
-        return <h1>Error</h1>
+
+    const loadCheck = performLoadingCheck([runData])
+    if (loadCheck !== null) {
+        return loadCheck
     }
 
-    const selectRun = (id: string) => {
-        localStorage.setItem("runId", id)
-        navigate("/run")
+    if (!initialized) {
+        setDisplayedRuns(runData.data!.map(x => x))
+        setInitialized(true)
     }
 
-    console.log(runData.data)
+    const selectRun = (id: number) => {
+        props.setRunId(id)
+        localStorage.setItem("runId", `${id}`)
+        navigate("/overview")
+    }
+
+    const openRemoveDialog = (run: NuzlockeRunTO) => {
+        setRunToDelete(run)
+        setDeleteDialogOpen(true)
+    }
 
     return (
         <>
-            <Button variant="contained" onClick={() => setDialogOpen(true)}>Create</Button>
+            <Button variant="contained" onClick={() => setCreateDialogOpen(true)}>Create</Button>
             <Grid container spacing={2} id="runs">
-                {runData.data.map(({name, game}) =>
-                    <Grid item xs={4} key={name + game}>
+                {displayedRuns.map((run) =>
+                    <Grid item xs={4} key={run.name + run.game}>
                         <Card>
                             <CardContent>
                                 <Typography gutterBottom variant="h5" component="div">
-                                    {name} ({game})
+                                    {run.name} ({run.game})
                                 </Typography>
                             </CardContent>
                             <CardActions>
-                                <Button variant="contained" onClick={() => selectRun(name)}>
-                                    Select
-                                </Button>
+                                <Button variant="contained" onClick={() => selectRun(run.id)}>Select</Button>
+                                <Button variant="contained" onClick={() => openRemoveDialog(run)}>Delete</Button>
                             </CardActions>
                         </Card>
                     </Grid>
                 )}
             </Grid>
-            <CreateNewRunDialog open={dialogOpen} onClose={() => setDialogOpen(false)}/>
+            <CreateNewRunDialog selectRun={selectRun} setRunId={props.setRunId} open={createDialogOpen}
+                                onClose={() => setCreateDialogOpen(false)}/>
+            <DeleteRunDialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}
+                             runToDelete={runToDelete} setDisplayedRuns={setDisplayedRuns}/>
         </>
     )
 }

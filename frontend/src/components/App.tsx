@@ -20,11 +20,14 @@ import Status from "../routes/Status";
 import Export from "../routes/Export";
 import Settings from "../routes/Settings";
 import {QueryClient, QueryClientProvider} from "react-query";
+import {getSelectedRunId} from "../util/runId";
 
 export default function App() {
-    const [mobileOpen, setMobileOpen] = useState(false)
 
     const queryClient = new QueryClient()
+
+    const [mobileOpen, setMobileOpen] = useState(false)
+    const [runId, setRunId] = useState(getSelectedRunId())
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen)
@@ -38,23 +41,27 @@ export default function App() {
                     <Box sx={{display: 'flex', minHeight: '100vh'}}>
                         <CssBaseline/>
                         <Box component="nav" sx={{width: {sm: 256}, flexShrink: {sm: 0}}}>
-                            <Sidebar PaperProps={{style: {width: 256}}} sx={{display: {sm: 'block', xs: 'none'}}}/>
+                            <Sidebar
+                                PaperProps={{style: {width: 256}}}
+                                sx={{display: {sm: 'block', xs: 'none'}}}
+                                runid={runId}
+                            />
                         </Box>
                         <Box sx={{flex: 1, display: 'flex', flexDirection: 'column'}}>
                             <Header onDrawerToggle={handleDrawerToggle}/>
                             <Box component="main" sx={{flex: 1, py: 6, px: 4, bgcolor: '#eaeff1'}}>
                                 <Paper sx={{maxWidth: 936, margin: 'auto', overflow: 'hidden'}}>
                                     <Routes>
-                                        <Route path="/" element={<RunSelector/>}/>
+                                        <Route path="/" element={<RunSelector setRunId={setRunId}/>}/>
                                         <Route path="/add_event" element={<AddEvent/>}/>
-                                        <Route path="/overview" element={<Overview/>}/>
+                                        <Route path="/overview" element={<Overview runId={runId}/>}/>
                                         <Route path="/team" element={<Team/>}/>
                                         <Route path="/map" element={<Map/>}/>
                                         <Route path="/log" element={<Log/>}/>
                                         <Route path="/status" element={<Status/>}/>
                                         <Route path="/settings" element={<Settings/>}/>
                                         <Route path="/export" element={<Export/>}/>
-                                        <Route path="/close" element={<Close/>}/>
+                                        <Route path="/close" element={<Close setRunId={setRunId}/>}/>
                                     </Routes>
                                 </Paper>
                             </Box>

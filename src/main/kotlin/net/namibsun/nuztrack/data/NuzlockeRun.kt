@@ -1,8 +1,8 @@
 package net.namibsun.nuztrack.data
 
-import net.namibsun.nuztrack.pokemon.Game
-import net.namibsun.nuztrack.routes.runs.CreateNuzlockeRunTO
+import net.namibsun.nuztrack.util.Games
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
 import org.springframework.stereotype.Service
 import javax.persistence.*
@@ -10,24 +10,11 @@ import javax.persistence.*
 @Entity
 @Table(name = "runs")
 class NuzlockeRun(
-        @Column(nullable = false) @Id @GeneratedValue var id: Int? = null,
+        @Column(nullable = false) @Id @GeneratedValue var id: Long? = null,
         @Column var userName: String,
         @Column var name: String,
-        @Column @Enumerated(EnumType.STRING) var game: Game,
-        @Column var death: Boolean,
-        @Column var mustNickname: Boolean,
-        @Column var onlyFirstEncounter: Boolean,
-        @Column var duplicateClause: Boolean,
-        @Column var duplicateClauseIncludesFailedEncounters: Boolean,
-        @Column var duplicateClauseIncludesEntireSpecies: Boolean,
-        @Column var noTradedPokemon: Boolean,
-        @Column var noGiftedPokemon: Boolean,
-        @Column var noLegendaryPokemon: Boolean,
-        @Column var noItems: Boolean,
-        @Column var noItemsInBattle: Boolean,
-        @Column var noXIteams: Boolean,
-        @Column var noPokeMarts: Boolean,
-        @Column var noPokeCenters: Boolean
+        @Column @Enumerated(EnumType.STRING) var game: Games,
+        @ElementCollection @CollectionTable(name = "rules") val rules: List<String>
 )
 
 @Repository
@@ -38,33 +25,19 @@ interface NuzlockeRunRepository : JpaRepository<NuzlockeRun, Long> {
 @Service
 class NuzlockeRunService(val db: NuzlockeRunRepository) {
 
+    fun getRun(id: Long): NuzlockeRun? {
+        return this.db.findByIdOrNull(id)
+    }
+
     fun getRuns(userName: String): List<NuzlockeRun> {
         return db.findByUserName(userName)
     }
 
-    fun createRun(run: CreateNuzlockeRunTO, userName: String) {
-        val rules = run.rules
-        val runEntity = NuzlockeRun(
-                userName = userName,
-                name = run.name,
-                game = Game.valueOf(run.game),
-                death = rules.death,
-                mustNickname = rules.mustNickname,
-                onlyFirstEncounter = rules.onlyFirstEncounter,
-                duplicateClause = rules.duplicateClause,
-                duplicateClauseIncludesFailedEncounters = rules.duplicateClauseIncludesFailedEncounters,
-                duplicateClauseIncludesEntireSpecies = rules.duplicateClauseIncludesEntireSpecies,
-                noTradedPokemon = rules.noTradedPokemon,
-                noGiftedPokemon = rules.noGiftedPokemon,
-                noLegendaryPokemon = rules.noLegendaryPokemon,
-                noItems = rules.noItems,
-                noItemsInBattle = rules.noItemsInBattle,
-                noXIteams = rules.noXIteams,
-                noPokeMarts = rules.noPokeMarts,
-                noPokeCenters = rules.noPokeCenters
-        )
-        println(runEntity.id)
-        db.save(runEntity)
-        println(runEntity.id)
+    fun createRun(run: NuzlockeRun) {
+        db.save(run)
+    }
+
+    fun deleteRun(run: NuzlockeRun) {
+        db.delete(run)
     }
 }
