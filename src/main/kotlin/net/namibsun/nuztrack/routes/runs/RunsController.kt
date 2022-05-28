@@ -32,6 +32,7 @@ class RunsController(val service: NuzlockeRunService) {
     @GetMapping("/api/runs/{id}")
     @ResponseBody
     fun getRun(@PathVariable id: Long, principal: Principal): ResponseEntity<NuzlockeRunTO> {
+        print("HELLO WORLD")
         val run = this.authorizeAccess(id, principal.name)
         return ResponseEntity.ok(convertNuzlockeRunToNuzlockeRunTO(run))
     }
