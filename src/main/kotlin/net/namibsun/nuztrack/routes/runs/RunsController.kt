@@ -2,10 +2,12 @@ package net.namibsun.nuztrack.routes.runs
 
 import net.namibsun.nuztrack.data.NuzlockeRun
 import net.namibsun.nuztrack.data.NuzlockeRunService
-import org.springframework.http.HttpStatus
+import net.namibsun.nuztrack.util.ErrorMessages
+import net.namibsun.nuztrack.util.NotFoundException
+import net.namibsun.nuztrack.util.UnauthorizedException
+import net.namibsun.nuztrack.util.getValueOfGameTitle
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.client.HttpClientErrorException
 import java.security.Principal
 
 @RestController
@@ -22,32 +24,31 @@ class RunsController(val service: NuzlockeRunService) {
     @PostMapping("/api/runs")
     @ResponseBody
     fun createRun(@RequestBody createRun: CreateNuzlockeRunTO, principal: Principal): ResponseEntity<NuzlockeRunTO> {
-        val run = convertCreateNuzlockeRunTOToNuzlockeRun(createRun, principal.name)
-        this.service.createRun(run)
+        val game = getValueOfGameTitle(createRun.game)
+        val run = this.service.createRun(principal.name, createRun.name, game, createRun.rules)
         return ResponseEntity.ok(convertNuzlockeRunToNuzlockeRunTO(run))
     }
 
     @GetMapping("/api/runs/{id}")
     @ResponseBody
     fun getRun(@PathVariable id: Long, principal: Principal): ResponseEntity<NuzlockeRunTO> {
-        val run = this.fetchRun(id, principal.name)
+        val run = this.authorizeAccess(id, principal.name)
         return ResponseEntity.ok(convertNuzlockeRunToNuzlockeRunTO(run))
     }
 
     @DeleteMapping("/api/runs/{id}")
     @ResponseBody
     fun deleteRun(@PathVariable id: Long, principal: Principal): ResponseEntity<Unit> {
-        val run = this.fetchRun(id, principal.name)
-        this.service.deleteRun(run)
+        this.authorizeAccess(id, principal.name)
+        this.service.deleteRun(id)
         return ResponseEntity.ok(null)
     }
 
-    private fun fetchRun(runId: Long, user: String): NuzlockeRun {
-        val run = this.service.getRun(runId) ?: throw HttpClientErrorException(HttpStatus.NOT_FOUND)
+    private fun authorizeAccess(runId: Long, user: String): NuzlockeRun {
+        val run = this.service.getRun(runId) ?: throw NotFoundException(ErrorMessages.RUN_NOT_FOUND)
         if (run.userName != user) {
-            throw HttpClientErrorException(HttpStatus.UNAUTHORIZED)
+            throw UnauthorizedException(ErrorMessages.NO_ACCESS_TO_RUN)
         }
         return run
     }
-
 }

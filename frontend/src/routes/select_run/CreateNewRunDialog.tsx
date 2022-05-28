@@ -19,16 +19,17 @@ import {useQuery} from "react-query";
 import {loadGames} from "../../api/games/gamesApi";
 import {loadRules} from "../../api/rules/rulesApi";
 import {performLoadingCheck} from "../../util/loading";
+import {NuzlockeRunTO} from "../../api/runs/runsTransfer";
 
 export interface CreateNewRunDialogProps {
     open: boolean;
     onClose: () => void;
     setRunId: (id: number) => void;
     selectRun: (id: number) => void;
+    addRun: (run: NuzlockeRunTO) => void;
 }
 
 export default function CreateNewRunDialog(props: CreateNewRunDialogProps) {
-    const {open, onClose} = props
     const [errorOpen, setErrorOpen] = useState(false);
     const [errorMessage, setErrorMessage] = useState("")
 
@@ -53,7 +54,9 @@ export default function CreateNewRunDialog(props: CreateNewRunDialogProps) {
 
     const createNewRun = () => {
         createRun(name, game, selectedRules).then(result => {
-            props.selectRun(result.id)
+            props.selectRun(result.id);
+            props.addRun(result);
+            props.onClose();
         }, error => showError(error.toString()))
     }
 
@@ -64,7 +67,7 @@ export default function CreateNewRunDialog(props: CreateNewRunDialogProps) {
 
     const handleClose = () => {
         setErrorOpen(false)
-        onClose()
+        props.onClose()
     }
 
     const handleRuleSelection = (key: string, newState: boolean) => {
@@ -77,7 +80,7 @@ export default function CreateNewRunDialog(props: CreateNewRunDialogProps) {
     }
 
     return (
-        <Dialog open={open} onClose={handleClose}>
+        <Dialog open={props.open} onClose={handleClose}>
             <DialogTitle>Create Run</DialogTitle>
             <DialogContent>
                 <InputLabel>Name</InputLabel>

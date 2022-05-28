@@ -1,7 +1,6 @@
 import {Button, Card, CardActions, CardContent, Grid, Typography} from "@mui/material";
 import * as React from "react";
 import {useState} from "react";
-import {useNavigate} from "react-router";
 import CreateNewRunDialog from "./CreateNewRunDialog";
 import {useQuery} from "react-query";
 import {loadRuns} from "../../api/runs/runsApi";
@@ -14,8 +13,6 @@ export interface RunSelectorProps {
 }
 
 export function RunSelector(props: RunSelectorProps) {
-
-    const navigate = useNavigate()
 
     const [displayedRuns, setDisplayedRuns] = useState<NuzlockeRunTO[]>([])
     const [initialized, setInitialized] = useState(false)
@@ -41,7 +38,6 @@ export function RunSelector(props: RunSelectorProps) {
     const selectRun = (id: number) => {
         props.setRunId(id)
         localStorage.setItem("runId", `${id}`)
-        navigate("/overview")
     }
 
     const openRemoveDialog = (run: NuzlockeRunTO) => {
@@ -49,12 +45,20 @@ export function RunSelector(props: RunSelectorProps) {
         setDeleteDialogOpen(true)
     }
 
+    const removeRun = (run: NuzlockeRunTO) => {
+        setDisplayedRuns(old => old.filter(x => x.id !== run.id))
+    }
+
+    const addRun = (run: NuzlockeRunTO) => {
+        setDisplayedRuns(old => [...old, run])
+    }
+
     return (
         <>
             <Button variant="contained" onClick={() => setCreateDialogOpen(true)}>Create</Button>
             <Grid container spacing={2} id="runs">
                 {displayedRuns.map((run) =>
-                    <Grid item xs={4} key={run.name + run.game}>
+                    <Grid item xs={4} key={run.id}>
                         <Card>
                             <CardContent>
                                 <Typography gutterBottom variant="h5" component="div">
@@ -69,10 +73,10 @@ export function RunSelector(props: RunSelectorProps) {
                     </Grid>
                 )}
             </Grid>
-            <CreateNewRunDialog selectRun={selectRun} setRunId={props.setRunId} open={createDialogOpen}
-                                onClose={() => setCreateDialogOpen(false)}/>
-            <DeleteRunDialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}
-                             runToDelete={runToDelete} setDisplayedRuns={setDisplayedRuns}/>
+            <CreateNewRunDialog selectRun={selectRun} setRunId={props.setRunId} addRun={addRun}
+                                open={createDialogOpen} onClose={() => setCreateDialogOpen(false)}/>
+            <DeleteRunDialog runToDelete={runToDelete} removeRun={removeRun}
+                             open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}/>
         </>
     )
 }

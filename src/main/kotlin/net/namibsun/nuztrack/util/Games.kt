@@ -16,5 +16,9 @@ enum class Games(val title: String) {
 }
 
 fun getValueOfGameTitle(title: String): Games {
-    return Games.values().first { it.title == title }
+    return try {
+        Games.values().first { it.title == title }
+    } catch (e: NoSuchElementException) {
+        throw ValidationException(ErrorMessages.INVALID_GAME)
+    }
 }

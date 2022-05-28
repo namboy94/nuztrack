@@ -1,6 +1,8 @@
 package net.namibsun.nuztrack.data
 
+import net.namibsun.nuztrack.util.ErrorMessages
 import net.namibsun.nuztrack.util.Games
+import net.namibsun.nuztrack.util.ValidationException
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
@@ -33,11 +35,16 @@ class NuzlockeRunService(val db: NuzlockeRunRepository) {
         return db.findByUserName(userName)
     }
 
-    fun createRun(run: NuzlockeRun) {
-        db.save(run)
+    fun createRun(userName: String, name: String, game: Games, rules: List<String>): NuzlockeRun {
+
+        if (name == "") {
+            throw ValidationException(ErrorMessages.EMPTY_NAME)
+        }
+
+        return db.save(NuzlockeRun(userName = userName, name = name, game = game, rules = rules))
     }
 
-    fun deleteRun(run: NuzlockeRun) {
-        db.delete(run)
+    fun deleteRun(id: Long) {
+        db.deleteById(id)
     }
 }
