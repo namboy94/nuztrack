@@ -27,8 +27,8 @@ export default function DeleteRunDialog(props: DeleteRunDialogProps) {
         <Dialog open={props.open} onClose={props.onClose}>
             <DialogTitle>Delete Run?</DialogTitle>
             <DialogActions>
-                <Button onClick={props.onClose}>Cancel</Button>
-                <Button onClick={removeSelectedRun}>Delete</Button>
+                <Button data-testid="cancel-button" onClick={props.onClose}>Cancel</Button>
+                <Button data-testid="delete-button" onClick={removeSelectedRun}>Delete</Button>
             </DialogActions>
         </Dialog>
     )

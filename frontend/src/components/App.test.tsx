@@ -4,6 +4,6 @@ import App from './App';
 
 test('renders dashboard', () => {
     render(<App/>);
-    const linkElement = screen.getByText(/Your Website/i);
+    const linkElement = screen.getByText(/Loading/i);
     expect(linkElement).toBeInTheDocument();
 });

@@ -1,36 +1,34 @@
-import {render, unmountComponentAtNode} from "react-dom";
-import DeleteRunDialog, {DeleteRunDialogProps} from "./DeleteRunDialog"
+import {fireEvent, render, screen} from '@testing-library/react'
+import DeleteRunDialog from "./DeleteRunDialog"
+import {NuzlockeRunTO} from "../../api/runs/runsTransfer";
 
 
-let container: HTMLDivElement | null = null;
-beforeEach(() => {
-    // setup a DOM element as a render target
-    container = document.createElement("div");
-    document.body.appendChild(container);
-});
+describe("DeleteRunDialog", () => {
 
-afterEach(() => {
-    // cleanup on exiting
-    unmountComponentAtNode(container!!);
-    container!!.remove();
-    container = null;
-});
+    const closer = jest.fn(() => {
+    })
+    const remover = jest.fn(x => {
+    })
 
-function renderDeleteRunDialog(props: Partial<DeleteRunDialogProps> = {}) {
-    const defaultProps: DeleteRunDialogProps = {
-        open: true,
-        onClose: () => {
-        },
-        runToDelete: null,
-        removeRun: x => {
-        }
+    const renderDeleteRunDialog = (run: NuzlockeRunTO | null) => {
+        render(<DeleteRunDialog open={true} onClose={closer} runToDelete={run} removeRun={remover}/>)
     }
-    return render(<DeleteRunDialog {...defaultProps}/>, container)
-}
 
-describe("<DeleteRunDialog/>", () => {
-    test("Should be green", async () => {
-        const dialog = renderDeleteRunDialog()
-        expect([]).toBeEmpty()
+    it("should close when pressing the Cancel button", () => {
+        renderDeleteRunDialog(null)
+
+        fireEvent.click(screen.getByTestId("cancel-button"))
+
+        expect(closer.mock.calls.length).toBe(1)
+        expect(remover.mock.calls.length).toBe(0)
+    })
+
+    it("should not remove a null run when pressing the Delete button", () => {
+        renderDeleteRunDialog(null)
+
+        fireEvent.click(screen.getByTestId("delete-button"))
+
+        expect(closer.mock.calls.length).toBe(1)
+        expect(remover.mock.calls.length).toBe(0)
     })
 })
