@@ -5,6 +5,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt update && apt install -y openjdk-18-jdk kotlin maven
 ADD . nuztrack
+RUN cp nuztrack/apidoc/index.html nuztrack/src/main/resources/static/index.html
 RUN cd nuztrack && mvn package && mv target/*.jar /app.jar
 RUN rm -rf nuztrack
 

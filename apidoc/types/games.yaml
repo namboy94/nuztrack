@@ -1,0 +1,13 @@
+game:
+  schema:
+    type: string
+    enum: [ "Red", "Blue", "Green", "Yellow",
+            "Silver", "Gold", "Crystal",
+            "Ruby", "Sapphire", "Emerald", "FireRed", "LeafGreen",
+            "Diamond", "Pearl", "Platinum", "HeartGold", "SoulSilver",
+            "Black", "White", "Black 2", "White 2",
+            "X", "Y", "Omega Ruby", "Alpha Sapphire",
+            "Sun", "Moon", "Ultra Sun", "Ultra Moon",
+            "Sword", "Shield", "Brilliant Diamond", "Shining Pearl", "Legends: Arceus" ]
+    description: The title of a mainline Pokemon game
+    example: "HeartGold"

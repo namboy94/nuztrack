@@ -1,0 +1,33 @@
+rulesKeys:
+  schema:
+    type: array
+    items:
+      type: string
+    description: A list of keys for active rules for the Nuzlocke run
+    example: [ "death", "mustNickname", "onlyFirstEncounter", "duplicateClause" ]
+
+defaultRulesKeys:
+  schema:
+    type: array
+    items:
+      type: string
+    description: A list of keys for the default rules for Nuzlocke runs
+    example: [ "death", "mustNickname", "onlyFirstEncounter" ]
+
+rules:
+  schema:
+    type: object
+    properties:
+      key:
+        type: string
+        description: The key of the rule
+      description:
+        type: string
+        description: The description of the rule
+    description: A list of keys and descriptions for all supported rules
+    example: {
+      "death": "Any Pokémon that faints is considered dead and must be released or permanently boxed",
+      "mustNickname": "Every Pokémon has to be nicknamed",
+      "onlyFirstEncounter": "Only the first encounter on any given route may be caught",
+      "duplicateClause": "Duplicate encounters do not count"
+    }

@@ -1,14 +1,33 @@
 get:
-  tags:
-    - "runs"
-  summary: "Retrieves a list of all Nuzlocke Runs of a user"
-  operationId: "getRuns"
-  produces:
-    - "application/json"
+  tags: [ "Run Data" ]
+  summary: "Get Runs"
+  description: "Retrieves a list of all Nuzlocke Runs of a user"
   responses:
     "200":
       description: "Success"
-      schema:
-        type: array
-        items:
-          $ref: "../entities/runs.yaml#/NuzlockeRunTO"
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "../entities/runs.yaml#/NuzlockeRunTO"
+post:
+  tags: [ "Run Data" ]
+  summary: "Create Run"
+  description: "Creates a new Nuzlocke Run for the authenticated user"
+  requestBody:
+    description: "Parameters for the newly created Nuzlocke Run"
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../entities/runs.yaml#/CreateNuzlockeRunTO"
+  responses:
+    "200":
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            $ref: "../entities/runs.yaml#/NuzlockeRunTO"
+    "400":
+      description: "Empty name, invalid rules or invalid game title were sent"

@@ -1,8 +1,31 @@
 NuzlockeRunTO:
+  required:
+    - id
+    - username
+    - name
+    - game
+    - rules
   properties:
     id:
-      type: integer
-      example: 3
+      $ref: "../types/common.yaml#/databaseId/schema"
     username:
-      type: string
-      example: "AshKetchum"
+      $ref: "../types/common.yaml#/username/schema"
+    name:
+      $ref: "../types/runs.yaml#/runName/schema"
+    game:
+      $ref: "../types/games.yaml#/game/schema"
+    rules:
+      $ref: "../types/rules.yaml#/rules/schema"
+
+CreateNuzlockeRunTO:
+  required:
+    - name
+    - game
+    - rules
+  properties:
+    name:
+      $ref: "../types/runs.yaml#/runName/schema"
+    game:
+      $ref: "../types/games.yaml#/game/schema"
+    rules:
+      $ref: "../types/rules.yaml#/rulesKeys/schema"

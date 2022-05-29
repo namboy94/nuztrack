@@ -1,0 +1,8 @@
+GamesListTO:
+  required:
+    - games
+  properties:
+    games:
+      type: array
+      items:
+        $ref: "../types/games.yaml#/game/schema"

@@ -1,0 +1,5 @@
+runName:
+  schema:
+    type: string
+    description: User-specified name of the Nuzlocke Run
+    example: "My first Nuzlocke"

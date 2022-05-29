@@ -1,0 +1,9 @@
+RulesDetailsTO:
+  required:
+    - rules
+    - defaultRules
+  properties:
+    rules:
+      $ref: "../types/rules.yaml#/rules/schema"
+    defaultRules:
+      $ref: "../types/rules.yaml#/defaultRulesKeys/schema"

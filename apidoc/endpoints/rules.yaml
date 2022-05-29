@@ -1,0 +1,11 @@
+get:
+  tags: [ "Information" ]
+  summary: "Get Rules"
+  description: "Retrieves a list of all available rule keys and descriptions as well as default rule keys"
+  responses:
+    "200":
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            $ref: "../entities/rules.yaml#/RulesDetailsTO"

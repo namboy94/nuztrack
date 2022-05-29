@@ -1,1 +1,2 @@
-swagger-cli bundle openapi.yaml --outfile generated.yaml --type yaml
+swagger-cli validate openapi.yaml
+redoc-cli build -o index.html openapi.yaml

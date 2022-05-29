@@ -1,0 +1,41 @@
+get:
+  tags: [ "Run Data" ]
+  summary: "Get Run"
+  description: "Retrieves a specific Nuzlocke Run"
+  parameters:
+    - in: path
+      name: id
+      schema:
+        type: integer
+      required: true
+      description: The ID of the Nuzlocke run in the database
+  responses:
+    "200":
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            $ref: "../entities/runs.yaml#/NuzlockeRunTO"
+    "401":
+      description: "Tried to access a Nuzlocke Run of another user without permission"
+    "404":
+      description: "The Nuzlocke Run does not exist"
+
+delete:
+  tags: [ "Run Data" ]
+  summary: "Delete Run"
+  description: "Deletes a specific Nuzlocke Run"
+  parameters:
+    - in: path
+      name: id
+      schema:
+        type: integer
+      required: true
+      description: The ID of the Nuzlocke run in the database
+  responses:
+    "200":
+      description: "Success"
+    "401":
+      description: "Tried to delete a Nuzlocke Run of another user without permission"
+    "404":
+      description: "The Nuzlocke Run does not exist"

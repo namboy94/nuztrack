@@ -1,0 +1,11 @@
+get:
+  tags: [ "Information" ]
+  summary: "Get Games"
+  description: "Retrieves a list of all available game titles"
+  responses:
+    "200":
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            $ref: "../entities/games.yaml#/GamesListTO"
