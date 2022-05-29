@@ -17,7 +17,7 @@ internal class RunsControllerTest {
     private val principal: Principal = mock()
     private val service: NuzlockeRunService = mock()
     private val controller = RunsController(service)
-    private val exampleOne = NuzlockeRun(5, userOne, "First", Games.RED, listOf(Rules.DEATH.key))
+    private val exampleOne = NuzlockeRun(5, userOne, "First", Games.RED, listOf(Rules.DEATH))
     private val exampleTwo = NuzlockeRun(10, userOne, "Second", Games.YELLOW, listOf())
     private val exampleOneTO = convertNuzlockeRunToNuzlockeRunTO(exampleOne)
     private val exampleTwoTO = convertNuzlockeRunToNuzlockeRunTO(exampleTwo)
@@ -49,7 +49,6 @@ internal class RunsControllerTest {
 
     @Test
     fun createRun_valid() {
-        // TODO test if wrong rule keys were sent
         whenever(principal.name).thenReturn(userOne)
         whenever(service.createRun(
                 exampleOne.userName,
@@ -93,6 +92,18 @@ internal class RunsControllerTest {
         }
 
         assertThat(thrown.message).isEqualTo(ErrorMessages.INVALID_GAME.message)
+        verify(principal, times(0)).name
+        verify(service, times(0)).createRun(any(), any(), any(), any())
+    }
+
+    @Test
+    fun createRun_invalidRule() {
+
+        val thrown = assertThrows<ValidationException> {
+            controller.createRun(CreateNuzlockeRunTO("ABC", Games.RED.title, listOf("doesNotExist")), principal)
+        }
+
+        assertThat(thrown.message).isEqualTo(ErrorMessages.INVALID_RULE.message)
         verify(principal, times(0)).name
         verify(service, times(0)).createRun(any(), any(), any(), any())
     }

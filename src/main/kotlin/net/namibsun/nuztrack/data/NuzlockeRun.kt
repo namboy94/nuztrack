@@ -2,6 +2,7 @@ package net.namibsun.nuztrack.data
 
 import net.namibsun.nuztrack.util.ErrorMessages
 import net.namibsun.nuztrack.util.Games
+import net.namibsun.nuztrack.util.Rules
 import net.namibsun.nuztrack.util.ValidationException
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.repository.findByIdOrNull
@@ -17,7 +18,7 @@ class NuzlockeRun(
         @Column var userName: String,
         @Column var name: String,
         @Column @Enumerated(EnumType.STRING) var game: Games,
-        @ElementCollection @CollectionTable(name = "rules") val rules: List<String>
+        @ElementCollection @CollectionTable(name = "rules") @Enumerated(EnumType.STRING) val rules: List<Rules>
 )
 
 @Repository
@@ -36,7 +37,7 @@ class NuzlockeRunService(val db: NuzlockeRunRepository) {
         return db.findByUserName(userName)
     }
 
-    fun createRun(userName: String, name: String, game: Games, rules: List<String>): NuzlockeRun {
+    fun createRun(userName: String, name: String, game: Games, rules: List<Rules>): NuzlockeRun {
 
         if (name == "") {
             throw ValidationException(ErrorMessages.EMPTY_NAME)

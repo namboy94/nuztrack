@@ -2,6 +2,7 @@ package net.namibsun.nuztrack.data
 
 import net.namibsun.nuztrack.util.ErrorMessages
 import net.namibsun.nuztrack.util.Games
+import net.namibsun.nuztrack.util.Rules
 import net.namibsun.nuztrack.util.ValidationException
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -14,7 +15,7 @@ class NuzlockeRunServiceTest {
     private val repository: NuzlockeRunRepository = mock()
     private val service = NuzlockeRunService(repository)
     private val username = "Ash"
-    private val exampleOne = NuzlockeRun(5, username, "First", Games.RED, listOf())
+    private val exampleOne = NuzlockeRun(5, username, "First", Games.RED, listOf(Rules.DEATH))
     private val exampleTwo = NuzlockeRun(10, username, "Second", Games.YELLOW, listOf())
 
     @Test

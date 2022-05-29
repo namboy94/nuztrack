@@ -8,6 +8,6 @@ fun convertNuzlockeRunToNuzlockeRunTO(run: NuzlockeRun): NuzlockeRunTO {
             userName = run.userName,
             name = run.name,
             game = run.game.title,
-            rules = run.rules
+            rules = run.rules.map { it.key }
     )
 }

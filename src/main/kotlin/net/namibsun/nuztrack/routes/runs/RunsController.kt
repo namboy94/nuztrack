@@ -2,10 +2,7 @@ package net.namibsun.nuztrack.routes.runs
 
 import net.namibsun.nuztrack.data.NuzlockeRun
 import net.namibsun.nuztrack.data.NuzlockeRunService
-import net.namibsun.nuztrack.util.ErrorMessages
-import net.namibsun.nuztrack.util.NotFoundException
-import net.namibsun.nuztrack.util.UnauthorizedException
-import net.namibsun.nuztrack.util.getValueOfGameTitle
+import net.namibsun.nuztrack.util.*
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
@@ -25,7 +22,8 @@ class RunsController(val service: NuzlockeRunService) {
     @ResponseBody
     fun createRun(@RequestBody createRun: CreateNuzlockeRunTO, principal: Principal): ResponseEntity<NuzlockeRunTO> {
         val game = getValueOfGameTitle(createRun.game)
-        val run = this.service.createRun(principal.name, createRun.name, game, createRun.rules)
+        val rules = createRun.rules.map { getValueOfRuleKey(it) }
+        val run = this.service.createRun(principal.name, createRun.name, game, rules)
         return ResponseEntity.ok(convertNuzlockeRunToNuzlockeRunTO(run))
     }
 

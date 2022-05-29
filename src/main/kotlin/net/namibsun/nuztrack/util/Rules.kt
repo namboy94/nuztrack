@@ -18,6 +18,14 @@ enum class Rules(val key: String, val description: String) {
     NO_POKE_CENTERS("noPokeCenters", "PokéCenters nay not be used")
 }
 
+fun getValueOfRuleKey(ruleKey: String): Rules {
+    return try {
+        Rules.values().first { it.key == ruleKey }
+    } catch (e: NoSuchElementException) {
+        throw ValidationException(ErrorMessages.INVALID_RULE)
+    }
+}
+
 fun getDefaultRules(): List<Rules> {
     return listOf(Rules.DEATH, Rules.ONLY_FIRST_ENCOUNTER, Rules.MUST_NICKNAME)
 }
