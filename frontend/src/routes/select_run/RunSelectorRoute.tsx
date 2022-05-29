@@ -9,7 +9,7 @@ import {Severity} from "../../components/Snackbar";
 
 export interface RunSelectorRouteProps {
     setRunId: (id: number) => void
-    run: NuzlockeRunTO | undefined
+    run: NuzlockeRunTO | null
     displaySnack: (message: string, severity: Severity) => void
 }
 

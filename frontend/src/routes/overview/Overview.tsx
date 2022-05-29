@@ -4,14 +4,14 @@ import {loadRules} from "../../api/rules/rulesApi";
 import {NuzlockeRunTO} from "../../api/runs/runsTransfer";
 
 export interface OverviewProps {
-    run: NuzlockeRunTO | undefined
+    run: NuzlockeRunTO | null
 }
 
 export default function Overview(props: OverviewProps) {
 
     const rulesData = useQuery("/rules", loadRules)
 
-    if (props.run === undefined) {
+    if (props.run === null) {
         return <h1>No Run Selected</h1>
     }
 

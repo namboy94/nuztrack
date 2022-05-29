@@ -13,7 +13,7 @@ import {useInvalidateRunsQuery} from "../../api/runs/runsQuery";
 
 export interface RunSelectorProps {
     setRunId: (id: number) => void
-    run: NuzlockeRunTO | undefined
+    run: NuzlockeRunTO | null
     displaySnack: (message: string, severity: Severity) => void
     runs: NuzlockeRunTO[]
     rules: RulesDetails
@@ -39,7 +39,7 @@ export function RunSelector(props: RunSelectorProps) {
     const removeRun = (run: NuzlockeRunTO) => {
         invalidate().then(() => {
             setDisplayedRuns(displayedRuns.filter(x => x.id !== run.id));
-            if (props.run !== undefined && run.id === props.run.id) {
+            if (props.run !== null && run.id === props.run.id) {
                 props.setRunId(-1)
             }
         })
