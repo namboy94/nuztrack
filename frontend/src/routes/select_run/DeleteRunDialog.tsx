@@ -1,7 +1,6 @@
 import {Button, Dialog, DialogActions, DialogTitle} from "@mui/material";
 import React from "react";
 import {deleteRun} from "../../api/runs/runsApi";
-import {useMutation} from "react-query";
 import {NuzlockeRunTO} from "../../api/runs/runsTransfer";
 
 export interface DeleteRunDialogProps {
@@ -12,23 +11,24 @@ export interface DeleteRunDialogProps {
 }
 
 export default function DeleteRunDialog(props: DeleteRunDialogProps) {
-    const {open, onClose} = props
-    const runDeleter = useMutation(deleteRun)
 
-    const removeRun = () => {
+    const removeSelectedRun = () => {
         if (props.runToDelete !== null) {
-            runDeleter.mutate(props.runToDelete.id)
-            props.removeRun(props.runToDelete)
+            deleteRun(props.runToDelete.id).then(() => {
+                props.removeRun(props.runToDelete!!)
+                props.onClose()
+            })
+        } else {
+            props.onClose()
         }
-        onClose()
     }
 
     return (
-        <Dialog open={open} onClose={onClose}>
+        <Dialog open={props.open} onClose={props.onClose}>
             <DialogTitle>Delete Run?</DialogTitle>
             <DialogActions>
-                <Button onClick={onClose}>Cancel</Button>
-                <Button onClick={removeRun}>Delete</Button>
+                <Button onClick={props.onClose}>Cancel</Button>
+                <Button onClick={removeSelectedRun}>Delete</Button>
             </DialogActions>
         </Dialog>
     )

@@ -13,61 +13,48 @@ import {
     TextField
 } from "@mui/material";
 import React, {useState} from "react";
-import ErrorSnackbar from "../generic/ErrorSnackbar";
 import {createRun} from "../../api/runs/runsApi";
-import {useQuery} from "react-query";
-import {loadGames} from "../../api/games/gamesApi";
-import {loadRules} from "../../api/rules/rulesApi";
-import {performLoadingCheck} from "../../util/loading";
-import {NuzlockeRunTO} from "../../api/runs/runsTransfer";
+import {CreateNuzlockeRunTO, NuzlockeRunTO} from "../../api/runs/runsTransfer";
+import {RulesDetails} from "../../api/rules/rulesTransfer";
+import {GamesListTO} from "../../api/games/gamesTransfer";
+import {Severity} from "../../components/Snackbar";
 
 export interface CreateNewRunDialogProps {
     open: boolean;
     onClose: () => void;
     setRunId: (id: number) => void;
-    selectRun: (id: number) => void;
+    selectRun: (run: NuzlockeRunTO) => void;
     addRun: (run: NuzlockeRunTO) => void;
+    displaySnack: (message: string, severity: Severity) => void
+    rules: RulesDetails
+    games: GamesListTO
 }
 
 export default function CreateNewRunDialog(props: CreateNewRunDialogProps) {
-    const [errorOpen, setErrorOpen] = useState(false);
-    const [errorMessage, setErrorMessage] = useState("")
 
     const [name, setName] = useState("")
     const [game, setGame] = useState("")
-    const [selectedRules, setSelectedRules] = useState([""])
-    const [rulesAreInitialized, setRulesAreInitialized] = useState(false)
+    const [selectedRules, setSelectedRules] = useState(props.rules.defaultRules)
+    const [submitting, setSubmitting] = useState(false)
 
-    const games = useQuery("games", loadGames)
-    const rules = useQuery("rules", loadRules)
-
-    const loadCheck = performLoadingCheck([games, rules])
-    if (loadCheck !== null) {
-        return loadCheck
-    }
-
-    if (!rulesAreInitialized) {
-        setRulesAreInitialized(true)
-        setSelectedRules(rules.data!.defaultRules)
-    }
-    const ruleKeys: string[] = Array.from(rules.data!.rules.keys());
+    const ruleKeys: string[] = Array.from(props.rules.rules.keys());
 
     const createNewRun = () => {
-        createRun(name, game, selectedRules).then(result => {
-            props.selectRun(result.id);
-            props.addRun(result);
-            props.onClose();
-        }, error => showError(error.toString()))
+        if (!submitting) {
+            setSubmitting(true)
+            const creator: CreateNuzlockeRunTO = {name: name, game: game, rules: selectedRules}
+            createRun(creator).then(result => {
+                props.addRun(result);
+                onClose();
+            }, error => {
+                props.displaySnack(error.toString(), "error");
+                enableSubmission()
+            })
+        }
     }
 
-    const showError = (message: string) => {
-        setErrorOpen(true)
-        setErrorMessage(message)
-    }
-
-    const handleClose = () => {
-        setErrorOpen(false)
-        props.onClose()
+    const enableSubmission = () => {
+        new Promise(x => setTimeout(x, 1000)).then(() => setSubmitting(false))
     }
 
     const handleRuleSelection = (key: string, newState: boolean) => {
@@ -79,8 +66,16 @@ export default function CreateNewRunDialog(props: CreateNewRunDialogProps) {
         }
     }
 
+    const onClose = () => {
+        setName("")
+        setGame("")
+        setSelectedRules(props.rules.defaultRules)
+        enableSubmission()
+        props.onClose()
+    }
+
     return (
-        <Dialog open={props.open} onClose={handleClose}>
+        <Dialog open={props.open} onClose={onClose}>
             <DialogTitle>Create Run</DialogTitle>
             <DialogContent>
                 <InputLabel>Name</InputLabel>
@@ -88,11 +83,10 @@ export default function CreateNewRunDialog(props: CreateNewRunDialogProps) {
                     onChange={(x) => setName(x.target.value)}
                     autoFocus margin="dense" fullWidth variant="standard"
                     id="name" type="text" required
-
                 />
                 <InputLabel>Game</InputLabel>
                 <Select fullWidth value={game} onChange={x => setGame(x.target.value)}>
-                    {games.data!.games.map((x: string) => <MenuItem value={x} key={x}>{x}</MenuItem>)}
+                    {props.games.games.map((x: string) => <MenuItem value={x} key={x}>{x}</MenuItem>)}
                 </Select>
                 <FormGroup>
                     {ruleKeys.map(key =>
@@ -102,15 +96,14 @@ export default function CreateNewRunDialog(props: CreateNewRunDialogProps) {
                                 checked={selectedRules.includes(key)}
                                 value={selectedRules.includes(key)}
                                 onChange={x => handleRuleSelection(key, x.target.checked)}/>
-                        } label={rules.data!.rules.get(key)}/>
+                        } label={props.rules.rules.get(key)}/>
                     )}
                 </FormGroup>
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleClose}>Cancel</Button>
+                <Button onClick={onClose}>Cancel</Button>
                 <Button onClick={createNewRun}>Create</Button>
             </DialogActions>
-            <ErrorSnackbar open={errorOpen} setOpen={setErrorOpen} message={errorMessage}/>
         </Dialog>
     )
 }

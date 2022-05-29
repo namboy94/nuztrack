@@ -9,12 +9,7 @@ export function loadRun(id: number): Promise<NuzlockeRunTO | undefined> {
     return axios.get(`/api/runs/${id}`).then(x => x.data, () => undefined)
 }
 
-export function createRun(name: string, game: string, rules: string[]): Promise<NuzlockeRunTO> {
-    const creator: CreateNuzlockeRunTO = {
-        name: name,
-        game: game,
-        rules: rules
-    }
+export function createRun(creator: CreateNuzlockeRunTO): Promise<NuzlockeRunTO> {
     return axios.post("/api/runs", creator).then(x => x.data)
 }
 

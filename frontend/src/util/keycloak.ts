@@ -7,11 +7,6 @@ export const keycloak = new Keycloak({
     "clientId": "React-auth"
 })
 
-export function setUpRestAPIAccess() {
-    axios.defaults.baseURL = "http://localhost:8080";
-    axios.defaults.headers.common["Authorization"] = "Bearer " + keycloak.token;
-}
-
 export function createAxios() {
     const defaultOptions = {
         baseURL: "http://localhost:8080",

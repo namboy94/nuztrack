@@ -6,8 +6,8 @@ export default function Footer() {
     return (
         <Typography variant="body2" color="text.secondary" align="center">
             {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
-                Your Website
+            <Link color="inherit" href="https://gitlab.namibsun.net/namibsun/python/nuztrack">
+                Nuztrack
             </Link>{' '}
             {new Date().getFullYear()}.
         </Typography>

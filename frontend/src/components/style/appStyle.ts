@@ -143,4 +143,4 @@ themeData = {
     },
 };
 
-export const theme = themeData
+export const appStyle = themeData
