@@ -1,0 +1,23 @@
+swagger: "2.0"
+info:
+  description: "This is a server acting as the backend for Nuztrack. All endpoints
+                are secured using keycloak"
+  version: "0.0.1"
+  title: "Nuztrack"
+  termsOfService: "https://gitlab.namibsun.net/namibsun/kotlin"
+  contact:
+    email: "hermann@krumreyh.com"
+  license:
+    name: "GPLv3"
+    url: "https://www.gnu.org/licenses/gpl-3.0.en.html"
+host: "nuztrack.com"
+basePath: "/api"
+tags:
+  - name: "runs"
+    description: "Retrieving and Creating Nuzlocke Run Data"
+schemes:
+  - "https"
+
+paths:
+  /runs:
+    $ref: "./endpoints/runs.yaml"

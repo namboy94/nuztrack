@@ -1,0 +1,14 @@
+get:
+  tags:
+    - "runs"
+  summary: "Retrieves a list of all Nuzlocke Runs of a user"
+  operationId: "getRuns"
+  produces:
+    - "application/json"
+  responses:
+    "200":
+      description: "Success"
+      schema:
+        type: array
+        items:
+          $ref: "../entities/runs.yaml#/NuzlockeRunTO"

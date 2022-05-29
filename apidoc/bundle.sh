@@ -1,0 +1,1 @@
+swagger-cli bundle openapi.yaml --outfile generated.yaml --type yaml
