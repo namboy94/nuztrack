@@ -12,7 +12,7 @@ class GamesController {
     @GetMapping("/games")
     @ResponseBody
     fun getGames(): ResponseEntity<GamesListTO> {
-        val gamesList = GamesListTO(Games.values().map { it.title })
+        val gamesList = GamesListTO(Games.values().associate { it.name.lowercase() to it.title })
         return ResponseEntity.ok(gamesList)
     }
 }

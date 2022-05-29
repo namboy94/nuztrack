@@ -4,7 +4,7 @@ rulesKeys:
     items:
       type: string
     description: A list of keys for active rules for the Nuzlocke run
-    example: [ "death", "mustNickname", "onlyFirstEncounter", "duplicateClause" ]
+    example: [ "death", "must_nickname", "only_first_encounter", "duplicate_clause" ]
 
 defaultRulesKeys:
   schema:
@@ -12,7 +12,15 @@ defaultRulesKeys:
     items:
       type: string
     description: A list of keys for the default rules for Nuzlocke runs
-    example: [ "death", "mustNickname", "onlyFirstEncounter" ]
+    example: [ "death", "must_nickname", "only_first_encounter" ]
+
+customRules:
+  schema:
+    type: array
+    items:
+      type: string
+    description: A list of non-standard, player-specified rules for a Nuzlocke Run
+    example: [ "My starter can't die", "Meowth has nine lives" ]
 
 rules:
   schema:
@@ -27,7 +35,7 @@ rules:
     description: A list of keys and descriptions for all supported rules
     example: {
       "death": "Any Pokémon that faints is considered dead and must be released or permanently boxed",
-      "mustNickname": "Every Pokémon has to be nicknamed",
-      "onlyFirstEncounter": "Only the first encounter on any given route may be caught",
-      "duplicateClause": "Duplicate encounters do not count"
+      "must_nickname": "Every Pokémon has to be nicknamed",
+      "only_first_encounter": "Only the first encounter on any given route may be caught",
+      "duplicate_clause": "Duplicate encounters do not count"
     }

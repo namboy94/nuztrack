@@ -5,6 +5,8 @@ NuzlockeRunTO:
     - name
     - game
     - rules
+    - customRules
+    - status
   properties:
     id:
       $ref: "../types/common.yaml#/databaseId/schema"
@@ -13,19 +15,26 @@ NuzlockeRunTO:
     name:
       $ref: "../types/runs.yaml#/runName/schema"
     game:
-      $ref: "../types/games.yaml#/game/schema"
+      $ref: "../types/games.yaml#/gameKey/schema"
     rules:
-      $ref: "../types/rules.yaml#/rules/schema"
+      $ref: "../types/rules.yaml#/rulesKeys/schema"
+    customRules:
+      $ref: "../types/rules.yaml#/customRules/schema"
+    status:
+      $ref: "../types/runs.yaml#/runStatus/schema"
 
 CreateNuzlockeRunTO:
   required:
     - name
     - game
     - rules
+    - customRules
   properties:
     name:
       $ref: "../types/runs.yaml#/runName/schema"
     game:
-      $ref: "../types/games.yaml#/game/schema"
+      $ref: "../types/games.yaml#/gameKey/schema"
     rules:
       $ref: "../types/rules.yaml#/rulesKeys/schema"
+    customRules:
+      $ref: "../types/rules.yaml#/customRules/schema"

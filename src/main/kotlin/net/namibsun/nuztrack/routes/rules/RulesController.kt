@@ -13,8 +13,8 @@ class RulesController {
     @GetMapping("/rules")
     @ResponseBody
     fun getRules(): ResponseEntity<RulesDetailsTO> {
-        val rules: Map<String, String> = Rules.values().associate { it.key to it.description }
-        val defaultRules = getDefaultRules().map { it.key }
+        val rules: Map<String, String> = Rules.values().associate { it.name.lowercase() to it.description }
+        val defaultRules = getDefaultRules().map { it.name.lowercase() }
         return ResponseEntity.ok(RulesDetailsTO(rules, defaultRules))
     }
 }

@@ -3,6 +3,4 @@ GamesListTO:
     - games
   properties:
     games:
-      type: array
-      items:
-        $ref: "../types/games.yaml#/game/schema"
+      $ref: "../types/games.yaml#/gamesList/schema"

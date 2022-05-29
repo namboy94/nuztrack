@@ -1,4 +1,32 @@
-game:
+gamesList:
+  schema:
+    type: object
+    properties:
+      key:
+        $ref: "#/gameKey/schema"
+      title:
+        $ref: "#/gameTitle/schema"
+    description: A list of keys and titles for all supported games
+    example: {
+      "red": "Red",
+      "legends_arceus": "Legends: Arceus"
+    }
+
+gameKey:
+  schema:
+    type: string
+    enum: [ "red", "blue", "green", "yellow",
+            "silver", "gold", "crystal",
+            "ruby", "sapphire", "emerald", "firered", "leafgreen",
+            "diamond", "pearl", "platinum", "heartgold", "soulsilver",
+            "black", "white", "black_2", "white_2",
+            "x", "y", "omega_ruby", "alpha_sapphire",
+            "sun", "moon", "ultra_sun", "ultra_moon",
+            "sword", "shield", "brilliant_diamond", "shining_pearl", "legends_arceus" ]
+    description: The key of a mainline Pokemon game
+    example: "brilliant_diamond"
+
+gameTitle:
   schema:
     type: string
     enum: [ "Red", "Blue", "Green", "Yellow",

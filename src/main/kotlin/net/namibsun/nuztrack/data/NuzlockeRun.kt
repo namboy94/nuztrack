@@ -1,9 +1,6 @@
 package net.namibsun.nuztrack.data
 
-import net.namibsun.nuztrack.util.ErrorMessages
-import net.namibsun.nuztrack.util.Games
-import net.namibsun.nuztrack.util.Rules
-import net.namibsun.nuztrack.util.ValidationException
+import net.namibsun.nuztrack.util.*
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
@@ -15,10 +12,12 @@ import javax.persistence.*
 @Table(name = "runs")
 class NuzlockeRun(
         @Column(nullable = false) @Id @GeneratedValue var id: Long? = null,
-        @Column var userName: String,
-        @Column var name: String,
-        @Column @Enumerated(EnumType.STRING) var game: Games,
-        @ElementCollection @CollectionTable(name = "rules") @Enumerated(EnumType.STRING) val rules: List<Rules>
+        @Column val userName: String,
+        @Column val name: String,
+        @Column @Enumerated(EnumType.STRING) val game: Games,
+        @ElementCollection @CollectionTable(name = "rules") @Enumerated(EnumType.STRING) val rules: List<Rules>,
+        @ElementCollection @CollectionTable(name = "custom_rules") val customRules: List<String>,
+        @Enumerated(EnumType.STRING) val status: RunStatus
 )
 
 @Repository
@@ -37,13 +36,26 @@ class NuzlockeRunService(val db: NuzlockeRunRepository) {
         return db.findByUserName(userName)
     }
 
-    fun createRun(userName: String, name: String, game: Games, rules: List<Rules>): NuzlockeRun {
+    fun createRun(
+            userName: String,
+            name: String,
+            game: Games,
+            rules: List<Rules>,
+            customRules: List<String>
+    ): NuzlockeRun {
 
-        if (name == "") {
+        if (userName == "" || name == "") {
             throw ValidationException(ErrorMessages.EMPTY_NAME)
         }
 
-        return db.save(NuzlockeRun(userName = userName, name = name, game = game, rules = rules))
+        return db.save(NuzlockeRun(
+                userName = userName,
+                name = name,
+                game = game,
+                rules = rules,
+                customRules = customRules,
+                status = RunStatus.ACTIVE
+        ))
     }
 
     fun deleteRun(id: Long) {
