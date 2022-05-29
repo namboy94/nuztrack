@@ -1,5 +1,5 @@
-import {Button, Dialog, DialogActions, DialogTitle} from "@mui/material";
-import React from "react";
+import {Autocomplete, Button, Dialog, DialogActions, DialogTitle, MenuItem, Select, TextField} from "@mui/material";
+import React, {useState} from "react";
 
 interface AddDeathDialogProps {
     open: boolean
@@ -7,11 +7,52 @@ interface AddDeathDialogProps {
 }
 
 export default function AddDeathDialog(props: AddDeathDialogProps) {
+
+    const myPokemon = ["Bulba", "Char", "Squi"]
+    const locations = ["Pallet", "Celadon"]
+
+    const [deadPokemon, setDeadPokemon] = useState("")
+    const [location, setLocation] = useState("")
+    const [level, setLevel] = useState(5)
+    const [opponent, setOpponent] = useState("")
+    const [description, setDescription] = useState("")
+
+    const submit = () => {
+    }
+
+    const onClose = () => {
+        setDeadPokemon("")
+        setLocation("")
+        setLevel(5)
+        setOpponent("")
+        setDescription("")
+        props.onClose()
+    }
+
     return (
-        <Dialog open={props.open} onClose={props.onClose}>
+        <Dialog open={props.open} onClose={onClose}>
             <DialogTitle>Add Death</DialogTitle>
+            <Select fullWidth value={deadPokemon} onChange={x => setDeadPokemon(x.target.value)}>
+                {myPokemon.map((x: string) => <MenuItem value={x} key={x}>{x}</MenuItem>)}
+            </Select>
+            <Autocomplete
+                freeSolo
+                options={locations}
+                renderInput={(params) => <TextField
+                    {...params} label="Location" value={location}
+                    onChange={x => setLocation(x.target.value)}
+                />}
+            />
+            <TextField
+                label="Level" type="number" value={level}
+                onChange={x => setLevel(parseInt(x.target.value))}
+            />
+            <TextField label="Opponent" value={opponent} onChange={x => setOpponent(x.target.value)}/>
+            <TextField multiline label="Description" value={description}
+                       onChange={x => setDescription(x.target.value)}/>
             <DialogActions>
-                <Button onClick={props.onClose}>Close</Button>
+                <Button onClick={onClose}>Cancel</Button>
+                <Button onClick={submit}>Add</Button>
             </DialogActions>
         </Dialog>
     )
