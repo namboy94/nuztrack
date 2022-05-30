@@ -1,6 +1,6 @@
 import {Route, Routes} from "react-router-dom";
 import React from "react";
-import {NuzlockeRunTO} from "../api/runs/runsTransfer";
+import {NuzlockeRun} from "../api/runs/runsTypes";
 import {RunSelectorRoute} from "../routes/select_run/RunSelectorRoute";
 import {Severity} from "./Snackbar";
 import Overview from "../routes/overview/Overview";
@@ -15,7 +15,7 @@ import AddEventRoute from "../routes/add_event/AddEventRoute";
 
 export interface RouterProps {
     setRunId: (id: number) => void
-    run: NuzlockeRunTO | null
+    run: NuzlockeRun | null
     displaySnack: (message: string, severity: Severity) => void
 }
 

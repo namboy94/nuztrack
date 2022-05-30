@@ -2,20 +2,20 @@ import {Button} from "@mui/material";
 import * as React from "react";
 import {useState} from "react";
 import CreateNewRunDialog from "./CreateNewRunDialog";
-import {NuzlockeRunTO} from "../../api/runs/runsTransfer";
+import {NuzlockeRun} from "../../api/runs/runsTypes";
 import DeleteRunDialog from "./DeleteRunDialog";
 import {RunsList} from "./RunsList";
-import {RulesDetails} from "../../api/rules/rulesTransfer";
-import {GamesList} from "../../api/games/gamesTransfer";
+import {RulesDetails} from "../../api/rules/rulesTypes";
+import {GamesList} from "../../api/games/gamesTypes";
 import {Severity} from "../../components/Snackbar";
 import {useNavigate} from "react-router";
 import {useInvalidateRunsQuery} from "../../api/runs/runsQuery";
 
 export interface RunSelectorProps {
     setRunId: (id: number) => void
-    run: NuzlockeRunTO | null
+    run: NuzlockeRun | null
     displaySnack: (message: string, severity: Severity) => void
-    runs: NuzlockeRunTO[]
+    runs: NuzlockeRun[]
     rules: RulesDetails
     games: GamesList
 }
@@ -24,19 +24,20 @@ export function RunSelector(props: RunSelectorProps) {
 
     const [createDialogOpen, setCreateDialogOpen] = useState(false)
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
-    const [runToDelete, setRunToDelete] = useState<NuzlockeRunTO | null>(null)
-    const [displayedRuns, setDisplayedRuns] = useState<NuzlockeRunTO[]>(props.runs)
+    const [runToDelete, setRunToDelete] = useState<NuzlockeRun | null>(null)
+    const [displayedRuns, setDisplayedRuns] = useState<NuzlockeRun[]>(props.runs)
 
     const invalidate = useInvalidateRunsQuery()
     const navigate = useNavigate()
 
-    const selectRun = (run: NuzlockeRunTO) => {
+    const selectRun = (run: NuzlockeRun) => {
         props.setRunId(run.id)
         localStorage.setItem("runId", `${run.id}`)
         navigate("/overview")
+        props.displaySnack(`Selected Run ${run.name}`, "info")
     }
 
-    const removeRun = (run: NuzlockeRunTO) => {
+    const removeRun = (run: NuzlockeRun) => {
         invalidate().then(() => {
             setDisplayedRuns(displayedRuns.filter(x => x.id !== run.id));
             if (props.run !== null && run.id === props.run.id) {
@@ -45,11 +46,11 @@ export function RunSelector(props: RunSelectorProps) {
         })
     }
 
-    const addRun = (run: NuzlockeRunTO) => {
+    const addRun = (run: NuzlockeRun) => {
         invalidate().then(() => setDisplayedRuns([...displayedRuns, run]))
     }
 
-    const openRemoveDialog = (run: NuzlockeRunTO) => {
+    const openRemoveDialog = (run: NuzlockeRun) => {
         setRunToDelete(run)
         setDeleteDialogOpen(true)
     }
@@ -69,6 +70,7 @@ export function RunSelector(props: RunSelectorProps) {
             <DeleteRunDialog runToDelete={runToDelete}
                              removeRun={removeRun}
                              open={deleteDialogOpen}
+                             displaySnack={props.displaySnack}
                              onClose={() => setDeleteDialogOpen(false)}/>
         </>
     )

@@ -14,17 +14,17 @@ import {
 } from "@mui/material";
 import React, {useState} from "react";
 import {createRun} from "../../api/runs/runsApi";
-import {CreateNuzlockeRunTO, NuzlockeRunTO} from "../../api/runs/runsTransfer";
-import {RulesDetails} from "../../api/rules/rulesTransfer";
-import {GamesList} from "../../api/games/gamesTransfer";
+import {CreateNuzlockeRun, NuzlockeRun} from "../../api/runs/runsTypes";
+import {RulesDetails} from "../../api/rules/rulesTypes";
+import {GamesList} from "../../api/games/gamesTypes";
 import {Severity} from "../../components/Snackbar";
 
 export interface CreateNewRunDialogProps {
     open: boolean;
     onClose: () => void;
     setRunId: (id: number) => void;
-    selectRun: (run: NuzlockeRunTO) => void;
-    addRun: (run: NuzlockeRunTO) => void;
+    selectRun: (run: NuzlockeRun) => void;
+    addRun: (run: NuzlockeRun) => void;
     displaySnack: (message: string, severity: Severity) => void
     rules: RulesDetails
     games: GamesList
@@ -35,6 +35,7 @@ export default function CreateNewRunDialog(props: CreateNewRunDialogProps) {
     const [name, setName] = useState("")
     const [game, setGame] = useState("")
     const [selectedRules, setSelectedRules] = useState(props.rules.defaultRules)
+    const [customRules, setCustomRules] = useState<string[]>([])
     const [submitting, setSubmitting] = useState(false)
 
     const ruleKeys: string[] = Array.from(props.rules.rules.keys());
@@ -43,10 +44,11 @@ export default function CreateNewRunDialog(props: CreateNewRunDialogProps) {
     const createNewRun = () => {
         if (!submitting) {
             setSubmitting(true)
-            const creator: CreateNuzlockeRunTO = {name: name, game: game, rules: selectedRules}
+            const creator: CreateNuzlockeRun = {name: name, game: game, rules: selectedRules, customRules: customRules}
             createRun(creator).then(result => {
                 props.addRun(result);
                 onClose();
+                props.displaySnack(`Run ${result.name} created successfully`, "success")
             }, error => {
                 props.displaySnack(error.toString(), "error");
                 enableSubmission()
@@ -86,7 +88,7 @@ export default function CreateNewRunDialog(props: CreateNewRunDialogProps) {
                     id="name" type="text" required
                 />
                 <InputLabel>Game</InputLabel>
-                <Select fullWidth value={game} onChange={x => setGame(x.target.value)}>
+                <Select label="Game" fullWidth value={game} onChange={x => setGame(x.target.value)}>
                     {gameKeys.map((key: string) =>
                         <MenuItem value={key} key={key}>{props.games.games.get(key)}</MenuItem>)
                     }
@@ -102,6 +104,13 @@ export default function CreateNewRunDialog(props: CreateNewRunDialogProps) {
                         } label={props.rules.rules.get(key)}/>
                     )}
                 </FormGroup>
+                <TextField
+                    onChange={(x) =>
+                        setCustomRules(x.target.value.split("\n").filter(x => !!x))
+                    }
+                    autoFocus margin="dense" fullWidth variant="standard" multiline
+                    id="custom-rules" type="text" label="Custom Rules"
+                />
             </DialogContent>
             <DialogActions>
                 <Button onClick={onClose}>Cancel</Button>

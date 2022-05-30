@@ -1,14 +1,14 @@
 import {useQuery, useQueryClient, UseQueryResult} from "react-query";
 import {loadRun, loadRuns} from "./runsApi";
-import {NuzlockeRunTO} from "./runsTransfer";
+import {NuzlockeRun} from "./runsTypes";
 
 export const QUERY_RUNS_KEY = "/runs"
 
-export function useRunQuery(runId: number): UseQueryResult<NuzlockeRunTO | undefined> {
+export function useRunQuery(runId: number): UseQueryResult<NuzlockeRun | null> {
     return useQuery(`${QUERY_RUNS_KEY}/${runId}`, () => loadRun(runId))
 }
 
-export function useRunsQuery(): UseQueryResult<NuzlockeRunTO[]> {
+export function useRunsQuery(): UseQueryResult<NuzlockeRun[]> {
     return useQuery(QUERY_RUNS_KEY, loadRuns)
 }
 

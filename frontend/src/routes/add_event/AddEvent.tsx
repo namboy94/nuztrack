@@ -1,14 +1,14 @@
 import {Button, Grid} from "@mui/material";
 import * as React from "react";
 import {useState} from "react";
-import {NuzlockeRunTO} from "../../api/runs/runsTransfer";
+import {NuzlockeRun} from "../../api/runs/runsTypes";
 import AddBadgeDialog from "./AddBadgeDialog";
 import AddDeathDialog from "./AddDeathDialog";
 import AddNoteDialog from "./AddNoteDialog";
 import AddEncounterDialog from "./AddEncounterDialog";
 
 interface AddEventProps {
-    run: NuzlockeRunTO
+    run: NuzlockeRun
 }
 
 export default function AddEvent(props: AddEventProps) {

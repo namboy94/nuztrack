@@ -1,5 +1,5 @@
 import axios from "axios";
-import {RulesDetails} from "./rulesTransfer";
+import {RulesDetails} from "./rulesTypes";
 import {convertRulesDetailsTOToRulesDetails} from "./rulesConvert";
 
 export function loadRules(): Promise<RulesDetails> {

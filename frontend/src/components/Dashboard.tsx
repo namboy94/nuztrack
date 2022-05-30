@@ -19,12 +19,13 @@ export default function Dashboard() {
     const [snackBarSeverity, setSnackBarSeverity] = useState<Severity>("info")
 
     const [runId, setRunId] = useState(getSelectedRunId())
-    const run = useRunQuery(runId)
+    const runQuery = useRunQuery(runId)
 
-    const loadingCheck = performLoadingCheck([run])
+    const loadingCheck = performLoadingCheck([runQuery])
     if (loadingCheck !== null) {
         return loadingCheck
     }
+    const run = runQuery.data ? runQuery.data : null
 
     const displaySnack = (message: string, severity: Severity) => {
         setSnackBarOpen(true)
@@ -36,13 +37,13 @@ export default function Dashboard() {
         <Box sx={{display: 'flex', minHeight: '100vh'}}>
             <CssBaseline/>
             <Box component="nav" sx={{width: {sm: 256}, flexShrink: {sm: 0}}}>
-                <Sidebar run={run.data}/>
+                <Sidebar run={run}/>
             </Box>
             <Box sx={{flex: 1, display: 'flex', flexDirection: 'column'}}>
                 <Header onDrawerToggle={() => setMobileOpen(!mobileOpen)}/>
                 <Box component="main" sx={{flex: 1, py: 6, px: 4, bgcolor: '#eaeff1'}}>
                     <Paper sx={{maxWidth: 936, margin: 'auto', overflow: 'hidden'}}>
-                        <Router setRunId={setRunId} run={run.data ? run.data : null} displaySnack={displaySnack}/>
+                        <Router setRunId={setRunId} run={run} displaySnack={displaySnack}/>
                     </Paper>
                 </Box>
                 <Box component="footer" sx={{p: 2, bgcolor: '#eaeff1'}}>

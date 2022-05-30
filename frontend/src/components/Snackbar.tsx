@@ -15,7 +15,7 @@ export default function Snackbar(props: SnackbarProps) {
     const {open, setOpen, message, severity} = props
 
     return (
-        <MuiSnackbar open={open} autoHideDuration={5000}>
+        <MuiSnackbar open={open} autoHideDuration={5000} onClose={() => setOpen(false)}>
             <Alert onClose={() => setOpen(false)} color={severity} severity={severity} sx={{width: '100%'}}>
                 {message}
             </Alert>

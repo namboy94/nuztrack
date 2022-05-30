@@ -1,9 +1,9 @@
 import * as React from "react";
 import AddEvent from "./AddEvent";
-import {NuzlockeRunTO} from "../../api/runs/runsTransfer";
+import {NuzlockeRun} from "../../api/runs/runsTypes";
 
 interface AddEventRouteProps {
-    run: NuzlockeRunTO | null
+    run: NuzlockeRun | null
 }
 
 export default function AddEventRoute(props: AddEventRouteProps) {

@@ -1,6 +1,6 @@
 import * as React from "react";
 import {performLoadingCheck} from "../../util/loading";
-import {NuzlockeRunTO} from "../../api/runs/runsTransfer";
+import {NuzlockeRun} from "../../api/runs/runsTypes";
 import {useRunsQuery} from "../../api/runs/runsQuery";
 import {useRulesQuery} from "../../api/rules/rulesQuery";
 import {RunSelector} from "./RunSelector";
@@ -9,7 +9,7 @@ import {Severity} from "../../components/Snackbar";
 
 export interface RunSelectorRouteProps {
     setRunId: (id: number) => void
-    run: NuzlockeRunTO | null
+    run: NuzlockeRun | null
     displaySnack: (message: string, severity: Severity) => void
 }
 

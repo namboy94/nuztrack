@@ -5,8 +5,9 @@ export type NuzlockeRunTO = {
     game: string,
     rules: string[],
     customRules: string[],
-    status: string
+    status: "active" | "failed" | "completed"
 }
+export type NuzlockeRun = NuzlockeRunTO
 
 export type CreateNuzlockeRunTO = {
     name: string,
@@ -14,3 +15,4 @@ export type CreateNuzlockeRunTO = {
     rules: string[],
     customRules: string[]
 }
+export type CreateNuzlockeRun = CreateNuzlockeRunTO

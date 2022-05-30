@@ -1,17 +1,24 @@
 import {fireEvent, render, screen} from '@testing-library/react'
 import DeleteRunDialog from "./DeleteRunDialog"
-import {NuzlockeRunTO} from "../../api/runs/runsTransfer";
+import {NuzlockeRun} from "../../api/runs/runsTypes";
 
 
 describe("DeleteRunDialog", () => {
 
     const closer = jest.fn(() => {
     })
-    const remover = jest.fn(x => {
+    const remover = jest.fn(_ => {
     })
 
-    const renderDeleteRunDialog = (run: NuzlockeRunTO | null) => {
-        render(<DeleteRunDialog open={true} onClose={closer} runToDelete={run} removeRun={remover}/>)
+    const renderDeleteRunDialog = (run: NuzlockeRun | null) => {
+        render(<DeleteRunDialog
+            open={true}
+            onClose={closer}
+            runToDelete={run}
+            removeRun={remover}
+            displaySnack={() => {
+            }}
+        />)
     }
 
     it("should close when pressing the Cancel button", () => {

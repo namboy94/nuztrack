@@ -1,13 +1,15 @@
 import {Button, Dialog, DialogActions, DialogTitle} from "@mui/material";
 import React from "react";
 import {deleteRun} from "../../api/runs/runsApi";
-import {NuzlockeRunTO} from "../../api/runs/runsTransfer";
+import {NuzlockeRun} from "../../api/runs/runsTypes";
+import {Severity} from "../../components/Snackbar";
 
 export interface DeleteRunDialogProps {
     open: boolean;
     onClose: () => void;
-    runToDelete: NuzlockeRunTO | null;
-    removeRun: (run: NuzlockeRunTO) => void;
+    runToDelete: NuzlockeRun | null;
+    removeRun: (run: NuzlockeRun) => void;
+    displaySnack: (message: string, severity: Severity) => void;
 }
 
 export default function DeleteRunDialog(props: DeleteRunDialogProps) {
@@ -15,6 +17,7 @@ export default function DeleteRunDialog(props: DeleteRunDialogProps) {
     const removeSelectedRun = () => {
         if (props.runToDelete !== null) {
             deleteRun(props.runToDelete.id).then(() => {
+                props.displaySnack(`Run ${props.runToDelete!!.name} was deleted`, "info")
                 props.removeRun(props.runToDelete!!)
                 props.onClose()
             })

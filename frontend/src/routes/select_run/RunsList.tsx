@@ -1,11 +1,11 @@
 import {Button, Card, CardActions, CardContent, Grid, Typography} from "@mui/material";
 import * as React from "react";
-import {NuzlockeRunTO} from "../../api/runs/runsTransfer";
+import {NuzlockeRun} from "../../api/runs/runsTypes";
 
 interface RunsListProps {
-    displayedRuns: NuzlockeRunTO[],
-    selectRun: (run: NuzlockeRunTO) => void,
-    openRemoveDialog: (run: NuzlockeRunTO) => void
+    displayedRuns: NuzlockeRun[],
+    selectRun: (run: NuzlockeRun) => void,
+    openRemoveDialog: (run: NuzlockeRun) => void
 }
 
 export function RunsList(props: RunsListProps) {
