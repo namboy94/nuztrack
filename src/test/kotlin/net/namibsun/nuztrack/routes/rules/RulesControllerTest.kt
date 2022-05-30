@@ -12,7 +12,7 @@ internal class RulesControllerTest {
     @Test
     fun getRules() {
         val result = controller.getRules().body!!
-        assertThat(result.defaultRules).hasSameElementsAs(getDefaultRules().map { it.key })
+        assertThat(result.defaultRules).hasSameElementsAs(getDefaultRules().map { it.name.lowercase() })
         assertThat(result.rules).hasSameSizeAs(Rules.values())
     }
 }

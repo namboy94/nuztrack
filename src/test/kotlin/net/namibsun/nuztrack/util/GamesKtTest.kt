@@ -8,8 +8,8 @@ internal class GamesKtTest {
 
     @Test
     fun getValueOfGameTitle_success() {
-        assertThat(getValueOfGameTitle(Games.RED.title)).isEqualTo(Games.RED)
-        assertThat(getValueOfGameTitle(Games.LEGENDS_ARCEUS.title)).isEqualTo(Games.LEGENDS_ARCEUS)
+        assertThat(getValueOfGameTitle(Games.RED.name.lowercase())).isEqualTo(Games.RED)
+        assertThat(getValueOfGameTitle(Games.LEGENDS_ARCEUS.name.lowercase())).isEqualTo(Games.LEGENDS_ARCEUS)
     }
 
     @Test

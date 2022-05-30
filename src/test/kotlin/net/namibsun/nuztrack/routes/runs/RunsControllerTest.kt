@@ -17,11 +17,17 @@ internal class RunsControllerTest {
     private val principal: Principal = mock()
     private val service: NuzlockeRunService = mock()
     private val controller = RunsController(service)
-    private val exampleOne = NuzlockeRun(5, userOne, "First", Games.RED, listOf(Rules.DEATH))
-    private val exampleTwo = NuzlockeRun(10, userOne, "Second", Games.YELLOW, listOf())
+    private val exampleOne = NuzlockeRun(
+        5, userOne, "First", Games.RED, listOf(Rules.DEATH), listOf("MyRules"), RunStatus.COMPLETED
+    )
+    private val exampleTwo = NuzlockeRun(
+        10, userOne, "Second", Games.YELLOW, listOf(), listOf(), RunStatus.FAILED
+    )
     private val exampleOneTO = convertNuzlockeRunToNuzlockeRunTO(exampleOne)
     private val exampleTwoTO = convertNuzlockeRunToNuzlockeRunTO(exampleTwo)
-    private val creatorOne = CreateNuzlockeRunTO(exampleOne.name, exampleOne.game.title, listOf(Rules.DEATH.key))
+    private val creatorOne = CreateNuzlockeRunTO(
+        exampleOne.name, exampleOne.game.title, listOf(Rules.DEATH.name.lowercase()), listOf("MyRules")
+    )
 
     @Test
     fun getRuns_existing() {
@@ -54,7 +60,8 @@ internal class RunsControllerTest {
                 exampleOne.userName,
                 exampleOne.name,
                 exampleOne.game,
-                exampleOne.rules
+                exampleOne.rules,
+                exampleOne.customRules
         )).thenReturn(exampleOne)
 
         val result = controller.createRun(creatorOne, principal)
@@ -63,7 +70,8 @@ internal class RunsControllerTest {
                 exampleOne.userName,
                 exampleOne.name,
                 exampleOne.game,
-                exampleOne.rules
+                exampleOne.rules,
+                exampleOne.customRules
         )
         verify(principal, times(1)).name
         assertThat(result.body).isEqualTo(exampleOneTO)
@@ -72,40 +80,42 @@ internal class RunsControllerTest {
     @Test
     fun createRun_invalidName() {
         whenever(principal.name).thenReturn(userOne)
-        whenever(service.createRun(userOne, "", Games.RED, listOf())).thenThrow(
+        whenever(service.createRun(userOne, "", Games.RED, listOf(), listOf())).thenThrow(
                 ValidationException(ErrorMessages.EMPTY_NAME)
         )
 
         val thrown = assertThrows<ValidationException> {
-            controller.createRun(CreateNuzlockeRunTO("", Games.RED.title, listOf()), principal)
+            controller.createRun(CreateNuzlockeRunTO("", Games.RED.title, listOf(), listOf()), principal)
         }
 
         assertThat(thrown.message).isEqualTo(ErrorMessages.EMPTY_NAME.message)
         verify(principal, times(1)).name
-        verify(service, times(1)).createRun(userOne, "", Games.RED, listOf())
+        verify(service, times(1)).createRun(userOne, "", Games.RED, listOf(), listOf())
     }
 
     @Test
     fun createRun_invalidGame() {
         val thrown = assertThrows<ValidationException> {
-            controller.createRun(CreateNuzlockeRunTO("ABC", "ABC", listOf()), principal)
+            controller.createRun(CreateNuzlockeRunTO("ABC", "ABC", listOf(), listOf()), principal)
         }
 
         assertThat(thrown.message).isEqualTo(ErrorMessages.INVALID_GAME.message)
         verify(principal, times(0)).name
-        verify(service, times(0)).createRun(any(), any(), any(), any())
+        verify(service, times(0)).createRun(any(), any(), any(), any(), any())
     }
 
     @Test
     fun createRun_invalidRule() {
 
         val thrown = assertThrows<ValidationException> {
-            controller.createRun(CreateNuzlockeRunTO("ABC", Games.RED.title, listOf("doesNotExist")), principal)
+            controller.createRun(CreateNuzlockeRunTO(
+                "ABC", Games.RED.title, listOf("doesNotExist"), listOf()
+            ), principal)
         }
 
         assertThat(thrown.message).isEqualTo(ErrorMessages.INVALID_RULE.message)
         verify(principal, times(0)).name
-        verify(service, times(0)).createRun(any(), any(), any(), any())
+        verify(service, times(0)).createRun(any(), any(), any(), any(), any())
     }
 
     @Test

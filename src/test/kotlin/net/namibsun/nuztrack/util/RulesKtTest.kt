@@ -15,8 +15,8 @@ internal class RulesKtTest {
 
     @Test
     fun getValueOfRuleKey_success() {
-        assertThat(getValueOfRuleKey(Rules.DEATH.key)).isEqualTo(Rules.DEATH)
-        assertThat(getValueOfRuleKey(Rules.DUPLICATE_CLAUSE.key)).isEqualTo(Rules.DUPLICATE_CLAUSE)
+        assertThat(getValueOfRuleKey(Rules.DEATH.name.lowercase())).isEqualTo(Rules.DEATH)
+        assertThat(getValueOfRuleKey(Rules.DUPLICATE_CLAUSE.name.lowercase())).isEqualTo(Rules.DUPLICATE_CLAUSE)
     }
 
     @Test

@@ -48,7 +48,7 @@ class NuzlockeRunService(val db: NuzlockeRunRepository) {
             throw ValidationException(ErrorMessages.EMPTY_NAME)
         }
 
-        return db.save(NuzlockeRun(
+        val run = db.save(NuzlockeRun(
                 userName = userName,
                 name = name,
                 game = game,
@@ -56,6 +56,7 @@ class NuzlockeRunService(val db: NuzlockeRunRepository) {
                 customRules = customRules,
                 status = RunStatus.ACTIVE
         ))
+        return run
     }
 
     fun deleteRun(id: Long) {

@@ -1,12 +1,10 @@
 package net.namibsun.nuztrack.data
 
-import net.namibsun.nuztrack.util.ErrorMessages
-import net.namibsun.nuztrack.util.Games
-import net.namibsun.nuztrack.util.Rules
-import net.namibsun.nuztrack.util.ValidationException
+import net.namibsun.nuztrack.util.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.mockito.AdditionalAnswers
 import org.mockito.kotlin.*
 import java.util.*
 
@@ -15,8 +13,12 @@ class NuzlockeRunServiceTest {
     private val repository: NuzlockeRunRepository = mock()
     private val service = NuzlockeRunService(repository)
     private val username = "Ash"
-    private val exampleOne = NuzlockeRun(5, username, "First", Games.RED, listOf(Rules.DEATH))
-    private val exampleTwo = NuzlockeRun(10, username, "Second", Games.YELLOW, listOf())
+    private val exampleOne = NuzlockeRun(
+        5, username, "First", Games.RED, listOf(Rules.DEATH), listOf("myRules"), status = RunStatus.COMPLETED
+    )
+    private val exampleTwo = NuzlockeRun(
+        10, username, "Second", Games.YELLOW, listOf(), listOf("myRules"), status = RunStatus.FAILED
+    )
 
     @Test
     fun getRun_runExists() {
@@ -68,7 +70,8 @@ class NuzlockeRunServiceTest {
                 exampleOne.userName,
                 exampleOne.name,
                 exampleOne.game,
-                exampleOne.rules
+                exampleOne.rules,
+                exampleOne.customRules
         )
 
         assertThat(result).isEqualTo(exampleOne)
@@ -76,10 +79,28 @@ class NuzlockeRunServiceTest {
     }
 
     @Test
+    fun makeSureRunIsSetToActive() {
+        @Suppress("RemoveExplicitTypeArguments")
+        whenever(repository.save(any<NuzlockeRun>())).then(AdditionalAnswers.returnsFirstArg<NuzlockeRun>())
+
+        val result = service.createRun(
+            exampleOne.userName,
+            exampleOne.name,
+            exampleOne.game,
+            exampleOne.rules,
+            exampleOne.customRules
+        )
+
+        assertThat(result.status).isNotEqualTo(exampleOne.status)
+        assertThat(result.status).isEqualTo(RunStatus.ACTIVE)
+        verify(repository, times(1)).save(any())
+    }
+
+    @Test
     fun createRun_invalidName() {
 
         val thrown = assertThrows<ValidationException> {
-            service.createRun(username, "", Games.RED, listOf())
+            service.createRun(username, "", Games.RED, listOf(), listOf())
         }
 
         assertThat(thrown.message).isEqualTo(ErrorMessages.EMPTY_NAME.message)

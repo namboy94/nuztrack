@@ -11,6 +11,6 @@ internal class GamesControllerTest {
     @Test
     fun getGames() {
         val result = controller.getGames()
-        assertThat(result.body).isEqualTo(GamesListTO(Games.values().map { it.title }))
+        assertThat(result.body).isEqualTo(GamesListTO(Games.values().associate { it.name.lowercase() to it.title }))
     }
 }

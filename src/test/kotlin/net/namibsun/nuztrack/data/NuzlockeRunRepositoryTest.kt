@@ -1,6 +1,7 @@
 package net.namibsun.nuztrack.data
 
 import net.namibsun.nuztrack.util.Games
+import net.namibsun.nuztrack.util.RunStatus
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,7 +15,15 @@ class NuzlockeRunRepositoryTest {
 
     @Test
     fun findByUserName_success() {
-        repository.save(NuzlockeRun(null, "Ash", "First", Games.RED, listOf()))
+        repository.save(NuzlockeRun(
+            null,
+            "Ash",
+            "First",
+            Games.RED,
+            listOf(),
+            listOf(),
+            RunStatus.ACTIVE
+        ))
         val found = repository.findByUserName("Ash")
         assertThat(found).hasSize(1)
         assertThat(found[0].userName).isEqualTo("Ash")
@@ -22,7 +31,15 @@ class NuzlockeRunRepositoryTest {
 
     @Test
     fun findByUserName_noResults() {
-        repository.save(NuzlockeRun(null, "Ash", "First", Games.RED, listOf()))
+        repository.save(NuzlockeRun(
+            null,
+            "Ash",
+            "First",
+            Games.RED,
+            listOf(),
+            listOf(),
+            RunStatus.ACTIVE
+        ))
         val found = repository.findByUserName("Gary")
         assertThat(found).hasSize(0)
     }
