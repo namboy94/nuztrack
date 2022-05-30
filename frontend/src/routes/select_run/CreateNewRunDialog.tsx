@@ -16,7 +16,7 @@ import React, {useState} from "react";
 import {createRun} from "../../api/runs/runsApi";
 import {CreateNuzlockeRunTO, NuzlockeRunTO} from "../../api/runs/runsTransfer";
 import {RulesDetails} from "../../api/rules/rulesTransfer";
-import {GamesListTO} from "../../api/games/gamesTransfer";
+import {GamesList} from "../../api/games/gamesTransfer";
 import {Severity} from "../../components/Snackbar";
 
 export interface CreateNewRunDialogProps {
@@ -27,7 +27,7 @@ export interface CreateNewRunDialogProps {
     addRun: (run: NuzlockeRunTO) => void;
     displaySnack: (message: string, severity: Severity) => void
     rules: RulesDetails
-    games: GamesListTO
+    games: GamesList
 }
 
 export default function CreateNewRunDialog(props: CreateNewRunDialogProps) {
@@ -38,6 +38,7 @@ export default function CreateNewRunDialog(props: CreateNewRunDialogProps) {
     const [submitting, setSubmitting] = useState(false)
 
     const ruleKeys: string[] = Array.from(props.rules.rules.keys());
+    const gameKeys: string[] = Array.from(props.games.games.keys());
 
     const createNewRun = () => {
         if (!submitting) {
@@ -86,7 +87,9 @@ export default function CreateNewRunDialog(props: CreateNewRunDialogProps) {
                 />
                 <InputLabel>Game</InputLabel>
                 <Select fullWidth value={game} onChange={x => setGame(x.target.value)}>
-                    {props.games.games.map((x: string) => <MenuItem value={x} key={x}>{x}</MenuItem>)}
+                    {gameKeys.map((key: string) =>
+                        <MenuItem value={key} key={key}>{props.games.games.get(key)}</MenuItem>)
+                    }
                 </Select>
                 <FormGroup>
                     {ruleKeys.map(key =>

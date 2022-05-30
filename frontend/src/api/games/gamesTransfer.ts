@@ -1,3 +1,7 @@
 export type GamesListTO = {
-    games: string[]
+    games: {[key: string]: string}
+}
+
+export type GamesList = {
+    games: Map<string, string>
 }

@@ -3,11 +3,14 @@ export type NuzlockeRunTO = {
     username: string,
     name: string,
     game: string,
-    rules: string[]
+    rules: string[],
+    customRules: string[],
+    status: string
 }
 
 export type CreateNuzlockeRunTO = {
     name: string,
     game: string,
-    rules: string[]
+    rules: string[],
+    customRules: string[]
 }

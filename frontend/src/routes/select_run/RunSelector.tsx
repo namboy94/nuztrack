@@ -6,7 +6,7 @@ import {NuzlockeRunTO} from "../../api/runs/runsTransfer";
 import DeleteRunDialog from "./DeleteRunDialog";
 import {RunsList} from "./RunsList";
 import {RulesDetails} from "../../api/rules/rulesTransfer";
-import {GamesListTO} from "../../api/games/gamesTransfer";
+import {GamesList} from "../../api/games/gamesTransfer";
 import {Severity} from "../../components/Snackbar";
 import {useNavigate} from "react-router";
 import {useInvalidateRunsQuery} from "../../api/runs/runsQuery";
@@ -17,7 +17,7 @@ export interface RunSelectorProps {
     displaySnack: (message: string, severity: Severity) => void
     runs: NuzlockeRunTO[]
     rules: RulesDetails
-    games: GamesListTO
+    games: GamesList
 }
 
 export function RunSelector(props: RunSelectorProps) {

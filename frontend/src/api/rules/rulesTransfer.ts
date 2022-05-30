@@ -1,9 +1,5 @@
-export type RulesMappingTO = {
-    [key: string]: string
-}
-
 export type RulesDetailsTO = {
-    rules: RulesMappingTO,
+    rules: { [key: string]: string },
     defaultRules: string[]
 }
 
