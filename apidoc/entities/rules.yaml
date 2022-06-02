@@ -4,6 +4,15 @@ RulesDetailsTO:
     - defaultRules
   properties:
     rules:
-      $ref: "../types/rules.yaml#/rules/schema"
+      $ref: "#/RulesMapping"
     defaultRules:
-      $ref: "../types/rules.yaml#/defaultRulesKeys/schema"
+      type: array
+      items:
+        $ref: "../types/rules.yaml#/ruleKey"
+      $ref: "../types/rules.yaml#/defaultRuleKeys"
+
+RulesMapping:
+  type: object
+  additionalProperties:
+    $ref: "../types/rules.yaml#/ruleKey"
+  $ref: "../types/rules.yaml#/rulesMapping"

@@ -1,0 +1,16 @@
+get:
+  tags: [ "Information" ]
+  summary: "Get Pokemon Info"
+  description: "Retrieves information about a specific Pokemon"
+  parameters:
+    - in: path
+      $ref: "../types/route_params.yaml#/pokedexId"
+  responses:
+    "200":
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            $ref: "../entities/pokedex.yaml#/PokemonSpeciesTO"
+    "404":
+      description: "No Pokemon for the provided PokedexID was found"

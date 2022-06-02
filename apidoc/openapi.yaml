@@ -7,7 +7,7 @@ info:
                 Authenticated calls to the API can be done by adding
                 'Bearer TOKEN' to the 'Authorization' header
                 after receiving the token from the keycloak server"
-  termsOfService: "https://gitlab.namibsun.net/namibsun/kotlin"
+  termsOfService: "https://gitlab.namibsun.net/namibsun/kotlin/nuztrack"
   contact:
     name: "Hermann Krumrey"
     url: "https://gitlab.namibsun.net/namibsun/kotlin"
@@ -32,3 +32,10 @@ paths:
     $ref: "./endpoints/games.yaml"
   /rules:
     $ref: "./endpoints/rules.yaml"
+
+  /info/pokedex:
+    $ref: "./endpoints/info_pokedex.yaml"
+  /info/pokedex/{pokedexId}:
+    $ref: "./endpoints/info_pokedex_pokedexId.yaml"
+  /info/locations/{gameKey}:
+    $ref: "./endpoints/info_locations_gameTitle.yaml"

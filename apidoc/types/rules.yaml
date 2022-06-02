@@ -1,41 +1,34 @@
-rulesKeys:
-  schema:
-    type: array
-    items:
-      type: string
-    description: A list of keys for active rules for the Nuzlocke run
-    example: [ "death", "must_nickname", "only_first_encounter", "duplicate_clause" ]
+ruleKey:
+  type: string
+  description: A key for a rule
+  example: "must_nickname"
 
-defaultRulesKeys:
-  schema:
-    type: array
-    items:
-      type: string
-    description: A list of keys for the default rules for Nuzlocke runs
-    example: [ "death", "must_nickname", "only_first_encounter" ]
+ruleKeys:
+  type: array
+  description: "A list of active rules for a Nuzlocke run"
+  items:
+    $ref: "#/ruleKey"
+
+customRule:
+  type: string
+  description: A custom, user defined rule
+  example: "Meowth has nine lives"
 
 customRules:
-  schema:
-    type: array
-    items:
-      type: string
-    description: A list of non-standard, player-specified rules for a Nuzlocke Run
-    example: [ "My starter can't die", "Meowth has nine lives" ]
+  type: array
+  description: "A list of custom rules for a Nuzlocke run"
+  items:
+    $ref: "#/customRule"
 
-rules:
-  schema:
-    type: object
-    properties:
-      key:
-        type: string
-        description: The key of the rule
-      description:
-        type: string
-        description: The description of the rule
-    description: A list of keys and descriptions for all supported rules
-    example: {
-      "death": "Any Pokémon that faints is considered dead and must be released or permanently boxed",
-      "must_nickname": "Every Pokémon has to be nicknamed",
-      "only_first_encounter": "Only the first encounter on any given route may be caught",
-      "duplicate_clause": "Duplicate encounters do not count"
-    }
+defaultRuleKeys:
+  description: A list of keys for the default rules for Nuzlocke runs
+  example: [ "death", "must_nickname", "only_first_encounter" ]
+
+rulesMapping:
+  description: "Rule keys mapped to rule descriptions"
+  example: {
+    "death": "Any Pokémon that faints is considered dead and must be released or permanently boxed",
+    "must_nickname": "Every Pokémon has to be nicknamed",
+    "only_first_encounter": "Only the first encounter on any given route may be caught",
+    "duplicate_clause": "Duplicate encounters do not count"
+  }

@@ -1,0 +1,70 @@
+pokedexId:
+  type:
+    integer
+  description: The Pokedex ID of a Pokemon
+  example: 7
+
+name:
+  type:
+    string
+  description: The name of a Pokemon species
+  example: "Squirtle"
+
+sprite:
+  type:
+    string
+  description: The URL to the sprite of a Pokemon species
+  example: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png"
+
+pokedexMapping:
+  description: A mapping of Pokedex numbers to Pokemon
+  example: {
+    "7": {
+      "games": "Squirtle",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png",
+      "types": {
+        "primary": "WATER",
+        "secondary": null
+      },
+      "abilities": {
+        "primary": "Torrent",
+        "secondary": null,
+        "hidden": "Rain Dish"
+      }
+    }
+  }
+
+primaryAbility:
+  type:
+    string
+  nullable: false
+  description: "The primary ability of a Pokemon"
+  example: "Torrent"
+
+secondaryAbility:
+  type:
+    string
+  nullable: true
+  description: "The secondary ability of a Pokemon"
+  example: null
+
+hiddenAbility:
+  type:
+    string
+  nullable: true
+  description: "The hidden ability of a Pokemon"
+  example: "Rain Dish"
+
+primaryType:
+  type:
+    string
+  nullable: false
+  description: "The primary type of a Pokemon"
+  example: "WATER"
+
+secondaryType:
+  type:
+    string
+  nullable: true
+  description: "The secondary type of a Pokemon"
+  example: null

@@ -1,11 +1,9 @@
 databaseId:
-  schema:
-    type: integer
-    description: Unique ID in the database
-    example: 3
+  type: integer
+  description: Unique ID in the database
+  example: 3
 
 username:
-  schema:
-    type: string
-    description: The name of the user as specified in the keycloak server
-    example: "AshKetchum97"
+  type: string
+  description: The name of the user as specified in the keycloak server
+  example: "AshKetchum97"

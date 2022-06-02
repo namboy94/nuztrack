@@ -1,0 +1,30 @@
+locationName:
+  type: string
+  description: The name of a location
+  example: "Route 1"
+
+encounterId:
+  type: integer
+  description: The Pokedex ID of an encounter
+  example: 7
+
+encounterIds:
+  type: array
+  description: All encounters for a location
+  items:
+    $ref: "#/encounterId"
+
+milestoneName:
+  type: string
+  description: The name of a milestone
+  example: "Boulder Badge"
+
+milestoneImage:
+  type: string
+  description: A URL to an image of a milestone
+  example: "https://raw.githubusercontent.com/diballesteros/nuzlocke/master/src/assets/img/badges/earth.png"
+
+levelCap:
+  type: integer
+  description: The level of the Milestone trainer's ace Pokemon
+  example: 55

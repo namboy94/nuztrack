@@ -1,0 +1,11 @@
+get:
+  tags: [ "Information" ]
+  summary: "Get Pokedex"
+  description: "Retrieves information about all available Pokémon"
+  responses:
+    "200":
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            $ref: "../entities/pokedex.yaml#/PokedexMapping"

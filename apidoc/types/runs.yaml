@@ -1,12 +1,10 @@
 runName:
-  schema:
-    type: string
-    description: User-specified name of the Nuzlocke Run
-    example: "My first Nuzlocke"
+  type: string
+  description: User-specified name of the Nuzlocke Run
+  example: "My first Nuzlocke"
 
 runStatus:
-  schema:
-    type: string
-    enum: [ "active", "failed", "completed" ]
-    description: The current state of the nuzlocke
-    example: "active"
+  type: string
+  enum: [ "active", "failed", "completed" ]
+  description: The current state of the nuzlocke
+  example: "active"

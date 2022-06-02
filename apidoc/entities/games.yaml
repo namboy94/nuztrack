@@ -1,6 +1,5 @@
-GamesListTO:
-  required:
-    - games
-  properties:
-    games:
-      $ref: "../types/games.yaml#/gamesList/schema"
+GamesMapping:
+  type: object
+  additionalProperties:
+    $ref: "../types/games.yaml#/gameKey"
+  $ref: "../types/games.yaml#/gameMapping"

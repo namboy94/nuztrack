@@ -1,0 +1,23 @@
+gameKey:
+  name: gameKey
+  schema:
+    type: string
+  required: true
+  description: The key for a mainline Pokemon game
+  example: "FIRERED"
+
+pokedexId:
+  name: pokedexId
+  schema:
+    type: integer
+  required: true
+  description: The Pokedex ID a Pokemon
+  example: 7
+
+runId:
+  name: id
+  schema:
+    type: integer
+  required: true
+  description: The ID of a Nuzlocke run in the database
+  example: 5

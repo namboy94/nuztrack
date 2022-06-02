@@ -1,0 +1,20 @@
+get:
+  tags: [ "Information" ]
+  summary: "Get locations for game"
+  description: "Retrieves a list of locations for a game"
+  parameters:
+    - in: path
+      $ref: "../types/route_params.yaml#/gameKey"
+  responses:
+    "200":
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "../entities/locations.yaml#/LocationTO"
+    "400":
+      description: "The provided gameKey is not a valid game key"
+    "404":
+      description: "No location data for this game exists"

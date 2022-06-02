@@ -4,11 +4,7 @@ get:
   description: "Retrieves a specific Nuzlocke Run"
   parameters:
     - in: path
-      name: id
-      schema:
-        type: integer
-      required: true
-      description: The ID of the Nuzlocke run in the database
+      $ref: "../types/route_params.yaml#/runId"
   responses:
     "200":
       description: "Success"
@@ -27,11 +23,7 @@ delete:
   description: "Deletes a specific Nuzlocke Run"
   parameters:
     - in: path
-      name: id
-      schema:
-        type: integer
-      required: true
-      description: The ID of the Nuzlocke run in the database
+      $ref: "../types/route_params.yaml#/runId"
   responses:
     "200":
       description: "Success"

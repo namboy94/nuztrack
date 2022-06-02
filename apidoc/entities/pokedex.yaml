@@ -1,0 +1,48 @@
+PokedexMapping:
+  type: object
+  additionalProperties:
+    $ref: "#/PokemonSpeciesTO"
+  $ref: "../types/pokedex.yaml#/pokedexMapping"
+
+
+PokemonSpeciesTO:
+  required:
+    - name
+    - sprite
+    - types
+    - abilities
+  properties:
+    games:
+      $ref: "../types/pokedex.yaml#/name"
+    sprite:
+      $ref: "../types/pokedex.yaml#/sprite"
+    types:
+      $ref: "#/TypesTO"
+    abilities:
+      $ref: "#/AbilitiesTO"
+
+
+AbilitiesTO:
+  description: "The possible abilities of a Pokemon"
+  required:
+    - primary
+    - secondary
+    - hidden
+  properties:
+    primary:
+      $ref: "../types/pokedex.yaml#/primaryAbility"
+    secondary:
+      $ref: "../types/pokedex.yaml#/secondaryAbility"
+    hidden:
+      $ref: "../types/pokedex.yaml#/hiddenAbility"
+
+TypesTO:
+  description: "The types of a Pokemon"
+  required:
+    - primary
+    - secondary
+  properties:
+    primary:
+      $ref: "../types/pokedex.yaml#/primaryType"
+    secondary:
+      $ref: "../types/pokedex.yaml#/secondaryType"

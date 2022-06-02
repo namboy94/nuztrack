@@ -1,41 +1,13 @@
-gamesList:
-  schema:
-    type: object
-    properties:
-      key:
-        $ref: "#/gameKey/schema"
-      title:
-        $ref: "#/gameTitle/schema"
-    description: A list of keys and titles for all supported games
-    example: {
-      "red": "Red",
-      "legends_arceus": "Legends: Arceus"
-    }
-
 gameKey:
-  schema:
-    type: string
-    enum: [ "red", "blue", "green", "yellow",
-            "silver", "gold", "crystal",
-            "ruby", "sapphire", "emerald", "firered", "leafgreen",
-            "diamond", "pearl", "platinum", "heartgold", "soulsilver",
-            "black", "white", "black_2", "white_2",
-            "x", "y", "omega_ruby", "alpha_sapphire",
-            "sun", "moon", "ultra_sun", "ultra_moon",
-            "sword", "shield", "brilliant_diamond", "shining_pearl", "legends_arceus" ]
-    description: The key of a mainline Pokemon game
-    example: "brilliant_diamond"
+  type: string
+  description: The key of a mainline Pokemon game
+  example: "BRILLIANT_DIAMOND"
 
 gameTitle:
-  schema:
-    type: string
-    enum: [ "Red", "Blue", "Green", "Yellow",
-            "Silver", "Gold", "Crystal",
-            "Ruby", "Sapphire", "Emerald", "FireRed", "LeafGreen",
-            "Diamond", "Pearl", "Platinum", "HeartGold", "SoulSilver",
-            "Black", "White", "Black 2", "White 2",
-            "X", "Y", "Omega Ruby", "Alpha Sapphire",
-            "Sun", "Moon", "Ultra Sun", "Ultra Moon",
-            "Sword", "Shield", "Brilliant Diamond", "Shining Pearl", "Legends: Arceus" ]
-    description: The title of a mainline Pokemon game
-    example: "HeartGold"
+  type: string
+  description: The title of a mainline Pokemon game
+  example: "HeartGold"
+
+gameMapping:
+  description: "Game keys mapped to game titles"
+  example: { "FIRERED": "FireRed", "OMEGA_RUBY": "Omega Ruby" }

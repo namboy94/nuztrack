@@ -1,0 +1,29 @@
+LocationTO:
+  required:
+    - name
+    - encounters
+    - milestones
+  properties:
+    name:
+      $ref: "../types/locations.yaml#/locationName"
+    encounters:
+      $ref: "../types/locations.yaml#/encounterIds"
+    milestones:
+      type: array
+      items:
+        $ref: "#/MilestoneTO"
+      description: "The milestones in a location"
+
+MilestoneTO:
+  description: "A major milestone in the game, like a Gym Badge"
+  required:
+    - name
+    - image
+    - level_cap
+  properties:
+    name:
+      $ref: "../types/locations.yaml#/milestoneName"
+    image:
+      $ref: "../types/locations.yaml#/milestoneImage"
+    level_cap:
+      $ref: "../types/locations.yaml#/levelCap"
