@@ -21,6 +21,7 @@ export interface RunSelectorProps {
 }
 
 export function RunSelector(props: RunSelectorProps) {
+    console.log(JSON.stringify(props.games.keys))
 
     const [createDialogOpen, setCreateDialogOpen] = useState(false)
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)

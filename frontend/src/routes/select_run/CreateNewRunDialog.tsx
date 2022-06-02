@@ -39,7 +39,7 @@ export default function CreateNewRunDialog(props: CreateNewRunDialogProps) {
     const [submitting, setSubmitting] = useState(false)
 
     const ruleKeys: string[] = Array.from(props.rules.rules.keys());
-    const gameKeys: string[] = Array.from(props.games.games.keys());
+    const gameKeys: string[] = Array.from(props.games.keys());
 
     const createNewRun = () => {
         if (!submitting) {
@@ -90,7 +90,7 @@ export default function CreateNewRunDialog(props: CreateNewRunDialogProps) {
                 <InputLabel>Game</InputLabel>
                 <Select label="Game" fullWidth value={game} onChange={x => setGame(x.target.value)}>
                     {gameKeys.map((key: string) =>
-                        <MenuItem value={key} key={key}>{props.games.games.get(key)}</MenuItem>)
+                        <MenuItem value={key} key={key}>{props.games.get(key)}</MenuItem>)
                     }
                 </Select>
                 <FormGroup>
