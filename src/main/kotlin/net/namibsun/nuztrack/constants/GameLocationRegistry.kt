@@ -1,15 +1,12 @@
-package net.namibsun.nuztrack.constants.external
+package net.namibsun.nuztrack.constants
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import net.namibsun.nuztrack.constants.ErrorMessages
-import net.namibsun.nuztrack.constants.Games
-import net.namibsun.nuztrack.constants.NotFoundException
-import net.namibsun.nuztrack.constants.getValueOfGameTitle
+import net.namibsun.nuztrack.routes.games.GameLocationTO
 import org.springframework.core.io.ClassPathResource
 
 object GameLocationRegistry {
-    val gameLocations: Map<Games, List<GameLocationTO>>
+    private val gameLocations: Map<Games, List<GameLocationTO>>
 
     init {
         val registryFile = ClassPathResource("data/locations.json").file
@@ -17,8 +14,7 @@ object GameLocationRegistry {
         gameLocations = rawGameLocations.entries.associate { Games.valueOf(it.key.uppercase()) to it.value }
     }
 
-    fun getLocationsForGameTitle(gameString: String): List<GameLocationTO> {
-        val game = getValueOfGameTitle(gameString)
+    fun getLocationsForGame(game: Games): List<GameLocationTO> {
         return gameLocations[game] ?: throw NotFoundException(ErrorMessages.INVALID_GAME)
     }
 }

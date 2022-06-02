@@ -30,12 +30,13 @@ paths:
 
   /games:
     $ref: "./endpoints/games.yaml"
+  /games/{gameKey}/locations:
+    $ref: "./endpoints/games_gametitle_locations.yaml"
   /rules:
     $ref: "./endpoints/rules.yaml"
 
-  /info/pokedex:
-    $ref: "./endpoints/info_pokedex.yaml"
-  /info/pokedex/{pokedexId}:
-    $ref: "./endpoints/info_pokedex_pokedexId.yaml"
-  /info/locations/{gameKey}:
-    $ref: "./endpoints/info_locations_gameTitle.yaml"
+  /pokedex:
+    $ref: "./endpoints/pokedex.yaml"
+  /pokedex/{pokedexId}:
+    $ref: "./endpoints/pokedex_pokedexId.yaml"
+

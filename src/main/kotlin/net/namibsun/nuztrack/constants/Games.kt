@@ -13,12 +13,14 @@ enum class Games(val title: String) {
     SWORD("Sword"), SHIELD("Shield"),
     BRILLIANT_DIAMOND("Brilliant Diamond"), SHINING_PEARL("Shining Pearl"),
     LEGENDS_ARCEUS("Legends: Arceus");
-}
 
-fun getValueOfGameTitle(title: String): Games {
-    return try {
-        Games.valueOf(title.uppercase())
-    } catch (e: IllegalArgumentException) {
-        throw ValidationException(ErrorMessages.INVALID_GAME)
+    companion object {
+        fun valueOfWithChecks(string: String): Games {
+            try {
+                return valueOf(string.uppercase())
+            } catch (e: IllegalArgumentException) {
+                throw ValidationException(ErrorMessages.INVALID_GAME)
+            }
+        }
     }
 }

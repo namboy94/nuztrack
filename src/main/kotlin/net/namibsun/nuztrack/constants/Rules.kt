@@ -15,17 +15,20 @@ enum class Rules(val description: String) {
     NO_ITEMS_IN_BATTLE("Items may not be used in battle"),
     NO_X_ITEMS("X-Items may not be used"),
     NO_POKE_MARTS("PokéMarts may not be used"),
-    NO_POKE_CENTERS("PokéCenters nay not be used")
-}
+    NO_POKE_CENTERS("PokéCenters nay not be used");
 
-fun getValueOfRuleKey(ruleKey: String): Rules {
-    return try {
-        Rules.valueOf(ruleKey.uppercase())
-    } catch (e: IllegalArgumentException) {
-        throw ValidationException(ErrorMessages.INVALID_RULE)
+    companion object {
+        fun valueOfWithChecks(string: String): Rules {
+            try {
+                return valueOf(string.uppercase())
+            } catch (e: IllegalArgumentException) {
+                throw ValidationException(ErrorMessages.INVALID_RULE)
+            }
+        }
+
+        fun defaultRules(): List<Rules> {
+            return listOf(DEATH, ONLY_FIRST_ENCOUNTER, MUST_NICKNAME)
+        }
     }
 }
 
-fun getDefaultRules(): List<Rules> {
-    return listOf(Rules.DEATH, Rules.ONLY_FIRST_ENCOUNTER, Rules.MUST_NICKNAME)
-}
