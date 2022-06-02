@@ -1,4 +1,4 @@
-package net.namibsun.nuztrack.util
+package net.namibsun.nuztrack.constants
 
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.ResponseStatus

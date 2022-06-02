@@ -1,8 +1,8 @@
 package net.namibsun.nuztrack.routes.runs
 
+import net.namibsun.nuztrack.constants.*
 import net.namibsun.nuztrack.data.NuzlockeRun
 import net.namibsun.nuztrack.data.NuzlockeRunService
-import net.namibsun.nuztrack.util.*
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.security.Principal

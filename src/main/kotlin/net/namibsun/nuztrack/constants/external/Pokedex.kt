@@ -1,7 +1,9 @@
-package net.namibsun.nuztrack.constants
+package net.namibsun.nuztrack.constants.external
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import net.namibsun.nuztrack.constants.ErrorMessages
+import net.namibsun.nuztrack.constants.NotFoundException
 import org.springframework.core.io.ClassPathResource
 
 object Pokedex {
@@ -10,5 +12,9 @@ object Pokedex {
     init {
         val pokedexFile = ClassPathResource("data/pokemon.json").file
         pokedex = jacksonObjectMapper().readValue(pokedexFile)
+    }
+
+    fun getPokemon(pokedexId: Int): PokemonSpeciesTO {
+        return pokedex[pokedexId] ?: throw NotFoundException(ErrorMessages.INVALID_POKEMON)
     }
 }

@@ -25,17 +25,24 @@ def load_pokemon(_cachedir):
             species = pokebase.pokemon(pokedex_number)
             abilities = {1: None, 2: None, 3: None}
             for ability in species.abilities:
-                abilities[ability.slot] = ability.ability.name
+                abilities[ability.slot] = ability.ability.name.replace("-", " ").title()
             types = {1: None, 2: None}
             for _type in species.types:
-                types[_type.slot] = _type.type.name
+                types[_type.slot] = _type.type.name.upper()
 
             sprite = species.sprites.front_default
             pokemon[pokedex_number] = {
-                "abilities": abilities,
+                "abilities": {
+                    "primary": abilities[1],
+                    "secondary": abilities[2],
+                    "hidden": abilities[3],
+                },
                 "sprite": sprite,
                 "name": species.name.title(),
-                "types": types
+                "types": {
+                    "primary": types[1],
+                    "secondary": types[2]
+                }
             }
 
             with open(pokefile, "w") as f:

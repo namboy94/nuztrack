@@ -1,7 +1,7 @@
 ruleKey:
   type: string
   description: A key for a rule
-  example: "must_nickname"
+  example: "MUST_NICKNAME"
 
 ruleKeys:
   type: array
@@ -22,13 +22,13 @@ customRules:
 
 defaultRuleKeys:
   description: A list of keys for the default rules for Nuzlocke runs
-  example: [ "death", "must_nickname", "only_first_encounter" ]
+  example: [ "DEATH", "MUST_NICKNAME", "ONLY_FIRST_ENCOUNTER" ]
 
 rulesMapping:
   description: "Rule keys mapped to rule descriptions"
   example: {
-    "death": "Any Pokémon that faints is considered dead and must be released or permanently boxed",
-    "must_nickname": "Every Pokémon has to be nicknamed",
-    "only_first_encounter": "Only the first encounter on any given route may be caught",
-    "duplicate_clause": "Duplicate encounters do not count"
+    "DEATH": "Any Pokémon that faints is considered dead and must be released or permanently boxed",
+    "MUST_NICKNAME": "Every Pokémon has to be nicknamed",
+    "ONLY_FIRST_ENCOUNTER": "Only the first encounter on any given route may be caught",
+    "DUPLICATE_CLAUSE": "Duplicate encounters do not count"
   }

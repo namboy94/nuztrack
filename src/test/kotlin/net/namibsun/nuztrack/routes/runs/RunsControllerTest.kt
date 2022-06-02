@@ -1,8 +1,8 @@
 package net.namibsun.nuztrack.routes.runs
 
+import net.namibsun.nuztrack.constants.*
 import net.namibsun.nuztrack.data.NuzlockeRun
 import net.namibsun.nuztrack.data.NuzlockeRunService
-import net.namibsun.nuztrack.util.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -18,15 +18,15 @@ internal class RunsControllerTest {
     private val service: NuzlockeRunService = mock()
     private val controller = RunsController(service)
     private val exampleOne = NuzlockeRun(
-        5, userOne, "First", Games.RED, listOf(Rules.DEATH), listOf("MyRules"), RunStatus.COMPLETED
+            5, userOne, "First", Games.RED, listOf(Rules.DEATH), listOf("MyRules"), RunStatus.COMPLETED
     )
     private val exampleTwo = NuzlockeRun(
-        10, userOne, "Second", Games.YELLOW, listOf(), listOf(), RunStatus.FAILED
+            10, userOne, "Second", Games.YELLOW, listOf(), listOf(), RunStatus.FAILED
     )
     private val exampleOneTO = convertNuzlockeRunToNuzlockeRunTO(exampleOne)
     private val exampleTwoTO = convertNuzlockeRunToNuzlockeRunTO(exampleTwo)
     private val creatorOne = CreateNuzlockeRunTO(
-        exampleOne.name, exampleOne.game.title, listOf(Rules.DEATH.name.lowercase()), listOf("MyRules")
+            exampleOne.name, exampleOne.game.title, listOf(Rules.DEATH.name.lowercase()), listOf("MyRules")
     )
 
     @Test
@@ -109,7 +109,7 @@ internal class RunsControllerTest {
 
         val thrown = assertThrows<ValidationException> {
             controller.createRun(CreateNuzlockeRunTO(
-                "ABC", Games.RED.title, listOf("doesNotExist"), listOf()
+                    "ABC", Games.RED.title, listOf("doesNotExist"), listOf()
             ), principal)
         }
 

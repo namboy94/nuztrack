@@ -1,4 +1,4 @@
-package net.namibsun.nuztrack.util
+package net.namibsun.nuztrack.constants
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test

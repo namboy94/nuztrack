@@ -1,4 +1,4 @@
-package net.namibsun.nuztrack.util
+package net.namibsun.nuztrack.constants
 
 enum class Games(val title: String) {
     RED("Red"), BLUE("Blue"), GREEN("Green"), YELLOW("Yellow"),

@@ -1,6 +1,6 @@
 package net.namibsun.nuztrack.data
 
-import net.namibsun.nuztrack.util.*
+import net.namibsun.nuztrack.constants.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -14,10 +14,10 @@ class NuzlockeRunServiceTest {
     private val service = NuzlockeRunService(repository)
     private val username = "Ash"
     private val exampleOne = NuzlockeRun(
-        5, username, "First", Games.RED, listOf(Rules.DEATH), listOf("myRules"), status = RunStatus.COMPLETED
+            5, username, "First", Games.RED, listOf(Rules.DEATH), listOf("myRules"), status = RunStatus.COMPLETED
     )
     private val exampleTwo = NuzlockeRun(
-        10, username, "Second", Games.YELLOW, listOf(), listOf("myRules"), status = RunStatus.FAILED
+            10, username, "Second", Games.YELLOW, listOf(), listOf("myRules"), status = RunStatus.FAILED
     )
 
     @Test
@@ -84,11 +84,11 @@ class NuzlockeRunServiceTest {
         whenever(repository.save(any<NuzlockeRun>())).then(AdditionalAnswers.returnsFirstArg<NuzlockeRun>())
 
         val result = service.createRun(
-            exampleOne.userName,
-            exampleOne.name,
-            exampleOne.game,
-            exampleOne.rules,
-            exampleOne.customRules
+                exampleOne.userName,
+                exampleOne.name,
+                exampleOne.game,
+                exampleOne.rules,
+                exampleOne.customRules
         )
 
         assertThat(result.status).isNotEqualTo(exampleOne.status)

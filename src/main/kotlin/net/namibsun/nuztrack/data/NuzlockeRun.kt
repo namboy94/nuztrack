@@ -1,6 +1,6 @@
 package net.namibsun.nuztrack.data
 
-import net.namibsun.nuztrack.util.*
+import net.namibsun.nuztrack.constants.*
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository

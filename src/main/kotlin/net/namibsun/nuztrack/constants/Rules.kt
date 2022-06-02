@@ -1,4 +1,4 @@
-package net.namibsun.nuztrack.util
+package net.namibsun.nuztrack.constants
 
 enum class Rules(val description: String) {
     DEATH("Any Pokémon that faints is considered dead and must be released or permanently boxed"),

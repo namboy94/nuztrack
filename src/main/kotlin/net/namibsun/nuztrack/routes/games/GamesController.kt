@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class GamesController {
 
-    @GetMapping("/games")
+    @GetMapping("/api/games")
     @ResponseBody
-    fun getGames(): ResponseEntity<Map<String, String>> {
-        val gamesList = Games.values().associate { it.name.lowercase() to it.title }
+    fun getGames(): ResponseEntity<GamesListTO> {
+        val gamesList = Games.values().associate { it.name.uppercase() to it.title }
         return ResponseEntity.ok(gamesList)
     }
 }
