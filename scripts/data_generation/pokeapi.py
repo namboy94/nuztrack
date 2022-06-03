@@ -31,6 +31,8 @@ def load_pokemon(_cachedir):
                 types[_type.slot] = _type.type.name.upper()
 
             sprite = species.sprites.front_default
+            evolutions = [x.species.id for x in species.species.evolution_chain.chain.evolves_to]
+
             pokemon[pokedex_number] = {
                 "abilities": {
                     "primary": abilities[1],
@@ -42,7 +44,8 @@ def load_pokemon(_cachedir):
                 "types": {
                     "primary": types[1],
                     "secondary": types[2]
-                }
+                },
+                "evolutions": evolutions
             }
 
             with open(pokefile, "w") as f:

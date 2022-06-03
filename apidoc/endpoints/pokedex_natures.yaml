@@ -1,0 +1,13 @@
+get:
+  tags: [ "Information" ]
+  summary: "Get Natures"
+  description: "Retrieves a list of possible Pokemon natures"
+  responses:
+    "200":
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "../types/pokedex.yaml#/nature"

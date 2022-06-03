@@ -11,6 +11,7 @@ PokemonSpeciesTO:
     - sprite
     - types
     - abilities
+    - evolutions
   properties:
     games:
       $ref: "../types/pokedex.yaml#/name"
@@ -20,6 +21,8 @@ PokemonSpeciesTO:
       $ref: "#/TypesTO"
     abilities:
       $ref: "#/AbilitiesTO"
+    evolutions:
+      $ref: "../types/pokedex.yaml#/evolutions"
 
 
 AbilitiesTO:

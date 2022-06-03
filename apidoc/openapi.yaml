@@ -39,4 +39,5 @@ paths:
     $ref: "./endpoints/pokedex.yaml"
   /pokedex/{pokedexId}:
     $ref: "./endpoints/pokedex_pokedexId.yaml"
-
+  /pokedex/natures:
+    $ref: "./endpoints/pokedex_natures.yaml"

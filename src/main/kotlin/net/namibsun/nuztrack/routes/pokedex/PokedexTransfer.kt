@@ -6,8 +6,8 @@ data class PokemonSpeciesTO(
         val name: String,
         val sprite: String,
         val types: PokemonTypesTO,
-        val abilities: PokemonAbilitiesTO
-        // TODO EVOLUTIONS
+        val abilities: PokemonAbilitiesTO,
+        val evolutions: List<Int>
 )
 
 data class PokemonAbilitiesTO(val primary: String, val secondary: String?, val hidden: String?)

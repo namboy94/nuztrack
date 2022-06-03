@@ -16,8 +16,18 @@ sprite:
   description: The URL to the sprite of a Pokemon species
   example: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png"
 
+evolutions:
+  type: array
+  items:
+    type: string
+    example: 8
+    description: The Pokedex ID of a Pokemon that this Pokemon can evolve into
+  example: [ 8 ]
+  description: The Pokedex IDs of all Pokemon that this Pokemon can evolve into
+
 pokedexMapping:
   description: A mapping of Pokedex numbers to Pokemon
+  # TODO Check if this can be automated somehow
   example: {
     "7": {
       "games": "Squirtle",
@@ -30,7 +40,8 @@ pokedexMapping:
         "primary": "Torrent",
         "secondary": null,
         "hidden": "Rain Dish"
-      }
+      },
+      "evolutions": [ 8 ]
     }
   }
 
@@ -68,3 +79,8 @@ secondaryType:
   nullable: true
   description: "The secondary type of a Pokemon"
   example: null
+
+nature:
+  type: string
+  description: The nature of a Pokemon
+  example: "MODEST"
