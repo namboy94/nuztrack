@@ -28,7 +28,7 @@
             "secondary": "POISON"
         },
         "evolutions": [
-            2
+            3
         ]
     },
     "3": {
@@ -43,9 +43,7 @@
             "primary": "GRASS",
             "secondary": "POISON"
         },
-        "evolutions": [
-            2
-        ]
+        "evolutions": []
     },
     "4": {
         "abilities": {
@@ -76,7 +74,7 @@
             "secondary": null
         },
         "evolutions": [
-            5
+            6
         ]
     },
     "6": {
@@ -91,9 +89,7 @@
             "primary": "FIRE",
             "secondary": "FLYING"
         },
-        "evolutions": [
-            5
-        ]
+        "evolutions": []
     },
     "7": {
         "abilities": {
@@ -124,7 +120,7 @@
             "secondary": null
         },
         "evolutions": [
-            8
+            9
         ]
     },
     "9": {
@@ -139,9 +135,7 @@
             "primary": "WATER",
             "secondary": null
         },
-        "evolutions": [
-            8
-        ]
+        "evolutions": []
     },
     "10": {
         "abilities": {
@@ -172,7 +166,7 @@
             "secondary": null
         },
         "evolutions": [
-            11
+            12
         ]
     },
     "12": {
@@ -187,9 +181,7 @@
             "primary": "BUG",
             "secondary": "FLYING"
         },
-        "evolutions": [
-            11
-        ]
+        "evolutions": []
     },
     "13": {
         "abilities": {
@@ -220,7 +212,7 @@
             "secondary": "POISON"
         },
         "evolutions": [
-            14
+            15
         ]
     },
     "15": {
@@ -235,9 +227,7 @@
             "primary": "BUG",
             "secondary": "POISON"
         },
-        "evolutions": [
-            14
-        ]
+        "evolutions": []
     },
     "16": {
         "abilities": {
@@ -268,7 +258,7 @@
             "secondary": "FLYING"
         },
         "evolutions": [
-            17
+            18
         ]
     },
     "18": {
@@ -283,9 +273,7 @@
             "primary": "NORMAL",
             "secondary": "FLYING"
         },
-        "evolutions": [
-            17
-        ]
+        "evolutions": []
     },
     "19": {
         "abilities": {
@@ -315,9 +303,7 @@
             "primary": "NORMAL",
             "secondary": null
         },
-        "evolutions": [
-            20
-        ]
+        "evolutions": []
     },
     "21": {
         "abilities": {
@@ -347,9 +333,7 @@
             "primary": "NORMAL",
             "secondary": "FLYING"
         },
-        "evolutions": [
-            22
-        ]
+        "evolutions": []
     },
     "23": {
         "abilities": {
@@ -379,9 +363,7 @@
             "primary": "POISON",
             "secondary": null
         },
-        "evolutions": [
-            24
-        ]
+        "evolutions": []
     },
     "25": {
         "abilities": {
@@ -396,7 +378,7 @@
             "secondary": null
         },
         "evolutions": [
-            25
+            26
         ]
     },
     "26": {
@@ -411,9 +393,7 @@
             "primary": "ELECTRIC",
             "secondary": null
         },
-        "evolutions": [
-            25
-        ]
+        "evolutions": []
     },
     "27": {
         "abilities": {
@@ -443,9 +423,7 @@
             "primary": "GROUND",
             "secondary": null
         },
-        "evolutions": [
-            28
-        ]
+        "evolutions": []
     },
     "29": {
         "abilities": {
@@ -476,7 +454,7 @@
             "secondary": null
         },
         "evolutions": [
-            30
+            31
         ]
     },
     "31": {
@@ -491,9 +469,7 @@
             "primary": "POISON",
             "secondary": "GROUND"
         },
-        "evolutions": [
-            30
-        ]
+        "evolutions": []
     },
     "32": {
         "abilities": {
@@ -524,7 +500,7 @@
             "secondary": null
         },
         "evolutions": [
-            33
+            34
         ]
     },
     "34": {
@@ -539,9 +515,7 @@
             "primary": "POISON",
             "secondary": "GROUND"
         },
-        "evolutions": [
-            33
-        ]
+        "evolutions": []
     },
     "35": {
         "abilities": {
@@ -556,7 +530,7 @@
             "secondary": null
         },
         "evolutions": [
-            35
+            36
         ]
     },
     "36": {
@@ -571,9 +545,7 @@
             "primary": "FAIRY",
             "secondary": null
         },
-        "evolutions": [
-            35
-        ]
+        "evolutions": []
     },
     "37": {
         "abilities": {
@@ -603,9 +575,7 @@
             "primary": "FIRE",
             "secondary": null
         },
-        "evolutions": [
-            38
-        ]
+        "evolutions": []
     },
     "39": {
         "abilities": {
@@ -620,7 +590,7 @@
             "secondary": "FAIRY"
         },
         "evolutions": [
-            39
+            40
         ]
     },
     "40": {
@@ -635,9 +605,7 @@
             "primary": "NORMAL",
             "secondary": "FAIRY"
         },
-        "evolutions": [
-            39
-        ]
+        "evolutions": []
     },
     "41": {
         "abilities": {
@@ -668,7 +636,7 @@
             "secondary": "FLYING"
         },
         "evolutions": [
-            42
+            169
         ]
     },
     "43": {
@@ -700,7 +668,8 @@
             "secondary": "POISON"
         },
         "evolutions": [
-            44
+            45,
+            182
         ]
     },
     "45": {
@@ -715,9 +684,7 @@
             "primary": "GRASS",
             "secondary": "POISON"
         },
-        "evolutions": [
-            44
-        ]
+        "evolutions": []
     },
     "46": {
         "abilities": {
@@ -747,9 +714,7 @@
             "primary": "BUG",
             "secondary": "GRASS"
         },
-        "evolutions": [
-            47
-        ]
+        "evolutions": []
     },
     "48": {
         "abilities": {
@@ -779,9 +744,7 @@
             "primary": "BUG",
             "secondary": "POISON"
         },
-        "evolutions": [
-            49
-        ]
+        "evolutions": []
     },
     "50": {
         "abilities": {
@@ -811,9 +774,7 @@
             "primary": "GROUND",
             "secondary": null
         },
-        "evolutions": [
-            51
-        ]
+        "evolutions": []
     },
     "52": {
         "abilities": {
@@ -844,10 +805,7 @@
             "primary": "NORMAL",
             "secondary": null
         },
-        "evolutions": [
-            53,
-            863
-        ]
+        "evolutions": []
     },
     "54": {
         "abilities": {
@@ -877,9 +835,7 @@
             "primary": "WATER",
             "secondary": null
         },
-        "evolutions": [
-            55
-        ]
+        "evolutions": []
     },
     "56": {
         "abilities": {
@@ -909,9 +865,7 @@
             "primary": "FIGHTING",
             "secondary": null
         },
-        "evolutions": [
-            57
-        ]
+        "evolutions": []
     },
     "58": {
         "abilities": {
@@ -941,9 +895,7 @@
             "primary": "FIRE",
             "secondary": null
         },
-        "evolutions": [
-            59
-        ]
+        "evolutions": []
     },
     "60": {
         "abilities": {
@@ -974,7 +926,8 @@
             "secondary": null
         },
         "evolutions": [
-            61
+            62,
+            186
         ]
     },
     "62": {
@@ -989,9 +942,7 @@
             "primary": "WATER",
             "secondary": "FIGHTING"
         },
-        "evolutions": [
-            61
-        ]
+        "evolutions": []
     },
     "63": {
         "abilities": {
@@ -1022,7 +973,7 @@
             "secondary": null
         },
         "evolutions": [
-            64
+            65
         ]
     },
     "65": {
@@ -1037,9 +988,7 @@
             "primary": "PSYCHIC",
             "secondary": null
         },
-        "evolutions": [
-            64
-        ]
+        "evolutions": []
     },
     "66": {
         "abilities": {
@@ -1070,7 +1019,7 @@
             "secondary": null
         },
         "evolutions": [
-            67
+            68
         ]
     },
     "68": {
@@ -1085,9 +1034,7 @@
             "primary": "FIGHTING",
             "secondary": null
         },
-        "evolutions": [
-            67
-        ]
+        "evolutions": []
     },
     "69": {
         "abilities": {
@@ -1118,7 +1065,7 @@
             "secondary": "POISON"
         },
         "evolutions": [
-            70
+            71
         ]
     },
     "71": {
@@ -1133,9 +1080,7 @@
             "primary": "GRASS",
             "secondary": "POISON"
         },
-        "evolutions": [
-            70
-        ]
+        "evolutions": []
     },
     "72": {
         "abilities": {
@@ -1165,9 +1110,7 @@
             "primary": "WATER",
             "secondary": "POISON"
         },
-        "evolutions": [
-            73
-        ]
+        "evolutions": []
     },
     "74": {
         "abilities": {
@@ -1198,7 +1141,7 @@
             "secondary": "GROUND"
         },
         "evolutions": [
-            75
+            76
         ]
     },
     "76": {
@@ -1213,9 +1156,7 @@
             "primary": "ROCK",
             "secondary": "GROUND"
         },
-        "evolutions": [
-            75
-        ]
+        "evolutions": []
     },
     "77": {
         "abilities": {
@@ -1245,9 +1186,7 @@
             "primary": "FIRE",
             "secondary": null
         },
-        "evolutions": [
-            78
-        ]
+        "evolutions": []
     },
     "79": {
         "abilities": {
@@ -1278,10 +1217,7 @@
             "primary": "WATER",
             "secondary": "PSYCHIC"
         },
-        "evolutions": [
-            80,
-            199
-        ]
+        "evolutions": []
     },
     "81": {
         "abilities": {
@@ -1312,7 +1248,7 @@
             "secondary": "STEEL"
         },
         "evolutions": [
-            82
+            462
         ]
     },
     "83": {
@@ -1359,9 +1295,7 @@
             "primary": "NORMAL",
             "secondary": "FLYING"
         },
-        "evolutions": [
-            85
-        ]
+        "evolutions": []
     },
     "86": {
         "abilities": {
@@ -1391,9 +1325,7 @@
             "primary": "WATER",
             "secondary": "ICE"
         },
-        "evolutions": [
-            87
-        ]
+        "evolutions": []
     },
     "88": {
         "abilities": {
@@ -1423,9 +1355,7 @@
             "primary": "POISON",
             "secondary": null
         },
-        "evolutions": [
-            89
-        ]
+        "evolutions": []
     },
     "90": {
         "abilities": {
@@ -1455,9 +1385,7 @@
             "primary": "WATER",
             "secondary": "ICE"
         },
-        "evolutions": [
-            91
-        ]
+        "evolutions": []
     },
     "92": {
         "abilities": {
@@ -1488,7 +1416,7 @@
             "secondary": "POISON"
         },
         "evolutions": [
-            93
+            94
         ]
     },
     "94": {
@@ -1503,9 +1431,7 @@
             "primary": "GHOST",
             "secondary": "POISON"
         },
-        "evolutions": [
-            93
-        ]
+        "evolutions": []
     },
     "95": {
         "abilities": {
@@ -1551,9 +1477,7 @@
             "primary": "PSYCHIC",
             "secondary": null
         },
-        "evolutions": [
-            97
-        ]
+        "evolutions": []
     },
     "98": {
         "abilities": {
@@ -1583,9 +1507,7 @@
             "primary": "WATER",
             "secondary": null
         },
-        "evolutions": [
-            99
-        ]
+        "evolutions": []
     },
     "100": {
         "abilities": {
@@ -1615,9 +1537,7 @@
             "primary": "ELECTRIC",
             "secondary": null
         },
-        "evolutions": [
-            101
-        ]
+        "evolutions": []
     },
     "102": {
         "abilities": {
@@ -1647,9 +1567,7 @@
             "primary": "GRASS",
             "secondary": "PSYCHIC"
         },
-        "evolutions": [
-            103
-        ]
+        "evolutions": []
     },
     "104": {
         "abilities": {
@@ -1679,9 +1597,7 @@
             "primary": "GROUND",
             "secondary": null
         },
-        "evolutions": [
-            105
-        ]
+        "evolutions": []
     },
     "106": {
         "abilities": {
@@ -1695,11 +1611,7 @@
             "primary": "FIGHTING",
             "secondary": null
         },
-        "evolutions": [
-            106,
-            107,
-            237
-        ]
+        "evolutions": []
     },
     "107": {
         "abilities": {
@@ -1713,11 +1625,7 @@
             "primary": "FIGHTING",
             "secondary": null
         },
-        "evolutions": [
-            106,
-            107,
-            237
-        ]
+        "evolutions": []
     },
     "108": {
         "abilities": {
@@ -1763,9 +1671,7 @@
             "primary": "POISON",
             "secondary": null
         },
-        "evolutions": [
-            110
-        ]
+        "evolutions": []
     },
     "111": {
         "abilities": {
@@ -1796,7 +1702,7 @@
             "secondary": "ROCK"
         },
         "evolutions": [
-            112
+            464
         ]
     },
     "113": {
@@ -1812,7 +1718,7 @@
             "secondary": null
         },
         "evolutions": [
-            113
+            242
         ]
     },
     "114": {
@@ -1874,7 +1780,7 @@
             "secondary": null
         },
         "evolutions": [
-            117
+            230
         ]
     },
     "118": {
@@ -1905,9 +1811,7 @@
             "primary": "WATER",
             "secondary": null
         },
-        "evolutions": [
-            119
-        ]
+        "evolutions": []
     },
     "120": {
         "abilities": {
@@ -1937,9 +1841,7 @@
             "primary": "WATER",
             "secondary": "PSYCHIC"
         },
-        "evolutions": [
-            121
-        ]
+        "evolutions": []
     },
     "122": {
         "abilities": {
@@ -1954,7 +1856,7 @@
             "secondary": "FAIRY"
         },
         "evolutions": [
-            122
+            866
         ]
     },
     "123": {
@@ -1985,9 +1887,7 @@
             "primary": "ICE",
             "secondary": "PSYCHIC"
         },
-        "evolutions": [
-            124
-        ]
+        "evolutions": []
     },
     "125": {
         "abilities": {
@@ -2002,7 +1902,7 @@
             "secondary": null
         },
         "evolutions": [
-            125
+            466
         ]
     },
     "126": {
@@ -2018,7 +1918,7 @@
             "secondary": null
         },
         "evolutions": [
-            126
+            467
         ]
     },
     "127": {
@@ -2077,9 +1977,7 @@
             "primary": "WATER",
             "secondary": "FLYING"
         },
-        "evolutions": [
-            130
-        ]
+        "evolutions": []
     },
     "131": {
         "abilities": {
@@ -2144,16 +2042,7 @@
             "primary": "WATER",
             "secondary": null
         },
-        "evolutions": [
-            134,
-            135,
-            136,
-            196,
-            197,
-            470,
-            471,
-            700
-        ]
+        "evolutions": []
     },
     "135": {
         "abilities": {
@@ -2167,16 +2056,7 @@
             "primary": "ELECTRIC",
             "secondary": null
         },
-        "evolutions": [
-            134,
-            135,
-            136,
-            196,
-            197,
-            470,
-            471,
-            700
-        ]
+        "evolutions": []
     },
     "136": {
         "abilities": {
@@ -2190,16 +2070,7 @@
             "primary": "FIRE",
             "secondary": null
         },
-        "evolutions": [
-            134,
-            135,
-            136,
-            196,
-            197,
-            470,
-            471,
-            700
-        ]
+        "evolutions": []
     },
     "137": {
         "abilities": {
@@ -2245,9 +2116,7 @@
             "primary": "ROCK",
             "secondary": "WATER"
         },
-        "evolutions": [
-            139
-        ]
+        "evolutions": []
     },
     "140": {
         "abilities": {
@@ -2277,9 +2146,7 @@
             "primary": "ROCK",
             "secondary": "WATER"
         },
-        "evolutions": [
-            141
-        ]
+        "evolutions": []
     },
     "142": {
         "abilities": {
@@ -2307,9 +2174,7 @@
             "primary": "NORMAL",
             "secondary": null
         },
-        "evolutions": [
-            143
-        ]
+        "evolutions": []
     },
     "144": {
         "abilities": {
@@ -2382,7 +2247,7 @@
             "secondary": null
         },
         "evolutions": [
-            148
+            149
         ]
     },
     "149": {
@@ -2397,9 +2262,7 @@
             "primary": "DRAGON",
             "secondary": "FLYING"
         },
-        "evolutions": [
-            148
-        ]
+        "evolutions": []
     },
     "150": {
         "abilities": {
@@ -2458,7 +2321,7 @@
             "secondary": null
         },
         "evolutions": [
-            153
+            154
         ]
     },
     "154": {
@@ -2473,9 +2336,7 @@
             "primary": "GRASS",
             "secondary": null
         },
-        "evolutions": [
-            153
-        ]
+        "evolutions": []
     },
     "155": {
         "abilities": {
@@ -2506,7 +2367,7 @@
             "secondary": null
         },
         "evolutions": [
-            156
+            157
         ]
     },
     "157": {
@@ -2521,9 +2382,7 @@
             "primary": "FIRE",
             "secondary": null
         },
-        "evolutions": [
-            156
-        ]
+        "evolutions": []
     },
     "158": {
         "abilities": {
@@ -2554,7 +2413,7 @@
             "secondary": null
         },
         "evolutions": [
-            159
+            160
         ]
     },
     "160": {
@@ -2569,9 +2428,7 @@
             "primary": "WATER",
             "secondary": null
         },
-        "evolutions": [
-            159
-        ]
+        "evolutions": []
     },
     "161": {
         "abilities": {
@@ -2601,9 +2458,7 @@
             "primary": "NORMAL",
             "secondary": null
         },
-        "evolutions": [
-            162
-        ]
+        "evolutions": []
     },
     "163": {
         "abilities": {
@@ -2633,9 +2488,7 @@
             "primary": "NORMAL",
             "secondary": "FLYING"
         },
-        "evolutions": [
-            164
-        ]
+        "evolutions": []
     },
     "165": {
         "abilities": {
@@ -2665,9 +2518,7 @@
             "primary": "BUG",
             "secondary": "FLYING"
         },
-        "evolutions": [
-            166
-        ]
+        "evolutions": []
     },
     "167": {
         "abilities": {
@@ -2697,9 +2548,7 @@
             "primary": "BUG",
             "secondary": "POISON"
         },
-        "evolutions": [
-            168
-        ]
+        "evolutions": []
     },
     "169": {
         "abilities": {
@@ -2713,9 +2562,7 @@
             "primary": "POISON",
             "secondary": "FLYING"
         },
-        "evolutions": [
-            42
-        ]
+        "evolutions": []
     },
     "170": {
         "abilities": {
@@ -2745,9 +2592,7 @@
             "primary": "WATER",
             "secondary": "ELECTRIC"
         },
-        "evolutions": [
-            171
-        ]
+        "evolutions": []
     },
     "172": {
         "abilities": {
@@ -2826,7 +2671,7 @@
             "secondary": "FLYING"
         },
         "evolutions": [
-            176
+            468
         ]
     },
     "177": {
@@ -2857,9 +2702,7 @@
             "primary": "PSYCHIC",
             "secondary": "FLYING"
         },
-        "evolutions": [
-            178
-        ]
+        "evolutions": []
     },
     "179": {
         "abilities": {
@@ -2890,7 +2733,7 @@
             "secondary": null
         },
         "evolutions": [
-            180
+            181
         ]
     },
     "181": {
@@ -2905,9 +2748,7 @@
             "primary": "ELECTRIC",
             "secondary": null
         },
-        "evolutions": [
-            180
-        ]
+        "evolutions": []
     },
     "182": {
         "abilities": {
@@ -2921,9 +2762,7 @@
             "primary": "GRASS",
             "secondary": null
         },
-        "evolutions": [
-            44
-        ]
+        "evolutions": []
     },
     "183": {
         "abilities": {
@@ -2938,7 +2777,7 @@
             "secondary": "FAIRY"
         },
         "evolutions": [
-            183
+            184
         ]
     },
     "184": {
@@ -2953,9 +2792,7 @@
             "primary": "WATER",
             "secondary": "FAIRY"
         },
-        "evolutions": [
-            183
-        ]
+        "evolutions": []
     },
     "185": {
         "abilities": {
@@ -2969,9 +2806,7 @@
             "primary": "ROCK",
             "secondary": null
         },
-        "evolutions": [
-            185
-        ]
+        "evolutions": []
     },
     "186": {
         "abilities": {
@@ -2985,9 +2820,7 @@
             "primary": "WATER",
             "secondary": null
         },
-        "evolutions": [
-            61
-        ]
+        "evolutions": []
     },
     "187": {
         "abilities": {
@@ -3018,7 +2851,7 @@
             "secondary": "FLYING"
         },
         "evolutions": [
-            188
+            189
         ]
     },
     "189": {
@@ -3033,9 +2866,7 @@
             "primary": "GRASS",
             "secondary": "FLYING"
         },
-        "evolutions": [
-            188
-        ]
+        "evolutions": []
     },
     "190": {
         "abilities": {
@@ -3081,9 +2912,7 @@
             "primary": "GRASS",
             "secondary": null
         },
-        "evolutions": [
-            192
-        ]
+        "evolutions": []
     },
     "193": {
         "abilities": {
@@ -3129,9 +2958,7 @@
             "primary": "WATER",
             "secondary": "GROUND"
         },
-        "evolutions": [
-            195
-        ]
+        "evolutions": []
     },
     "196": {
         "abilities": {
@@ -3145,16 +2972,7 @@
             "primary": "PSYCHIC",
             "secondary": null
         },
-        "evolutions": [
-            134,
-            135,
-            136,
-            196,
-            197,
-            470,
-            471,
-            700
-        ]
+        "evolutions": []
     },
     "197": {
         "abilities": {
@@ -3168,16 +2986,7 @@
             "primary": "DARK",
             "secondary": null
         },
-        "evolutions": [
-            134,
-            135,
-            136,
-            196,
-            197,
-            470,
-            471,
-            700
-        ]
+        "evolutions": []
     },
     "198": {
         "abilities": {
@@ -3207,10 +3016,7 @@
             "primary": "WATER",
             "secondary": "PSYCHIC"
         },
-        "evolutions": [
-            80,
-            199
-        ]
+        "evolutions": []
     },
     "200": {
         "abilities": {
@@ -3254,9 +3060,7 @@
             "primary": "PSYCHIC",
             "secondary": null
         },
-        "evolutions": [
-            202
-        ]
+        "evolutions": []
     },
     "203": {
         "abilities": {
@@ -3300,9 +3104,7 @@
             "primary": "BUG",
             "secondary": "STEEL"
         },
-        "evolutions": [
-            205
-        ]
+        "evolutions": []
     },
     "206": {
         "abilities": {
@@ -3346,9 +3148,7 @@
             "primary": "STEEL",
             "secondary": "GROUND"
         },
-        "evolutions": [
-            208
-        ]
+        "evolutions": []
     },
     "209": {
         "abilities": {
@@ -3378,9 +3178,7 @@
             "primary": "FAIRY",
             "secondary": null
         },
-        "evolutions": [
-            210
-        ]
+        "evolutions": []
     },
     "211": {
         "abilities": {
@@ -3408,9 +3206,7 @@
             "primary": "BUG",
             "secondary": "STEEL"
         },
-        "evolutions": [
-            212
-        ]
+        "evolutions": []
     },
     "213": {
         "abilities": {
@@ -3484,9 +3280,7 @@
             "primary": "NORMAL",
             "secondary": null
         },
-        "evolutions": [
-            217
-        ]
+        "evolutions": []
     },
     "218": {
         "abilities": {
@@ -3516,9 +3310,7 @@
             "primary": "FIRE",
             "secondary": "ROCK"
         },
-        "evolutions": [
-            219
-        ]
+        "evolutions": []
     },
     "220": {
         "abilities": {
@@ -3549,7 +3341,7 @@
             "secondary": "GROUND"
         },
         "evolutions": [
-            221
+            473
         ]
     },
     "222": {
@@ -3596,9 +3388,7 @@
             "primary": "WATER",
             "secondary": null
         },
-        "evolutions": [
-            224
-        ]
+        "evolutions": []
     },
     "225": {
         "abilities": {
@@ -3626,9 +3416,7 @@
             "primary": "WATER",
             "secondary": "FLYING"
         },
-        "evolutions": [
-            226
-        ]
+        "evolutions": []
     },
     "227": {
         "abilities": {
@@ -3672,9 +3460,7 @@
             "primary": "DARK",
             "secondary": "FIRE"
         },
-        "evolutions": [
-            229
-        ]
+        "evolutions": []
     },
     "230": {
         "abilities": {
@@ -3688,9 +3474,7 @@
             "primary": "WATER",
             "secondary": "DRAGON"
         },
-        "evolutions": [
-            117
-        ]
+        "evolutions": []
     },
     "231": {
         "abilities": {
@@ -3720,9 +3504,7 @@
             "primary": "GROUND",
             "secondary": null
         },
-        "evolutions": [
-            232
-        ]
+        "evolutions": []
     },
     "233": {
         "abilities": {
@@ -3737,7 +3519,7 @@
             "secondary": null
         },
         "evolutions": [
-            233
+            474
         ]
     },
     "234": {
@@ -3798,11 +3580,7 @@
             "primary": "FIGHTING",
             "secondary": null
         },
-        "evolutions": [
-            106,
-            107,
-            237
-        ]
+        "evolutions": []
     },
     "238": {
         "abilities": {
@@ -3878,9 +3656,7 @@
             "primary": "NORMAL",
             "secondary": null
         },
-        "evolutions": [
-            113
-        ]
+        "evolutions": []
     },
     "243": {
         "abilities": {
@@ -3953,7 +3729,7 @@
             "secondary": "GROUND"
         },
         "evolutions": [
-            247
+            248
         ]
     },
     "248": {
@@ -3968,9 +3744,7 @@
             "primary": "ROCK",
             "secondary": "DARK"
         },
-        "evolutions": [
-            247
-        ]
+        "evolutions": []
     },
     "249": {
         "abilities": {
@@ -4043,7 +3817,7 @@
             "secondary": null
         },
         "evolutions": [
-            253
+            254
         ]
     },
     "254": {
@@ -4058,9 +3832,7 @@
             "primary": "GRASS",
             "secondary": null
         },
-        "evolutions": [
-            253
-        ]
+        "evolutions": []
     },
     "255": {
         "abilities": {
@@ -4091,7 +3863,7 @@
             "secondary": "FIGHTING"
         },
         "evolutions": [
-            256
+            257
         ]
     },
     "257": {
@@ -4106,9 +3878,7 @@
             "primary": "FIRE",
             "secondary": "FIGHTING"
         },
-        "evolutions": [
-            256
-        ]
+        "evolutions": []
     },
     "258": {
         "abilities": {
@@ -4139,7 +3909,7 @@
             "secondary": "GROUND"
         },
         "evolutions": [
-            259
+            260
         ]
     },
     "260": {
@@ -4154,9 +3924,7 @@
             "primary": "WATER",
             "secondary": "GROUND"
         },
-        "evolutions": [
-            259
-        ]
+        "evolutions": []
     },
     "261": {
         "abilities": {
@@ -4186,9 +3954,7 @@
             "primary": "DARK",
             "secondary": null
         },
-        "evolutions": [
-            262
-        ]
+        "evolutions": []
     },
     "263": {
         "abilities": {
@@ -4219,7 +3985,7 @@
             "secondary": null
         },
         "evolutions": [
-            264
+            862
         ]
     },
     "265": {
@@ -4252,8 +4018,7 @@
             "secondary": null
         },
         "evolutions": [
-            266,
-            268
+            267
         ]
     },
     "267": {
@@ -4268,10 +4033,7 @@
             "primary": "BUG",
             "secondary": "FLYING"
         },
-        "evolutions": [
-            266,
-            268
-        ]
+        "evolutions": []
     },
     "268": {
         "abilities": {
@@ -4286,8 +4048,7 @@
             "secondary": null
         },
         "evolutions": [
-            266,
-            268
+            269
         ]
     },
     "269": {
@@ -4302,10 +4063,7 @@
             "primary": "BUG",
             "secondary": "POISON"
         },
-        "evolutions": [
-            266,
-            268
-        ]
+        "evolutions": []
     },
     "270": {
         "abilities": {
@@ -4336,7 +4094,7 @@
             "secondary": "GRASS"
         },
         "evolutions": [
-            271
+            272
         ]
     },
     "272": {
@@ -4351,9 +4109,7 @@
             "primary": "WATER",
             "secondary": "GRASS"
         },
-        "evolutions": [
-            271
-        ]
+        "evolutions": []
     },
     "273": {
         "abilities": {
@@ -4384,7 +4140,7 @@
             "secondary": "DARK"
         },
         "evolutions": [
-            274
+            275
         ]
     },
     "275": {
@@ -4399,9 +4155,7 @@
             "primary": "GRASS",
             "secondary": "DARK"
         },
-        "evolutions": [
-            274
-        ]
+        "evolutions": []
     },
     "276": {
         "abilities": {
@@ -4431,9 +4185,7 @@
             "primary": "NORMAL",
             "secondary": "FLYING"
         },
-        "evolutions": [
-            277
-        ]
+        "evolutions": []
     },
     "278": {
         "abilities": {
@@ -4463,9 +4215,7 @@
             "primary": "WATER",
             "secondary": "FLYING"
         },
-        "evolutions": [
-            279
-        ]
+        "evolutions": []
     },
     "280": {
         "abilities": {
@@ -4496,7 +4246,8 @@
             "secondary": "FAIRY"
         },
         "evolutions": [
-            281
+            282,
+            475
         ]
     },
     "282": {
@@ -4511,9 +4262,7 @@
             "primary": "PSYCHIC",
             "secondary": "FAIRY"
         },
-        "evolutions": [
-            281
-        ]
+        "evolutions": []
     },
     "283": {
         "abilities": {
@@ -4543,9 +4292,7 @@
             "primary": "BUG",
             "secondary": "FLYING"
         },
-        "evolutions": [
-            284
-        ]
+        "evolutions": []
     },
     "285": {
         "abilities": {
@@ -4575,9 +4322,7 @@
             "primary": "GRASS",
             "secondary": "FIGHTING"
         },
-        "evolutions": [
-            286
-        ]
+        "evolutions": []
     },
     "287": {
         "abilities": {
@@ -4608,7 +4353,7 @@
             "secondary": null
         },
         "evolutions": [
-            288
+            289
         ]
     },
     "289": {
@@ -4623,9 +4368,7 @@
             "primary": "NORMAL",
             "secondary": null
         },
-        "evolutions": [
-            288
-        ]
+        "evolutions": []
     },
     "290": {
         "abilities": {
@@ -4656,10 +4399,7 @@
             "primary": "BUG",
             "secondary": "FLYING"
         },
-        "evolutions": [
-            291,
-            292
-        ]
+        "evolutions": []
     },
     "292": {
         "abilities": {
@@ -4673,10 +4413,7 @@
             "primary": "BUG",
             "secondary": "GHOST"
         },
-        "evolutions": [
-            291,
-            292
-        ]
+        "evolutions": []
     },
     "293": {
         "abilities": {
@@ -4707,7 +4444,7 @@
             "secondary": null
         },
         "evolutions": [
-            294
+            295
         ]
     },
     "295": {
@@ -4722,9 +4459,7 @@
             "primary": "NORMAL",
             "secondary": null
         },
-        "evolutions": [
-            294
-        ]
+        "evolutions": []
     },
     "296": {
         "abilities": {
@@ -4754,9 +4489,7 @@
             "primary": "FIGHTING",
             "secondary": null
         },
-        "evolutions": [
-            297
-        ]
+        "evolutions": []
     },
     "298": {
         "abilities": {
@@ -4818,9 +4551,7 @@
             "primary": "NORMAL",
             "secondary": null
         },
-        "evolutions": [
-            301
-        ]
+        "evolutions": []
     },
     "302": {
         "abilities": {
@@ -4879,7 +4610,7 @@
             "secondary": "ROCK"
         },
         "evolutions": [
-            305
+            306
         ]
     },
     "306": {
@@ -4894,9 +4625,7 @@
             "primary": "STEEL",
             "secondary": "ROCK"
         },
-        "evolutions": [
-            305
-        ]
+        "evolutions": []
     },
     "307": {
         "abilities": {
@@ -4926,9 +4655,7 @@
             "primary": "FIGHTING",
             "secondary": "PSYCHIC"
         },
-        "evolutions": [
-            308
-        ]
+        "evolutions": []
     },
     "309": {
         "abilities": {
@@ -4958,9 +4685,7 @@
             "primary": "ELECTRIC",
             "secondary": null
         },
-        "evolutions": [
-            310
-        ]
+        "evolutions": []
     },
     "311": {
         "abilities": {
@@ -5031,7 +4756,7 @@
             "secondary": "POISON"
         },
         "evolutions": [
-            315
+            407
         ]
     },
     "316": {
@@ -5062,9 +4787,7 @@
             "primary": "POISON",
             "secondary": null
         },
-        "evolutions": [
-            317
-        ]
+        "evolutions": []
     },
     "318": {
         "abilities": {
@@ -5094,9 +4817,7 @@
             "primary": "WATER",
             "secondary": "DARK"
         },
-        "evolutions": [
-            319
-        ]
+        "evolutions": []
     },
     "320": {
         "abilities": {
@@ -5126,9 +4847,7 @@
             "primary": "WATER",
             "secondary": null
         },
-        "evolutions": [
-            321
-        ]
+        "evolutions": []
     },
     "322": {
         "abilities": {
@@ -5158,9 +4877,7 @@
             "primary": "FIRE",
             "secondary": "GROUND"
         },
-        "evolutions": [
-            323
-        ]
+        "evolutions": []
     },
     "324": {
         "abilities": {
@@ -5204,9 +4921,7 @@
             "primary": "PSYCHIC",
             "secondary": null
         },
-        "evolutions": [
-            326
-        ]
+        "evolutions": []
     },
     "327": {
         "abilities": {
@@ -5251,7 +4966,7 @@
             "secondary": "DRAGON"
         },
         "evolutions": [
-            329
+            330
         ]
     },
     "330": {
@@ -5266,9 +4981,7 @@
             "primary": "GROUND",
             "secondary": "DRAGON"
         },
-        "evolutions": [
-            329
-        ]
+        "evolutions": []
     },
     "331": {
         "abilities": {
@@ -5298,9 +5011,7 @@
             "primary": "GRASS",
             "secondary": "DARK"
         },
-        "evolutions": [
-            332
-        ]
+        "evolutions": []
     },
     "333": {
         "abilities": {
@@ -5330,9 +5041,7 @@
             "primary": "DRAGON",
             "secondary": "FLYING"
         },
-        "evolutions": [
-            334
-        ]
+        "evolutions": []
     },
     "335": {
         "abilities": {
@@ -5418,9 +5127,7 @@
             "primary": "WATER",
             "secondary": "GROUND"
         },
-        "evolutions": [
-            340
-        ]
+        "evolutions": []
     },
     "341": {
         "abilities": {
@@ -5450,9 +5157,7 @@
             "primary": "WATER",
             "secondary": "DARK"
         },
-        "evolutions": [
-            342
-        ]
+        "evolutions": []
     },
     "343": {
         "abilities": {
@@ -5482,9 +5187,7 @@
             "primary": "GROUND",
             "secondary": "PSYCHIC"
         },
-        "evolutions": [
-            344
-        ]
+        "evolutions": []
     },
     "345": {
         "abilities": {
@@ -5514,9 +5217,7 @@
             "primary": "ROCK",
             "secondary": "GRASS"
         },
-        "evolutions": [
-            346
-        ]
+        "evolutions": []
     },
     "347": {
         "abilities": {
@@ -5546,9 +5247,7 @@
             "primary": "ROCK",
             "secondary": "BUG"
         },
-        "evolutions": [
-            348
-        ]
+        "evolutions": []
     },
     "349": {
         "abilities": {
@@ -5578,9 +5277,7 @@
             "primary": "WATER",
             "secondary": null
         },
-        "evolutions": [
-            350
-        ]
+        "evolutions": []
     },
     "351": {
         "abilities": {
@@ -5638,9 +5335,7 @@
             "primary": "GHOST",
             "secondary": null
         },
-        "evolutions": [
-            354
-        ]
+        "evolutions": []
     },
     "355": {
         "abilities": {
@@ -5671,7 +5366,7 @@
             "secondary": null
         },
         "evolutions": [
-            356
+            477
         ]
     },
     "357": {
@@ -5700,9 +5395,7 @@
             "primary": "PSYCHIC",
             "secondary": null
         },
-        "evolutions": [
-            358
-        ]
+        "evolutions": []
     },
     "359": {
         "abilities": {
@@ -5763,10 +5456,7 @@
             "primary": "ICE",
             "secondary": null
         },
-        "evolutions": [
-            362,
-            478
-        ]
+        "evolutions": []
     },
     "363": {
         "abilities": {
@@ -5797,7 +5487,7 @@
             "secondary": "WATER"
         },
         "evolutions": [
-            364
+            365
         ]
     },
     "365": {
@@ -5812,9 +5502,7 @@
             "primary": "ICE",
             "secondary": "WATER"
         },
-        "evolutions": [
-            364
-        ]
+        "evolutions": []
     },
     "366": {
         "abilities": {
@@ -5845,10 +5533,7 @@
             "primary": "WATER",
             "secondary": null
         },
-        "evolutions": [
-            367,
-            368
-        ]
+        "evolutions": []
     },
     "368": {
         "abilities": {
@@ -5862,10 +5547,7 @@
             "primary": "WATER",
             "secondary": null
         },
-        "evolutions": [
-            367,
-            368
-        ]
+        "evolutions": []
     },
     "369": {
         "abilities": {
@@ -5924,7 +5606,7 @@
             "secondary": null
         },
         "evolutions": [
-            372
+            373
         ]
     },
     "373": {
@@ -5939,9 +5621,7 @@
             "primary": "DRAGON",
             "secondary": "FLYING"
         },
-        "evolutions": [
-            372
-        ]
+        "evolutions": []
     },
     "374": {
         "abilities": {
@@ -5972,7 +5652,7 @@
             "secondary": "PSYCHIC"
         },
         "evolutions": [
-            375
+            376
         ]
     },
     "376": {
@@ -5987,9 +5667,7 @@
             "primary": "STEEL",
             "secondary": "PSYCHIC"
         },
-        "evolutions": [
-            375
-        ]
+        "evolutions": []
     },
     "377": {
         "abilities": {
@@ -6160,7 +5838,7 @@
             "secondary": null
         },
         "evolutions": [
-            388
+            389
         ]
     },
     "389": {
@@ -6175,9 +5853,7 @@
             "primary": "GRASS",
             "secondary": "GROUND"
         },
-        "evolutions": [
-            388
-        ]
+        "evolutions": []
     },
     "390": {
         "abilities": {
@@ -6208,7 +5884,7 @@
             "secondary": "FIGHTING"
         },
         "evolutions": [
-            391
+            392
         ]
     },
     "392": {
@@ -6223,9 +5899,7 @@
             "primary": "FIRE",
             "secondary": "FIGHTING"
         },
-        "evolutions": [
-            391
-        ]
+        "evolutions": []
     },
     "393": {
         "abilities": {
@@ -6256,7 +5930,7 @@
             "secondary": null
         },
         "evolutions": [
-            394
+            395
         ]
     },
     "395": {
@@ -6271,9 +5945,7 @@
             "primary": "WATER",
             "secondary": "STEEL"
         },
-        "evolutions": [
-            394
-        ]
+        "evolutions": []
     },
     "396": {
         "abilities": {
@@ -6304,7 +5976,7 @@
             "secondary": "FLYING"
         },
         "evolutions": [
-            397
+            398
         ]
     },
     "398": {
@@ -6319,9 +5991,7 @@
             "primary": "NORMAL",
             "secondary": "FLYING"
         },
-        "evolutions": [
-            397
-        ]
+        "evolutions": []
     },
     "399": {
         "abilities": {
@@ -6351,9 +6021,7 @@
             "primary": "NORMAL",
             "secondary": "WATER"
         },
-        "evolutions": [
-            400
-        ]
+        "evolutions": []
     },
     "401": {
         "abilities": {
@@ -6383,9 +6051,7 @@
             "primary": "BUG",
             "secondary": null
         },
-        "evolutions": [
-            402
-        ]
+        "evolutions": []
     },
     "403": {
         "abilities": {
@@ -6416,7 +6082,7 @@
             "secondary": null
         },
         "evolutions": [
-            404
+            405
         ]
     },
     "405": {
@@ -6431,9 +6097,7 @@
             "primary": "ELECTRIC",
             "secondary": null
         },
-        "evolutions": [
-            404
-        ]
+        "evolutions": []
     },
     "406": {
         "abilities": {
@@ -6463,9 +6127,7 @@
             "primary": "GRASS",
             "secondary": "POISON"
         },
-        "evolutions": [
-            315
-        ]
+        "evolutions": []
     },
     "408": {
         "abilities": {
@@ -6495,9 +6157,7 @@
             "primary": "ROCK",
             "secondary": null
         },
-        "evolutions": [
-            409
-        ]
+        "evolutions": []
     },
     "410": {
         "abilities": {
@@ -6527,9 +6187,7 @@
             "primary": "ROCK",
             "secondary": "STEEL"
         },
-        "evolutions": [
-            411
-        ]
+        "evolutions": []
     },
     "412": {
         "abilities": {
@@ -6560,10 +6218,7 @@
             "primary": "BUG",
             "secondary": "GRASS"
         },
-        "evolutions": [
-            413,
-            414
-        ]
+        "evolutions": []
     },
     "414": {
         "abilities": {
@@ -6577,10 +6232,7 @@
             "primary": "BUG",
             "secondary": "FLYING"
         },
-        "evolutions": [
-            413,
-            414
-        ]
+        "evolutions": []
     },
     "415": {
         "abilities": {
@@ -6610,9 +6262,7 @@
             "primary": "BUG",
             "secondary": "FLYING"
         },
-        "evolutions": [
-            416
-        ]
+        "evolutions": []
     },
     "417": {
         "abilities": {
@@ -6656,9 +6306,7 @@
             "primary": "WATER",
             "secondary": null
         },
-        "evolutions": [
-            419
-        ]
+        "evolutions": []
     },
     "420": {
         "abilities": {
@@ -6688,9 +6336,7 @@
             "primary": "GRASS",
             "secondary": null
         },
-        "evolutions": [
-            421
-        ]
+        "evolutions": []
     },
     "422": {
         "abilities": {
@@ -6720,9 +6366,7 @@
             "primary": "WATER",
             "secondary": "GROUND"
         },
-        "evolutions": [
-            423
-        ]
+        "evolutions": []
     },
     "424": {
         "abilities": {
@@ -6736,9 +6380,7 @@
             "primary": "NORMAL",
             "secondary": null
         },
-        "evolutions": [
-            424
-        ]
+        "evolutions": []
     },
     "425": {
         "abilities": {
@@ -6768,9 +6410,7 @@
             "primary": "GHOST",
             "secondary": "FLYING"
         },
-        "evolutions": [
-            426
-        ]
+        "evolutions": []
     },
     "427": {
         "abilities": {
@@ -6800,9 +6440,7 @@
             "primary": "NORMAL",
             "secondary": null
         },
-        "evolutions": [
-            428
-        ]
+        "evolutions": []
     },
     "429": {
         "abilities": {
@@ -6816,9 +6454,7 @@
             "primary": "GHOST",
             "secondary": null
         },
-        "evolutions": [
-            429
-        ]
+        "evolutions": []
     },
     "430": {
         "abilities": {
@@ -6832,9 +6468,7 @@
             "primary": "DARK",
             "secondary": "FLYING"
         },
-        "evolutions": [
-            430
-        ]
+        "evolutions": []
     },
     "431": {
         "abilities": {
@@ -6864,9 +6498,7 @@
             "primary": "NORMAL",
             "secondary": null
         },
-        "evolutions": [
-            432
-        ]
+        "evolutions": []
     },
     "433": {
         "abilities": {
@@ -6912,9 +6544,7 @@
             "primary": "POISON",
             "secondary": "DARK"
         },
-        "evolutions": [
-            435
-        ]
+        "evolutions": []
     },
     "436": {
         "abilities": {
@@ -6944,9 +6574,7 @@
             "primary": "STEEL",
             "secondary": "PSYCHIC"
         },
-        "evolutions": [
-            437
-        ]
+        "evolutions": []
     },
     "438": {
         "abilities": {
@@ -7053,7 +6681,7 @@
             "secondary": "GROUND"
         },
         "evolutions": [
-            444
+            445
         ]
     },
     "445": {
@@ -7068,9 +6696,7 @@
             "primary": "DRAGON",
             "secondary": "GROUND"
         },
-        "evolutions": [
-            444
-        ]
+        "evolutions": []
     },
     "446": {
         "abilities": {
@@ -7116,9 +6742,7 @@
             "primary": "FIGHTING",
             "secondary": "STEEL"
         },
-        "evolutions": [
-            448
-        ]
+        "evolutions": []
     },
     "449": {
         "abilities": {
@@ -7148,9 +6772,7 @@
             "primary": "GROUND",
             "secondary": null
         },
-        "evolutions": [
-            450
-        ]
+        "evolutions": []
     },
     "451": {
         "abilities": {
@@ -7180,9 +6802,7 @@
             "primary": "POISON",
             "secondary": "DARK"
         },
-        "evolutions": [
-            452
-        ]
+        "evolutions": []
     },
     "453": {
         "abilities": {
@@ -7212,9 +6832,7 @@
             "primary": "POISON",
             "secondary": "FIGHTING"
         },
-        "evolutions": [
-            454
-        ]
+        "evolutions": []
     },
     "455": {
         "abilities": {
@@ -7258,9 +6876,7 @@
             "primary": "WATER",
             "secondary": null
         },
-        "evolutions": [
-            457
-        ]
+        "evolutions": []
     },
     "458": {
         "abilities": {
@@ -7306,9 +6922,7 @@
             "primary": "GRASS",
             "secondary": "ICE"
         },
-        "evolutions": [
-            460
-        ]
+        "evolutions": []
     },
     "461": {
         "abilities": {
@@ -7322,9 +6936,7 @@
             "primary": "DARK",
             "secondary": "ICE"
         },
-        "evolutions": [
-            461
-        ]
+        "evolutions": []
     },
     "462": {
         "abilities": {
@@ -7338,9 +6950,7 @@
             "primary": "ELECTRIC",
             "secondary": "STEEL"
         },
-        "evolutions": [
-            82
-        ]
+        "evolutions": []
     },
     "463": {
         "abilities": {
@@ -7354,9 +6964,7 @@
             "primary": "NORMAL",
             "secondary": null
         },
-        "evolutions": [
-            463
-        ]
+        "evolutions": []
     },
     "464": {
         "abilities": {
@@ -7370,9 +6978,7 @@
             "primary": "GROUND",
             "secondary": "ROCK"
         },
-        "evolutions": [
-            112
-        ]
+        "evolutions": []
     },
     "465": {
         "abilities": {
@@ -7386,9 +6992,7 @@
             "primary": "GRASS",
             "secondary": null
         },
-        "evolutions": [
-            465
-        ]
+        "evolutions": []
     },
     "466": {
         "abilities": {
@@ -7402,9 +7006,7 @@
             "primary": "ELECTRIC",
             "secondary": null
         },
-        "evolutions": [
-            125
-        ]
+        "evolutions": []
     },
     "467": {
         "abilities": {
@@ -7418,9 +7020,7 @@
             "primary": "FIRE",
             "secondary": null
         },
-        "evolutions": [
-            126
-        ]
+        "evolutions": []
     },
     "468": {
         "abilities": {
@@ -7434,9 +7034,7 @@
             "primary": "FAIRY",
             "secondary": "FLYING"
         },
-        "evolutions": [
-            176
-        ]
+        "evolutions": []
     },
     "469": {
         "abilities": {
@@ -7450,9 +7048,7 @@
             "primary": "BUG",
             "secondary": "FLYING"
         },
-        "evolutions": [
-            469
-        ]
+        "evolutions": []
     },
     "470": {
         "abilities": {
@@ -7466,16 +7062,7 @@
             "primary": "GRASS",
             "secondary": null
         },
-        "evolutions": [
-            134,
-            135,
-            136,
-            196,
-            197,
-            470,
-            471,
-            700
-        ]
+        "evolutions": []
     },
     "471": {
         "abilities": {
@@ -7489,16 +7076,7 @@
             "primary": "ICE",
             "secondary": null
         },
-        "evolutions": [
-            134,
-            135,
-            136,
-            196,
-            197,
-            470,
-            471,
-            700
-        ]
+        "evolutions": []
     },
     "472": {
         "abilities": {
@@ -7512,9 +7090,7 @@
             "primary": "GROUND",
             "secondary": "FLYING"
         },
-        "evolutions": [
-            472
-        ]
+        "evolutions": []
     },
     "473": {
         "abilities": {
@@ -7528,9 +7104,7 @@
             "primary": "ICE",
             "secondary": "GROUND"
         },
-        "evolutions": [
-            221
-        ]
+        "evolutions": []
     },
     "474": {
         "abilities": {
@@ -7544,9 +7118,7 @@
             "primary": "NORMAL",
             "secondary": null
         },
-        "evolutions": [
-            233
-        ]
+        "evolutions": []
     },
     "475": {
         "abilities": {
@@ -7560,9 +7132,7 @@
             "primary": "PSYCHIC",
             "secondary": "FIGHTING"
         },
-        "evolutions": [
-            281
-        ]
+        "evolutions": []
     },
     "476": {
         "abilities": {
@@ -7576,9 +7146,7 @@
             "primary": "ROCK",
             "secondary": "STEEL"
         },
-        "evolutions": [
-            476
-        ]
+        "evolutions": []
     },
     "477": {
         "abilities": {
@@ -7592,9 +7160,7 @@
             "primary": "GHOST",
             "secondary": null
         },
-        "evolutions": [
-            356
-        ]
+        "evolutions": []
     },
     "478": {
         "abilities": {
@@ -7608,10 +7174,7 @@
             "primary": "ICE",
             "secondary": "GHOST"
         },
-        "evolutions": [
-            362,
-            478
-        ]
+        "evolutions": []
     },
     "479": {
         "abilities": {
@@ -7781,9 +7344,7 @@
             "primary": "WATER",
             "secondary": null
         },
-        "evolutions": [
-            490
-        ]
+        "evolutions": []
     },
     "491": {
         "abilities": {
@@ -7870,7 +7431,7 @@
             "secondary": null
         },
         "evolutions": [
-            496
+            497
         ]
     },
     "497": {
@@ -7885,9 +7446,7 @@
             "primary": "GRASS",
             "secondary": null
         },
-        "evolutions": [
-            496
-        ]
+        "evolutions": []
     },
     "498": {
         "abilities": {
@@ -7918,7 +7477,7 @@
             "secondary": "FIGHTING"
         },
         "evolutions": [
-            499
+            500
         ]
     },
     "500": {
@@ -7933,9 +7492,7 @@
             "primary": "FIRE",
             "secondary": "FIGHTING"
         },
-        "evolutions": [
-            499
-        ]
+        "evolutions": []
     },
     "501": {
         "abilities": {
@@ -7966,7 +7523,7 @@
             "secondary": null
         },
         "evolutions": [
-            502
+            503
         ]
     },
     "503": {
@@ -7981,9 +7538,7 @@
             "primary": "WATER",
             "secondary": null
         },
-        "evolutions": [
-            502
-        ]
+        "evolutions": []
     },
     "504": {
         "abilities": {
@@ -8013,9 +7568,7 @@
             "primary": "NORMAL",
             "secondary": null
         },
-        "evolutions": [
-            505
-        ]
+        "evolutions": []
     },
     "506": {
         "abilities": {
@@ -8046,7 +7599,7 @@
             "secondary": null
         },
         "evolutions": [
-            507
+            508
         ]
     },
     "508": {
@@ -8061,9 +7614,7 @@
             "primary": "NORMAL",
             "secondary": null
         },
-        "evolutions": [
-            507
-        ]
+        "evolutions": []
     },
     "509": {
         "abilities": {
@@ -8093,9 +7644,7 @@
             "primary": "DARK",
             "secondary": null
         },
-        "evolutions": [
-            510
-        ]
+        "evolutions": []
     },
     "511": {
         "abilities": {
@@ -8125,9 +7674,7 @@
             "primary": "GRASS",
             "secondary": null
         },
-        "evolutions": [
-            512
-        ]
+        "evolutions": []
     },
     "513": {
         "abilities": {
@@ -8157,9 +7704,7 @@
             "primary": "FIRE",
             "secondary": null
         },
-        "evolutions": [
-            514
-        ]
+        "evolutions": []
     },
     "515": {
         "abilities": {
@@ -8189,9 +7734,7 @@
             "primary": "WATER",
             "secondary": null
         },
-        "evolutions": [
-            516
-        ]
+        "evolutions": []
     },
     "517": {
         "abilities": {
@@ -8221,9 +7764,7 @@
             "primary": "PSYCHIC",
             "secondary": null
         },
-        "evolutions": [
-            518
-        ]
+        "evolutions": []
     },
     "519": {
         "abilities": {
@@ -8254,7 +7795,7 @@
             "secondary": "FLYING"
         },
         "evolutions": [
-            520
+            521
         ]
     },
     "521": {
@@ -8269,9 +7810,7 @@
             "primary": "NORMAL",
             "secondary": "FLYING"
         },
-        "evolutions": [
-            520
-        ]
+        "evolutions": []
     },
     "522": {
         "abilities": {
@@ -8301,9 +7840,7 @@
             "primary": "ELECTRIC",
             "secondary": null
         },
-        "evolutions": [
-            523
-        ]
+        "evolutions": []
     },
     "524": {
         "abilities": {
@@ -8334,7 +7871,7 @@
             "secondary": null
         },
         "evolutions": [
-            525
+            526
         ]
     },
     "526": {
@@ -8349,9 +7886,7 @@
             "primary": "ROCK",
             "secondary": null
         },
-        "evolutions": [
-            525
-        ]
+        "evolutions": []
     },
     "527": {
         "abilities": {
@@ -8381,9 +7916,7 @@
             "primary": "PSYCHIC",
             "secondary": "FLYING"
         },
-        "evolutions": [
-            528
-        ]
+        "evolutions": []
     },
     "529": {
         "abilities": {
@@ -8413,9 +7946,7 @@
             "primary": "GROUND",
             "secondary": "STEEL"
         },
-        "evolutions": [
-            530
-        ]
+        "evolutions": []
     },
     "531": {
         "abilities": {
@@ -8460,7 +7991,7 @@
             "secondary": null
         },
         "evolutions": [
-            533
+            534
         ]
     },
     "534": {
@@ -8475,9 +8006,7 @@
             "primary": "FIGHTING",
             "secondary": null
         },
-        "evolutions": [
-            533
-        ]
+        "evolutions": []
     },
     "535": {
         "abilities": {
@@ -8508,7 +8037,7 @@
             "secondary": "GROUND"
         },
         "evolutions": [
-            536
+            537
         ]
     },
     "537": {
@@ -8523,9 +8052,7 @@
             "primary": "WATER",
             "secondary": "GROUND"
         },
-        "evolutions": [
-            536
-        ]
+        "evolutions": []
     },
     "538": {
         "abilities": {
@@ -8584,7 +8111,7 @@
             "secondary": "GRASS"
         },
         "evolutions": [
-            541
+            542
         ]
     },
     "542": {
@@ -8599,9 +8126,7 @@
             "primary": "BUG",
             "secondary": "GRASS"
         },
-        "evolutions": [
-            541
-        ]
+        "evolutions": []
     },
     "543": {
         "abilities": {
@@ -8632,7 +8157,7 @@
             "secondary": "POISON"
         },
         "evolutions": [
-            544
+            545
         ]
     },
     "545": {
@@ -8647,9 +8172,7 @@
             "primary": "BUG",
             "secondary": "POISON"
         },
-        "evolutions": [
-            544
-        ]
+        "evolutions": []
     },
     "546": {
         "abilities": {
@@ -8679,9 +8202,7 @@
             "primary": "GRASS",
             "secondary": "FAIRY"
         },
-        "evolutions": [
-            547
-        ]
+        "evolutions": []
     },
     "548": {
         "abilities": {
@@ -8711,9 +8232,7 @@
             "primary": "GRASS",
             "secondary": null
         },
-        "evolutions": [
-            549
-        ]
+        "evolutions": []
     },
     "550": {
         "abilities": {
@@ -8758,7 +8277,7 @@
             "secondary": "DARK"
         },
         "evolutions": [
-            552
+            553
         ]
     },
     "553": {
@@ -8773,9 +8292,7 @@
             "primary": "GROUND",
             "secondary": "DARK"
         },
-        "evolutions": [
-            552
-        ]
+        "evolutions": []
     },
     "554": {
         "abilities": {
@@ -8805,9 +8322,7 @@
             "primary": "FIRE",
             "secondary": null
         },
-        "evolutions": [
-            555
-        ]
+        "evolutions": []
     },
     "556": {
         "abilities": {
@@ -8851,9 +8366,7 @@
             "primary": "BUG",
             "secondary": "ROCK"
         },
-        "evolutions": [
-            558
-        ]
+        "evolutions": []
     },
     "559": {
         "abilities": {
@@ -8883,9 +8396,7 @@
             "primary": "DARK",
             "secondary": "FIGHTING"
         },
-        "evolutions": [
-            560
-        ]
+        "evolutions": []
     },
     "561": {
         "abilities": {
@@ -8930,10 +8441,7 @@
             "primary": "GHOST",
             "secondary": null
         },
-        "evolutions": [
-            563,
-            867
-        ]
+        "evolutions": []
     },
     "564": {
         "abilities": {
@@ -8963,9 +8471,7 @@
             "primary": "WATER",
             "secondary": "ROCK"
         },
-        "evolutions": [
-            565
-        ]
+        "evolutions": []
     },
     "566": {
         "abilities": {
@@ -8995,9 +8501,7 @@
             "primary": "ROCK",
             "secondary": "FLYING"
         },
-        "evolutions": [
-            567
-        ]
+        "evolutions": []
     },
     "568": {
         "abilities": {
@@ -9027,9 +8531,7 @@
             "primary": "POISON",
             "secondary": null
         },
-        "evolutions": [
-            569
-        ]
+        "evolutions": []
     },
     "570": {
         "abilities": {
@@ -9059,9 +8561,7 @@
             "primary": "DARK",
             "secondary": null
         },
-        "evolutions": [
-            571
-        ]
+        "evolutions": []
     },
     "572": {
         "abilities": {
@@ -9091,9 +8591,7 @@
             "primary": "NORMAL",
             "secondary": null
         },
-        "evolutions": [
-            573
-        ]
+        "evolutions": []
     },
     "574": {
         "abilities": {
@@ -9124,7 +8622,7 @@
             "secondary": null
         },
         "evolutions": [
-            575
+            576
         ]
     },
     "576": {
@@ -9139,9 +8637,7 @@
             "primary": "PSYCHIC",
             "secondary": null
         },
-        "evolutions": [
-            575
-        ]
+        "evolutions": []
     },
     "577": {
         "abilities": {
@@ -9172,7 +8668,7 @@
             "secondary": null
         },
         "evolutions": [
-            578
+            579
         ]
     },
     "579": {
@@ -9187,9 +8683,7 @@
             "primary": "PSYCHIC",
             "secondary": null
         },
-        "evolutions": [
-            578
-        ]
+        "evolutions": []
     },
     "580": {
         "abilities": {
@@ -9219,9 +8713,7 @@
             "primary": "WATER",
             "secondary": "FLYING"
         },
-        "evolutions": [
-            581
-        ]
+        "evolutions": []
     },
     "582": {
         "abilities": {
@@ -9252,7 +8744,7 @@
             "secondary": null
         },
         "evolutions": [
-            583
+            584
         ]
     },
     "584": {
@@ -9267,9 +8759,7 @@
             "primary": "ICE",
             "secondary": null
         },
-        "evolutions": [
-            583
-        ]
+        "evolutions": []
     },
     "585": {
         "abilities": {
@@ -9299,9 +8789,7 @@
             "primary": "NORMAL",
             "secondary": "GRASS"
         },
-        "evolutions": [
-            586
-        ]
+        "evolutions": []
     },
     "587": {
         "abilities": {
@@ -9345,9 +8833,7 @@
             "primary": "BUG",
             "secondary": "STEEL"
         },
-        "evolutions": [
-            589
-        ]
+        "evolutions": []
     },
     "590": {
         "abilities": {
@@ -9377,9 +8863,7 @@
             "primary": "GRASS",
             "secondary": "POISON"
         },
-        "evolutions": [
-            591
-        ]
+        "evolutions": []
     },
     "592": {
         "abilities": {
@@ -9409,9 +8893,7 @@
             "primary": "WATER",
             "secondary": "GHOST"
         },
-        "evolutions": [
-            593
-        ]
+        "evolutions": []
     },
     "594": {
         "abilities": {
@@ -9455,9 +8937,7 @@
             "primary": "BUG",
             "secondary": "ELECTRIC"
         },
-        "evolutions": [
-            596
-        ]
+        "evolutions": []
     },
     "597": {
         "abilities": {
@@ -9487,9 +8967,7 @@
             "primary": "GRASS",
             "secondary": "STEEL"
         },
-        "evolutions": [
-            598
-        ]
+        "evolutions": []
     },
     "599": {
         "abilities": {
@@ -9520,7 +8998,7 @@
             "secondary": null
         },
         "evolutions": [
-            600
+            601
         ]
     },
     "601": {
@@ -9535,9 +9013,7 @@
             "primary": "STEEL",
             "secondary": null
         },
-        "evolutions": [
-            600
-        ]
+        "evolutions": []
     },
     "602": {
         "abilities": {
@@ -9568,7 +9044,7 @@
             "secondary": null
         },
         "evolutions": [
-            603
+            604
         ]
     },
     "604": {
@@ -9583,9 +9059,7 @@
             "primary": "ELECTRIC",
             "secondary": null
         },
-        "evolutions": [
-            603
-        ]
+        "evolutions": []
     },
     "605": {
         "abilities": {
@@ -9615,9 +9089,7 @@
             "primary": "PSYCHIC",
             "secondary": null
         },
-        "evolutions": [
-            606
-        ]
+        "evolutions": []
     },
     "607": {
         "abilities": {
@@ -9648,7 +9120,7 @@
             "secondary": "FIRE"
         },
         "evolutions": [
-            608
+            609
         ]
     },
     "609": {
@@ -9663,9 +9135,7 @@
             "primary": "GHOST",
             "secondary": "FIRE"
         },
-        "evolutions": [
-            608
-        ]
+        "evolutions": []
     },
     "610": {
         "abilities": {
@@ -9696,7 +9166,7 @@
             "secondary": null
         },
         "evolutions": [
-            611
+            612
         ]
     },
     "612": {
@@ -9711,9 +9181,7 @@
             "primary": "DRAGON",
             "secondary": null
         },
-        "evolutions": [
-            611
-        ]
+        "evolutions": []
     },
     "613": {
         "abilities": {
@@ -9743,9 +9211,7 @@
             "primary": "ICE",
             "secondary": null
         },
-        "evolutions": [
-            614
-        ]
+        "evolutions": []
     },
     "615": {
         "abilities": {
@@ -9789,9 +9255,7 @@
             "primary": "BUG",
             "secondary": null
         },
-        "evolutions": [
-            617
-        ]
+        "evolutions": []
     },
     "618": {
         "abilities": {
@@ -9835,9 +9299,7 @@
             "primary": "FIGHTING",
             "secondary": null
         },
-        "evolutions": [
-            620
-        ]
+        "evolutions": []
     },
     "621": {
         "abilities": {
@@ -9881,9 +9343,7 @@
             "primary": "GROUND",
             "secondary": "GHOST"
         },
-        "evolutions": [
-            623
-        ]
+        "evolutions": []
     },
     "624": {
         "abilities": {
@@ -9913,9 +9373,7 @@
             "primary": "DARK",
             "secondary": "STEEL"
         },
-        "evolutions": [
-            625
-        ]
+        "evolutions": []
     },
     "626": {
         "abilities": {
@@ -9959,9 +9417,7 @@
             "primary": "NORMAL",
             "secondary": "FLYING"
         },
-        "evolutions": [
-            628
-        ]
+        "evolutions": []
     },
     "629": {
         "abilities": {
@@ -9991,9 +9447,7 @@
             "primary": "DARK",
             "secondary": "FLYING"
         },
-        "evolutions": [
-            630
-        ]
+        "evolutions": []
     },
     "631": {
         "abilities": {
@@ -10052,7 +9506,7 @@
             "secondary": "DRAGON"
         },
         "evolutions": [
-            634
+            635
         ]
     },
     "635": {
@@ -10067,9 +9521,7 @@
             "primary": "DARK",
             "secondary": "DRAGON"
         },
-        "evolutions": [
-            634
-        ]
+        "evolutions": []
     },
     "636": {
         "abilities": {
@@ -10099,9 +9551,7 @@
             "primary": "BUG",
             "secondary": "FIRE"
         },
-        "evolutions": [
-            637
-        ]
+        "evolutions": []
     },
     "638": {
         "abilities": {
@@ -10300,7 +9750,7 @@
             "secondary": null
         },
         "evolutions": [
-            651
+            652
         ]
     },
     "652": {
@@ -10315,9 +9765,7 @@
             "primary": "GRASS",
             "secondary": "FIGHTING"
         },
-        "evolutions": [
-            651
-        ]
+        "evolutions": []
     },
     "653": {
         "abilities": {
@@ -10348,7 +9796,7 @@
             "secondary": null
         },
         "evolutions": [
-            654
+            655
         ]
     },
     "655": {
@@ -10363,9 +9811,7 @@
             "primary": "FIRE",
             "secondary": "PSYCHIC"
         },
-        "evolutions": [
-            654
-        ]
+        "evolutions": []
     },
     "656": {
         "abilities": {
@@ -10396,7 +9842,7 @@
             "secondary": null
         },
         "evolutions": [
-            657
+            658
         ]
     },
     "658": {
@@ -10411,9 +9857,7 @@
             "primary": "WATER",
             "secondary": "DARK"
         },
-        "evolutions": [
-            657
-        ]
+        "evolutions": []
     },
     "659": {
         "abilities": {
@@ -10443,9 +9887,7 @@
             "primary": "NORMAL",
             "secondary": "GROUND"
         },
-        "evolutions": [
-            660
-        ]
+        "evolutions": []
     },
     "661": {
         "abilities": {
@@ -10476,7 +9918,7 @@
             "secondary": "FLYING"
         },
         "evolutions": [
-            662
+            663
         ]
     },
     "663": {
@@ -10491,9 +9933,7 @@
             "primary": "FIRE",
             "secondary": "FLYING"
         },
-        "evolutions": [
-            662
-        ]
+        "evolutions": []
     },
     "664": {
         "abilities": {
@@ -10524,7 +9964,7 @@
             "secondary": null
         },
         "evolutions": [
-            665
+            666
         ]
     },
     "666": {
@@ -10539,9 +9979,7 @@
             "primary": "BUG",
             "secondary": "FLYING"
         },
-        "evolutions": [
-            665
-        ]
+        "evolutions": []
     },
     "667": {
         "abilities": {
@@ -10571,9 +10009,7 @@
             "primary": "FIRE",
             "secondary": "NORMAL"
         },
-        "evolutions": [
-            668
-        ]
+        "evolutions": []
     },
     "669": {
         "abilities": {
@@ -10604,7 +10040,7 @@
             "secondary": null
         },
         "evolutions": [
-            670
+            671
         ]
     },
     "671": {
@@ -10619,9 +10055,7 @@
             "primary": "FAIRY",
             "secondary": null
         },
-        "evolutions": [
-            670
-        ]
+        "evolutions": []
     },
     "672": {
         "abilities": {
@@ -10651,9 +10085,7 @@
             "primary": "GRASS",
             "secondary": null
         },
-        "evolutions": [
-            673
-        ]
+        "evolutions": []
     },
     "674": {
         "abilities": {
@@ -10683,9 +10115,7 @@
             "primary": "FIGHTING",
             "secondary": "DARK"
         },
-        "evolutions": [
-            675
-        ]
+        "evolutions": []
     },
     "676": {
         "abilities": {
@@ -10729,9 +10159,7 @@
             "primary": "PSYCHIC",
             "secondary": null
         },
-        "evolutions": [
-            678
-        ]
+        "evolutions": []
     },
     "679": {
         "abilities": {
@@ -10762,7 +10190,7 @@
             "secondary": "GHOST"
         },
         "evolutions": [
-            680
+            681
         ]
     },
     "681": {
@@ -10777,9 +10205,7 @@
             "primary": "STEEL",
             "secondary": "GHOST"
         },
-        "evolutions": [
-            680
-        ]
+        "evolutions": []
     },
     "682": {
         "abilities": {
@@ -10809,9 +10235,7 @@
             "primary": "FAIRY",
             "secondary": null
         },
-        "evolutions": [
-            683
-        ]
+        "evolutions": []
     },
     "684": {
         "abilities": {
@@ -10841,9 +10265,7 @@
             "primary": "FAIRY",
             "secondary": null
         },
-        "evolutions": [
-            685
-        ]
+        "evolutions": []
     },
     "686": {
         "abilities": {
@@ -10873,9 +10295,7 @@
             "primary": "DARK",
             "secondary": "PSYCHIC"
         },
-        "evolutions": [
-            687
-        ]
+        "evolutions": []
     },
     "688": {
         "abilities": {
@@ -10905,9 +10325,7 @@
             "primary": "ROCK",
             "secondary": "WATER"
         },
-        "evolutions": [
-            689
-        ]
+        "evolutions": []
     },
     "690": {
         "abilities": {
@@ -10937,9 +10355,7 @@
             "primary": "POISON",
             "secondary": "DRAGON"
         },
-        "evolutions": [
-            691
-        ]
+        "evolutions": []
     },
     "692": {
         "abilities": {
@@ -10969,9 +10385,7 @@
             "primary": "WATER",
             "secondary": null
         },
-        "evolutions": [
-            693
-        ]
+        "evolutions": []
     },
     "694": {
         "abilities": {
@@ -11001,9 +10415,7 @@
             "primary": "ELECTRIC",
             "secondary": "NORMAL"
         },
-        "evolutions": [
-            695
-        ]
+        "evolutions": []
     },
     "696": {
         "abilities": {
@@ -11033,9 +10445,7 @@
             "primary": "ROCK",
             "secondary": "DRAGON"
         },
-        "evolutions": [
-            697
-        ]
+        "evolutions": []
     },
     "698": {
         "abilities": {
@@ -11065,9 +10475,7 @@
             "primary": "ROCK",
             "secondary": "ICE"
         },
-        "evolutions": [
-            699
-        ]
+        "evolutions": []
     },
     "700": {
         "abilities": {
@@ -11081,16 +10489,7 @@
             "primary": "FAIRY",
             "secondary": null
         },
-        "evolutions": [
-            134,
-            135,
-            136,
-            196,
-            197,
-            470,
-            471,
-            700
-        ]
+        "evolutions": []
     },
     "701": {
         "abilities": {
@@ -11163,7 +10562,7 @@
             "secondary": null
         },
         "evolutions": [
-            705
+            706
         ]
     },
     "706": {
@@ -11178,9 +10577,7 @@
             "primary": "DRAGON",
             "secondary": null
         },
-        "evolutions": [
-            705
-        ]
+        "evolutions": []
     },
     "707": {
         "abilities": {
@@ -11224,9 +10621,7 @@
             "primary": "GHOST",
             "secondary": "GRASS"
         },
-        "evolutions": [
-            709
-        ]
+        "evolutions": []
     },
     "710": {
         "abilities": {
@@ -11256,9 +10651,7 @@
             "primary": "GHOST",
             "secondary": "GRASS"
         },
-        "evolutions": [
-            711
-        ]
+        "evolutions": []
     },
     "712": {
         "abilities": {
@@ -11288,9 +10681,7 @@
             "primary": "ICE",
             "secondary": null
         },
-        "evolutions": [
-            713
-        ]
+        "evolutions": []
     },
     "714": {
         "abilities": {
@@ -11320,9 +10711,7 @@
             "primary": "FLYING",
             "secondary": "DRAGON"
         },
-        "evolutions": [
-            715
-        ]
+        "evolutions": []
     },
     "716": {
         "abilities": {
@@ -11437,7 +10826,7 @@
             "secondary": "FLYING"
         },
         "evolutions": [
-            723
+            724
         ]
     },
     "724": {
@@ -11452,9 +10841,7 @@
             "primary": "GRASS",
             "secondary": "GHOST"
         },
-        "evolutions": [
-            723
-        ]
+        "evolutions": []
     },
     "725": {
         "abilities": {
@@ -11485,7 +10872,7 @@
             "secondary": null
         },
         "evolutions": [
-            726
+            727
         ]
     },
     "727": {
@@ -11500,9 +10887,7 @@
             "primary": "FIRE",
             "secondary": "DARK"
         },
-        "evolutions": [
-            726
-        ]
+        "evolutions": []
     },
     "728": {
         "abilities": {
@@ -11533,7 +10918,7 @@
             "secondary": null
         },
         "evolutions": [
-            729
+            730
         ]
     },
     "730": {
@@ -11548,9 +10933,7 @@
             "primary": "WATER",
             "secondary": "FAIRY"
         },
-        "evolutions": [
-            729
-        ]
+        "evolutions": []
     },
     "731": {
         "abilities": {
@@ -11581,7 +10964,7 @@
             "secondary": "FLYING"
         },
         "evolutions": [
-            732
+            733
         ]
     },
     "733": {
@@ -11596,9 +10979,7 @@
             "primary": "NORMAL",
             "secondary": "FLYING"
         },
-        "evolutions": [
-            732
-        ]
+        "evolutions": []
     },
     "734": {
         "abilities": {
@@ -11628,9 +11009,7 @@
             "primary": "NORMAL",
             "secondary": null
         },
-        "evolutions": [
-            735
-        ]
+        "evolutions": []
     },
     "736": {
         "abilities": {
@@ -11661,7 +11040,7 @@
             "secondary": "ELECTRIC"
         },
         "evolutions": [
-            737
+            738
         ]
     },
     "738": {
@@ -11676,9 +11055,7 @@
             "primary": "BUG",
             "secondary": "ELECTRIC"
         },
-        "evolutions": [
-            737
-        ]
+        "evolutions": []
     },
     "739": {
         "abilities": {
@@ -11708,9 +11085,7 @@
             "primary": "FIGHTING",
             "secondary": "ICE"
         },
-        "evolutions": [
-            740
-        ]
+        "evolutions": []
     },
     "741": {
         "abilities": {
@@ -11754,9 +11129,7 @@
             "primary": "BUG",
             "secondary": "FAIRY"
         },
-        "evolutions": [
-            743
-        ]
+        "evolutions": []
     },
     "744": {
         "abilities": {
@@ -11786,9 +11159,7 @@
             "primary": "ROCK",
             "secondary": null
         },
-        "evolutions": [
-            745
-        ]
+        "evolutions": []
     },
     "746": {
         "abilities": {
@@ -11832,9 +11203,7 @@
             "primary": "POISON",
             "secondary": "WATER"
         },
-        "evolutions": [
-            748
-        ]
+        "evolutions": []
     },
     "749": {
         "abilities": {
@@ -11864,9 +11233,7 @@
             "primary": "GROUND",
             "secondary": null
         },
-        "evolutions": [
-            750
-        ]
+        "evolutions": []
     },
     "751": {
         "abilities": {
@@ -11896,9 +11263,7 @@
             "primary": "WATER",
             "secondary": "BUG"
         },
-        "evolutions": [
-            752
-        ]
+        "evolutions": []
     },
     "753": {
         "abilities": {
@@ -11928,9 +11293,7 @@
             "primary": "GRASS",
             "secondary": null
         },
-        "evolutions": [
-            754
-        ]
+        "evolutions": []
     },
     "755": {
         "abilities": {
@@ -11960,9 +11323,7 @@
             "primary": "GRASS",
             "secondary": "FAIRY"
         },
-        "evolutions": [
-            756
-        ]
+        "evolutions": []
     },
     "757": {
         "abilities": {
@@ -11992,9 +11353,7 @@
             "primary": "POISON",
             "secondary": "FIRE"
         },
-        "evolutions": [
-            758
-        ]
+        "evolutions": []
     },
     "759": {
         "abilities": {
@@ -12024,9 +11383,7 @@
             "primary": "NORMAL",
             "secondary": "FIGHTING"
         },
-        "evolutions": [
-            760
-        ]
+        "evolutions": []
     },
     "761": {
         "abilities": {
@@ -12057,7 +11414,7 @@
             "secondary": null
         },
         "evolutions": [
-            762
+            763
         ]
     },
     "763": {
@@ -12072,9 +11429,7 @@
             "primary": "GRASS",
             "secondary": null
         },
-        "evolutions": [
-            762
-        ]
+        "evolutions": []
     },
     "764": {
         "abilities": {
@@ -12146,9 +11501,7 @@
             "primary": "BUG",
             "secondary": "WATER"
         },
-        "evolutions": [
-            768
-        ]
+        "evolutions": []
     },
     "769": {
         "abilities": {
@@ -12178,9 +11531,7 @@
             "primary": "GHOST",
             "secondary": "GROUND"
         },
-        "evolutions": [
-            770
-        ]
+        "evolutions": []
     },
     "771": {
         "abilities": {
@@ -12224,9 +11575,7 @@
             "primary": "NORMAL",
             "secondary": null
         },
-        "evolutions": [
-            773
-        ]
+        "evolutions": []
     },
     "774": {
         "abilities": {
@@ -12369,7 +11718,7 @@
             "secondary": "FIGHTING"
         },
         "evolutions": [
-            783
+            784
         ]
     },
     "784": {
@@ -12384,9 +11733,7 @@
             "primary": "DRAGON",
             "secondary": "FIGHTING"
         },
-        "evolutions": [
-            783
-        ]
+        "evolutions": []
     },
     "785": {
         "abilities": {
@@ -12473,7 +11820,8 @@
             "secondary": null
         },
         "evolutions": [
-            790
+            791,
+            792
         ]
     },
     "791": {
@@ -12488,9 +11836,7 @@
             "primary": "PSYCHIC",
             "secondary": "STEEL"
         },
-        "evolutions": [
-            790
-        ]
+        "evolutions": []
     },
     "792": {
         "abilities": {
@@ -12504,9 +11850,7 @@
             "primary": "PSYCHIC",
             "secondary": "GHOST"
         },
-        "evolutions": [
-            790
-        ]
+        "evolutions": []
     },
     "793": {
         "abilities": {
@@ -12676,9 +12020,7 @@
             "primary": "POISON",
             "secondary": "DRAGON"
         },
-        "evolutions": [
-            804
-        ]
+        "evolutions": []
     },
     "805": {
         "abilities": {
@@ -12750,9 +12092,7 @@
             "primary": "STEEL",
             "secondary": null
         },
-        "evolutions": [
-            809
-        ]
+        "evolutions": []
     },
     "810": {
         "abilities": {
@@ -12783,7 +12123,7 @@
             "secondary": null
         },
         "evolutions": [
-            811
+            812
         ]
     },
     "812": {
@@ -12798,9 +12138,7 @@
             "primary": "GRASS",
             "secondary": null
         },
-        "evolutions": [
-            811
-        ]
+        "evolutions": []
     },
     "813": {
         "abilities": {
@@ -12831,7 +12169,7 @@
             "secondary": null
         },
         "evolutions": [
-            814
+            815
         ]
     },
     "815": {
@@ -12846,9 +12184,7 @@
             "primary": "FIRE",
             "secondary": null
         },
-        "evolutions": [
-            814
-        ]
+        "evolutions": []
     },
     "816": {
         "abilities": {
@@ -12879,7 +12215,7 @@
             "secondary": null
         },
         "evolutions": [
-            817
+            818
         ]
     },
     "818": {
@@ -12894,9 +12230,7 @@
             "primary": "WATER",
             "secondary": null
         },
-        "evolutions": [
-            817
-        ]
+        "evolutions": []
     },
     "819": {
         "abilities": {
@@ -12926,9 +12260,7 @@
             "primary": "NORMAL",
             "secondary": null
         },
-        "evolutions": [
-            820
-        ]
+        "evolutions": []
     },
     "821": {
         "abilities": {
@@ -12959,7 +12291,7 @@
             "secondary": null
         },
         "evolutions": [
-            822
+            823
         ]
     },
     "823": {
@@ -12974,9 +12306,7 @@
             "primary": "FLYING",
             "secondary": "STEEL"
         },
-        "evolutions": [
-            822
-        ]
+        "evolutions": []
     },
     "824": {
         "abilities": {
@@ -13007,7 +12337,7 @@
             "secondary": "PSYCHIC"
         },
         "evolutions": [
-            825
+            826
         ]
     },
     "826": {
@@ -13022,9 +12352,7 @@
             "primary": "BUG",
             "secondary": "PSYCHIC"
         },
-        "evolutions": [
-            825
-        ]
+        "evolutions": []
     },
     "827": {
         "abilities": {
@@ -13054,9 +12382,7 @@
             "primary": "DARK",
             "secondary": null
         },
-        "evolutions": [
-            828
-        ]
+        "evolutions": []
     },
     "829": {
         "abilities": {
@@ -13086,9 +12412,7 @@
             "primary": "GRASS",
             "secondary": null
         },
-        "evolutions": [
-            830
-        ]
+        "evolutions": []
     },
     "831": {
         "abilities": {
@@ -13118,9 +12442,7 @@
             "primary": "NORMAL",
             "secondary": null
         },
-        "evolutions": [
-            832
-        ]
+        "evolutions": []
     },
     "833": {
         "abilities": {
@@ -13150,9 +12472,7 @@
             "primary": "WATER",
             "secondary": "ROCK"
         },
-        "evolutions": [
-            834
-        ]
+        "evolutions": []
     },
     "835": {
         "abilities": {
@@ -13182,9 +12502,7 @@
             "primary": "ELECTRIC",
             "secondary": null
         },
-        "evolutions": [
-            836
-        ]
+        "evolutions": []
     },
     "837": {
         "abilities": {
@@ -13215,7 +12533,7 @@
             "secondary": "FIRE"
         },
         "evolutions": [
-            838
+            839
         ]
     },
     "839": {
@@ -13230,9 +12548,7 @@
             "primary": "ROCK",
             "secondary": "FIRE"
         },
-        "evolutions": [
-            838
-        ]
+        "evolutions": []
     },
     "840": {
         "abilities": {
@@ -13263,10 +12579,7 @@
             "primary": "GRASS",
             "secondary": "DRAGON"
         },
-        "evolutions": [
-            841,
-            842
-        ]
+        "evolutions": []
     },
     "842": {
         "abilities": {
@@ -13280,10 +12593,7 @@
             "primary": "GRASS",
             "secondary": "DRAGON"
         },
-        "evolutions": [
-            841,
-            842
-        ]
+        "evolutions": []
     },
     "843": {
         "abilities": {
@@ -13313,9 +12623,7 @@
             "primary": "GROUND",
             "secondary": null
         },
-        "evolutions": [
-            844
-        ]
+        "evolutions": []
     },
     "845": {
         "abilities": {
@@ -13359,9 +12667,7 @@
             "primary": "WATER",
             "secondary": null
         },
-        "evolutions": [
-            847
-        ]
+        "evolutions": []
     },
     "848": {
         "abilities": {
@@ -13391,9 +12697,7 @@
             "primary": "ELECTRIC",
             "secondary": "POISON"
         },
-        "evolutions": [
-            849
-        ]
+        "evolutions": []
     },
     "850": {
         "abilities": {
@@ -13423,9 +12727,7 @@
             "primary": "FIRE",
             "secondary": "BUG"
         },
-        "evolutions": [
-            851
-        ]
+        "evolutions": []
     },
     "852": {
         "abilities": {
@@ -13455,9 +12757,7 @@
             "primary": "FIGHTING",
             "secondary": null
         },
-        "evolutions": [
-            853
-        ]
+        "evolutions": []
     },
     "854": {
         "abilities": {
@@ -13487,9 +12787,7 @@
             "primary": "GHOST",
             "secondary": null
         },
-        "evolutions": [
-            855
-        ]
+        "evolutions": []
     },
     "856": {
         "abilities": {
@@ -13520,7 +12818,7 @@
             "secondary": null
         },
         "evolutions": [
-            857
+            858
         ]
     },
     "858": {
@@ -13535,9 +12833,7 @@
             "primary": "PSYCHIC",
             "secondary": "FAIRY"
         },
-        "evolutions": [
-            857
-        ]
+        "evolutions": []
     },
     "859": {
         "abilities": {
@@ -13568,7 +12864,7 @@
             "secondary": "FAIRY"
         },
         "evolutions": [
-            860
+            861
         ]
     },
     "861": {
@@ -13583,9 +12879,7 @@
             "primary": "DARK",
             "secondary": "FAIRY"
         },
-        "evolutions": [
-            860
-        ]
+        "evolutions": []
     },
     "862": {
         "abilities": {
@@ -13599,9 +12893,7 @@
             "primary": "DARK",
             "secondary": "NORMAL"
         },
-        "evolutions": [
-            264
-        ]
+        "evolutions": []
     },
     "863": {
         "abilities": {
@@ -13615,10 +12907,7 @@
             "primary": "STEEL",
             "secondary": null
         },
-        "evolutions": [
-            53,
-            863
-        ]
+        "evolutions": []
     },
     "864": {
         "abilities": {
@@ -13632,9 +12921,7 @@
             "primary": "GHOST",
             "secondary": null
         },
-        "evolutions": [
-            864
-        ]
+        "evolutions": []
     },
     "865": {
         "abilities": {
@@ -13648,9 +12935,7 @@
             "primary": "FIGHTING",
             "secondary": null
         },
-        "evolutions": [
-            865
-        ]
+        "evolutions": []
     },
     "866": {
         "abilities": {
@@ -13664,9 +12949,7 @@
             "primary": "ICE",
             "secondary": "PSYCHIC"
         },
-        "evolutions": [
-            122
-        ]
+        "evolutions": []
     },
     "867": {
         "abilities": {
@@ -13680,10 +12963,7 @@
             "primary": "GROUND",
             "secondary": "GHOST"
         },
-        "evolutions": [
-            563,
-            867
-        ]
+        "evolutions": []
     },
     "868": {
         "abilities": {
@@ -13713,9 +12993,7 @@
             "primary": "FAIRY",
             "secondary": null
         },
-        "evolutions": [
-            869
-        ]
+        "evolutions": []
     },
     "870": {
         "abilities": {
@@ -13773,9 +13051,7 @@
             "primary": "ICE",
             "secondary": "BUG"
         },
-        "evolutions": [
-            873
-        ]
+        "evolutions": []
     },
     "874": {
         "abilities": {
@@ -13861,9 +13137,7 @@
             "primary": "STEEL",
             "secondary": null
         },
-        "evolutions": [
-            879
-        ]
+        "evolutions": []
     },
     "880": {
         "abilities": {
@@ -13964,7 +13238,7 @@
             "secondary": "GHOST"
         },
         "evolutions": [
-            886
+            887
         ]
     },
     "887": {
@@ -13979,9 +13253,7 @@
             "primary": "DRAGON",
             "secondary": "GHOST"
         },
-        "evolutions": [
-            886
-        ]
+        "evolutions": []
     },
     "888": {
         "abilities": {
@@ -14053,9 +13325,7 @@
             "primary": "FIGHTING",
             "secondary": "DARK"
         },
-        "evolutions": [
-            892
-        ]
+        "evolutions": []
     },
     "893": {
         "abilities": {

@@ -23,7 +23,8 @@ internal class PokedexTest {
                 name = "Squirtle",
                 sprite = squirtle.sprite,
                 types = PokemonTypesTO("WATER", null),
-                abilities = PokemonAbilitiesTO("Torrent", null, "Rain Dish")
+                abilities = PokemonAbilitiesTO("Torrent", null, "Rain Dish"),
+                evolutions = listOf(8)
         ))
     }
 

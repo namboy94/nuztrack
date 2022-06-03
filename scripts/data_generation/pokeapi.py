@@ -5,6 +5,18 @@ import pokebase
 from requests.exceptions import HTTPError
 
 
+def load_evolutions(pokedex_number, chain):
+    species_chain = traverse_evolution_chain(chain)[pokedex_number]
+    return [x.species.id for x in species_chain.evolves_to]
+
+
+def traverse_evolution_chain(chain):
+    ids = {chain.species.id: chain}
+    for subchain in chain.evolves_to:
+        ids.update(traverse_evolution_chain(subchain))
+    return ids
+
+
 def load_pokemon(_cachedir):
     cachedir = os.path.join(_cachedir, "pokemon")
     os.makedirs(cachedir, exist_ok=True)
@@ -31,7 +43,7 @@ def load_pokemon(_cachedir):
                 types[_type.slot] = _type.type.name.upper()
 
             sprite = species.sprites.front_default
-            evolutions = [x.species.id for x in species.species.evolution_chain.chain.evolves_to]
+            evolutions = load_evolutions(species.id, species.species.evolution_chain.chain)
 
             pokemon[pokedex_number] = {
                 "abilities": {
