@@ -1,5 +1,5 @@
+import json
 import os
-import shutil
 
 from bundle import main as bundle_location_data
 from merge_badges import main as merge_badges
@@ -11,6 +11,13 @@ basedir = "/tmp/nuzlocke/"
 cachedir = "cache"
 
 
+def minify_copy(source, target):
+    with open(source) as f:
+        data = json.load(f)
+    with open(target, "w") as f:
+        json.dump(data, f)
+
+
 def main():
     os.makedirs(cachedir, exist_ok=True)
     locations_file, badges_file = nuzlocke_netlify(basedir, cachedir)
@@ -19,8 +26,8 @@ def main():
     merged_badges = merge_badges(cachedir, badges_file, serebii_badges)
     bundled = bundle_location_data(cachedir, locations_file, merged_badges)
 
-    shutil.copyfile(pokemon_file, "../../src/main/resources/data/pokemon.json")
-    shutil.copyfile(bundled, "../../src/main/resources/data/locations.json")
+    minify_copy(pokemon_file, "../../src/main/resources/data/pokemon.json")
+    minify_copy(bundled, "../../src/main/resources/data/locations.json")
 
 
 if __name__ == '__main__':
