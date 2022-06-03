@@ -11,6 +11,8 @@ export default function AddNoteDialog(props: AddNoteDialogProps) {
     const [note, setNote] = useState("")
 
     const submit = () => {
+        const payload = {"text": note}
+        console.log(payload)
     }
 
     const onClose = () => {

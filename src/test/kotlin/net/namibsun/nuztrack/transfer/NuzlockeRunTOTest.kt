@@ -18,7 +18,7 @@ internal class NuzlockeRunTOTest {
         assertThat(converted.userName).isEqualTo(run.userName)
         assertThat(converted.name).isEqualTo(run.name)
         assertThat(Games.valueOfWithChecks(converted.game)).isEqualTo(run.game)
-        assertThat(converted.rules.map { Rules.valueOfWithChecks(it) }).isEqualTo(run.rules)
+        assertThat(converted.rules).isEqualTo(run.rules.map { it.name.uppercase() })
         assertThat(converted.customRules).isEqualTo(run.customRules)
         assertThat(RunStatus.valueOfWithChecks(converted.status)).isEqualTo(run.status)
     }

@@ -6,6 +6,9 @@ import AddBadgeDialog from "./AddBadgeDialog";
 import AddDeathDialog from "./AddDeathDialog";
 import AddNoteDialog from "./AddNoteDialog";
 import AddEncounterDialog from "./AddEncounterDialog";
+import {useNaturesQuery, usePokedexQuery} from "../../api/pokedex/pokedexQuery";
+import {useLocationsQuery} from "../../api/games/gamesQuery";
+import {performLoadingCheck} from "../../util/loading";
 
 interface AddEventProps {
     run: NuzlockeRun
@@ -17,6 +20,16 @@ export default function AddEvent(props: AddEventProps) {
     const [deathDialogOpen, setDeathDialogOpen] = useState(false)
     const [encounterDialogOpen, setEncounterDialogOpen] = useState(false)
     const [noteDialogOpen, setNoteDialogOpen] = useState(false)
+    const pokedexQuery = usePokedexQuery()
+    const locationsQuery = useLocationsQuery(props.run.game)
+    const naturesQuery = useNaturesQuery()
+    const loadCheck = performLoadingCheck([pokedexQuery, locationsQuery, naturesQuery])
+    if (loadCheck !== null) {
+        return loadCheck
+    }
+    const pokedex = pokedexQuery.data!!
+    const natures = naturesQuery.data!!
+    const locations = locationsQuery.data!!
 
     return (
         <Grid direction="column" alignItems="center" container spacing={2} id="runs">
@@ -25,10 +38,19 @@ export default function AddEvent(props: AddEventProps) {
             <Grid item xs={3}><Button variant="contained" onClick={() => setDeathDialogOpen(true)}>Death</Button></Grid>
             <Grid item xs={3}><Button variant="contained" onClick={() => setBadgeDialogOpen(true)}>Badge</Button></Grid>
             <Grid item xs={3}><Button variant="contained" onClick={() => setNoteDialogOpen(true)}>Note</Button></Grid>
-            <AddBadgeDialog open={badgeDialogOpen} onClose={() => setBadgeDialogOpen(false)}/>
-            <AddDeathDialog open={deathDialogOpen} onClose={() => setDeathDialogOpen(false)}/>
-            <AddEncounterDialog open={encounterDialogOpen} onClose={() => setEncounterDialogOpen(false)}/>
-            <AddNoteDialog open={noteDialogOpen} onClose={() => setNoteDialogOpen(false)}/>
+            <AddBadgeDialog
+                open={badgeDialogOpen} onClose={() => setBadgeDialogOpen(false)}
+            />
+            <AddDeathDialog
+                open={deathDialogOpen} onClose={() => setDeathDialogOpen(false)}
+            />
+            <AddEncounterDialog
+                pokedex={pokedex} locations={locations} natures={natures}
+                open={encounterDialogOpen} onClose={() => setEncounterDialogOpen(false)}
+            />
+            <AddNoteDialog
+                open={noteDialogOpen} onClose={() => setNoteDialogOpen(false)}
+            />
         </Grid>
     )
 }

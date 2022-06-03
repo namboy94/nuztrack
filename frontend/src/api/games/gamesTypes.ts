@@ -1,5 +1,5 @@
 export type GamesList = Map<string, string>
-export type Location = {
+export type GameLocation = {
     name: string,
     encounters: number[],
     milestones: Milestone[]

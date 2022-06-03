@@ -18,7 +18,7 @@ data class NuzlockeRunTO(
                     userName = run.userName,
                     name = run.name,
                     game = run.game.title,
-                    rules = run.rules.map { it.name.lowercase() },
+                    rules = run.rules.map { it.name.uppercase() },
                     customRules = run.customRules,
                     status = run.status.name
             )

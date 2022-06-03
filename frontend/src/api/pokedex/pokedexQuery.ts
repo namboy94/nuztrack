@@ -4,10 +4,10 @@ import {Pokedex, PokemonNatures} from "./pokedexTypes";
 
 const POKEDEX_KEY = "/rules"
 
-export function useRulesQuery(): UseQueryResult<Pokedex> {
-    return useQuery(POKEDEX_KEY, loadPokedex)
+export function usePokedexQuery(): UseQueryResult<Pokedex> {
+    return useQuery(POKEDEX_KEY, loadPokedex, {staleTime: 1000 * 60 * 60})
 }
 
 export function useNaturesQuery(): UseQueryResult<PokemonNatures> {
-    return useQuery(`${POKEDEX_KEY}/natures`, loadNatures)
+    return useQuery(`${POKEDEX_KEY}/natures`, loadNatures, {staleTime: 1000 * 60 * 60})
 }

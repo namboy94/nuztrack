@@ -2,7 +2,6 @@ import {Pokedex, PokemonNatures, PokemonSpecies} from "./pokedexTypes";
 import axios from "axios";
 
 export function loadPokedex(): Promise<Pokedex> {
-
     function convertIntKeys(mapping: Map<string, PokemonSpecies>): Pokedex {
         const pokedex = new Map<number, PokemonSpecies>()
         mapping.forEach((value, key) => {

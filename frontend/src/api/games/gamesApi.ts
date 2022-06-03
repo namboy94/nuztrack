@@ -1,5 +1,5 @@
 import axios from "axios";
-import {GamesList, Location} from "./gamesTypes";
+import {GameLocation, GamesList} from "./gamesTypes";
 
 export function loadGames(): Promise<GamesList> {
     return axios.get("/api/games").then(
@@ -7,6 +7,6 @@ export function loadGames(): Promise<GamesList> {
     )
 }
 
-export function loadLocations(gameTitle: string): Promise<Location> {
+export function loadLocations(gameTitle: string): Promise<GameLocation[]> {
     return axios.get(`/api/games/${gameTitle}/locations`).then(x => x.data)
 }

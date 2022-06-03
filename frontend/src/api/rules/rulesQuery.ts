@@ -5,5 +5,5 @@ import {loadRules} from "./rulesApi";
 const RULES_KEY = "/rules"
 
 export function useRulesQuery(): UseQueryResult<RulesDetails> {
-    return useQuery(RULES_KEY, loadRules)
+    return useQuery(RULES_KEY, () => loadRules())
 }
