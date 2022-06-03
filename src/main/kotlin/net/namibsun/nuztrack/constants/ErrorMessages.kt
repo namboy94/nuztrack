@@ -7,5 +7,6 @@ enum class ErrorMessages(val message: String) {
     RUN_NOT_FOUND("The specified nuzlocke run could not be found"),
     NO_ACCESS_TO_RUN("The user does not have access to this nuzlocke run"),
     INVALID_POKEMON("No Pokemon with this PokeDex number exists"),
-    INVALID_RUN_STATUS("The provided run status is not valid")
+    INVALID_RUN_STATUS("The provided run status is not valid"),
+    INVALID_NATURE("The provided nature is not valid")
 }
