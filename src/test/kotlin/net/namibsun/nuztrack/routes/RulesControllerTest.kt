@@ -1,4 +1,4 @@
-package net.namibsun.nuztrack.routes.rules
+package net.namibsun.nuztrack.routes
 
 import net.namibsun.nuztrack.constants.Rules
 import org.assertj.core.api.Assertions.assertThat

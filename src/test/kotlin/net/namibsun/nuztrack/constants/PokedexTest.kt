@@ -1,9 +1,9 @@
 package net.namibsun.nuztrack.constants
 
-import net.namibsun.nuztrack.routes.pokedex.PokedexTO
-import net.namibsun.nuztrack.routes.pokedex.PokemonAbilitiesTO
-import net.namibsun.nuztrack.routes.pokedex.PokemonSpeciesTO
-import net.namibsun.nuztrack.routes.pokedex.PokemonTypesTO
+import net.namibsun.nuztrack.transfer.PokedexTO
+import net.namibsun.nuztrack.transfer.PokemonAbilitiesTO
+import net.namibsun.nuztrack.transfer.PokemonSpeciesTO
+import net.namibsun.nuztrack.transfer.PokemonTypesTO
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows

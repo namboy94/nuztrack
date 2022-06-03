@@ -1,8 +1,10 @@
-package net.namibsun.nuztrack.routes.runs
+package net.namibsun.nuztrack.routes
 
 import net.namibsun.nuztrack.constants.*
 import net.namibsun.nuztrack.data.NuzlockeRun
 import net.namibsun.nuztrack.data.NuzlockeRunService
+import net.namibsun.nuztrack.transfer.CreateNuzlockeRunTO
+import net.namibsun.nuztrack.transfer.NuzlockeRunTO
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -23,8 +25,8 @@ internal class RunsControllerTest {
     private val exampleTwo = NuzlockeRun(
             10, userOne, "Second", Games.YELLOW, listOf(), listOf(), RunStatus.FAILED
     )
-    private val exampleOneTO = convertNuzlockeRunToNuzlockeRunTO(exampleOne)
-    private val exampleTwoTO = convertNuzlockeRunToNuzlockeRunTO(exampleTwo)
+    private val exampleOneTO = NuzlockeRunTO.fromNuzlockeRun(exampleOne)
+    private val exampleTwoTO = NuzlockeRunTO.fromNuzlockeRun(exampleTwo)
     private val creatorOne = CreateNuzlockeRunTO(
             exampleOne.name, exampleOne.game.title, listOf(Rules.DEATH.name.lowercase()), listOf("MyRules")
     )

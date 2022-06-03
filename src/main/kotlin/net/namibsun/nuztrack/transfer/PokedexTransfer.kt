@@ -1,4 +1,4 @@
-package net.namibsun.nuztrack.routes.pokedex
+package net.namibsun.nuztrack.transfer
 
 typealias PokedexTO = Map<Int, PokemonSpeciesTO>
 

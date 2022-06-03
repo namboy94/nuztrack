@@ -2,8 +2,8 @@ package net.namibsun.nuztrack.constants
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import net.namibsun.nuztrack.routes.pokedex.PokedexTO
-import net.namibsun.nuztrack.routes.pokedex.PokemonSpeciesTO
+import net.namibsun.nuztrack.transfer.PokedexTO
+import net.namibsun.nuztrack.transfer.PokemonSpeciesTO
 import org.springframework.core.io.ClassPathResource
 
 object Pokedex {

@@ -1,4 +1,4 @@
-package net.namibsun.nuztrack.routes.games
+package net.namibsun.nuztrack.transfer
 
 typealias GamesListTO = Map<String, String>
 

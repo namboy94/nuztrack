@@ -1,8 +1,10 @@
-package net.namibsun.nuztrack.routes.runs
+package net.namibsun.nuztrack.routes
 
 import net.namibsun.nuztrack.constants.*
 import net.namibsun.nuztrack.data.NuzlockeRun
 import net.namibsun.nuztrack.data.NuzlockeRunService
+import net.namibsun.nuztrack.transfer.CreateNuzlockeRunTO
+import net.namibsun.nuztrack.transfer.NuzlockeRunTO
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
@@ -14,7 +16,7 @@ class RunsController(val service: NuzlockeRunService) {
     @ResponseBody
     fun getRuns(principal: Principal): ResponseEntity<List<NuzlockeRunTO>> {
         val entities = this.service.getRuns(principal.name)
-        val results = entities.map { convertNuzlockeRunToNuzlockeRunTO(it) }
+        val results = entities.map { NuzlockeRunTO.fromNuzlockeRun(it) }
         return ResponseEntity.ok(results)
     }
 
@@ -24,7 +26,7 @@ class RunsController(val service: NuzlockeRunService) {
         val game = Games.valueOfWithChecks(createRun.game)
         val rules = createRun.rules.map { Rules.valueOfWithChecks(it) }
         val run = this.service.createRun(principal.name, createRun.name, game, rules, createRun.customRules)
-        return ResponseEntity.ok(convertNuzlockeRunToNuzlockeRunTO(run))
+        return ResponseEntity.ok(NuzlockeRunTO.fromNuzlockeRun(run))
     }
 
     @GetMapping("/api/runs/{id}")
@@ -32,7 +34,7 @@ class RunsController(val service: NuzlockeRunService) {
     fun getRun(@PathVariable id: Long, principal: Principal): ResponseEntity<NuzlockeRunTO> {
         print("HELLO WORLD")
         val run = this.authorizeAccess(id, principal.name)
-        return ResponseEntity.ok(convertNuzlockeRunToNuzlockeRunTO(run))
+        return ResponseEntity.ok(NuzlockeRunTO.fromNuzlockeRun(run))
     }
 
     @DeleteMapping("/api/runs/{id}")
