@@ -30,7 +30,7 @@ pokedexMapping:
   # TODO Check if this can be automated somehow
   example: {
     "7": {
-      "games": "Squirtle",
+      "name": "Squirtle",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png",
       "types": {
         "primary": "WATER",
