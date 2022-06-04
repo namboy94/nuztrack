@@ -1,7 +1,7 @@
 package net.namibsun.nuztrack.data.events
 
-import net.namibsun.nuztrack.constants.EventType
-import net.namibsun.nuztrack.constants.TeamMemberSwitchType
+import net.namibsun.nuztrack.constants.enums.EventType
+import net.namibsun.nuztrack.constants.enums.TeamMemberSwitchType
 import net.namibsun.nuztrack.data.NUZLOCKE_RUN
 import net.namibsun.nuztrack.data.TEAM_MEMBER
 import org.assertj.core.api.Assertions.assertThat

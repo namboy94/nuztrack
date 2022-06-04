@@ -1,5 +1,7 @@
 package net.namibsun.nuztrack.constants
 
+import net.namibsun.nuztrack.constants.enums.ErrorMessages
+import net.namibsun.nuztrack.constants.enums.Natures
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 

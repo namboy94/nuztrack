@@ -1,9 +1,9 @@
 package net.namibsun.nuztrack.routes
 
-import net.namibsun.nuztrack.constants.ErrorMessages
-import net.namibsun.nuztrack.constants.Natures
 import net.namibsun.nuztrack.constants.NotFoundException
 import net.namibsun.nuztrack.constants.Pokedex
+import net.namibsun.nuztrack.constants.enums.ErrorMessages
+import net.namibsun.nuztrack.constants.enums.Natures
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows

@@ -1,4 +1,6 @@
-package net.namibsun.nuztrack.constants
+package net.namibsun.nuztrack.constants.enums
+
+import net.namibsun.nuztrack.util.safeValueOf
 
 enum class Rules(val description: String) {
     DEATH("Any Pokémon that faints is considered dead and must be released or permanently boxed"),
@@ -19,11 +21,7 @@ enum class Rules(val description: String) {
 
     companion object {
         fun valueOfWithChecks(string: String): Rules {
-            try {
-                return valueOf(string.uppercase())
-            } catch (e: IllegalArgumentException) {
-                throw ValidationException(ErrorMessages.INVALID_RULE)
-            }
+            return safeValueOf(string, ErrorMessages.INVALID_RULE)
         }
 
         fun defaultRules(): List<Rules> {

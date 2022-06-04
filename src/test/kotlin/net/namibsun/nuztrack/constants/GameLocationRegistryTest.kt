@@ -1,5 +1,6 @@
 package net.namibsun.nuztrack.constants
 
+import net.namibsun.nuztrack.constants.enums.Games
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 

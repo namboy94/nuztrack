@@ -1,5 +1,6 @@
 package net.namibsun.nuztrack.constants
 
+import net.namibsun.nuztrack.constants.enums.ErrorMessages
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.ResponseStatus
 

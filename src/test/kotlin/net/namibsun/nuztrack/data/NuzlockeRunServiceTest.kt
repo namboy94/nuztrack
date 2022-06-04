@@ -1,6 +1,10 @@
 package net.namibsun.nuztrack.data
 
-import net.namibsun.nuztrack.constants.*
+import net.namibsun.nuztrack.constants.ValidationException
+import net.namibsun.nuztrack.constants.enums.ErrorMessages
+import net.namibsun.nuztrack.constants.enums.Games
+import net.namibsun.nuztrack.constants.enums.Rules
+import net.namibsun.nuztrack.constants.enums.RunStatus
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows

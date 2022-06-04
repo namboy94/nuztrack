@@ -1,4 +1,6 @@
-package net.namibsun.nuztrack.constants
+package net.namibsun.nuztrack.constants.enums
+
+import net.namibsun.nuztrack.util.safeValueOf
 
 enum class Natures {
     HARDY,
@@ -29,11 +31,7 @@ enum class Natures {
 
     companion object {
         fun valueOfWithChecks(string: String): Natures {
-            try {
-                return valueOf(string.uppercase())
-            } catch (e: IllegalArgumentException) {
-                throw ValidationException(ErrorMessages.INVALID_NATURE)
-            }
+            return safeValueOf(string, ErrorMessages.INVALID_NATURE)
         }
     }
 }

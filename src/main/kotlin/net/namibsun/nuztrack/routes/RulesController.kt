@@ -1,6 +1,6 @@
 package net.namibsun.nuztrack.routes
 
-import net.namibsun.nuztrack.constants.Rules
+import net.namibsun.nuztrack.constants.enums.Rules
 import net.namibsun.nuztrack.transfer.RulesDetailsTO
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping

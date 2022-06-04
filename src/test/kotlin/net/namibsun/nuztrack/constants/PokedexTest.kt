@@ -1,5 +1,6 @@
 package net.namibsun.nuztrack.constants
 
+import net.namibsun.nuztrack.constants.enums.ErrorMessages
 import net.namibsun.nuztrack.transfer.PokedexTO
 import net.namibsun.nuztrack.transfer.PokemonAbilitiesTO
 import net.namibsun.nuztrack.transfer.PokemonSpeciesTO

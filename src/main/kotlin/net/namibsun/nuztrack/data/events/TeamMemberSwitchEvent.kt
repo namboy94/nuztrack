@@ -1,9 +1,10 @@
 package net.namibsun.nuztrack.data.events
 
-import net.namibsun.nuztrack.constants.EventType
-import net.namibsun.nuztrack.constants.TeamMemberSwitchType
+import net.namibsun.nuztrack.constants.enums.EventType
+import net.namibsun.nuztrack.constants.enums.TeamMemberSwitchType
 import net.namibsun.nuztrack.data.NuzlockeRun
 import net.namibsun.nuztrack.data.TeamMember
+import org.springframework.stereotype.Service
 import javax.persistence.*
 
 @Suppress("JpaDataSourceORMInspection")
@@ -21,6 +22,7 @@ class TeamMemberSwitchEvent(
 
 ) : Event(nuzlockeRun = nuzlockeRun, location = location, eventType = EventType.PARTY_MEMBER_SWITCH)
 
+@Service
 class TeamMemberSwitchEventService(val db: EventRepository) {
     fun getAllTeamMemberSwitchEvents(): List<TeamMemberSwitchEvent> {
         return db.findAllByEventType(EventType.PARTY_MEMBER_SWITCH).map { it as TeamMemberSwitchEvent }

@@ -1,6 +1,6 @@
 package net.namibsun.nuztrack.data
 
-import net.namibsun.nuztrack.constants.Natures
+import net.namibsun.nuztrack.constants.enums.Natures
 import net.namibsun.nuztrack.data.events.DeathEvent
 import net.namibsun.nuztrack.data.events.EncounterEvent
 import net.namibsun.nuztrack.data.events.EvolutionEvent

@@ -1,6 +1,8 @@
 package net.namibsun.nuztrack.data
 
-import net.namibsun.nuztrack.constants.*
+import net.namibsun.nuztrack.constants.enums.Games
+import net.namibsun.nuztrack.constants.enums.Rules
+import net.namibsun.nuztrack.constants.enums.RunStatus
 import net.namibsun.nuztrack.data.events.Event
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.repository.findByIdOrNull
@@ -55,11 +57,6 @@ class NuzlockeRunService(val db: NuzlockeRunRepository) {
             rules: List<Rules>,
             customRules: List<String>
     ): NuzlockeRun {
-
-        if (userName == "" || name == "") {
-            throw ValidationException(ErrorMessages.EMPTY_NAME)
-        }
-
         return db.save(NuzlockeRun(
                 userName = userName,
                 name = name,

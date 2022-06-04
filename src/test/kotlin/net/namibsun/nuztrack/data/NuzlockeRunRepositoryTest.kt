@@ -1,7 +1,7 @@
 package net.namibsun.nuztrack.data
 
-import net.namibsun.nuztrack.constants.Games
-import net.namibsun.nuztrack.constants.RunStatus
+import net.namibsun.nuztrack.constants.enums.Games
+import net.namibsun.nuztrack.constants.enums.RunStatus
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired

@@ -1,6 +1,6 @@
 package net.namibsun.nuztrack.routes
 
-import net.namibsun.nuztrack.constants.Rules
+import net.namibsun.nuztrack.constants.enums.Rules
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 

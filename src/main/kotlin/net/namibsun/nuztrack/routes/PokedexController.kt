@@ -1,7 +1,7 @@
 package net.namibsun.nuztrack.routes
 
-import net.namibsun.nuztrack.constants.Natures
 import net.namibsun.nuztrack.constants.Pokedex
+import net.namibsun.nuztrack.constants.enums.Natures
 import net.namibsun.nuztrack.transfer.PokemonSpeciesTO
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping

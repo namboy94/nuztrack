@@ -1,4 +1,6 @@
-package net.namibsun.nuztrack.constants
+package net.namibsun.nuztrack.constants.enums
+
+import net.namibsun.nuztrack.util.safeValueOf
 
 enum class Games(val title: String) {
     RED("Red"), BLUE("Blue"), GREEN("Green"), YELLOW("Yellow"),
@@ -15,12 +17,8 @@ enum class Games(val title: String) {
     LEGENDS_ARCEUS("Legends: Arceus");
 
     companion object {
-        fun valueOfWithChecks(string: String): Games {
-            try {
-                return valueOf(string.uppercase())
-            } catch (e: IllegalArgumentException) {
-                throw ValidationException(ErrorMessages.INVALID_GAME)
-            }
+        fun valueOfWithChecks(string: String?): Games {
+            return safeValueOf(string, ErrorMessages.INVALID_GAME)
         }
     }
 }

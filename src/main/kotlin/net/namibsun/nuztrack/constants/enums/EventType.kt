@@ -1,4 +1,4 @@
-package net.namibsun.nuztrack.constants
+package net.namibsun.nuztrack.constants.enums
 
 enum class EventType {
     ENCOUNTER,

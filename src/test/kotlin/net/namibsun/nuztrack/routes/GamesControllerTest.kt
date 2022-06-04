@@ -1,8 +1,8 @@
 package net.namibsun.nuztrack.routes
 
-import net.namibsun.nuztrack.constants.ErrorMessages
-import net.namibsun.nuztrack.constants.Games
 import net.namibsun.nuztrack.constants.ValidationException
+import net.namibsun.nuztrack.constants.enums.ErrorMessages
+import net.namibsun.nuztrack.constants.enums.Games
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows

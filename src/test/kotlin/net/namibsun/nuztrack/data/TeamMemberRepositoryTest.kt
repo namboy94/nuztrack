@@ -1,6 +1,6 @@
 package net.namibsun.nuztrack.data.events
 
-import net.namibsun.nuztrack.constants.*
+import net.namibsun.nuztrack.constants.enums.*
 import net.namibsun.nuztrack.data.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test

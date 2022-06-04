@@ -1,8 +1,9 @@
 package net.namibsun.nuztrack.data.events
 
-import net.namibsun.nuztrack.constants.EventType
+import net.namibsun.nuztrack.constants.enums.EventType
 import net.namibsun.nuztrack.data.NuzlockeRun
 import net.namibsun.nuztrack.data.TeamMember
+import org.springframework.stereotype.Service
 import javax.persistence.*
 
 @Suppress("JpaDataSourceORMInspection")
@@ -17,6 +18,7 @@ class DeathEvent(
         @Column val description: String
 ) : Event(nuzlockeRun = nuzlockeRun, location = location, eventType = EventType.DEATH)
 
+@Service
 class DeathEventService(val db: EventRepository) {
     fun getAllDeathEvents(): List<DeathEvent> {
         return db.findAllByEventType(EventType.DEATH).map { it as DeathEvent }

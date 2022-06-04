@@ -1,6 +1,6 @@
 package net.namibsun.nuztrack.data.events
 
-import net.namibsun.nuztrack.constants.EventType
+import net.namibsun.nuztrack.constants.enums.EventType
 import net.namibsun.nuztrack.data.NuzlockeRun
 import org.hibernate.annotations.CreationTimestamp
 import org.springframework.data.jpa.repository.JpaRepository
@@ -33,6 +33,7 @@ class Event(
 @Repository
 interface EventRepository : JpaRepository<Event, Long> {
     fun findAllByEventType(eventType: EventType): List<Event>
+    fun findAllByEventTypeAndNuzlockeRunId(eventType: EventType, nuzlockeRunId: Long): List<Event>
 }
 
 @Service

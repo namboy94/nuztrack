@@ -1,8 +1,8 @@
 package net.namibsun.nuztrack.data.events
 
-import net.namibsun.nuztrack.constants.EventType
-import net.namibsun.nuztrack.constants.Gender
-import net.namibsun.nuztrack.constants.Natures
+import net.namibsun.nuztrack.constants.enums.EventType
+import net.namibsun.nuztrack.constants.enums.Gender
+import net.namibsun.nuztrack.constants.enums.Natures
 import net.namibsun.nuztrack.data.NUZLOCKE_RUN
 import net.namibsun.nuztrack.data.TeamMember
 import net.namibsun.nuztrack.data.TeamMemberRepository

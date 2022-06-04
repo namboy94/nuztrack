@@ -1,8 +1,9 @@
 package net.namibsun.nuztrack.data.events
 
-import net.namibsun.nuztrack.constants.EventType
+import net.namibsun.nuztrack.constants.enums.EventType
 import net.namibsun.nuztrack.data.NuzlockeRun
 import net.namibsun.nuztrack.data.TeamMember
+import org.springframework.stereotype.Service
 import javax.persistence.*
 
 @Suppress("JpaDataSourceORMInspection")
@@ -22,6 +23,7 @@ class EvolutionEvent(
 
 ) : Event(nuzlockeRun = nuzlockeRun, location = location, eventType = EventType.EVOLUTION)
 
+@Service
 class EvolutionEventService(val db: EventRepository) {
     fun getAllEvolutionEvents(): List<EvolutionEvent> {
         return db.findAllByEventType(EventType.EVOLUTION).map { it as EvolutionEvent }

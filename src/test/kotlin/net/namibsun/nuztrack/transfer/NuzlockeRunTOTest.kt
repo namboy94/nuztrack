@@ -1,8 +1,8 @@
 package net.namibsun.nuztrack.transfer
 
-import net.namibsun.nuztrack.constants.Games
-import net.namibsun.nuztrack.constants.Rules
-import net.namibsun.nuztrack.constants.RunStatus
+import net.namibsun.nuztrack.constants.enums.Games
+import net.namibsun.nuztrack.constants.enums.Rules
+import net.namibsun.nuztrack.constants.enums.RunStatus
 import net.namibsun.nuztrack.data.NuzlockeRun
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test

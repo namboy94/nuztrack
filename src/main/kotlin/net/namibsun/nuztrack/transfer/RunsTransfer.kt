@@ -1,5 +1,9 @@
 package net.namibsun.nuztrack.transfer
 
+import net.namibsun.nuztrack.constants.ValidationException
+import net.namibsun.nuztrack.constants.enums.ErrorMessages
+import net.namibsun.nuztrack.constants.enums.Games
+import net.namibsun.nuztrack.constants.enums.Rules
 import net.namibsun.nuztrack.data.NuzlockeRun
 
 data class NuzlockeRunTO(
@@ -14,7 +18,7 @@ data class NuzlockeRunTO(
     companion object {
         fun fromNuzlockeRun(run: NuzlockeRun): NuzlockeRunTO {
             return NuzlockeRunTO(
-                    id = run.id!!,
+                    id = run.id,
                     userName = run.userName,
                     name = run.name,
                     game = run.game.title,
@@ -31,4 +35,12 @@ data class CreateNuzlockeRunTO(
         val game: String,
         val rules: List<String>,
         val customRules: List<String>
-)
+) {
+    fun validate() {
+        if (name == "") {
+            throw ValidationException(ErrorMessages.EMPTY_NAME)
+        }
+        Games.valueOfWithChecks(game)
+        rules.map { Rules.valueOfWithChecks(it) }
+    }
+}

@@ -1,9 +1,9 @@
 package net.namibsun.nuztrack.data
 
-import net.namibsun.nuztrack.constants.Games
-import net.namibsun.nuztrack.constants.Gender
-import net.namibsun.nuztrack.constants.Natures
-import net.namibsun.nuztrack.constants.RunStatus
+import net.namibsun.nuztrack.constants.enums.Games
+import net.namibsun.nuztrack.constants.enums.Gender
+import net.namibsun.nuztrack.constants.enums.Natures
+import net.namibsun.nuztrack.constants.enums.RunStatus
 import net.namibsun.nuztrack.data.events.EncounterEvent
 
 val NUZLOCKE_RUN = NuzlockeRun(

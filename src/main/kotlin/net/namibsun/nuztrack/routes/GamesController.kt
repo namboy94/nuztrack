@@ -1,7 +1,7 @@
 package net.namibsun.nuztrack.routes
 
 import net.namibsun.nuztrack.constants.GameLocationRegistry
-import net.namibsun.nuztrack.constants.Games
+import net.namibsun.nuztrack.constants.enums.Games
 import net.namibsun.nuztrack.transfer.GameLocationTO
 import net.namibsun.nuztrack.transfer.GamesListTO
 import org.springframework.http.ResponseEntity

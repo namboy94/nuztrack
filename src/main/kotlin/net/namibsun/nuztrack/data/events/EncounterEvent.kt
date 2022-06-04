@@ -1,11 +1,12 @@
 package net.namibsun.nuztrack.data.events
 
-import net.namibsun.nuztrack.constants.EventType
-import net.namibsun.nuztrack.constants.Gender
-import net.namibsun.nuztrack.constants.Natures
+import net.namibsun.nuztrack.constants.enums.EventType
+import net.namibsun.nuztrack.constants.enums.Gender
+import net.namibsun.nuztrack.constants.enums.Natures
 import net.namibsun.nuztrack.data.NuzlockeRun
 import net.namibsun.nuztrack.data.TeamMember
 import net.namibsun.nuztrack.data.TeamMemberRepository
+import org.springframework.stereotype.Service
 import javax.persistence.*
 
 @Suppress("JpaDataSourceORMInspection")
@@ -24,6 +25,7 @@ class EncounterEvent(
 
 ) : Event(nuzlockeRun = nuzlockeRun, location = location, eventType = EventType.ENCOUNTER)
 
+@Service
 class EncounterEventService(val db: EventRepository, val teamMemberRepository: TeamMemberRepository) {
     fun getAllEncounterEvents(): List<EncounterEvent> {
         return db.findAllByEventType(EventType.ENCOUNTER).map { it as EncounterEvent }
@@ -59,5 +61,9 @@ class EncounterEventService(val db: EventRepository, val teamMemberRepository: T
                 encounter = encounter
         ))
         return teamMember.encounter
+    }
+
+    fun getLocationsWithEncounters(runId: Long): List<String> {
+        return db.findAllByEventTypeAndNuzlockeRunId(EventType.ENCOUNTER, runId).map { it.location }
     }
 }
