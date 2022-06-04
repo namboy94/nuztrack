@@ -9,16 +9,28 @@ import javax.persistence.*
 
 @Suppress("JpaDataSourceORMInspection")
 @Entity
-@Table(name = "runs")
+@Table(name = "nuzlocke_run")
 class NuzlockeRun(
-        @Column(nullable = false) @Id @GeneratedValue var id: Long? = null,
+        @Id
+        @GeneratedValue
+        val id: Long = 0,
+
         @Column val userName: String,
+
         @Column val name: String,
+
         @Column @Enumerated(EnumType.STRING) val game: Games,
+
         @ElementCollection @CollectionTable(name = "rules") @Enumerated(EnumType.STRING) val rules: List<Rules>,
+
         @ElementCollection @CollectionTable(name = "custom_rules") val customRules: List<String>,
+
         @Enumerated(EnumType.STRING) val status: RunStatus
-)
+) {
+    @OneToOne(cascade = [CascadeType.ALL])
+    @JoinColumn(name = "event_log_id", referencedColumnName = "id")
+    val eventLog: EventLog = EventLog(run = this)
+}
 
 @Repository
 interface NuzlockeRunRepository : JpaRepository<NuzlockeRun, Long> {

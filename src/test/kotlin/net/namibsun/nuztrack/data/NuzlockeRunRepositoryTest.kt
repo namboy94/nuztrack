@@ -16,13 +16,12 @@ class NuzlockeRunRepositoryTest {
     @Test
     fun findByUserName_success() {
         repository.save(NuzlockeRun(
-                null,
-                "Ash",
-                "First",
-                Games.RED,
-                listOf(),
-                listOf(),
-                RunStatus.ACTIVE
+                userName = "Ash",
+                name = "First",
+                game = Games.RED,
+                rules = listOf(),
+                customRules = listOf(),
+                status = RunStatus.ACTIVE
         ))
         val found = repository.findByUserName("Ash")
         assertThat(found).hasSize(1)
@@ -32,13 +31,12 @@ class NuzlockeRunRepositoryTest {
     @Test
     fun findByUserName_noResults() {
         repository.save(NuzlockeRun(
-                null,
-                "Ash",
-                "First",
-                Games.RED,
-                listOf(),
-                listOf(),
-                RunStatus.ACTIVE
+                userName = "Ash",
+                name = "First",
+                game = Games.RED,
+                rules = listOf(),
+                customRules = listOf(),
+                status = RunStatus.ACTIVE
         ))
         val found = repository.findByUserName("Gary")
         assertThat(found).hasSize(0)

@@ -22,9 +22,9 @@ class NuzlockeRunServiceTest {
 
     @Test
     fun getRun_runExists() {
-        whenever(repository.findById(exampleOne.id!!)).thenReturn(Optional.of(exampleOne))
+        whenever(repository.findById(exampleOne.id)).thenReturn(Optional.of(exampleOne))
 
-        val result = service.getRun(exampleOne.id!!)
+        val result = service.getRun(exampleOne.id)
 
         verify(repository, times(1)).findById(5)
         assertThat(result).isEqualTo(exampleOne)
@@ -109,12 +109,12 @@ class NuzlockeRunServiceTest {
 
     @Test
     fun deleteRun() {
-        whenever(repository.deleteById(exampleOne.id!!)).then {}
+        whenever(repository.deleteById(exampleOne.id)).then {}
 
-        val result = service.deleteRun(exampleOne.id!!)
+        val result = service.deleteRun(exampleOne.id)
 
         assertThat(result).isEqualTo(Unit)
-        verify(repository, times(1)).deleteById(exampleOne.id!!)
+        verify(repository, times(1)).deleteById(exampleOne.id)
     }
 
 }
