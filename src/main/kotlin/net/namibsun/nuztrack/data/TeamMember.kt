@@ -4,7 +4,12 @@ import net.namibsun.nuztrack.constants.Natures
 import net.namibsun.nuztrack.data.events.DeathEvent
 import net.namibsun.nuztrack.data.events.EncounterEvent
 import net.namibsun.nuztrack.data.events.EvolutionEvent
-import net.namibsun.nuztrack.data.events.TeamRemoveEvent
+import net.namibsun.nuztrack.data.events.TeamMemberSwitchEvent
+import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.Query
+import org.springframework.data.repository.query.Param
+import org.springframework.stereotype.Repository
+import org.springframework.stereotype.Service
 import javax.persistence.*
 
 @Suppress("JpaDataSourceORMInspection")
@@ -18,18 +23,31 @@ class TeamMember(
         @Column val nature: Natures,
         @Column val abilitySlot: Int,
 
-        @OneToOne(mappedBy = "teamMember")
+        @OneToOne(cascade = [CascadeType.ALL])
+        @JoinColumn(name = "encounter_id")
         val encounter: EncounterEvent,
 
-        @OneToOne(mappedBy = "teamMember")
+        @OneToOne(mappedBy = "teamMember", cascade = [CascadeType.ALL])
         val death: DeathEvent? = null,
 
         @OneToMany(mappedBy = "teamMember", cascade = [CascadeType.ALL])
         val evolutions: List<EvolutionEvent> = listOf(),
 
         @OneToMany(mappedBy = "teamMember", cascade = [CascadeType.ALL])
-        val teamAdds: List<TeamRemoveEvent> = listOf(),
-
-        @OneToMany(mappedBy = "teamMember", cascade = [CascadeType.ALL])
-        val teamRemoves: List<TeamRemoveEvent> = listOf(),
+        val teamSwitches: List<TeamMemberSwitchEvent> = listOf(),
 )
+
+@Repository
+interface TeamMemberRepository : JpaRepository<TeamMember, Long> {
+    @Query("SELECT m FROM TeamMember m " +
+            "INNER JOIN EncounterEvent e ON m.encounter.id = e.id " +
+            "WHERE e.nuzlockeRun.id = :runId")
+    fun findAllByNuzlockeRunId(@Param("runId") nuzlockeRunId: Long): List<TeamMember>
+}
+
+@Service
+class TeamMemberService(val db: TeamMemberRepository) {
+    fun getAllForNuzlockeRun(nuzlockeRun: NuzlockeRun): List<TeamMember> {
+        return db.findAllByNuzlockeRunId(nuzlockeRun.id)
+    }
+}

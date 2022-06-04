@@ -13,7 +13,7 @@ class NoteEventServiceTest {
 
     private val events = listOf<Event>(
             NoteEvent(NUZLOCKE_RUN, "Pallet Town", "Hello World"),
-            NoteEvent(NUZLOCKE_RUN, "Pokemon League", "Goodbye"),
+            NoteEvent(NUZLOCKE_RUN, "Pokemon League", "Goodbye")
     )
 
     @Test
