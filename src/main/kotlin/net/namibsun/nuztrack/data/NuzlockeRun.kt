@@ -1,6 +1,7 @@
 package net.namibsun.nuztrack.data
 
 import net.namibsun.nuztrack.constants.*
+import net.namibsun.nuztrack.data.events.Event
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
@@ -25,12 +26,11 @@ class NuzlockeRun(
 
         @ElementCollection @CollectionTable(name = "custom_rules") val customRules: List<String>,
 
-        @Enumerated(EnumType.STRING) val status: RunStatus
-) {
-    @OneToOne(cascade = [CascadeType.ALL])
-    @JoinColumn(name = "event_log_id", referencedColumnName = "id")
-    val eventLog: EventLog = EventLog(run = this)
-}
+        @Enumerated(EnumType.STRING) val status: RunStatus,
+
+        @OneToMany(mappedBy = "nuzlockeRun", cascade = [CascadeType.ALL])
+        val events: List<Event> = listOf()
+)
 
 @Repository
 interface NuzlockeRunRepository : JpaRepository<NuzlockeRun, Long> {
