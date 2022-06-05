@@ -1,4 +1,4 @@
-pokedexId:
+pokedexNumber:
   type:
     integer
   description: The Pokedex ID of a Pokemon
@@ -79,8 +79,3 @@ secondaryType:
   nullable: true
   description: "The secondary type of a Pokemon"
   example: null
-
-nature:
-  type: string
-  description: The nature of a Pokemon
-  example: "MODEST"

@@ -1,4 +1,5 @@
 LocationTO:
+  description: Information about a location
   required:
     - name
     - encounters
@@ -15,7 +16,7 @@ LocationTO:
       description: "The milestones in a location"
 
 MilestoneTO:
-  description: "A major milestone in the game, like a Gym Badge"
+  description: "Information about a major milestone in the game, like a Gym Badge"
   required:
     - name
     - image

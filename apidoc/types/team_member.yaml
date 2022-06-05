@@ -1,0 +1,29 @@
+level:
+  type: integer
+  description: The level of a Pokemon
+  minimum: 1
+  maximum: 100
+  example: 16
+
+nature:
+  type: string
+  description: The nature of a Pokemon
+  example: "MODEST"
+
+abilitySlot:
+  type: integer
+  description: The ability slot of a Pokemon
+  minimum: 1
+  maximum: 3
+  example: 1
+
+nickname:
+  type: string
+  description: The nickname of a Pokemon
+  example: "Poli"
+
+gender:
+  type: string
+  enum: [ "MALE", "FEMALE", "NEUTRAL" ]
+  description: The gender of a Pokemon
+  example: "MALE"

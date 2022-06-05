@@ -4,7 +4,7 @@ get:
   description: "Retrieves information about a specific Pokemon"
   parameters:
     - in: path
-      $ref: "../types/route_params.yaml#/pokedexId"
+      $ref: "../types/route_params.yaml#/pokedexNumber"
   responses:
     "200":
       description: "Success"
@@ -13,4 +13,4 @@ get:
           schema:
             $ref: "../entities/pokedex.yaml#/PokemonSpeciesTO"
     "404":
-      description: "No Pokemon for the provided PokedexID was found"
+      description: "No Pokemon for the provided pokedexNumber was found"

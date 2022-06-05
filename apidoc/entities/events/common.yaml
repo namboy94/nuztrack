@@ -1,0 +1,16 @@
+EventTO:
+  description: General information about an event
+  required:
+    - id
+    - runId
+    - timestamp
+    - location
+  properties:
+    id:
+      $ref: "../../types/events/common.yaml#/id"
+    runId:
+      $ref: "../../types/runs.yaml#/id"
+    timestamp:
+      $ref: "../../types/events/common.yaml#/timestamp"
+    location:
+      $ref: "../../types/events/common.yaml#/location"

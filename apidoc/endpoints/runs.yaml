@@ -23,8 +23,8 @@ post:
         schema:
           $ref: "../entities/runs.yaml#/CreateNuzlockeRunTO"
   responses:
-    "200":
-      description: "Success"
+    "201":
+      description: "Created new Nuzlocke Run"
       content:
         application/json:
           schema:

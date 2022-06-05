@@ -1,4 +1,5 @@
 GamesMapping:
+  description: A mapping of game keys to game titles
   type: object
   additionalProperties:
     $ref: "../types/games.yaml#/gameKey"

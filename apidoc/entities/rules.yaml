@@ -1,4 +1,5 @@
 RulesDetailsTO:
+  description: Information about the available rules
   required:
     - rules
     - defaultRules
@@ -12,6 +13,7 @@ RulesDetailsTO:
       $ref: "../types/rules.yaml#/defaultRuleKeys"
 
 RulesMapping:
+  description: A mapping of rule keys to rule descriptions
   type: object
   additionalProperties:
     $ref: "../types/rules.yaml#/ruleKey"

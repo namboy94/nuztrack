@@ -10,4 +10,4 @@ get:
           schema:
             type: array
             items:
-              $ref: "../types/pokedex.yaml#/nature"
+              $ref: "../types/team_member.yaml#/nature"

@@ -6,8 +6,8 @@ gameKey:
   description: The key for a mainline Pokemon game
   example: "FIRERED"
 
-pokedexId:
-  name: pokedexId
+pokedexNumber:
+  name: pokedexNumber
   schema:
     type: integer
   required: true

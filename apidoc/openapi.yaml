@@ -37,7 +37,10 @@ paths:
 
   /pokedex:
     $ref: "./endpoints/pokedex.yaml"
-  /pokedex/{pokedexId}:
-    $ref: "./endpoints/pokedex_pokedexId.yaml"
+  /pokedex/{pokedexNumber}:
+    $ref: "./endpoints/pokedex_pokedexNumber.yaml"
   /pokedex/natures:
     $ref: "./endpoints/pokedex_natures.yaml"
+
+  /events/{runId}/encounters:
+    $ref: "./endpoints/events_encounters.yaml"

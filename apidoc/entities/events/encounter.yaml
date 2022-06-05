@@ -1,0 +1,57 @@
+CreateEncounterEventTO:
+  description: Contains the data required to create a new Encounter event
+  required:
+    - location
+    - pokedexNumber
+    - level
+    - gender
+    - caught
+  properties:
+    location:
+      $ref: "../../types/events/common.yaml#/location"
+    pokedexNumber:
+      $ref: "../../types/pokedex.yaml#/pokedexNumber"
+    level:
+      $ref: "../../types/team_member.yaml#/level"
+    gender:
+      $ref: "../../types/team_member.yaml#/gender"
+    caught:
+      $ref: "../../types/events/encounter.yaml#/caught"
+    pokemon:
+      $ref: "#/CreateEncounterPokemonTO"
+
+CreateEncounterPokemonTO:
+  description: Contains the data required to create a new Team Member while creating a new Encounter Event
+  required:
+    - nickname
+    - nature
+    - abilitySlot
+  properties:
+    nickname:
+      $ref: "../../types/team_member.yaml#/nickname"
+    nature:
+      $ref: "../../types/team_member.yaml#/nature"
+    abilitySlot:
+      $ref: "../../types/team_member.yaml#/abilitySlot"
+
+EncounterEventTO:
+  required:
+    - event
+    - pokedexNumber
+    - level
+    - gender
+    - caught
+    - teamMemberId
+  properties:
+    event:
+      $ref: "./common.yaml#/EventTO"
+    pokedexNumber:
+      $ref: "../../types/pokedex.yaml#/pokedexNumber"
+    level:
+      $ref: "../../types/team_member.yaml#/level"
+    gender:
+      $ref: "../../types/team_member.yaml#/gender"
+    caught:
+      $ref: "../../types/events/encounter.yaml#/caught"
+    teamMemberId:
+      $ref: "../../types/events/common.yaml#/nullableTeamMemberId"

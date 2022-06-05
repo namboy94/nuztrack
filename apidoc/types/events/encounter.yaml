@@ -1,0 +1,4 @@
+caught:
+  type: boolean
+  description: Whether the encounter had a successful encounter or not
+  example: true

@@ -1,4 +1,5 @@
 NuzlockeRunTO:
+  description: Information about a Nuzlocke Run
   required:
     - id
     - username
@@ -24,6 +25,7 @@ NuzlockeRunTO:
       $ref: "../types/runs.yaml#/runStatus"
 
 CreateNuzlockeRunTO:
+  description: Information required to create a new Nuzlocke Run
   required:
     - name
     - game

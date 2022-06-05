@@ -1,0 +1,25 @@
+id:
+  type: integer
+  description: The ID of an event
+  example: 2
+
+location:
+  type: string
+  description: The location of an event
+  example: "Cerulean City"
+
+nullableTeamMemberId:
+  type: integer
+  nullable: true
+  description: The ID of the team member associated with this event (may be null)
+  example: 3
+
+teamMemberId:
+  type: integer
+  description: The ID of the team member associated with this event
+  example: 3
+
+timestamp:
+  type: string
+  description: The UTC timestamp of an event in ISO 8601 format
+  example: "2022-03-15T20:05:10.324Z"
