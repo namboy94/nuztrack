@@ -22,24 +22,16 @@ PokemonSpeciesTO:
     types:
       $ref: "#/TypesTO"
     abilities:
-      $ref: "#/AbilitiesTO"
+      $ref: "#/AbilitiesMapping"
     evolutions:
       $ref: "../types/pokedex.yaml#/evolutions"
 
-
-AbilitiesTO:
-  description: "The possible abilities of a Pokemon"
-  required:
-    - primary
-    - secondary
-    - hidden
-  properties:
-    primary:
-      $ref: "../types/pokedex.yaml#/primaryAbility"
-    secondary:
-      $ref: "../types/pokedex.yaml#/secondaryAbility"
-    hidden:
-      $ref: "../types/pokedex.yaml#/hiddenAbility"
+AbilitiesMapping:
+  description: A mapping of ability slots to abilities
+  type: object
+  additionalProperties:
+    $ref: "../types/pokedex.yaml#/abilitySlot"
+  $ref: "../types/pokedex.yaml#/abilitiesMapping"
 
 TypesTO:
   description: "The types of a Pokemon"

@@ -7,6 +7,7 @@ import net.namibsun.nuztrack.constants.enums.ErrorMessages
 import net.namibsun.nuztrack.constants.enums.Natures
 import net.namibsun.nuztrack.constants.enums.Rules
 import net.namibsun.nuztrack.data.events.EncounterEvent
+import net.namibsun.nuztrack.transfer.PokemonSpeciesTO
 
 data class EncounterEventTO(
         val event: EventTO,
@@ -44,7 +45,7 @@ data class CreateEncounterEventTO(
             throw ValidationException(ErrorMessages.ENCOUNTER_IN_LOCATION_ALREADY_USED)
         }
 
-        try {
+        val pokemonSpecies = try {
             Pokedex.getPokemon(pokedexNumber)
         } catch (e: NotFoundException) {
             throw ValidationException(ErrorMessages.INVALID_POKEMON)
@@ -59,7 +60,7 @@ data class CreateEncounterEventTO(
         if (!caught && pokemon != null) {
             throw ValidationException(ErrorMessages.NOT_CAUGHT_BUT_POKEMON)
         }
-        pokemon?.validate()
+        pokemon?.validate(pokemonSpecies)
     }
 }
 
@@ -68,13 +69,14 @@ data class CreateEncounterPokemonTO(
         val nature: String,
         val abilitySlot: Int
 ) {
-    fun validate() {
+    fun validate(pokemonSpecies: PokemonSpeciesTO) {
         if (nickname.isEmpty() || nickname.length > 12) {
             throw ValidationException(ErrorMessages.INVALID_NICKNAME)
         }
-        if (!listOf(1, 2, 3).contains(abilitySlot)) {
+        if (pokemonSpecies.abilities[abilitySlot] == null) {
             throw ValidationException(ErrorMessages.INVALID_ABILITY_SLOT)
         }
         Natures.valueOfWithChecks(nature)
+        // TODO Validate abilitySlot is not null
     }
 }

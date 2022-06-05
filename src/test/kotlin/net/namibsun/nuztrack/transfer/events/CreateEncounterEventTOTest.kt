@@ -86,13 +86,22 @@ internal class CreateEncounterEventTOTest {
 
     @Test
     fun validate_invalidAbilitySlot() {
-        val one = CreateEncounterPokemonTO("A", "DoesNotExist", 0)
-        val two = CreateEncounterPokemonTO("A", "DoesNotExist", 4)
+        val one = CreateEncounterPokemonTO("A", Natures.ADAMANT.name, 0)
+        val two = CreateEncounterPokemonTO("A", Natures.ADAMANT.name, 4)
         assertThat(assertThrows<ValidationException> {
             CreateEncounterEventTO("A", 1, 1, "male", true, one).validate(listOf(), listOf())
         }.message).isEqualTo(ErrorMessages.INVALID_ABILITY_SLOT.message)
         assertThat(assertThrows<ValidationException> {
             CreateEncounterEventTO("A", 1, 1, "male", true, two).validate(listOf(), listOf())
+        }.message).isEqualTo(ErrorMessages.INVALID_ABILITY_SLOT.message)
+    }
+
+    @Test
+    fun validate_invalidAbility() {
+        // Bulbasaur has no secondary ability
+        val one = CreateEncounterPokemonTO("A", Natures.ADAMANT.name, 2)
+        assertThat(assertThrows<ValidationException> {
+            CreateEncounterEventTO("A", 1, 1, "male", true, one).validate(listOf(), listOf())
         }.message).isEqualTo(ErrorMessages.INVALID_ABILITY_SLOT.message)
     }
 }

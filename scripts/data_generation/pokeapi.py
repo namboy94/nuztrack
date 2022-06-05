@@ -47,9 +47,9 @@ def load_pokemon(_cachedir):
 
             pokemon[pokedex_number] = {
                 "abilities": {
-                    "primary": abilities[1],
-                    "secondary": abilities[2],
-                    "hidden": abilities[3],
+                    1: abilities[1],
+                    2: abilities[2],
+                    3: abilities[3],
                 },
                 "sprite": sprite,
                 "name": species.name.title(),

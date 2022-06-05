@@ -14,7 +14,7 @@ import javax.persistence.*
 
 @Suppress("JpaDataSourceORMInspection")
 @Entity
-@Table(name = "team_member")
+@Table(name = "team_member.yaml")
 class TeamMember(
         @Id @GeneratedValue val id: Long = 0,
         @Column val nickname: String,

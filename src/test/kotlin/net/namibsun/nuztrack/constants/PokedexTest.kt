@@ -2,7 +2,6 @@ package net.namibsun.nuztrack.constants
 
 import net.namibsun.nuztrack.constants.enums.ErrorMessages
 import net.namibsun.nuztrack.transfer.PokedexTO
-import net.namibsun.nuztrack.transfer.PokemonAbilitiesTO
 import net.namibsun.nuztrack.transfer.PokemonSpeciesTO
 import net.namibsun.nuztrack.transfer.PokemonTypesTO
 import org.assertj.core.api.Assertions.assertThat
@@ -24,7 +23,7 @@ internal class PokedexTest {
                 name = "Squirtle",
                 sprite = squirtle.sprite,
                 types = PokemonTypesTO("WATER", null),
-                abilities = PokemonAbilitiesTO("Torrent", null, "Rain Dish"),
+                abilities = mapOf(1 to "Torrent", 2 to null, 3 to "Rain Dish"),
                 evolutions = listOf(8)
         ))
     }

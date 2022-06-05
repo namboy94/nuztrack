@@ -37,34 +37,21 @@ pokedexMapping:
         "secondary": null
       },
       "abilities": {
-        "primary": "Torrent",
-        "secondary": null,
-        "hidden": "Rain Dish"
+        "1": "Torrent",
+        "2": null,
+        "3": "Rain Dish"
       },
       "evolutions": [ 8 ]
     }
   }
+abilitySlot:
+  type: string
+  description: An ability slot of a Pokemon species
+  example: "1"
 
-primaryAbility:
-  type:
-    string
-  nullable: false
-  description: "The primary ability of a Pokemon"
-  example: "Torrent"
-
-secondaryAbility:
-  type:
-    string
-  nullable: true
-  description: "The secondary ability of a Pokemon"
-  example: null
-
-hiddenAbility:
-  type:
-    string
-  nullable: true
-  description: "The hidden ability of a Pokemon"
-  example: "Rain Dish"
+abilitiesMapping:
+  description: A mapping of ability slots to abilities
+  example: { "1": "Torrent", "2": null, "3": "Rain Dish" }
 
 primaryType:
   type:

@@ -100,11 +100,7 @@ export default function AddEncounterDialog(props: AddEncounterDialogProps) {
             setLocation(currentLocation)
             const pokedexId = pokemonNameToPokedexIdMap.get(newPokemon)!!
             const newAbilities = props.pokedex.get(pokedexId)!!.abilities
-            const abilitiesList = [
-                newAbilities.primary,
-                newAbilities.secondary,
-                newAbilities.hidden
-            ]
+            const abilitiesList = Array.from(newAbilities.values())
             setAbilities(abilitiesList.filter(x => x !== null).map(x => x!!))
         }
     }
