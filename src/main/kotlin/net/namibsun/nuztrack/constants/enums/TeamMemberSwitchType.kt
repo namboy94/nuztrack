@@ -6,7 +6,7 @@ enum class TeamMemberSwitchType {
     ADD, REMOVE;
 
     companion object {
-        fun valueOfWithChecks(string: String): TeamMemberSwitchType {
+        fun valueOfWithChecks(string: String?): TeamMemberSwitchType {
             return safeValueOf(string, ErrorMessages.INVALID_TEAM_MEMBER_SWITCH_TYPE)
         }
     }

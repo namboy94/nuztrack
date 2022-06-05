@@ -6,6 +6,7 @@ import net.namibsun.nuztrack.data.NuzlockeRunService
 import net.namibsun.nuztrack.transfer.CreateNuzlockeRunTO
 import net.namibsun.nuztrack.transfer.NuzlockeRunTO
 import net.namibsun.nuztrack.util.Authenticator
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
@@ -30,20 +31,20 @@ class RunsController(val service: NuzlockeRunService) {
         val game = Games.valueOfWithChecks(createRun.game)
         val rules = createRun.rules.map { Rules.valueOfWithChecks(it) }
         val run = this.service.createRun(principal.name, createRun.name, game, rules, createRun.customRules)
-        return ResponseEntity.ok(NuzlockeRunTO.fromNuzlockeRun(run))
+        return ResponseEntity<NuzlockeRunTO>(NuzlockeRunTO.fromNuzlockeRun(run), HttpStatus.CREATED)
     }
 
     @GetMapping("/api/runs/{id}")
     @ResponseBody
     fun getRun(@PathVariable id: Long, principal: Principal): ResponseEntity<NuzlockeRunTO> {
-        val run = this.authenticator.loadAuthenticatedRun(id, principal)
+        val run = this.authenticator.loadAuthenticatedRun(id, principal.name)
         return ResponseEntity.ok(NuzlockeRunTO.fromNuzlockeRun(run))
     }
 
     @DeleteMapping("/api/runs/{id}")
     @ResponseBody
     fun deleteRun(@PathVariable id: Long, principal: Principal): ResponseEntity<Unit> {
-        this.authenticator.loadAuthenticatedRun(id, principal)
+        this.authenticator.loadAuthenticatedRun(id, principal.name)
         this.service.deleteRun(id)
         return ResponseEntity.ok(null)
     }

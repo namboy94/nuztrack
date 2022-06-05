@@ -30,7 +30,7 @@ enum class Natures {
     QUIRKY;
 
     companion object {
-        fun valueOfWithChecks(string: String): Natures {
+        fun valueOfWithChecks(string: String?): Natures {
             return safeValueOf(string, ErrorMessages.INVALID_NATURE)
         }
     }

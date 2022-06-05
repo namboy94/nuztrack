@@ -6,7 +6,7 @@ enum class RunStatus {
     ACTIVE, FAILED, COMPLETED;
 
     companion object {
-        fun valueOfWithChecks(string: String): RunStatus {
+        fun valueOfWithChecks(string: String?): RunStatus {
             return safeValueOf(string, ErrorMessages.INVALID_RUN_STATUS)
         }
     }

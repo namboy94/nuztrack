@@ -1,7 +1,6 @@
-package net.namibsun.nuztrack.constants
+package net.namibsun.nuztrack.constants.enums
 
-import net.namibsun.nuztrack.constants.enums.ErrorMessages
-import net.namibsun.nuztrack.constants.enums.Games
+import net.namibsun.nuztrack.constants.ValidationException
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -21,6 +20,9 @@ internal class GamesTest {
         }.message).isEqualTo(ErrorMessages.INVALID_GAME.message)
         assertThat(assertThrows<ValidationException> {
             Games.valueOfWithChecks("")
+        }.message).isEqualTo(ErrorMessages.INVALID_GAME.message)
+        assertThat(assertThrows<ValidationException> {
+            Games.valueOfWithChecks(null)
         }.message).isEqualTo(ErrorMessages.INVALID_GAME.message)
     }
 }

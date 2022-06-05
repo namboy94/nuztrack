@@ -1,13 +1,10 @@
 package net.namibsun.nuztrack.data
 
-import net.namibsun.nuztrack.constants.ValidationException
-import net.namibsun.nuztrack.constants.enums.ErrorMessages
 import net.namibsun.nuztrack.constants.enums.Games
 import net.namibsun.nuztrack.constants.enums.Rules
 import net.namibsun.nuztrack.constants.enums.RunStatus
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import org.mockito.AdditionalAnswers
 import org.mockito.kotlin.*
 import java.util.*
@@ -84,7 +81,6 @@ class NuzlockeRunServiceTest {
 
     @Test
     fun makeSureRunIsSetToActive() {
-        @Suppress("RemoveExplicitTypeArguments")
         whenever(repository.save(any<NuzlockeRun>())).then(AdditionalAnswers.returnsFirstArg<NuzlockeRun>())
 
         val result = service.createRun(
@@ -94,21 +90,9 @@ class NuzlockeRunServiceTest {
                 exampleOne.rules,
                 exampleOne.customRules
         )
-
         assertThat(result.status).isNotEqualTo(exampleOne.status)
         assertThat(result.status).isEqualTo(RunStatus.ACTIVE)
         verify(repository, times(1)).save(any())
-    }
-
-    @Test
-    fun createRun_invalidName() {
-
-        val thrown = assertThrows<ValidationException> {
-            service.createRun(username, "", Games.RED, listOf(), listOf())
-        }
-
-        assertThat(thrown.message).isEqualTo(ErrorMessages.EMPTY_NAME.message)
-        verify(repository, times(0)).save(any())
     }
 
     @Test

@@ -18,7 +18,7 @@ import javax.persistence.*
 class TeamMember(
         @Id @GeneratedValue val id: Long = 0,
         @Column val nickname: String,
-        @Column val species: Int,
+        @Column val pokedexNumber: Int,
         @Column val level: Int,
         @Column val nature: Natures,
         @Column val abilitySlot: Int,
@@ -49,5 +49,21 @@ interface TeamMemberRepository : JpaRepository<TeamMember, Long> {
 class TeamMemberService(val db: TeamMemberRepository) {
     fun getAllForNuzlockeRun(nuzlockeRun: NuzlockeRun): List<TeamMember> {
         return db.findAllByNuzlockeRunId(nuzlockeRun.id)
+    }
+
+    fun createTeamMember(
+            encounter: EncounterEvent,
+            nickname: String,
+            nature: Natures,
+            abilitySlot: Int
+    ): TeamMember {
+        return db.save(TeamMember(
+                encounter = encounter,
+                level = encounter.level,
+                pokedexNumber = encounter.pokedexNumber,
+                nickname = nickname,
+                abilitySlot = abilitySlot,
+                nature = nature
+        ))
     }
 }

@@ -74,6 +74,8 @@ internal class RunsControllerTest {
 
         val result = controller.createRun(creatorOne, principal)
 
+        assertThat(result.statusCode).isEqualTo(HttpStatus.CREATED)
+        assertThat(result.body).isEqualTo(exampleOneTO)
         verify(service, times(1)).createRun(
                 exampleOne.userName,
                 exampleOne.name,
@@ -82,23 +84,16 @@ internal class RunsControllerTest {
                 exampleOne.customRules
         )
         verify(principal, times(1)).name
-        assertThat(result.body).isEqualTo(exampleOneTO)
     }
 
     @Test
     fun createRun_invalidName() {
-        whenever(principal.name).thenReturn(userOne)
-        whenever(service.createRun(userOne, "", Games.RED, listOf(), listOf())).thenThrow(
-                ValidationException(ErrorMessages.EMPTY_NAME)
-        )
-
         val thrown = assertThrows<ValidationException> {
             controller.createRun(CreateNuzlockeRunTO("", Games.RED.title, listOf(), listOf()), principal)
         }
 
         assertThat(thrown.message).isEqualTo(ErrorMessages.EMPTY_NAME.message)
-        verify(principal, times(1)).name
-        verify(service, times(1)).createRun(userOne, "", Games.RED, listOf(), listOf())
+        verify(service, times(0)).createRun(userOne, "", Games.RED, listOf(), listOf())
     }
 
     @Test
@@ -129,12 +124,12 @@ internal class RunsControllerTest {
     @Test
     fun getRun_success() {
         whenever(principal.name).thenReturn(userOne)
-        whenever(service.getRun(exampleOne.id!!)).thenReturn(exampleOne)
+        whenever(service.getRun(exampleOne.id)).thenReturn(exampleOne)
 
-        val result = controller.getRun(exampleOne.id!!, principal)
+        val result = controller.getRun(exampleOne.id, principal)
 
         verify(principal, times(1)).name
-        verify(service, times(1)).getRun(exampleOne.id!!)
+        verify(service, times(1)).getRun(exampleOne.id)
         assertThat(result.body).isEqualTo(exampleOneTO)
     }
 
@@ -155,28 +150,28 @@ internal class RunsControllerTest {
     @Test
     fun getRun_noAccessRights() {
         whenever(principal.name).thenReturn(userTwo)
-        whenever(service.getRun(exampleOne.id!!)).thenReturn(exampleOne)
+        whenever(service.getRun(exampleOne.id)).thenReturn(exampleOne)
 
         val thrown = assertThrows<UnauthorizedException> {
-            controller.getRun(exampleOne.id!!, principal)
+            controller.getRun(exampleOne.id, principal)
         }
 
         verify(principal, times(1)).name
-        verify(service, times(1)).getRun(exampleOne.id!!)
+        verify(service, times(1)).getRun(exampleOne.id)
         assertThat(thrown.message).isEqualTo(ErrorMessages.NO_ACCESS_TO_RUN.message)
     }
 
     @Test
     fun deleteRun_success() {
         whenever(principal.name).thenReturn(userOne)
-        whenever(service.getRun(exampleOne.id!!)).thenReturn(exampleOne)
-        whenever(service.deleteRun(exampleOne.id!!)).then {}
+        whenever(service.getRun(exampleOne.id)).thenReturn(exampleOne)
+        whenever(service.deleteRun(exampleOne.id)).then {}
 
-        val result = controller.deleteRun(exampleOne.id!!, principal)
+        val result = controller.deleteRun(exampleOne.id, principal)
 
         verify(principal, times(1)).name
-        verify(service, times(1)).getRun(exampleOne.id!!)
-        verify(service, times(1)).deleteRun(exampleOne.id!!)
+        verify(service, times(1)).getRun(exampleOne.id)
+        verify(service, times(1)).deleteRun(exampleOne.id)
         assertThat(result.statusCode).isEqualTo(HttpStatus.OK)
     }
 
@@ -198,15 +193,15 @@ internal class RunsControllerTest {
     @Test
     fun deleteRun_noAccess() {
         whenever(principal.name).thenReturn(userTwo)
-        whenever(service.getRun(exampleOne.id!!)).thenReturn(exampleOne)
+        whenever(service.getRun(exampleOne.id)).thenReturn(exampleOne)
 
         val thrown = assertThrows<UnauthorizedException> {
-            controller.deleteRun(exampleOne.id!!, principal)
+            controller.deleteRun(exampleOne.id, principal)
         }
 
         verify(principal, times(1)).name
-        verify(service, times(1)).getRun(exampleOne.id!!)
-        verify(service, times(0)).deleteRun(exampleOne.id!!)
+        verify(service, times(1)).getRun(exampleOne.id)
+        verify(service, times(0)).deleteRun(exampleOne.id)
         assertThat(thrown.message).isEqualTo(ErrorMessages.NO_ACCESS_TO_RUN.message)
     }
 }

@@ -1,7 +1,6 @@
-package net.namibsun.nuztrack.constants
+package net.namibsun.nuztrack.constants.enums
 
-import net.namibsun.nuztrack.constants.enums.ErrorMessages
-import net.namibsun.nuztrack.constants.enums.Natures
+import net.namibsun.nuztrack.constants.ValidationException
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -25,6 +24,9 @@ internal class NaturesTest {
         }.message).isEqualTo(ErrorMessages.INVALID_NATURE.message)
         assertThat(org.junit.jupiter.api.assertThrows<ValidationException> {
             Natures.valueOfWithChecks("")
+        }.message).isEqualTo(ErrorMessages.INVALID_NATURE.message)
+        assertThat(org.junit.jupiter.api.assertThrows<ValidationException> {
+            Natures.valueOfWithChecks(null)
         }.message).isEqualTo(ErrorMessages.INVALID_NATURE.message)
     }
 

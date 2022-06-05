@@ -16,5 +16,6 @@ enum class ErrorMessages(val message: String) {
     ENCOUNTER_IN_LOCATION_ALREADY_USED("There has already been an encounter in this location"),
     INVALID_GENDER("No valid gender was specified"),
     INVALID_TEAM_MEMBER_SWITCH_TYPE("The team member switch operation ca only be ADD or REMOVE"),
-    INVALID_ABILITY_SLOT("The provided ability slot is not a valid ability slot for this Pokemon")
+    INVALID_ABILITY_SLOT("The provided ability slot is not a valid ability slot for this Pokemon"),
+    INVALID_NICKNAME("The provided nickname is either too short or too long")
 }

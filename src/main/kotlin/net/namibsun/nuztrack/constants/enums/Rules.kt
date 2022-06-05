@@ -20,7 +20,7 @@ enum class Rules(val description: String) {
     NO_POKE_CENTERS("PokéCenters nay not be used");
 
     companion object {
-        fun valueOfWithChecks(string: String): Rules {
+        fun valueOfWithChecks(string: String?): Rules {
             return safeValueOf(string, ErrorMessages.INVALID_RULE)
         }
 

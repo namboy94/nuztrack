@@ -30,8 +30,8 @@ class EvolutionEventServiceTest {
 
         val evolution = service.createEvolutionEvent(NUZLOCKE_RUN, "Pallet Town", TEAM_MEMBER, 50, 1, 2)
 
-        assertThat(evolution.previousSpecies).isEqualTo(1)
-        assertThat(evolution.newSpecies).isEqualTo(2)
+        assertThat(evolution.previousPokedexNumber).isEqualTo(1)
+        assertThat(evolution.newPokedexNumber).isEqualTo(2)
         verify(repository, times(1)).save(any<EvolutionEvent>())
     }
 }

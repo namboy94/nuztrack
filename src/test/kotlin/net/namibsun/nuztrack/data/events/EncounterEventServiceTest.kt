@@ -2,9 +2,8 @@ package net.namibsun.nuztrack.data.events
 
 import net.namibsun.nuztrack.constants.enums.EventType
 import net.namibsun.nuztrack.constants.enums.Gender
-import net.namibsun.nuztrack.constants.enums.Natures
+import net.namibsun.nuztrack.data.ENCOUNTER
 import net.namibsun.nuztrack.data.NUZLOCKE_RUN
-import net.namibsun.nuztrack.data.TeamMember
 import net.namibsun.nuztrack.data.TeamMemberRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -29,32 +28,27 @@ class EncounterEventServiceTest {
     }
 
     @Test
-    fun createFailedEncounterEvent() {
+    fun createEncounterEvent() {
         whenever(repository.save(any<EncounterEvent>())).then(AdditionalAnswers.returnsFirstArg<EncounterEvent>())
-        whenever(teamMemberRepository.save(any<TeamMember>())).then(AdditionalAnswers.returnsFirstArg<TeamMember>())
 
-        val encounter = service.createFailedEncounterEvent(NUZLOCKE_RUN, "Pallet Town", 10, 50, Gender.FEMALE)
+        val encounter = service.createEncounterEvent(NUZLOCKE_RUN, "Pallet Town", 10, 50, Gender.FEMALE, false)
 
         assertThat(encounter.teamMember).isNull()
         assertThat(encounter.caught).isFalse
         assertThat(encounter.level).isEqualTo(50)
         verify(repository, times(1)).save(any<EncounterEvent>())
-        verify(teamMemberRepository, times(0)).save(any<TeamMember>())
     }
 
     @Test
-    fun createSuccessfulEncounterEvent() {
-        whenever(repository.save(any<EncounterEvent>())).then(AdditionalAnswers.returnsFirstArg<EncounterEvent>())
-        whenever(teamMemberRepository.save(any<TeamMember>())).then(AdditionalAnswers.returnsFirstArg<TeamMember>())
+    fun getLocationsForRun() {
+        val runId = ENCOUNTER.nuzlockeRun.id
+        whenever(repository.findAllByEventTypeAndNuzlockeRunId(
+                EventType.ENCOUNTER, runId
+        )).thenReturn(listOf(ENCOUNTER as Event))
 
-        val encounter = service.createSuccessfulEncounterEvent(
-                NUZLOCKE_RUN, "Pallet Town", 10, 50, Gender.FEMALE,
-                "Poli", Natures.BRAVE, 2
-        )
+        val locations = service.getLocationsWithEncounters(runId)
 
-        assertThat(encounter.caught).isTrue
-        assertThat(encounter.level).isEqualTo(50)
-        verify(repository, times(1)).save(any<EncounterEvent>())
-        verify(teamMemberRepository, times(1)).save(any<TeamMember>())
+        assertThat(locations).isEqualTo(listOf(ENCOUNTER.location))
+        verify(repository, times(1)).findAllByEventTypeAndNuzlockeRunId(EventType.ENCOUNTER, runId)
     }
 }

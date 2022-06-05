@@ -15,29 +15,11 @@ object Pokedex {
         pokedex = jacksonObjectMapper().readValue(pokedexFile)
     }
 
-    fun getPokemon(pokedexId: Int): PokemonSpeciesTO {
-        return pokedex[pokedexId] ?: throw NotFoundException(ErrorMessages.INVALID_POKEMON)
+    fun getPokemon(pokedexNumber: Int): PokemonSpeciesTO {
+        return pokedex[pokedexNumber] ?: throw NotFoundException(ErrorMessages.INVALID_POKEMON)
     }
 
     fun getPokedex(): PokedexTO {
         return pokedex
-    }
-
-    fun getAbilityName(pokedexId: Int, abilitySlot: Int): String {
-        val pokemon = getPokemon(pokedexId)
-        try {
-            val abilities = listOf(pokemon.abilities.primary, pokemon.abilities.secondary, pokemon.abilities.hidden)
-            return abilities[abilitySlot]!!
-        } catch (e: IndexOutOfBoundsException) {
-            throw ValidationException(ErrorMessages.INVALID_ABILITY_SLOT)
-        } catch (e: NullPointerException) {
-            throw ValidationException(ErrorMessages.INVALID_ABILITY_SLOT)
-        }
-    }
-
-    fun getAbilitySlot(pokedexId: Int, abilityName: String): Int {
-        val abilities = getPokemon(pokedexId).abilities
-        val slots = mapOf(abilities.primary to 1, abilities.secondary to 2, abilities.hidden to 3)
-        return slots[abilityName] ?: throw ValidationException(ErrorMessages.INVALID_ABILITY)
     }
 }

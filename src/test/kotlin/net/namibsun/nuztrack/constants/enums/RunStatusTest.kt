@@ -1,7 +1,6 @@
-package net.namibsun.nuztrack.constants
+package net.namibsun.nuztrack.constants.enums
 
-import net.namibsun.nuztrack.constants.enums.ErrorMessages
-import net.namibsun.nuztrack.constants.enums.RunStatus
+import net.namibsun.nuztrack.constants.ValidationException
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -25,6 +24,9 @@ internal class RunStatusTest {
         }.message).isEqualTo(ErrorMessages.INVALID_RUN_STATUS.message)
         Assertions.assertThat(assertThrows<ValidationException> {
             RunStatus.valueOfWithChecks("")
+        }.message).isEqualTo(ErrorMessages.INVALID_RUN_STATUS.message)
+        Assertions.assertThat(assertThrows<ValidationException> {
+            RunStatus.valueOfWithChecks(null)
         }.message).isEqualTo(ErrorMessages.INVALID_RUN_STATUS.message)
     }
 }

@@ -2,7 +2,6 @@ package net.namibsun.nuztrack.data.events
 
 import net.namibsun.nuztrack.constants.enums.EventType
 import net.namibsun.nuztrack.constants.enums.Gender
-import net.namibsun.nuztrack.constants.enums.Natures
 import net.namibsun.nuztrack.data.NuzlockeRun
 import net.namibsun.nuztrack.data.TeamMember
 import net.namibsun.nuztrack.data.TeamMemberRepository
@@ -15,7 +14,7 @@ import javax.persistence.*
 class EncounterEvent(
         nuzlockeRun: NuzlockeRun,
         location: String,
-        @Column val pokemonSpecies: Int,
+        @Column val pokedexNumber: Int,
         @Column val level: Int,
         @Column @Enumerated(EnumType.STRING) val gender: Gender,
         @Column val caught: Boolean,
@@ -31,36 +30,15 @@ class EncounterEventService(val db: EventRepository, val teamMemberRepository: T
         return db.findAllByEventType(EventType.ENCOUNTER).map { it as EncounterEvent }
     }
 
-    fun createFailedEncounterEvent(
+    fun createEncounterEvent(
             nuzlockeRun: NuzlockeRun,
             location: String,
-            pokemonSpecies: Int,
-            level: Int,
-            gender: Gender
-    ): EncounterEvent {
-        return db.save(EncounterEvent(nuzlockeRun, location, pokemonSpecies, level, gender, false))
-    }
-
-    fun createSuccessfulEncounterEvent(
-            nuzlockeRun: NuzlockeRun,
-            location: String,
-            pokemonSpecies: Int,
+            pokedexNumber: Int,
             level: Int,
             gender: Gender,
-            nickname: String,
-            nature: Natures,
-            abilitySlot: Int
+            caught: Boolean
     ): EncounterEvent {
-        val encounter = db.save(EncounterEvent(nuzlockeRun, location, pokemonSpecies, level, gender, true))
-        val teamMember = teamMemberRepository.save(TeamMember(
-                nickname = nickname,
-                species = pokemonSpecies,
-                abilitySlot = abilitySlot,
-                level = level,
-                nature = nature,
-                encounter = encounter
-        ))
-        return teamMember.encounter
+        return db.save(EncounterEvent(nuzlockeRun, location, pokedexNumber, level, gender, caught))
     }
 
     fun getLocationsWithEncounters(runId: Long): List<String> {

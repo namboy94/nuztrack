@@ -18,8 +18,8 @@ class EvolutionEvent(
         val teamMember: TeamMember,
 
         @Column val level: Int,
-        @Column val previousSpecies: Int,
-        @Column val newSpecies: Int
+        @Column val previousPokedexNumber: Int,
+        @Column val newPokedexNumber: Int
 
 ) : Event(nuzlockeRun = nuzlockeRun, location = location, eventType = EventType.EVOLUTION)
 
@@ -34,9 +34,11 @@ class EvolutionEventService(val db: EventRepository) {
             location: String,
             teamMember: TeamMember,
             level: Int,
-            previousSpecies: Int,
-            newSpecies: Int
+            previousPokedexNumber: Int,
+            newPokedexNumber: Int
     ): EvolutionEvent {
-        return db.save(EvolutionEvent(nuzlockeRun, location, teamMember, level, previousSpecies, newSpecies))
+        return db.save(EvolutionEvent(
+                nuzlockeRun, location, teamMember, level, previousPokedexNumber, newPokedexNumber
+        ))
     }
 }

@@ -24,7 +24,7 @@ val ENCOUNTER = EncounterEvent(
 )
 val TEAM_MEMBER = TeamMember(
         nickname = "Poli",
-        species = 62,
+        pokedexNumber = 62,
         level = 78,
         nature = Natures.BRAVE,
         abilitySlot = 1,

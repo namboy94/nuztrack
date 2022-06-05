@@ -1,7 +1,6 @@
-package net.namibsun.nuztrack.constants
+package net.namibsun.nuztrack.constants.enums
 
-import net.namibsun.nuztrack.constants.enums.ErrorMessages
-import net.namibsun.nuztrack.constants.enums.Rules
+import net.namibsun.nuztrack.constants.ValidationException
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -28,6 +27,9 @@ internal class RulesTest {
         }.message).isEqualTo(ErrorMessages.INVALID_RULE.message)
         assertThat(assertThrows<ValidationException> {
             Rules.valueOfWithChecks("")
+        }.message).isEqualTo(ErrorMessages.INVALID_RULE.message)
+        assertThat(assertThrows<ValidationException> {
+            Rules.valueOfWithChecks(null)
         }.message).isEqualTo(ErrorMessages.INVALID_RULE.message)
     }
 }

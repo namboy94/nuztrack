@@ -52,7 +52,7 @@ class TeamMemberRepositoryTest {
 
         val teamMember = repository.save(TeamMember(
                 nickname = "B",
-                species = 1,
+                pokedexNumber = 1,
                 level = 2,
                 nature = Natures.BRAVE,
                 abilitySlot = 1,
