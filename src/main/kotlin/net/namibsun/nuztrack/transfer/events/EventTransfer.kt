@@ -12,7 +12,7 @@ data class EventLogTO(
         val milestones: List<MilestoneEventTO>
 )
 
-data class EventTO(val id: Long, val runId: Long, val timeStamp: String, val location: String) {
+data class EventTO(val id: Long, val runId: Long, val timestamp: String, val location: String) {
     companion object {
         fun fromEvent(event: Event): EventTO {
             return EventTO(

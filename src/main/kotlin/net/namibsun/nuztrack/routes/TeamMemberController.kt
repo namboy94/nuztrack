@@ -23,7 +23,9 @@ class TeamMemberController(val service: TeamMemberService, runService: NuzlockeR
         val run = authenticator.loadAuthenticatedRun(runId, principal.name)
         val allTeamMembers = service.getAllForNuzlockeRun(run)
         val (alive, dead) = allTeamMembers.partition { it.death == null }
-        val (active, boxed) = alive.partition { it.teamSwitches.last().switchType == TeamMemberSwitchType.ADD }
+        val (active, boxed) = alive.partition {
+            it.teamSwitches.isNotEmpty() && it.teamSwitches.last().switchType == TeamMemberSwitchType.ADD
+        }
         val team = TeamTO(
                 active = active.map { TeamMemberTO.fromTeamMember(it) },
                 boxed = boxed.map { TeamMemberTO.fromTeamMember(it) },

@@ -4,7 +4,7 @@ import axios from "axios";
 export const keycloak = new Keycloak({
     "url": "http://localhost:8081/",
     "realm": "Nuztrack",
-    "clientId": "React-auth"
+    "clientId": "frontend"
 })
 
 export function createAxios() {

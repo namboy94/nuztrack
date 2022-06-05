@@ -2,9 +2,11 @@ package net.namibsun.nuztrack.routes.events
 
 import net.namibsun.nuztrack.constants.enums.Gender
 import net.namibsun.nuztrack.constants.enums.Natures
+import net.namibsun.nuztrack.constants.enums.TeamMemberSwitchType
 import net.namibsun.nuztrack.data.NuzlockeRunService
 import net.namibsun.nuztrack.data.TeamMemberService
 import net.namibsun.nuztrack.data.events.EncounterEventService
+import net.namibsun.nuztrack.data.events.TeamMemberSwitchEventService
 import net.namibsun.nuztrack.transfer.events.CreateEncounterEventTO
 import net.namibsun.nuztrack.transfer.events.EncounterEventTO
 import net.namibsun.nuztrack.util.Authenticator
@@ -17,6 +19,7 @@ import java.security.Principal
 class EncounterEventController(
         val encounterService: EncounterEventService,
         val teamMemberService: TeamMemberService,
+        val teamMemberSwitchEventService: TeamMemberSwitchEventService,
         runService: NuzlockeRunService
 ) {
 
@@ -46,13 +49,20 @@ class EncounterEventController(
                 creator.caught
         )
         if (creator.caught && creator.pokemon != null) {
-            teamMemberService.createTeamMember(
+            val teamMember = teamMemberService.createTeamMember(
                     encounter,
                     creator.pokemon.nickname,
                     Natures.valueOfWithChecks(creator.pokemon.nature),
                     creator.pokemon.abilitySlot
             )
-        }// TODO Auto-Add Pokemon to Team
+            // TODO Only auto-add if team has less than 6 active members
+            teamMemberSwitchEventService.createTeamMemberSwitchEvent(
+                    run, creator.location, teamMember, TeamMemberSwitchType.ADD
+            )
+        }
+
+
+
         return ResponseEntity<EncounterEventTO>(EncounterEventTO.fromEncounterEvent(encounter), HttpStatus.CREATED)
     }
 }

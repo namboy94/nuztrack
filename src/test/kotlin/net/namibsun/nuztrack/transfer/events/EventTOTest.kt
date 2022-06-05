@@ -21,6 +21,6 @@ internal class EventTOTest {
         assertThat(converted.id).isEqualTo(event.id)
         assertThat(converted.runId).isEqualTo(run.id)
         assertThat(converted.location).isEqualTo(event.location)
-        assertThat(converted.timeStamp).isEqualTo(formatDateToIsoString(event.timestamp))
+        assertThat(converted.timestamp).isEqualTo(formatDateToIsoString(event.timestamp))
     }
 }

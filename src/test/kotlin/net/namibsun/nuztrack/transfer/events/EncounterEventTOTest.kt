@@ -21,7 +21,7 @@ internal class EncounterEventTOTest {
         assertThat(converted.event.id).isEqualTo(event.id)
         assertThat(converted.event.runId).isEqualTo(run.id)
         assertThat(converted.event.location).isEqualTo(event.location)
-        assertThat(converted.event.timeStamp).isEqualTo(formatDateToIsoString(event.timestamp))
+        assertThat(converted.event.timestamp).isEqualTo(formatDateToIsoString(event.timestamp))
         assertThat(converted.pokedexNumber).isEqualTo(event.pokedexNumber)
         assertThat(converted.caught).isEqualTo(event.caught)
         assertThat(converted.gender).isEqualTo(event.gender.name)
