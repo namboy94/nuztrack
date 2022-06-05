@@ -17,7 +17,7 @@ class EventServiceTest {
 
     @Test
     fun getAllEvents() {
-        whenever(repository.findAll()).thenReturn(events)
-        assertThat(service.getAllEvents()).isEqualTo(events)
+        whenever(repository.findAllByNuzlockeRunId(1)).thenReturn(events)
+        assertThat(service.getAllEvents(1)).isEqualTo(events)
     }
 }

@@ -3,7 +3,6 @@ package net.namibsun.nuztrack.data.events
 import net.namibsun.nuztrack.constants.enums.EventType
 import net.namibsun.nuztrack.data.NUZLOCKE_RUN
 import net.namibsun.nuztrack.data.NuzlockeRunRepository
-import net.namibsun.nuztrack.data.TeamMemberRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,9 +22,6 @@ class EventRepositoryTest {
 
     @Autowired
     lateinit var eventRepository: EventRepository
-
-    @Autowired
-    lateinit var teamMemberRepository: TeamMemberRepository
 
     @Test
     fun findAllByEventType() {
@@ -68,5 +64,15 @@ class EventRepositoryTest {
         val deltaTwo = three.timestamp.time - two.timestamp.time
         assertThat(deltaOne).isGreaterThanOrEqualTo(1000)
         assertThat(deltaTwo).isLessThan(1000)
+    }
+
+    @Test
+    fun findAllByNuzlockeRunId() {
+        val run = runRepository.save(NUZLOCKE_RUN)
+        eventRepository.save(NoteEvent(run, "A", "A"))
+        eventRepository.save(NoteEvent(run, "A", "A"))
+
+        assertThat(repository.findAllByNuzlockeRunId(run.id).size).isEqualTo(2)
+        assertThat(repository.findAllByNuzlockeRunId(1000).size).isEqualTo(0)
     }
 }

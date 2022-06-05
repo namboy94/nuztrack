@@ -6,5 +6,5 @@ enum class EventType {
     DEATH,
     EVOLUTION,
     MILESTONE,
-    PARTY_MEMBER_SWITCH
+    TEAM_MEMBER_SWITCH
 }

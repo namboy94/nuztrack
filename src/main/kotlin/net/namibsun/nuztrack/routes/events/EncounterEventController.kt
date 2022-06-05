@@ -52,7 +52,7 @@ class EncounterEventController(
                     Natures.valueOfWithChecks(creator.pokemon.nature),
                     creator.pokemon.abilitySlot
             )
-        }
+        }// TODO Auto-Add Pokemon to Team
         return ResponseEntity<EncounterEventTO>(EncounterEventTO.fromEncounterEvent(encounter), HttpStatus.CREATED)
     }
 }

@@ -16,7 +16,7 @@ import javax.persistence.*
 class NuzlockeRun(
         @Id
         @GeneratedValue
-        val id: Long = 0,
+        val id: Long = 0, // TODO Outside of Constructor
 
         @Column val userName: String,
 

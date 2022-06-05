@@ -77,7 +77,7 @@ class TeamMemberRepositoryTest {
         assertThat((eventRepository.findAllByEventType(EventType.EVOLUTION)[0] as EvolutionEvent).teamMember).isNotNull
         assertThat((eventRepository.findAllByEventType(EventType.DEATH)[0] as DeathEvent).teamMember).isNotNull
         assertThat((eventRepository.findAllByEventType(
-                EventType.PARTY_MEMBER_SWITCH
+                EventType.TEAM_MEMBER_SWITCH
         )[0] as TeamMemberSwitchEvent).teamMember).isNotNull
     }
 }

@@ -20,12 +20,12 @@ class TeamMemberSwitchEvent(
 
         @Column val switchType: TeamMemberSwitchType
 
-) : Event(nuzlockeRun = nuzlockeRun, location = location, eventType = EventType.PARTY_MEMBER_SWITCH)
+) : Event(nuzlockeRun = nuzlockeRun, location = location, eventType = EventType.TEAM_MEMBER_SWITCH)
 
 @Service
 class TeamMemberSwitchEventService(val db: EventRepository) {
     fun getAllTeamMemberSwitchEvents(): List<TeamMemberSwitchEvent> {
-        return db.findAllByEventType(EventType.PARTY_MEMBER_SWITCH).map { it as TeamMemberSwitchEvent }
+        return db.findAllByEventType(EventType.TEAM_MEMBER_SWITCH).map { it as TeamMemberSwitchEvent }
     }
 
     fun createTeamMemberSwitchEvent(
