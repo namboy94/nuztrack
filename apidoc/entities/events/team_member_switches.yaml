@@ -9,5 +9,5 @@ TeamMemberSwitchEventTO:
       $ref: "./common.yaml#/EventTO"
     teamMemberId:
       $ref: "../../types/events/common.yaml#/teamMemberId"
-    previousPokedexNumber:
+    switchType:
       $ref: "../../types/events/team_member_switches.yaml#/switchType"

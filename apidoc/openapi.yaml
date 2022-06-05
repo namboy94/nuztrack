@@ -47,5 +47,5 @@ paths:
   /events/{runId}/encounters:
     $ref: "./endpoints/events_encounters.yaml"
 
-  /team_members/{runId}:
+  /team/{runId}:
     $ref: "./endpoints/team_members.yaml"
