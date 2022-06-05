@@ -19,9 +19,9 @@ class DeathEventServiceTest {
 
     @Test
     fun getAllEvents() {
-        whenever(repository.findAllByEventType(EventType.DEATH)).thenReturn(events)
+        whenever(repository.findAllByEventTypeOrderByTimestamp(EventType.DEATH)).thenReturn(events)
         assertThat(service.getAllDeathEvents()).isEqualTo(events)
-        verify(repository, times(1)).findAllByEventType(EventType.DEATH)
+        verify(repository, times(1)).findAllByEventTypeOrderByTimestamp(EventType.DEATH)
     }
 
     @Test

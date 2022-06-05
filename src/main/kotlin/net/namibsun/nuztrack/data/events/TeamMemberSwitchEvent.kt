@@ -25,7 +25,7 @@ class TeamMemberSwitchEvent(
 @Service
 class TeamMemberSwitchEventService(val db: EventRepository) {
     fun getAllTeamMemberSwitchEvents(): List<TeamMemberSwitchEvent> {
-        return db.findAllByEventType(EventType.TEAM_MEMBER_SWITCH).map { it as TeamMemberSwitchEvent }
+        return db.findAllByEventTypeOrderByTimestamp(EventType.TEAM_MEMBER_SWITCH).map { it as TeamMemberSwitchEvent }
     }
 
     fun createTeamMemberSwitchEvent(

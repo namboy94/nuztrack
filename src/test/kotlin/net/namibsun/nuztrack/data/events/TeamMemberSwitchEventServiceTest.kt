@@ -20,9 +20,9 @@ class TeamMemberSwitchEventServiceTest {
 
     @Test
     fun getAllEvents() {
-        whenever(repository.findAllByEventType(EventType.TEAM_MEMBER_SWITCH)).thenReturn(events)
+        whenever(repository.findAllByEventTypeOrderByTimestamp(EventType.TEAM_MEMBER_SWITCH)).thenReturn(events)
         assertThat(service.getAllTeamMemberSwitchEvents()).isEqualTo(events)
-        verify(repository, times(1)).findAllByEventType(EventType.TEAM_MEMBER_SWITCH)
+        verify(repository, times(1)).findAllByEventTypeOrderByTimestamp(EventType.TEAM_MEMBER_SWITCH)
     }
 
     @Test

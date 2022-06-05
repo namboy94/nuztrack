@@ -31,9 +31,11 @@ class TeamMember(
         val death: DeathEvent? = null,
 
         @OneToMany(mappedBy = "teamMember", cascade = [CascadeType.ALL])
+        @OrderBy("timestamp")
         val evolutions: List<EvolutionEvent> = listOf(),
 
         @OneToMany(mappedBy = "teamMember", cascade = [CascadeType.ALL])
+        @OrderBy("timestamp")
         val teamSwitches: List<TeamMemberSwitchEvent> = listOf(),
 )
 

@@ -18,9 +18,9 @@ class MilestoneEventServiceTest {
 
     @Test
     fun getAllEvents() {
-        whenever(repository.findAllByEventType(EventType.MILESTONE)).thenReturn(events)
+        whenever(repository.findAllByEventTypeOrderByTimestamp(EventType.MILESTONE)).thenReturn(events)
         assertThat(service.getAllMilestoneEvents()).isEqualTo(events)
-        verify(repository, times(1)).findAllByEventType(EventType.MILESTONE)
+        verify(repository, times(1)).findAllByEventTypeOrderByTimestamp(EventType.MILESTONE)
     }
 
     @Test

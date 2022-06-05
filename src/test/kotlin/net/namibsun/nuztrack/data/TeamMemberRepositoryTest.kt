@@ -73,10 +73,10 @@ class TeamMemberRepositoryTest {
         assertThat(repository.getReferenceById(teamMember.id).death).isNotNull
         assertThat(repository.getReferenceById(teamMember.id).teamSwitches.size).isEqualTo(2)
 
-        assertThat((eventRepository.findAllByEventType(EventType.ENCOUNTER)[0] as EncounterEvent).teamMember).isNotNull
-        assertThat((eventRepository.findAllByEventType(EventType.EVOLUTION)[0] as EvolutionEvent).teamMember).isNotNull
-        assertThat((eventRepository.findAllByEventType(EventType.DEATH)[0] as DeathEvent).teamMember).isNotNull
-        assertThat((eventRepository.findAllByEventType(
+        assertThat((eventRepository.findAllByEventTypeOrderByTimestamp(EventType.ENCOUNTER)[0] as EncounterEvent).teamMember).isNotNull
+        assertThat((eventRepository.findAllByEventTypeOrderByTimestamp(EventType.EVOLUTION)[0] as EvolutionEvent).teamMember).isNotNull
+        assertThat((eventRepository.findAllByEventTypeOrderByTimestamp(EventType.DEATH)[0] as DeathEvent).teamMember).isNotNull
+        assertThat((eventRepository.findAllByEventTypeOrderByTimestamp(
                 EventType.TEAM_MEMBER_SWITCH
         )[0] as TeamMemberSwitchEvent).teamMember).isNotNull
     }

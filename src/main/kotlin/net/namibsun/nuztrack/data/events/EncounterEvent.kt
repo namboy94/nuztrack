@@ -27,7 +27,7 @@ class EncounterEvent(
 @Service
 class EncounterEventService(val db: EventRepository, val teamMemberRepository: TeamMemberRepository) {
     fun getAllEncounterEvents(runId: Long): List<EncounterEvent> {
-        return db.findAllByEventTypeAndNuzlockeRunId(EventType.ENCOUNTER, runId).map { it as EncounterEvent }
+        return db.findAllByEventTypeAndNuzlockeRunIdOrderByTimestamp(EventType.ENCOUNTER, runId).map { it as EncounterEvent }
     }
 
     fun createEncounterEvent(

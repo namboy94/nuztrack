@@ -19,7 +19,7 @@ class NoteEvent(
 @Service
 class NoteEventService(val db: EventRepository) {
     fun getAllNoteEvents(): List<NoteEvent> {
-        return db.findAllByEventType(EventType.NOTE).map { it as NoteEvent }
+        return db.findAllByEventTypeOrderByTimestamp(EventType.NOTE).map { it as NoteEvent }
     }
 
     fun createNoteEvent(nuzlockeRun: NuzlockeRun, location: String, text: String): NoteEvent {

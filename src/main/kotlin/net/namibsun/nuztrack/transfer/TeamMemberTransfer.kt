@@ -2,6 +2,8 @@ package net.namibsun.nuztrack.transfer
 
 import net.namibsun.nuztrack.data.TeamMember
 
+data class TeamTO(val active: List<TeamMemberTO>, val boxed: List<TeamMemberTO>, val dead: List<TeamMemberTO>)
+
 data class TeamMemberTO(
         val id: Long,
         val nickname: String,

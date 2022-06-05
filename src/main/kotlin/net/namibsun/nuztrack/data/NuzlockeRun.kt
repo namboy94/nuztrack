@@ -31,6 +31,7 @@ class NuzlockeRun(
         @Enumerated(EnumType.STRING) val status: RunStatus,
 
         @OneToMany(mappedBy = "nuzlockeRun", cascade = [CascadeType.ALL])
+        @OrderBy("timestamp")
         val events: List<Event> = listOf()
 )
 

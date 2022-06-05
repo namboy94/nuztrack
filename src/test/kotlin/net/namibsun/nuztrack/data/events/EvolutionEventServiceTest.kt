@@ -19,9 +19,9 @@ class EvolutionEventServiceTest {
 
     @Test
     fun getAllEvents() {
-        whenever(repository.findAllByEventType(EventType.EVOLUTION)).thenReturn(events)
+        whenever(repository.findAllByEventTypeOrderByTimestamp(EventType.EVOLUTION)).thenReturn(events)
         assertThat(service.getAllEvolutionEvents()).isEqualTo(events)
-        verify(repository, times(1)).findAllByEventType(EventType.EVOLUTION)
+        verify(repository, times(1)).findAllByEventTypeOrderByTimestamp(EventType.EVOLUTION)
     }
 
     @Test

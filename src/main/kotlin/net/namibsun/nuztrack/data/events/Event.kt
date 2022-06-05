@@ -32,14 +32,14 @@ class Event(
 
 @Repository
 interface EventRepository : JpaRepository<Event, Long> {
-    fun findAllByNuzlockeRunId(runId: Long): List<Event>
-    fun findAllByEventType(eventType: EventType): List<Event>
-    fun findAllByEventTypeAndNuzlockeRunId(eventType: EventType, nuzlockeRunId: Long): List<Event>
+    fun findAllByNuzlockeRunIdOrderByTimestamp(runId: Long): List<Event>
+    fun findAllByEventTypeOrderByTimestamp(eventType: EventType): List<Event>
+    fun findAllByEventTypeAndNuzlockeRunIdOrderByTimestamp(eventType: EventType, nuzlockeRunId: Long): List<Event>
 }
 
 @Service
 class EventService(val db: EventRepository) {
     fun getAllEvents(runId: Long): List<Event> {
-        return db.findAllByNuzlockeRunId(runId)
+        return db.findAllByNuzlockeRunIdOrderByTimestamp(runId)
     }
 }

@@ -21,7 +21,7 @@ class DeathEvent(
 @Service
 class DeathEventService(val db: EventRepository) {
     fun getAllDeathEvents(): List<DeathEvent> {
-        return db.findAllByEventType(EventType.DEATH).map { it as DeathEvent }
+        return db.findAllByEventTypeOrderByTimestamp(EventType.DEATH).map { it as DeathEvent }
     }
 
     fun createDeathEvent(

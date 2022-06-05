@@ -26,7 +26,7 @@ class EvolutionEvent(
 @Service
 class EvolutionEventService(val db: EventRepository) {
     fun getAllEvolutionEvents(): List<EvolutionEvent> {
-        return db.findAllByEventType(EventType.EVOLUTION).map { it as EvolutionEvent }
+        return db.findAllByEventTypeOrderByTimestamp(EventType.EVOLUTION).map { it as EvolutionEvent }
     }
 
     fun createEvolutionEvent(

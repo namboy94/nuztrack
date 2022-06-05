@@ -18,9 +18,9 @@ class NoteEventServiceTest {
 
     @Test
     fun getAllEvents() {
-        whenever(repository.findAllByEventType(EventType.NOTE)).thenReturn(events)
+        whenever(repository.findAllByEventTypeOrderByTimestamp(EventType.NOTE)).thenReturn(events)
         assertThat(service.getAllNoteEvents()).isEqualTo(events)
-        verify(repository, times(1)).findAllByEventType(EventType.NOTE)
+        verify(repository, times(1)).findAllByEventTypeOrderByTimestamp(EventType.NOTE)
     }
 
     @Test

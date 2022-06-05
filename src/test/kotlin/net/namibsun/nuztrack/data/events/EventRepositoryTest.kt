@@ -31,10 +31,10 @@ class EventRepositoryTest {
         repository.save(MilestoneEvent(run, "B", "Badge 1"))
         repository.saveAndFlush(MilestoneEvent(run, "C", "Badge 2"))
 
-        assertThat(repository.findAllByEventType(EventType.EVOLUTION).size).isEqualTo(0)
-        assertThat(repository.findAllByEventType(EventType.NOTE).size).isEqualTo(1)
-        assertThat(repository.findAllByEventType(EventType.MILESTONE).size).isEqualTo(2)
-        assertThat((repository.findAllByEventType(EventType.NOTE)[0] as NoteEvent).text).isEqualTo("Hello World")
+        assertThat(repository.findAllByEventTypeOrderByTimestamp(EventType.EVOLUTION).size).isEqualTo(0)
+        assertThat(repository.findAllByEventTypeOrderByTimestamp(EventType.NOTE).size).isEqualTo(1)
+        assertThat(repository.findAllByEventTypeOrderByTimestamp(EventType.MILESTONE).size).isEqualTo(2)
+        assertThat((repository.findAllByEventTypeOrderByTimestamp(EventType.NOTE)[0] as NoteEvent).text).isEqualTo("Hello World")
     }
 
     @Test
@@ -72,7 +72,7 @@ class EventRepositoryTest {
         eventRepository.save(NoteEvent(run, "A", "A"))
         eventRepository.save(NoteEvent(run, "A", "A"))
 
-        assertThat(repository.findAllByNuzlockeRunId(run.id).size).isEqualTo(2)
-        assertThat(repository.findAllByNuzlockeRunId(1000).size).isEqualTo(0)
+        assertThat(repository.findAllByNuzlockeRunIdOrderByTimestamp(run.id).size).isEqualTo(2)
+        assertThat(repository.findAllByNuzlockeRunIdOrderByTimestamp(1000).size).isEqualTo(0)
     }
 }
