@@ -26,7 +26,7 @@ export default function Router(props: RouterProps) {
         <Routes>
             <Route path="/" element={runSelector}/>
             <Route path="/select_run" element={runSelector}/>
-            <Route path="/add_event" element={<AddEventRoute run={run}/>}/>
+            <Route path="/add_event" element={<AddEventRoute run={run} displaySnack={displaySnack}/>}/>
             <Route path="/overview" element={<Overview run={run}/>}/>
             <Route path="/team" element={<Team/>}/>
             <Route path="/map" element={<Map/>}/>

@@ -9,9 +9,11 @@ import AddEncounterDialog from "./AddEncounterDialog";
 import {useNaturesQuery, usePokedexQuery} from "../../api/pokedex/pokedexQuery";
 import {useLocationsQuery} from "../../api/games/gamesQuery";
 import {performLoadingCheck} from "../../util/loading";
+import {Severity} from "../../components/Snackbar";
 
 interface AddEventProps {
-    run: NuzlockeRun
+    run: NuzlockeRun,
+    displaySnack: (message: string, severity: Severity) => void
 }
 
 export default function AddEvent(props: AddEventProps) {
@@ -46,6 +48,7 @@ export default function AddEvent(props: AddEventProps) {
             />
             <AddEncounterDialog
                 pokedex={pokedex} locations={locations} natures={natures}
+                run={props.run} displaySnack={props.displaySnack}
                 open={encounterDialogOpen} onClose={() => setEncounterDialogOpen(false)}
             />
             <AddNoteDialog

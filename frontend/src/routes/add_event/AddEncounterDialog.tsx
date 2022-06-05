@@ -15,6 +15,10 @@ import {
 import React, {useState} from "react";
 import {Pokedex, PokemonNatures} from "../../api/pokedex/pokedexTypes";
 import {GameLocation} from "../../api/games/gamesTypes";
+import {CreateEncounterEvent, CreateEncounterPokemon} from "../../api/events/encounter/encounterEventTypes";
+import {Severity} from "../../components/Snackbar";
+import {NuzlockeRun} from "../../api/runs/runsTypes";
+import {createEncounterEvent} from "../../api/events/encounter/encounterEventApi";
 
 interface AddEncounterDialogProps {
     open: boolean
@@ -22,6 +26,8 @@ interface AddEncounterDialogProps {
     pokedex: Pokedex
     natures: PokemonNatures
     locations: GameLocation[]
+    displaySnack: (message: string, severity: Severity) => void
+    run: NuzlockeRun
 }
 
 export default function AddEncounterDialog(props: AddEncounterDialogProps) {
@@ -30,6 +36,7 @@ export default function AddEncounterDialog(props: AddEncounterDialogProps) {
     props.locations.forEach(x => locationMap.set(x.name, x))
 
     const pokemonNameToPokedexIdMap = new Map<string, number>()
+
     props.pokedex.forEach((value, key) => {
         pokemonNameToPokedexIdMap.set(value.name, key)
     })
@@ -74,49 +81,82 @@ export default function AddEncounterDialog(props: AddEncounterDialogProps) {
             return
         }
 
-        setLocation(newLocation);
+
         if (locationMap.has(newLocation)) {
             reset()
+            setLocation(newLocation);
             const locationEncounters = locationMap.get(newLocation)!!.encounters
             setEncounters(locationEncounters.map(x => props.pokedex.get(x)!!.name))
         } else {
+            setLocation(newLocation);
             setEncounters(allEncounters)
         }
     }
 
     const selectPokemon = (newPokemon: string | null) => {
-
         if (newPokemon === null) {
             reset()
             return;
         }
 
-        setPokemon(newPokemon)
-        setAbilities([])
-
         if (pokemonNameToPokedexIdMap.has(newPokemon)) {
             const currentLocation = location.toString()
             reset()
+            setPokemon(newPokemon)
             setLocation(currentLocation)
             const pokedexId = pokemonNameToPokedexIdMap.get(newPokemon)!!
             const newAbilities = props.pokedex.get(pokedexId)!!.abilities
             const abilitiesList = Array.from(newAbilities.values())
             setAbilities(abilitiesList.filter(x => x !== null).map(x => x!!))
+        } else {
+            setPokemon(newPokemon)
+            setAbilities([])
         }
     }
 
     const submit = () => {
-        const payload = {
+        const pokedexNumber = pokemonNameToPokedexIdMap.get(pokemon)
+
+        if (pokedexNumber === undefined) {
+            props.displaySnack("No valid Pokemon selected", "error")
+            return
+        }
+
+        const species = props.pokedex.get(pokedexNumber!!)!!
+        const abilitiesMap = new Map<string, number>()
+        species.abilities.forEach((value, key) => {
+            if (value !== null) {
+                abilitiesMap.set(value, key)
+            }
+        })
+
+        let pokemonCreator: CreateEncounterPokemon | null = null
+        if (caught) {
+            pokemonCreator = {
+                nature: nature,
+                nickname: nickname,
+                abilitySlot: abilitiesMap.get(ability)!!
+            }
+        }
+
+        const payload: CreateEncounterEvent = {
             location: location,
-            pokemon: pokemonNameToPokedexIdMap.get(pokemon),
+            pokedexNumber: pokedexNumber!!,
             level: level,
             gender: gender,
             caught: caught,
-            nature: nature,
-            ability: ability,
-            nickname: nickname
+            pokemon: pokemonCreator
         }
         console.log(payload)
+        createEncounterEvent(props.run.id, payload).then(
+            success => {
+                onClose();
+                props.displaySnack("Event created successfully", "info")
+            },
+            error => {
+                props.displaySnack(error.toString(), "error")
+            }
+        )
     }
 
     return (
