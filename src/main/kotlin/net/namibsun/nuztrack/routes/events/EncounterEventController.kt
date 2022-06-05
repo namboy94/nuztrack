@@ -30,7 +30,12 @@ class EncounterEventController(
             principal: Principal
     ): ResponseEntity<EncounterEventTO> {
         val run = this.authenticator.loadAuthenticatedRun(runId, principal.name)
-        creator.validate(encounterService.getLocationsWithEncounters(runId), run.rules)
+        creator.validate(
+                run.rules,
+                encounterService.getLocationsWithEncounters(run.id),
+                encounterService.getEncounteredSpecies(run.id, true),
+                encounterService.getEncounteredSpecies(run.id, false)
+        )
 
         val encounter = encounterService.createEncounterEvent(
                 run,

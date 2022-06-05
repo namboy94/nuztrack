@@ -4,6 +4,7 @@ export type PokemonSpecies = {
     sprite: string,
     types: PokemonTypes,
     abilities: Map<number, string | null>,
+    baseSpecies: number,
     evolutions: number[]
 }
 export type PokemonTypes = {
@@ -17,6 +18,7 @@ export type PokemonSpeciesTO = {
     sprite: string,
     types: PokemonTypes,
     abilities: PokemonAbilitiesTO,
+    baseSpecies: number,
     evolutions: number[]
 }
 export type PokemonAbilitiesTO = {

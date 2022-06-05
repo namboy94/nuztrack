@@ -22,9 +22,9 @@ class EncounterEventServiceTest {
 
     @Test
     fun getAllEvents() {
-        whenever(repository.findAllByEventType(EventType.ENCOUNTER)).thenReturn(events)
-        assertThat(service.getAllEncounterEvents()).isEqualTo(events)
-        verify(repository, times(1)).findAllByEventType(EventType.ENCOUNTER)
+        whenever(repository.findAllByEventTypeAndNuzlockeRunId(EventType.ENCOUNTER, 1)).thenReturn(events)
+        assertThat(service.getAllEncounterEvents(1)).isEqualTo(events)
+        verify(repository, times(1)).findAllByEventTypeAndNuzlockeRunId(EventType.ENCOUNTER, 1)
     }
 
     @Test
@@ -40,7 +40,7 @@ class EncounterEventServiceTest {
     }
 
     @Test
-    fun getLocationsForRun() {
+    fun getLocationsWithEncounters() {
         val runId = ENCOUNTER.nuzlockeRun.id
         whenever(repository.findAllByEventTypeAndNuzlockeRunId(
                 EventType.ENCOUNTER, runId
@@ -50,5 +50,23 @@ class EncounterEventServiceTest {
 
         assertThat(locations).isEqualTo(listOf(ENCOUNTER.location))
         verify(repository, times(1)).findAllByEventTypeAndNuzlockeRunId(EventType.ENCOUNTER, runId)
+    }
+
+    @Test
+    fun getEncounteredSpecies() {
+        val runId = ENCOUNTER.nuzlockeRun.id
+        val one = EncounterEvent(NUZLOCKE_RUN, "A", 100, 1, Gender.MALE, true)
+        val two = EncounterEvent(NUZLOCKE_RUN, "A", 200, 1, Gender.MALE, false)
+        val three = EncounterEvent(NUZLOCKE_RUN, "A", 300, 1, Gender.MALE, false)
+        whenever(repository.findAllByEventTypeAndNuzlockeRunId(
+                EventType.ENCOUNTER, runId
+        )).thenReturn(listOf(one, two, three))
+
+        val caught = service.getEncounteredSpecies(runId, true)
+        val failedToCatch = service.getEncounteredSpecies(runId, false)
+        
+        assertThat(caught).isEqualTo(listOf(100))
+        assertThat(failedToCatch).hasSameElementsAs(listOf(200, 300))
+        verify(repository, times(2)).findAllByEventTypeAndNuzlockeRunId(EventType.ENCOUNTER, runId)
     }
 }

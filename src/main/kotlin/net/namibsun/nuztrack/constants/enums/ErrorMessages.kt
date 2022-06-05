@@ -17,5 +17,6 @@ enum class ErrorMessages(val message: String) {
     INVALID_GENDER("No valid gender was specified"),
     INVALID_TEAM_MEMBER_SWITCH_TYPE("The team member switch operation ca only be ADD or REMOVE"),
     INVALID_ABILITY_SLOT("The provided ability slot is not a valid ability slot for this Pokemon"),
-    INVALID_NICKNAME("The provided nickname is either too short or too long")
+    INVALID_NICKNAME("The provided nickname is either too short or too long"),
+    DUPLICATE_ENCOUNTER("This encounter is a duplicate")
 }

@@ -16,6 +16,11 @@ sprite:
   description: The URL to the sprite of a Pokemon species
   example: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png"
 
+baseSpecies:
+  type: integer
+  example: 7
+  description: The Pokedex ID of the first Pokemon in the Pokemon's evolution chain
+
 evolutions:
   type: array
   items:
@@ -41,7 +46,8 @@ pokedexMapping:
         "2": null,
         "3": "Rain Dish"
       },
-      "evolutions": [ 8 ]
+      "baseSpecies": 7
+        "evolutions": [ 8 ]
     }
   }
 abilitySlot:

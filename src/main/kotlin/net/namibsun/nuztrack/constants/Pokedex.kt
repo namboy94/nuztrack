@@ -22,4 +22,18 @@ object Pokedex {
     fun getPokedex(): PokedexTO {
         return pokedex
     }
+
+    fun getEvolutionChain(pokedexNumber: Int): List<Int> {
+        val pokemon = getPokemon(pokedexNumber)
+        return traverseEvolutionChain(pokemon.baseSpecies)
+    }
+
+    private fun traverseEvolutionChain(pokedexNumber: Int): List<Int> {
+        val collected = mutableListOf(pokedexNumber)
+        val pokemon = getPokemon(pokedexNumber)
+        for (next in pokemon.evolutions) {
+            collected += traverseEvolutionChain(next)
+        }
+        return collected
+    }
 }

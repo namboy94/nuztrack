@@ -39,8 +39,12 @@ data class CreateEncounterEventTO(
         val caught: Boolean,
         val pokemon: CreateEncounterPokemonTO?
 ) {
-    fun validate(previousLocations: List<String>, rules: List<Rules>) {
-
+    fun validate(
+            rules: List<Rules>,
+            previousLocations: List<String>,
+            successFullyCaught: List<Int>,
+            failedToCatch: List<Int>
+    ) {
         if (previousLocations.contains(location) && rules.contains(Rules.ONLY_FIRST_ENCOUNTER)) {
             throw ValidationException(ErrorMessages.ENCOUNTER_IN_LOCATION_ALREADY_USED)
         }
@@ -61,6 +65,30 @@ data class CreateEncounterEventTO(
             throw ValidationException(ErrorMessages.NOT_CAUGHT_BUT_POKEMON)
         }
         pokemon?.validate(pokemonSpecies)
+        validateDuplicateClause(rules, pokedexNumber, successFullyCaught, failedToCatch)
+    }
+
+    private fun validateDuplicateClause(
+            rules: List<Rules>,
+            pokedexNumber: Int,
+            successFullyCaught: List<Int>,
+            failedToCatch: List<Int>
+    ) {
+        val blacklist = mutableListOf<Int>()
+        if (rules.contains(Rules.DUPLICATE_CLAUSE)) {
+            blacklist += successFullyCaught
+        }
+        if (rules.contains(Rules.DUPLICATE_CLAUSE_INCLUDES_FAILED_ENCOUNTERS)) {
+            blacklist += failedToCatch
+        }
+        if (rules.contains(Rules.DUPLICATE_CLAUSE_INCLUDES_ENTIRE_SPECIES)) {
+            for (species in blacklist.toList()) {
+                blacklist += Pokedex.getEvolutionChain(species)
+            }
+        }
+        if (blacklist.contains(pokedexNumber)) {
+            throw ValidationException(ErrorMessages.DUPLICATE_ENCOUNTER)
+        }
     }
 }
 
@@ -77,6 +105,5 @@ data class CreateEncounterPokemonTO(
             throw ValidationException(ErrorMessages.INVALID_ABILITY_SLOT)
         }
         Natures.valueOfWithChecks(nature)
-        // TODO Validate abilitySlot is not null
     }
 }

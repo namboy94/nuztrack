@@ -76,6 +76,9 @@ internal class EncounterEventControllerTest {
                 teamMember.nature,
                 teamMember.abilitySlot
         )).thenReturn(teamMember)
+        whenever(service.getLocationsWithEncounters(nuzlockeRun.id)).thenReturn(listOf())
+        whenever(service.getEncounteredSpecies(nuzlockeRun.id, true)).thenReturn(listOf())
+        whenever(service.getEncounteredSpecies(nuzlockeRun.id, false)).thenReturn(listOf())
 
         val result = controller.createEncounterEvent(nuzlockeRun.id, creatorOne, principal)
 
@@ -87,6 +90,9 @@ internal class EncounterEventControllerTest {
         verify(runsService, times(1)).getRun(any())
         verify(service, times(1)).createEncounterEvent(any(), any(), any(), any(), any(), any())
         verify(teamMemberService, times(1)).createTeamMember(any(), any(), any(), any())
+        verify(service, times(1)).getLocationsWithEncounters(nuzlockeRun.id)
+        verify(service, times(1)).getEncounteredSpecies(nuzlockeRun.id, true)
+        verify(service, times(1)).getEncounteredSpecies(nuzlockeRun.id, false)
     }
 
     @Test
@@ -101,6 +107,9 @@ internal class EncounterEventControllerTest {
                 encounterTwo.gender,
                 false
         )).thenReturn(encounterTwo)
+        whenever(service.getLocationsWithEncounters(nuzlockeRun.id)).thenReturn(listOf())
+        whenever(service.getEncounteredSpecies(nuzlockeRun.id, true)).thenReturn(listOf())
+        whenever(service.getEncounteredSpecies(nuzlockeRun.id, false)).thenReturn(listOf())
 
         val result = controller.createEncounterEvent(nuzlockeRun.id, creatorTwo, principal)
 
@@ -112,5 +121,8 @@ internal class EncounterEventControllerTest {
         verify(runsService, times(1)).getRun(any())
         verify(service, times(1)).createEncounterEvent(any(), any(), any(), any(), any(), any())
         verify(teamMemberService, times(0)).createTeamMember(any(), any(), any(), any())
+        verify(service, times(1)).getLocationsWithEncounters(nuzlockeRun.id)
+        verify(service, times(1)).getEncounteredSpecies(nuzlockeRun.id, true)
+        verify(service, times(1)).getEncounteredSpecies(nuzlockeRun.id, false)
     }
 }

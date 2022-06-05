@@ -7,6 +7,7 @@ data class PokemonSpeciesTO(
         val sprite: String,
         val types: PokemonTypesTO,
         val abilities: Map<Int, String?>,
+        val baseSpecies: Int,
         val evolutions: List<Int>
 )
 

@@ -57,6 +57,7 @@ def load_pokemon(_cachedir):
                     "primary": types[1],
                     "secondary": types[2]
                 },
+                "baseSpecies": species.species.evolution_chain.chain.species.id,
                 "evolutions": evolutions
             }
 

@@ -24,6 +24,7 @@ internal class PokedexTest {
                 sprite = squirtle.sprite,
                 types = PokemonTypesTO("WATER", null),
                 abilities = mapOf(1 to "Torrent", 2 to null, 3 to "Rain Dish"),
+                baseSpecies = 7,
                 evolutions = listOf(8)
         ))
     }
