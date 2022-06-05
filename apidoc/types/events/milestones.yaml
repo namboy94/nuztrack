@@ -1,0 +1,9 @@
+id:
+  type: integer
+  description: The ID of the Milestone Event
+  example: 12
+
+milestone:
+  type: string
+  description: The milestone that was achieved
+  example: "Boulder Badge"

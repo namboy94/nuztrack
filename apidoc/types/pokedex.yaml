@@ -46,8 +46,8 @@ pokedexMapping:
         "2": null,
         "3": "Rain Dish"
       },
-      "baseSpecies": 7
-        "evolutions": [ 8 ]
+      "baseSpecies": 7,
+      "evolutions": [ 8 ]
     }
   }
 abilitySlot:

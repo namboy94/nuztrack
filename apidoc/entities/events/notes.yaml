@@ -1,0 +1,10 @@
+NoteEventTO:
+  description: Describes a Note Event
+  required:
+    - event
+    - text
+  properties:
+    event:
+      $ref: "./common.yaml#/EventTO"
+    text:
+      $ref: "../../types/events/notes.yaml#/text"

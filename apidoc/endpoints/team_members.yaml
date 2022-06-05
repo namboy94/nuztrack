@@ -1,0 +1,18 @@
+post:
+  tags: [ "Team" ]
+  summary: "Retrieve Team"
+  description: "Retrieves all Pokemon team Members"
+  parameters:
+    - in: path
+      $ref: "../types/route_params.yaml#/runId"
+  responses:
+    "200":
+      description: "Success"
+      content:
+        application/json:
+          schema:
+            $ref: "../entities/team_members.yaml#/TeamTO"
+    "401":
+      description: "Tried to access a Nuzlocke Run of another user without permission"
+    "404":
+      description: "The Nuzlocke Run does not exist"

@@ -1,0 +1,19 @@
+DeathEventTO:
+  description: Describes a Death Event
+  required:
+    - event
+    - teamMemberId
+    - level
+    - opponent
+    - description
+  properties:
+    event:
+      $ref: "./common.yaml#/EventTO"
+    teamMemberId:
+      $ref: "../../types/events/common.yaml#/teamMemberId"
+    level:
+      $ref: "../../types/team_members.yaml#/level"
+    opponent:
+      $ref: "../../types/events/deaths.yaml#/opponent"
+    description:
+      $ref: "../../types/events/deaths.yaml#/description"

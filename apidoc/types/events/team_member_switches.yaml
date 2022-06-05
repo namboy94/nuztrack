@@ -1,0 +1,10 @@
+id:
+  type: integer
+  description: The ID of the Team Member Switch Event
+  example: 10
+
+switchType:
+  type: string
+  enum: [ "ADD", "REMOVE" ]
+  description: The type of team member switch that was performed
+  example: "ADD"

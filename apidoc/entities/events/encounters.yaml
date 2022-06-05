@@ -12,11 +12,11 @@ CreateEncounterEventTO:
     pokedexNumber:
       $ref: "../../types/pokedex.yaml#/pokedexNumber"
     level:
-      $ref: "../../types/team_member.yaml#/level"
+      $ref: "../../types/team_members.yaml#/level"
     gender:
-      $ref: "../../types/team_member.yaml#/gender"
+      $ref: "../../types/team_members.yaml#/gender"
     caught:
-      $ref: "../../types/events/encounter.yaml#/caught"
+      $ref: "../../types/events/encounters.yaml#/caught"
     pokemon:
       $ref: "#/CreateEncounterPokemonTO"
 
@@ -28,11 +28,11 @@ CreateEncounterPokemonTO:
     - abilitySlot
   properties:
     nickname:
-      $ref: "../../types/team_member.yaml#/nickname"
+      $ref: "../../types/team_members.yaml#/nickname"
     nature:
-      $ref: "../../types/team_member.yaml#/nature"
+      $ref: "../../types/team_members.yaml#/nature"
     abilitySlot:
-      $ref: "../../types/team_member.yaml#/abilitySlot"
+      $ref: "../../types/team_members.yaml#/abilitySlot"
 
 EncounterEventTO:
   required:
@@ -48,10 +48,10 @@ EncounterEventTO:
     pokedexNumber:
       $ref: "../../types/pokedex.yaml#/pokedexNumber"
     level:
-      $ref: "../../types/team_member.yaml#/level"
+      $ref: "../../types/team_members.yaml#/level"
     gender:
-      $ref: "../../types/team_member.yaml#/gender"
+      $ref: "../../types/team_members.yaml#/gender"
     caught:
-      $ref: "../../types/events/encounter.yaml#/caught"
+      $ref: "../../types/events/encounters.yaml#/caught"
     teamMemberId:
       $ref: "../../types/events/common.yaml#/nullableTeamMemberId"

@@ -14,3 +14,44 @@ EventTO:
       $ref: "../../types/events/common.yaml#/timestamp"
     location:
       $ref: "../../types/events/common.yaml#/location"
+
+EventLogTO:
+  description: An event Log containing all events of a Nuzlocke Run
+  required:
+    - encounters
+    - deaths
+    - evolutions
+    - teamMemberSwitches
+    - notes
+    - milestones
+  properties:
+    encounters:
+      description: All Encounter Events of a Nuzlocke Run
+      type: array
+      items:
+        $ref: "./encounters.yaml#/EncounterEventTO"
+    deaths:
+      description: All Death Events of a Nuzlocke Run
+      type: array
+      items:
+        $ref: "./deaths.yaml#/DeathEventTO"
+    evolutions:
+      description: All Evolution Events of a Nuzlocke Run
+      type: array
+      items:
+        $ref: "./evolutions.yaml#/EvolutionEventTO"
+    teamMemberSwitches:
+      description: All Team Member Switch Events of a Nuzlocke Run
+      type: array
+      items:
+        $ref: "./team_member_switches.yaml#/TeamMemberSwitchEventTO"
+    notes:
+      description: All Note Events of a Nuzlocke Run
+      type: array
+      items:
+        $ref: "./notes.yaml#/NoteEventTO"
+    milestones:
+      description: All Milestone Events of a Nuzlocke Run
+      type: array
+      items:
+        $ref: "./milestones.yaml#/MilestoneEventTO"

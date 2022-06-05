@@ -1,3 +1,9 @@
+id:
+  type: integer
+  description: The ID of the Encounter Event
+  example: 14
+
+
 caught:
   type: boolean
   description: Whether the encounter had a successful encounter or not

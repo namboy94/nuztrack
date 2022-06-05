@@ -11,14 +11,14 @@ post:
     content:
       application/json:
         schema:
-          $ref: "../entities/events/encounter.yaml#/CreateEncounterEventTO"
+          $ref: "../entities/events/encounters.yaml#/CreateEncounterEventTO"
   responses:
     "201":
       description: "Created Encounter Event (and possibly Team Member)"
       content:
         application/json:
           schema:
-            $ref: "../entities/events/encounter.yaml#/EncounterEventTO"
+            $ref: "../entities/events/encounters.yaml#/EncounterEventTO"
     "400":
       description: "Validation error in the creation parameters"
     "401":

@@ -1,0 +1,13 @@
+TeamMemberSwitchEventTO:
+  description: Describes a Team Member Switch Event
+  required:
+    - event
+    - teamMemberId
+    - switchType
+  properties:
+    event:
+      $ref: "./common.yaml#/EventTO"
+    teamMemberId:
+      $ref: "../../types/events/common.yaml#/teamMemberId"
+    previousPokedexNumber:
+      $ref: "../../types/events/team_member_switches.yaml#/switchType"

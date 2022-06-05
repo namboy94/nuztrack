@@ -1,0 +1,61 @@
+TeamTO:
+  required:
+    - active
+    - boxed
+    - dead
+  properties:
+    active:
+      description: The currently active members of the team
+      type: array
+      items:
+        $ref: "#/TeamMemberTO"
+    boxed:
+      description: The members of the team that are currently boxed
+      type: array
+      items:
+        $ref: "#/TeamMemberTO"
+    dead:
+      description: The members of the team that died
+      type: array
+      items:
+        $ref: "#/TeamMemberTO"
+
+TeamMemberTO:
+  required:
+    - id
+    - nickname
+    - pokedexNumber
+    - level
+    - nature
+    - abilitySlot
+    - encounterId
+    - deathId
+    - evolutionIds
+    - teamSwitchIds
+  properties:
+    id:
+      $ref: "../types/team_members.yaml#/id"
+    nickname:
+      $ref: "../types/team_members.yaml#/nickname"
+    pokedexNumber:
+      $ref: "../types/pokedex.yaml#/pokedexNumber"
+    level:
+      $ref: "../types/team_members.yaml#/level"
+    nature:
+      $ref: "../types/team_members.yaml#/nature"
+    abilitySlot:
+      $ref: "../types/team_members.yaml#/abilitySlot"
+    encounterId:
+      $ref: "../types/events/encounters.yaml#/id"
+    deathId:
+      $ref: "../types/events/deaths.yaml#/id"
+    evolutionIds:
+      description: The IDs of the evolution events associated with this team member
+      type: array
+      items:
+        $ref: "../types/events/evolutions.yaml#/id"
+    teamSwitchIds:
+      description: The IDs of the team switch events associated with this team member
+      type: array
+      items:
+        $ref: "../types/events/team_member_switches.yaml#/id"

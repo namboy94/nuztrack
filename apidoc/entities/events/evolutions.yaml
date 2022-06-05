@@ -1,0 +1,19 @@
+EvolutionEventTO:
+  description: Describes an Evolution Event
+  required:
+    - event
+    - teamMemberId
+    - level
+    - previousPokedexNumber
+    - newPokedexNumber
+  properties:
+    event:
+      $ref: "./common.yaml#/EventTO"
+    teamMemberId:
+      $ref: "../../types/events/common.yaml#/teamMemberId"
+    level:
+      $ref: "../../types/team_members.yaml#/level"
+    previousPokedexNumber:
+      $ref: "../../types/events/evolutions.yaml#/previousPokedexNumber"
+    newPokedexNumber:
+      $ref: "../../types/events/evolutions.yaml#/newPokedexNumber"

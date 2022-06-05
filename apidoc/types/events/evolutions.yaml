@@ -1,0 +1,15 @@
+id:
+  type: integer
+  description: The ID of the Evolution Event
+  example: 13
+
+
+previousPokedexNumber:
+  type: integer
+  description: The pokedex number of the Pokemon before the evolution
+  example: 7
+
+newPokedexNumber:
+  type: integer
+  description: The pokedex number of the Pokemon after the evolution
+  example: 8

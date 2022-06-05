@@ -1,0 +1,10 @@
+MilestoneEventTO:
+  description: Describes a Milestone Event
+  required:
+    - event
+    - milestone
+  properties:
+    event:
+      $ref: "./common.yaml#/EventTO"
+    text:
+      $ref: "../../types/events/milestones.yaml#/milestone"

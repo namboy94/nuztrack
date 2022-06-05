@@ -1,0 +1,10 @@
+id:
+  type: integer
+  description: The ID of the Note Event
+  example: 11
+
+
+text:
+  type: string
+  description: The text of a note
+  example: "Started a new run"

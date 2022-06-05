@@ -1,0 +1,14 @@
+id:
+  type: integer
+  description: The ID of the Death Event
+  example: 15
+
+opponent:
+  type: string
+  description: The opponent that killed the team member
+  example: "Whitney"
+
+description:
+  type: string
+  description: A description of the way the team member died
+  example: "Hit by a powered-up Rollout by Miltank"
