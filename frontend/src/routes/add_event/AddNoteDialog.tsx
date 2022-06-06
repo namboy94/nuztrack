@@ -4,6 +4,7 @@ import {Severity} from "../../components/Snackbar";
 import {NuzlockeRun} from "../../api/runs/runsTypes";
 import {GameLocation} from "../../api/games/gamesTypes";
 import {createNoteEvent} from "../../api/events/note/noteEventApi";
+import {CreateNoteEvent} from "../../api/events/note/noteEventTypes";
 
 interface AddNoteDialogProps {
     open: boolean
@@ -20,7 +21,7 @@ export default function AddNoteDialog(props: AddNoteDialogProps) {
     const [note, setNote] = useState("")
 
     const submit = () => {
-        const payload = {
+        const payload: CreateNoteEvent = {
             "location": location,
             "text": note
         }
