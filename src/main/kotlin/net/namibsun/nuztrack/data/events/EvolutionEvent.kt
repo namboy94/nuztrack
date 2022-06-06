@@ -25,10 +25,6 @@ class EvolutionEvent(
 
 @Service
 class EvolutionEventService(val db: EventRepository) {
-    fun getAllEvolutionEvents(): List<EvolutionEvent> {
-        return db.findAllByEventTypeOrderByTimestamp(EventType.EVOLUTION).map { it as EvolutionEvent }
-    }
-
     fun createEvolutionEvent(
             nuzlockeRun: NuzlockeRun,
             location: String,

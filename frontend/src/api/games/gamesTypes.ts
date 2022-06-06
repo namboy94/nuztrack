@@ -7,5 +7,6 @@ export type GameLocation = {
 export type Milestone = {
     name: string,
     image: string,
-    level_cap: number
+    level_cap: number,
+    location: string
 }

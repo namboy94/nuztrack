@@ -1,6 +1,5 @@
 package net.namibsun.nuztrack.data.events
 
-import net.namibsun.nuztrack.constants.enums.EventType
 import net.namibsun.nuztrack.data.NUZLOCKE_RUN
 import net.namibsun.nuztrack.data.TEAM_MEMBER
 import org.assertj.core.api.Assertions.assertThat
@@ -16,13 +15,6 @@ class EvolutionEventServiceTest {
             EvolutionEvent(NUZLOCKE_RUN, "Pallet Town", TEAM_MEMBER, 16, 1, 2),
             EvolutionEvent(NUZLOCKE_RUN, "Pokemon League", TEAM_MEMBER, 32, 2, 3)
     )
-
-    @Test
-    fun getAllEvents() {
-        whenever(repository.findAllByEventTypeOrderByTimestamp(EventType.EVOLUTION)).thenReturn(events)
-        assertThat(service.getAllEvolutionEvents()).isEqualTo(events)
-        verify(repository, times(1)).findAllByEventTypeOrderByTimestamp(EventType.EVOLUTION)
-    }
 
     @Test
     fun createEvolutionEvent() {

@@ -18,5 +18,20 @@ enum class ErrorMessages(val message: String) {
     INVALID_TEAM_MEMBER_SWITCH_TYPE("The team member switch operation ca only be ADD or REMOVE"),
     INVALID_ABILITY_SLOT("The provided ability slot is not a valid ability slot for this Pokemon"),
     INVALID_NICKNAME("The provided nickname is either too short or too long"),
-    DUPLICATE_ENCOUNTER("This encounter is a duplicate")
+    DUPLICATE_ENCOUNTER("This encounter is a duplicate"),
+    INVALID_TEAM_MEMBER("This team member is not valid"),
+    MISSING_OPPONENT("No Opponent was provided"),
+    MISSING_DESCRIPTION("No Description was provided"),
+    TEAM_MEMBER_IS_DEAD("The team member is already dead"),
+    LEVEL_BELOW_CURRENT("This level is below the team member's current level"),
+    INVALID_EVOLUTION_TARGET("This Pokemon can't evolve into the provided species"),
+    PARTY_FULL("The party is already full"),
+    LAST_MEMBER_IN_PARTY("This is the last team member in the active party"),
+    ALREADY_IN_PARTY("This team member is already in the active party"),
+    ALREADY_NOT_IN_PARTY("This team member is already not in the active party"),
+    MILESTONE_ALREADY_REACHED("This milestone has already been reached"),
+    INVALID_MILESTONE("This milestone is invalid for this game"),
+    MILESTONE_IN_WRONG_LOCATION("The location provided is incorrect for this milestone"),
+    NO_TEXT("No text was provided"),
+    MISSING_LOCATION("No location was provided for this event")
 }

@@ -6,8 +6,12 @@ import net.namibsun.nuztrack.constants.ValidationException
 import net.namibsun.nuztrack.constants.enums.ErrorMessages
 import net.namibsun.nuztrack.constants.enums.Natures
 import net.namibsun.nuztrack.constants.enums.Rules
+import net.namibsun.nuztrack.data.NuzlockeRun
 import net.namibsun.nuztrack.data.events.EncounterEvent
+import net.namibsun.nuztrack.data.events.EncounterEventService
 import net.namibsun.nuztrack.transfer.PokemonSpeciesTO
+import net.namibsun.nuztrack.util.validateEmptyLocation
+import net.namibsun.nuztrack.util.validateLevel
 
 data class EncounterEventTO(
         val event: EventTO,
@@ -39,13 +43,10 @@ data class CreateEncounterEventTO(
         val caught: Boolean,
         val pokemon: CreateEncounterPokemonTO?
 ) {
-    fun validate(
-            rules: List<Rules>,
-            previousLocations: List<String>,
-            successFullyCaught: List<Int>,
-            failedToCatch: List<Int>
-    ) {
-        if (previousLocations.contains(location) && rules.contains(Rules.ONLY_FIRST_ENCOUNTER)) {
+    fun validate(run: NuzlockeRun, encounterService: EncounterEventService) {
+        validateEmptyLocation(location)
+        val previousLocations = encounterService.getLocationsWithEncounters(run.id)
+        if (previousLocations.contains(location) && run.rules.contains(Rules.ONLY_FIRST_ENCOUNTER)) {
             throw ValidationException(ErrorMessages.ENCOUNTER_IN_LOCATION_ALREADY_USED)
         }
 
@@ -55,9 +56,7 @@ data class CreateEncounterEventTO(
             throw ValidationException(ErrorMessages.INVALID_POKEMON)
         }
 
-        if (level < 1 || level > 100) {
-            throw ValidationException(ErrorMessages.LEVEL_OUT_OF_BOUNDS)
-        }
+        validateLevel(level)
         if (caught && pokemon == null) {
             throw ValidationException(ErrorMessages.CAUGHT_AND_NO_POKEMON)
         }
@@ -65,23 +64,18 @@ data class CreateEncounterEventTO(
             throw ValidationException(ErrorMessages.NOT_CAUGHT_BUT_POKEMON)
         }
         pokemon?.validate(pokemonSpecies)
-        validateDuplicateClause(rules, pokedexNumber, successFullyCaught, failedToCatch)
+        validateDuplicateClause(run, encounterService)
     }
 
-    private fun validateDuplicateClause(
-            rules: List<Rules>,
-            pokedexNumber: Int,
-            successFullyCaught: List<Int>,
-            failedToCatch: List<Int>
-    ) {
+    private fun validateDuplicateClause(run: NuzlockeRun, encounterService: EncounterEventService) {
         val blacklist = mutableListOf<Int>()
-        if (rules.contains(Rules.DUPLICATE_CLAUSE)) {
-            blacklist += successFullyCaught
+        if (run.rules.contains(Rules.DUPLICATE_CLAUSE)) {
+            blacklist += encounterService.getEncounteredSpecies(run.id, true)
         }
-        if (rules.contains(Rules.DUPLICATE_CLAUSE_INCLUDES_FAILED_ENCOUNTERS)) {
-            blacklist += failedToCatch
+        if (run.rules.contains(Rules.DUPLICATE_CLAUSE_INCLUDES_FAILED_ENCOUNTERS)) {
+            blacklist += encounterService.getEncounteredSpecies(run.id, false)
         }
-        if (rules.contains(Rules.DUPLICATE_CLAUSE_INCLUDES_ENTIRE_SPECIES)) {
+        if (run.rules.contains(Rules.DUPLICATE_CLAUSE_INCLUDES_ENTIRE_SPECIES)) {
             for (species in blacklist.toList()) {
                 blacklist += Pokedex.getEvolutionChain(species)
             }

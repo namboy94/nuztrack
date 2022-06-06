@@ -23,7 +23,7 @@ def combine(locations, badges):
             milestones = []
             for index in milestone_indexes:
                 to_add = game_badges.pop(index)
-                to_add.pop("location")
+                # to_add.pop("location")
                 milestones.append(to_add)
             location["milestones"] = milestones
 

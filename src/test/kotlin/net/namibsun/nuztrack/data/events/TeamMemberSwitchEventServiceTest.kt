@@ -1,6 +1,5 @@
 package net.namibsun.nuztrack.data.events
 
-import net.namibsun.nuztrack.constants.enums.EventType
 import net.namibsun.nuztrack.constants.enums.TeamMemberSwitchType
 import net.namibsun.nuztrack.data.NUZLOCKE_RUN
 import net.namibsun.nuztrack.data.TEAM_MEMBER
@@ -17,13 +16,6 @@ class TeamMemberSwitchEventServiceTest {
             TeamMemberSwitchEvent(NUZLOCKE_RUN, "Pallet Town", TEAM_MEMBER, TeamMemberSwitchType.ADD),
             TeamMemberSwitchEvent(NUZLOCKE_RUN, "Pokemon League", TEAM_MEMBER, TeamMemberSwitchType.REMOVE)
     )
-
-    @Test
-    fun getAllEvents() {
-        whenever(repository.findAllByEventTypeOrderByTimestamp(EventType.TEAM_MEMBER_SWITCH)).thenReturn(events)
-        assertThat(service.getAllTeamMemberSwitchEvents()).isEqualTo(events)
-        verify(repository, times(1)).findAllByEventTypeOrderByTimestamp(EventType.TEAM_MEMBER_SWITCH)
-    }
 
     @Test
     fun createTeamMemberSwitchEvent() {

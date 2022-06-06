@@ -80,4 +80,15 @@ class TeamMemberRepositoryTest {
                 EventType.TEAM_MEMBER_SWITCH
         )[0] as TeamMemberSwitchEvent).teamMember).isNotNull
     }
+    
+    @Test
+    fun getTeamMemberByIdAndNuzlockeRunId() {
+        val run = runRepository.save(NUZLOCKE_RUN)
+        val encounter = eventRepository.save(EncounterEvent(run, "A", 1, 1, Gender.MALE, true))
+        val member = repository.save(TeamMember(0, "NICK", 1, 1, Natures.BRAVE, 1, encounter))
+
+        assertThat(repository.getTeamMemberByIdAndNuzlockeRunId(run.id, member.id)).isEqualTo(member)
+        assertThat(repository.getTeamMemberByIdAndNuzlockeRunId(1000, member.id)).isNull()
+        assertThat(repository.getTeamMemberByIdAndNuzlockeRunId(run.id, 1000)).isNull()
+    }
 }

@@ -18,9 +18,10 @@ class MilestoneEventServiceTest {
 
     @Test
     fun getAllEvents() {
-        whenever(repository.findAllByEventTypeOrderByTimestamp(EventType.MILESTONE)).thenReturn(events)
-        assertThat(service.getAllMilestoneEvents()).isEqualTo(events)
-        verify(repository, times(1)).findAllByEventTypeOrderByTimestamp(EventType.MILESTONE)
+        whenever(repository.findAllByEventTypeAndNuzlockeRunIdOrderByTimestamp(EventType.MILESTONE, 1))
+                .thenReturn(events)
+        assertThat(service.getMilestoneEvents(1)).isEqualTo(events)
+        verify(repository, times(1)).findAllByEventTypeAndNuzlockeRunIdOrderByTimestamp(EventType.MILESTONE, 1)
     }
 
     @Test

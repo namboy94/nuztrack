@@ -23,7 +23,7 @@ class EncounterEventServiceTest {
     @Test
     fun getAllEvents() {
         whenever(repository.findAllByEventTypeAndNuzlockeRunIdOrderByTimestamp(EventType.ENCOUNTER, 1)).thenReturn(events)
-        assertThat(service.getAllEncounterEvents(1)).isEqualTo(events)
+        assertThat(service.getEncounterEvents(1)).isEqualTo(events)
         verify(repository, times(1)).findAllByEventTypeAndNuzlockeRunIdOrderByTimestamp(EventType.ENCOUNTER, 1)
     }
 

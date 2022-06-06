@@ -1,6 +1,5 @@
 package net.namibsun.nuztrack.data.events
 
-import net.namibsun.nuztrack.constants.enums.EventType
 import net.namibsun.nuztrack.data.NUZLOCKE_RUN
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -15,13 +14,6 @@ class NoteEventServiceTest {
             NoteEvent(NUZLOCKE_RUN, "Pallet Town", "Hello World"),
             NoteEvent(NUZLOCKE_RUN, "Pokemon League", "Goodbye")
     )
-
-    @Test
-    fun getAllEvents() {
-        whenever(repository.findAllByEventTypeOrderByTimestamp(EventType.NOTE)).thenReturn(events)
-        assertThat(service.getAllNoteEvents()).isEqualTo(events)
-        verify(repository, times(1)).findAllByEventTypeOrderByTimestamp(EventType.NOTE)
-    }
 
     @Test
     fun createNoteEvent() {

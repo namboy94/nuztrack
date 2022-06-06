@@ -1,6 +1,7 @@
 package net.namibsun.nuztrack.data
 
 import net.namibsun.nuztrack.constants.enums.Natures
+import net.namibsun.nuztrack.constants.enums.TeamMemberSwitchType
 import net.namibsun.nuztrack.data.events.DeathEvent
 import net.namibsun.nuztrack.data.events.EncounterEvent
 import net.namibsun.nuztrack.data.events.EvolutionEvent
@@ -45,12 +46,30 @@ interface TeamMemberRepository : JpaRepository<TeamMember, Long> {
             "INNER JOIN EncounterEvent e ON m.encounter.id = e.id " +
             "WHERE e.nuzlockeRun.id = :runId")
     fun findAllByNuzlockeRunId(@Param("runId") nuzlockeRunId: Long): List<TeamMember>
+
+    @Query("SELECT m FROM TeamMember m " +
+            "INNER JOIN EncounterEvent e ON m.encounter.id = e.id " +
+            "WHERE e.nuzlockeRun.id = :runId AND m.id = :id")
+    fun getTeamMemberByIdAndNuzlockeRunId(@Param("runId") nuzlockeRunId: Long, @Param("id") id: Long): TeamMember?
 }
 
 @Service
 class TeamMemberService(val db: TeamMemberRepository) {
-    fun getAllForNuzlockeRun(nuzlockeRun: NuzlockeRun): List<TeamMember> {
-        return db.findAllByNuzlockeRunId(nuzlockeRun.id)
+    fun getTeamMember(runId: Long, teamMemberId: Long): TeamMember? {
+        return db.getTeamMemberByIdAndNuzlockeRunId(runId, teamMemberId)
+    }
+
+    fun getAllTeamMembers(runId: Long): List<TeamMember> {
+        return db.findAllByNuzlockeRunId(runId)
+    }
+
+    fun getTeam(runId: Long): Triple<List<TeamMember>, List<TeamMember>, List<TeamMember>> {
+        val allMembers = getAllTeamMembers(runId)
+        val (alive, dead) = allMembers.partition { it.death == null }
+        val (active, boxed) = alive.partition {
+            it.teamSwitches.isNotEmpty() && it.teamSwitches.last().switchType == TeamMemberSwitchType.ADD
+        }
+        return Triple(active, boxed, dead)
     }
 
     fun createTeamMember(

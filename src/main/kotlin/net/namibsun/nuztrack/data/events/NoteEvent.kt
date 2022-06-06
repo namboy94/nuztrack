@@ -18,10 +18,6 @@ class NoteEvent(
 
 @Service
 class NoteEventService(val db: EventRepository) {
-    fun getAllNoteEvents(): List<NoteEvent> {
-        return db.findAllByEventTypeOrderByTimestamp(EventType.NOTE).map { it as NoteEvent }
-    }
-
     fun createNoteEvent(nuzlockeRun: NuzlockeRun, location: String, text: String): NoteEvent {
         return db.save(NoteEvent(nuzlockeRun, location, text))
     }

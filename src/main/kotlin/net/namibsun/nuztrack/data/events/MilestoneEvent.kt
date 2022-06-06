@@ -18,8 +18,10 @@ class MilestoneEvent(
 
 @Service
 class MilestoneEventService(val db: EventRepository) {
-    fun getAllMilestoneEvents(): List<MilestoneEvent> {
-        return db.findAllByEventTypeOrderByTimestamp(EventType.MILESTONE).map { it as MilestoneEvent }
+    fun getMilestoneEvents(runId: Long): List<MilestoneEvent> {
+        return db.findAllByEventTypeAndNuzlockeRunIdOrderByTimestamp(EventType.MILESTONE, runId).map {
+            it as MilestoneEvent
+        }
     }
 
     fun createMilestoneEvent(nuzlockeRun: NuzlockeRun, location: String, milestone: String): MilestoneEvent {

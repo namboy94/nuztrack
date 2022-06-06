@@ -21,6 +21,7 @@ MilestoneTO:
     - name
     - image
     - level_cap
+    - location
   properties:
     name:
       $ref: "../types/locations.yaml#/milestoneName"
@@ -28,3 +29,5 @@ MilestoneTO:
       $ref: "../types/locations.yaml#/milestoneImage"
     level_cap:
       $ref: "../types/locations.yaml#/levelCap"
+    location:
+      $ref: "../types/locations.yaml#/locationName"

@@ -26,7 +26,7 @@ class EncounterEvent(
 
 @Service
 class EncounterEventService(val db: EventRepository, val teamMemberRepository: TeamMemberRepository) {
-    fun getAllEncounterEvents(runId: Long): List<EncounterEvent> {
+    fun getEncounterEvents(runId: Long): List<EncounterEvent> {
         return db.findAllByEventTypeAndNuzlockeRunIdOrderByTimestamp(EventType.ENCOUNTER, runId).map { it as EncounterEvent }
     }
 
@@ -42,10 +42,10 @@ class EncounterEventService(val db: EventRepository, val teamMemberRepository: T
     }
 
     fun getLocationsWithEncounters(runId: Long): List<String> {
-        return getAllEncounterEvents(runId).map { it.location }
+        return getEncounterEvents(runId).map { it.location }
     }
 
     fun getEncounteredSpecies(runId: Long, caught: Boolean): List<Int> {
-        return getAllEncounterEvents(runId).filter { it.caught == caught }.map { it.pokedexNumber }
+        return getEncounterEvents(runId).filter { it.caught == caught }.map { it.pokedexNumber }
     }
 }

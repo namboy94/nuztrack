@@ -54,8 +54,8 @@ internal class TeamMemberControllerTest {
 
     @Test
     fun getTeam() {
-        whenever(service.getAllForNuzlockeRun(nuzlockeRun))
-                .thenReturn(listOf(teamMemberOne, teamMemberTwo, teamMemberThree))
+        whenever(service.getTeam(nuzlockeRun.id))
+                .thenReturn(Triple(listOf(teamMemberOne), listOf(teamMemberTwo), listOf(teamMemberThree)))
         whenever(runsService.getRun(nuzlockeRun.id)).thenReturn(nuzlockeRun)
         whenever(principal.name).thenReturn(user)
 
@@ -67,7 +67,7 @@ internal class TeamMemberControllerTest {
         assertThat(result.body!!.dead[0]).isEqualTo(TeamMemberTO.fromTeamMember(teamMemberThree))
 
         verify(principal, times(1)).name
-        verify(service, times(1)).getAllForNuzlockeRun(nuzlockeRun)
+        verify(service, times(1)).getTeam(nuzlockeRun.id)
         verify(runsService, times(1)).getRun(nuzlockeRun.id)
     }
 }

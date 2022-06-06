@@ -7,6 +7,7 @@ import net.namibsun.nuztrack.data.TeamMember
 import net.namibsun.nuztrack.data.TeamMemberService
 import net.namibsun.nuztrack.data.events.EncounterEvent
 import net.namibsun.nuztrack.data.events.EncounterEventService
+import net.namibsun.nuztrack.data.events.TeamMemberSwitchEventService
 import net.namibsun.nuztrack.transfer.events.CreateEncounterEventTO
 import net.namibsun.nuztrack.transfer.events.CreateEncounterPokemonTO
 import org.assertj.core.api.Assertions.assertThat
@@ -20,13 +21,20 @@ internal class EncounterEventControllerTest {
     private val principal: Principal = mock()
     private val runsService: NuzlockeRunService = mock()
     private val teamMemberService: TeamMemberService = mock()
+    private val teamMemberSwitchEventService: TeamMemberSwitchEventService = mock()
     private val service: EncounterEventService = mock()
-    private val controller = EncounterEventController(service, teamMemberService, runsService)
+    private val controller = EncounterEventController(
+            service, teamMemberService, teamMemberSwitchEventService, runsService
+    )
 
     private val user = "Ash"
-    private val nuzlockeRun = NuzlockeRun(
-            5, user, "First", Games.RED, listOf(Rules.ONLY_FIRST_ENCOUNTER), listOf(), RunStatus.COMPLETED
+    val rules = listOf(
+            Rules.ONLY_FIRST_ENCOUNTER,
+            Rules.DUPLICATE_CLAUSE,
+            Rules.DUPLICATE_CLAUSE_INCLUDES_FAILED_ENCOUNTERS,
+            Rules.DUPLICATE_CLAUSE_INCLUDES_ENTIRE_SPECIES
     )
+    private val nuzlockeRun = NuzlockeRun(5, user, "First", Games.RED, rules, listOf(), RunStatus.COMPLETED)
     private val encounterOne = EncounterEvent(nuzlockeRun, "Pewter City", 4, 14, Gender.MALE, true)
     private val encounterTwo = EncounterEvent(nuzlockeRun, "Mahogany Town", 7, 24, Gender.FEMALE, false)
     private val teamMember = TeamMember(0, "Nick", 120, 34, Natures.BOLD, 1, encounterOne)

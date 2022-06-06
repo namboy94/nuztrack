@@ -1,6 +1,5 @@
 package net.namibsun.nuztrack.routes
 
-import net.namibsun.nuztrack.constants.enums.TeamMemberSwitchType
 import net.namibsun.nuztrack.data.NuzlockeRunService
 import net.namibsun.nuztrack.data.TeamMemberService
 import net.namibsun.nuztrack.transfer.TeamMemberTO
@@ -21,11 +20,7 @@ class TeamMemberController(val service: TeamMemberService, runService: NuzlockeR
     @ResponseBody
     fun getTeam(@PathVariable runId: Long, principal: Principal): ResponseEntity<TeamTO> {
         val run = authenticator.loadAuthenticatedRun(runId, principal.name)
-        val allTeamMembers = service.getAllForNuzlockeRun(run)
-        val (alive, dead) = allTeamMembers.partition { it.death == null }
-        val (active, boxed) = alive.partition {
-            it.teamSwitches.isNotEmpty() && it.teamSwitches.last().switchType == TeamMemberSwitchType.ADD
-        }
+        val (active, boxed, dead) = service.getTeam(run.id)
         val team = TeamTO(
                 active = active.map { TeamMemberTO.fromTeamMember(it) },
                 boxed = boxed.map { TeamMemberTO.fromTeamMember(it) },

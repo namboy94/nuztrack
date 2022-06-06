@@ -5,6 +5,7 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import net.namibsun.nuztrack.constants.enums.ErrorMessages
 import net.namibsun.nuztrack.constants.enums.Games
 import net.namibsun.nuztrack.transfer.GameLocationTO
+import net.namibsun.nuztrack.transfer.MilestoneTO
 import org.springframework.core.io.ClassPathResource
 
 object GameLocationRegistry {
@@ -18,5 +19,12 @@ object GameLocationRegistry {
 
     fun getLocationsForGame(game: Games): List<GameLocationTO> {
         return gameLocations[game] ?: throw NotFoundException(ErrorMessages.INVALID_GAME)
+    }
+
+    fun getMilestonesForGame(game: Games): List<MilestoneTO> {
+        val locationsWithMilestones = getLocationsForGame(game).filter { it.milestones.isNotEmpty() }
+        val milestones = mutableListOf<MilestoneTO>()
+        locationsWithMilestones.forEach { location -> location.milestones.forEach { milestones.add(it) } }
+        return milestones
     }
 }

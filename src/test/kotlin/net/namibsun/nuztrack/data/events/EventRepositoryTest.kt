@@ -34,7 +34,8 @@ class EventRepositoryTest {
         assertThat(repository.findAllByEventTypeOrderByTimestamp(EventType.EVOLUTION).size).isEqualTo(0)
         assertThat(repository.findAllByEventTypeOrderByTimestamp(EventType.NOTE).size).isEqualTo(1)
         assertThat(repository.findAllByEventTypeOrderByTimestamp(EventType.MILESTONE).size).isEqualTo(2)
-        assertThat((repository.findAllByEventTypeOrderByTimestamp(EventType.NOTE)[0] as NoteEvent).text).isEqualTo("Hello World")
+        assertThat((repository.findAllByEventTypeOrderByTimestamp(EventType.NOTE)[0] as NoteEvent).text)
+                .isEqualTo("Hello World")
     }
 
     @Test
