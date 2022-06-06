@@ -30,11 +30,10 @@ class EvolutionEventService(val db: EventRepository) {
             location: String,
             teamMember: TeamMember,
             level: Int,
-            previousPokedexNumber: Int,
             newPokedexNumber: Int
     ): EvolutionEvent {
         return db.save(EvolutionEvent(
-                nuzlockeRun, location, teamMember, level, previousPokedexNumber, newPokedexNumber
+                nuzlockeRun, location, teamMember, level, teamMember.pokedexNumber, newPokedexNumber
         ))
     }
 }
