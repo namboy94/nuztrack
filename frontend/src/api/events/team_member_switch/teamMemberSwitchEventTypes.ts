@@ -6,3 +6,9 @@ export type TeamMemberSwitchEvent = {
     level: number,
     switchType: "ADD" | "REMOVE"
 }
+
+export type CreateTeamMemberSwitchEvent = {
+    location: string,
+    teamMemberId: number,
+    switchType: "ADD" | "REMOVE"
+}

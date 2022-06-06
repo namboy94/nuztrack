@@ -7,3 +7,10 @@ export type EvolutionEvent = {
     previousPokedexNumber: number,
     newPokedexNumber: number
 }
+
+export type CreateEvolutionEvent = {
+    location: string,
+    teamMemberId: number,
+    level: number,
+    newPokedexNumber: number
+}
