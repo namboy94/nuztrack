@@ -50,9 +50,14 @@ class DeathEventControllerTest {
         whenever(teamMemberService.getTeam(run.id)).thenReturn(Triple(listOf(member), listOf(), listOf()))
 
         val result = controller.createDeathEvent(run.id, creator, principal)
+        val body = result.body!!
 
         assertThat(result.statusCode).isEqualTo(HttpStatus.OK)
-        assertThat(result.body!!.teamMemberId).isEqualTo(member.id)
+        assertThat(body.teamMemberId).isEqualTo(member.id)
+        assertThat(body.description).isEqualTo(creator.description)
+        assertThat(body.level).isEqualTo(creator.level)
+        assertThat(body.opponent).isEqualTo(creator.opponent)
+        assertThat(body.event.location).isEqualTo(creator.location)
 
         verify(principal, times(1)).name
         verify(runsService, times(1)).getRun(any())
