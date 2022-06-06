@@ -41,9 +41,13 @@ export default function AddEvent(props: AddEventProps) {
             <Grid item xs={3}><Button variant="contained" onClick={() => setBadgeDialogOpen(true)}>Badge</Button></Grid>
             <Grid item xs={3}><Button variant="contained" onClick={() => setNoteDialogOpen(true)}>Note</Button></Grid>
             <AddBadgeDialog
+                locations={locations}
+                run={props.run} displaySnack={props.displaySnack}
                 open={badgeDialogOpen} onClose={() => setBadgeDialogOpen(false)}
             />
             <AddDeathDialog
+                locations={locations}
+                run={props.run} displaySnack={props.displaySnack}
                 open={deathDialogOpen} onClose={() => setDeathDialogOpen(false)}
             />
             <AddEncounterDialog
@@ -52,6 +56,8 @@ export default function AddEvent(props: AddEventProps) {
                 open={encounterDialogOpen} onClose={() => setEncounterDialogOpen(false)}
             />
             <AddNoteDialog
+                locations={locations}
+                run={props.run} displaySnack={props.displaySnack}
                 open={noteDialogOpen} onClose={() => setNoteDialogOpen(false)}
             />
         </Grid>

@@ -1,9 +1,15 @@
 import {Button, Dialog, DialogActions, DialogTitle, MenuItem, Select} from "@mui/material";
 import React, {useState} from "react";
+import {Severity} from "../../components/Snackbar";
+import {NuzlockeRun} from "../../api/runs/runsTypes";
+import {GameLocation} from "../../api/games/gamesTypes";
 
 interface AddBadgeDialogProps {
     open: boolean
     onClose: () => void
+    displaySnack: (message: string, severity: Severity) => void
+    run: NuzlockeRun
+    locations: GameLocation[]
 }
 
 export default function AddBadgeDialog(props: AddBadgeDialogProps) {

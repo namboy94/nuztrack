@@ -34,15 +34,14 @@ export default function AddEncounterDialog(props: AddEncounterDialogProps) {
 
     const locationMap = new Map<string, GameLocation>();
     props.locations.forEach(x => locationMap.set(x.name, x))
+    const locations = Array.from(locationMap.keys())
+    const natures = props.natures
 
     const pokemonNameToPokedexIdMap = new Map<string, number>()
 
     props.pokedex.forEach((value, key) => {
         pokemonNameToPokedexIdMap.set(value.name, key)
     })
-
-    const locations = Array.from(locationMap.keys())
-    const natures = props.natures
 
     const allEncounters = Array.from(pokemonNameToPokedexIdMap.keys())
     const [encounters, setEncounters] = useState(allEncounters)
@@ -168,7 +167,7 @@ export default function AddEncounterDialog(props: AddEncounterDialogProps) {
                 onChange={(_, newLocation) => selectLocation(newLocation)}
                 renderInput={(params) => <TextField
                     {...params} label="Location" value={location}
-                    onChange={x => setLocation(x.target.value)}
+                    onChange={x => selectLocation(x.target.value)}
                 />}
             />
             <Autocomplete

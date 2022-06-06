@@ -1,20 +1,14 @@
-import {useQuery} from "react-query";
 import {performLoadingCheck} from "../../util/loading";
-import {loadRules} from "../../api/rules/rulesApi";
 import {NuzlockeRun} from "../../api/runs/runsTypes";
+import {useRulesQuery} from "../../api/rules/rulesQuery";
 
 export interface OverviewProps {
-    run: NuzlockeRun | null
+    run: NuzlockeRun
 }
 
 export default function Overview(props: OverviewProps) {
 
-    const rulesData = useQuery("/rules", loadRules)
-
-    if (props.run === null) {
-        return <h1>No Run Selected</h1>
-    }
-
+    const rulesData = useRulesQuery()
     const loadCheck = performLoadingCheck([rulesData])
     if (loadCheck !== null) {
         return loadCheck

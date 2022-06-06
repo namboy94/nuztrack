@@ -6,7 +6,7 @@ export function performLoadingCheck(queries: UseQueryResult[]) {
     let hasError: boolean = false;
 
     queries.forEach(x => isLoading = isLoading || x.isLoading || x.isIdle)
-    queries.forEach(x => hasError || x.error || x.data === undefined)
+    queries.forEach(x => hasError || x.error || x.data === undefined || x.data === null)
 
     if (isLoading) {
         return (<h1>Loading</h1>)
