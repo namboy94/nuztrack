@@ -3,7 +3,9 @@ package net.namibsun.nuztrack.routes.events
 import net.namibsun.nuztrack.data.NuzlockeRunService
 import net.namibsun.nuztrack.data.events.MilestoneEventService
 import net.namibsun.nuztrack.transfer.events.CreateMilestoneEventTO
+import net.namibsun.nuztrack.transfer.events.MilestoneEventTO
 import net.namibsun.nuztrack.util.Authenticator
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
@@ -17,11 +19,13 @@ class MilestoneEventController(val service: MilestoneEventService, runService: N
     @ResponseBody
     fun createMilestoneEvent(
             @PathVariable runId: Long,
-            @RequestBody creator: Any,
+            @RequestBody creator: CreateMilestoneEventTO,
             principal: Principal
-    ): ResponseEntity<CreateMilestoneEventTO> {
+    ): ResponseEntity<MilestoneEventTO> {
         val run = authenticator.loadAuthenticatedRun(runId, principal.name)
-        return ResponseEntity.ok(null)
+        creator.validate(run, service)
+        val milestone = service.createMilestoneEvent(run, creator.location, creator.milestone)
+        return ResponseEntity<MilestoneEventTO>(MilestoneEventTO.fromMilestoneEvent(milestone), HttpStatus.CREATED)
     }
 
 }

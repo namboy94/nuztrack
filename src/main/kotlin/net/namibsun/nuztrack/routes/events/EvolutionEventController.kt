@@ -6,6 +6,7 @@ import net.namibsun.nuztrack.data.events.EvolutionEventService
 import net.namibsun.nuztrack.transfer.events.CreateEvolutionEventTO
 import net.namibsun.nuztrack.transfer.events.EvolutionEventTO
 import net.namibsun.nuztrack.util.Authenticator
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
@@ -34,7 +35,7 @@ class EvolutionEventController(
                 run, creator.location, member, creator.level, creator.newPokedexNumber
         )
         teamMemberService.setLevel(member.id, creator.level)
-        return ResponseEntity.ok(EvolutionEventTO.fromEvolutionEvent(evolutionEvent))
+        return ResponseEntity<EvolutionEventTO>(EvolutionEventTO.fromEvolutionEvent(evolutionEvent), HttpStatus.CREATED)
     }
 
 }

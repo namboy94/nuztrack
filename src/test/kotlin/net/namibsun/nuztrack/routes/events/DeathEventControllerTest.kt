@@ -1,6 +1,7 @@
 package net.namibsun.nuztrack.routes.events
 
 import net.namibsun.nuztrack.constants.UnauthorizedException
+import net.namibsun.nuztrack.constants.ValidationException
 import net.namibsun.nuztrack.constants.enums.Games
 import net.namibsun.nuztrack.constants.enums.Natures
 import net.namibsun.nuztrack.constants.enums.RunStatus
@@ -52,7 +53,7 @@ class DeathEventControllerTest {
         val result = controller.createDeathEvent(run.id, creator, principal)
         val body = result.body!!
 
-        assertThat(result.statusCode).isEqualTo(HttpStatus.OK)
+        assertThat(result.statusCode).isEqualTo(HttpStatus.CREATED)
         assertThat(body.teamMemberId).isEqualTo(member.id)
         assertThat(body.description).isEqualTo(creator.description)
         assertThat(body.level).isEqualTo(creator.level)
@@ -70,6 +71,18 @@ class DeathEventControllerTest {
         )
         verify(teamMemberService, times(1)).setLevel(member.id, creator.level)
         verify(teamMemberService, times(1)).getTeam(run.id)
+    }
+
+    @Test
+    fun createDeathEvent_validationError() {
+        whenever(principal.name).thenReturn(user)
+        whenever(runsService.getRun(run.id)).thenReturn(run)
+
+        val brokenCreator = CreateDeathEventTO("", 0, 0, "", "")
+
+        assertThrows<ValidationException> { controller.createDeathEvent(run.id, brokenCreator, principal) }
+        verify(principal, times(1)).name
+        verify(runsService, times(1)).getRun(run.id)
     }
 
     @Test

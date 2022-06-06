@@ -8,6 +8,7 @@ import net.namibsun.nuztrack.data.events.TeamMemberSwitchEventService
 import net.namibsun.nuztrack.transfer.events.CreateDeathEventTO
 import net.namibsun.nuztrack.transfer.events.DeathEventTO
 import net.namibsun.nuztrack.util.Authenticator
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
@@ -39,6 +40,6 @@ class DeathEventController(
         )
         teamMemberService.setLevel(member.id, creator.level)
         switchService.createTeamMemberSwitchEvent(run, creator.location, member, TeamMemberSwitchType.REMOVE)
-        return ResponseEntity.ok(DeathEventTO.fromDeathEvent(deathEvent))
+        return ResponseEntity<DeathEventTO>(DeathEventTO.fromDeathEvent(deathEvent), HttpStatus.CREATED)
     }
 }

@@ -7,6 +7,7 @@ import net.namibsun.nuztrack.data.events.TeamMemberSwitchEventService
 import net.namibsun.nuztrack.transfer.events.CreateTeamMemberSwitchEventTO
 import net.namibsun.nuztrack.transfer.events.TeamMemberSwitchEventTO
 import net.namibsun.nuztrack.util.Authenticator
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
@@ -33,7 +34,10 @@ class TeamMemberSwitchEventController(
         val switch = service.createTeamMemberSwitchEvent(
                 run, creator.location, member, TeamMemberSwitchType.valueOfWithChecks(creator.switchType)
         )
-        return ResponseEntity.ok(TeamMemberSwitchEventTO.fromTeamMemberSwitchEvent(switch))
+        return ResponseEntity<TeamMemberSwitchEventTO>(
+                TeamMemberSwitchEventTO.fromTeamMemberSwitchEvent(switch),
+                HttpStatus.CREATED
+        )
     }
 
 }

@@ -1,6 +1,7 @@
 package net.namibsun.nuztrack.routes.events
 
 import net.namibsun.nuztrack.constants.UnauthorizedException
+import net.namibsun.nuztrack.constants.ValidationException
 import net.namibsun.nuztrack.constants.enums.Games
 import net.namibsun.nuztrack.constants.enums.Natures
 import net.namibsun.nuztrack.constants.enums.RunStatus
@@ -44,7 +45,7 @@ class EvolutionEventControllerTest {
         val result = controller.createEvolutionEvent(run.id, creator, principal)
         val body = result.body!!
 
-        assertThat(result.statusCode).isEqualTo(HttpStatus.OK)
+        assertThat(result.statusCode).isEqualTo(HttpStatus.CREATED)
         assertThat(body.teamMemberId).isEqualTo(member.id)
         assertThat(body.level).isEqualTo(creator.level)
         assertThat(body.event.location).isEqualTo(creator.location)
@@ -58,6 +59,18 @@ class EvolutionEventControllerTest {
                 run, creator.location, member, creator.level, creator.newPokedexNumber
         )
         verify(teamMemberService, times(1)).setLevel(member.id, creator.level)
+    }
+
+    @Test
+    fun createEvolutionEvent_validationError() {
+        whenever(principal.name).thenReturn(user)
+        whenever(runsService.getRun(run.id)).thenReturn(run)
+
+        val brokenCreator = CreateEvolutionEventTO("", 0, 0, 0)
+
+        assertThrows<ValidationException> { controller.createEvolutionEvent(run.id, brokenCreator, principal) }
+        verify(principal, times(1)).name
+        verify(runsService, times(1)).getRun(run.id)
     }
 
     @Test

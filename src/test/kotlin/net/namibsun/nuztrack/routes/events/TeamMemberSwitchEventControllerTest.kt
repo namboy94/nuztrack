@@ -1,6 +1,7 @@
 package net.namibsun.nuztrack.routes.events
 
 import net.namibsun.nuztrack.constants.UnauthorizedException
+import net.namibsun.nuztrack.constants.ValidationException
 import net.namibsun.nuztrack.constants.enums.Games
 import net.namibsun.nuztrack.constants.enums.Natures
 import net.namibsun.nuztrack.constants.enums.RunStatus
@@ -42,7 +43,7 @@ class TeamMemberSwitchEventControllerTest {
         val result = controller.createTeamMemberSwitchEvent(run.id, creator, principal)
         val body = result.body!!
 
-        assertThat(result.statusCode).isEqualTo(HttpStatus.OK)
+        assertThat(result.statusCode).isEqualTo(HttpStatus.CREATED)
         assertThat(body.teamMemberId).isEqualTo(member.id)
         assertThat(body.switchType).isEqualTo(creator.switchType)
         assertThat(body.event.location).isEqualTo(creator.location)
@@ -52,6 +53,18 @@ class TeamMemberSwitchEventControllerTest {
         verify(teamMemberService, times(2)).getTeamMember(run.id, member.id)
         verify(service, times(1)).createTeamMemberSwitchEvent(run, creator.location, member, TeamMemberSwitchType.ADD)
         verify(teamMemberService, times(1)).getTeam(run.id)
+    }
+
+    @Test
+    fun createTeamMemberSwitchEvent_validationError() {
+        whenever(principal.name).thenReturn(user)
+        whenever(runsService.getRun(run.id)).thenReturn(run)
+
+        val brokenCreator = CreateTeamMemberSwitchEventTO("", 0, "")
+
+        assertThrows<ValidationException> { controller.createTeamMemberSwitchEvent(run.id, brokenCreator, principal) }
+        verify(principal, times(1)).name
+        verify(runsService, times(1)).getRun(run.id)
     }
 
     @Test

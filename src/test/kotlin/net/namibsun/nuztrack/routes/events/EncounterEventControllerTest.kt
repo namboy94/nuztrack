@@ -1,6 +1,7 @@
 package net.namibsun.nuztrack.routes.events
 
 import net.namibsun.nuztrack.constants.UnauthorizedException
+import net.namibsun.nuztrack.constants.ValidationException
 import net.namibsun.nuztrack.constants.enums.*
 import net.namibsun.nuztrack.data.NuzlockeRun
 import net.namibsun.nuztrack.data.NuzlockeRunService
@@ -134,6 +135,18 @@ internal class EncounterEventControllerTest {
         verify(service, times(1)).getLocationsWithEncounters(nuzlockeRun.id)
         verify(service, times(1)).getEncounteredSpecies(nuzlockeRun.id, true)
         verify(service, times(1)).getEncounteredSpecies(nuzlockeRun.id, false)
+    }
+
+    @Test
+    fun createEncounterEvent_validationError() {
+        whenever(principal.name).thenReturn(user)
+        whenever(runsService.getRun(nuzlockeRun.id)).thenReturn(nuzlockeRun)
+
+        val brokenCreator = CreateEncounterEventTO("", 0, 0, "", true, null)
+
+        assertThrows<ValidationException> { controller.createEncounterEvent(nuzlockeRun.id, brokenCreator, principal) }
+        verify(principal, times(1)).name
+        verify(runsService, times(1)).getRun(nuzlockeRun.id)
     }
 
     @Test
