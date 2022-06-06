@@ -46,5 +46,10 @@ data class CreateDeathEventTO(
         }
         validateLevel(level)
         validateTeamMember(service.getTeamMember(run.id, teamMemberId), true, level)
+
+        val team = service.getTeam(run.id).first.map { it.id }
+        if (!team.contains(teamMemberId)) {
+            throw (ValidationException(ErrorMessages.NOT_IN_PARTY))
+        }
     }
 }

@@ -1,5 +1,6 @@
 package net.namibsun.nuztrack.routes.events
 
+import net.namibsun.nuztrack.constants.UnauthorizedException
 import net.namibsun.nuztrack.constants.enums.*
 import net.namibsun.nuztrack.data.NuzlockeRun
 import net.namibsun.nuztrack.data.NuzlockeRunService
@@ -12,6 +13,7 @@ import net.namibsun.nuztrack.transfer.events.CreateEncounterEventTO
 import net.namibsun.nuztrack.transfer.events.CreateEncounterPokemonTO
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.*
 import org.springframework.http.HttpStatus
 import java.security.Principal
@@ -132,5 +134,15 @@ internal class EncounterEventControllerTest {
         verify(service, times(1)).getLocationsWithEncounters(nuzlockeRun.id)
         verify(service, times(1)).getEncounteredSpecies(nuzlockeRun.id, true)
         verify(service, times(1)).getEncounteredSpecies(nuzlockeRun.id, false)
+    }
+
+    @Test
+    fun createEncounterEvent_unauthorized() {
+        whenever(principal.name).thenReturn("OtherUser")
+        whenever(runsService.getRun(nuzlockeRun.id)).thenReturn(nuzlockeRun)
+
+        assertThrows<UnauthorizedException> { controller.createEncounterEvent(nuzlockeRun.id, creatorOne, principal) }
+        verify(principal, times(1)).name
+        verify(runsService, times(1)).getRun(nuzlockeRun.id)
     }
 }

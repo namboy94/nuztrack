@@ -18,9 +18,9 @@ import javax.persistence.*
 @Table(name = "team_member")
 class TeamMember(
         @Id @GeneratedValue val id: Long = 0,
-        @Column val nickname: String,
-        @Column val pokedexNumber: Int,
-        @Column val level: Int,
+        @Column var nickname: String,
+        @Column var pokedexNumber: Int,
+        @Column var level: Int,
         @Column val nature: Natures,
         @Column val abilitySlot: Int,
 
@@ -86,5 +86,11 @@ class TeamMemberService(val db: TeamMemberRepository) {
                 abilitySlot = abilitySlot,
                 nature = nature
         ))
+    }
+
+    fun setLevel(memberId: Long, level: Int): TeamMember {
+        val member = db.getReferenceById(memberId)
+        member.level = level
+        return db.save(member)
     }
 }

@@ -1,6 +1,7 @@
 package net.namibsun.nuztrack.routes.events
 
 import net.namibsun.nuztrack.data.NuzlockeRunService
+import net.namibsun.nuztrack.data.TeamMemberService
 import net.namibsun.nuztrack.data.events.TeamMemberSwitchEventService
 import net.namibsun.nuztrack.transfer.events.CreateTeamMemberSwitchEventTO
 import net.namibsun.nuztrack.util.Authenticator
@@ -9,7 +10,11 @@ import org.springframework.web.bind.annotation.*
 import java.security.Principal
 
 @RestController
-class TeamMemberSwitchEventController(val service: TeamMemberSwitchEventService, runService: NuzlockeRunService) {
+class TeamMemberSwitchEventController(
+        val service: TeamMemberSwitchEventService,
+        teamMemberService: TeamMemberService,
+        runService: NuzlockeRunService
+) {
 
     val authenticator = Authenticator(runService)
 

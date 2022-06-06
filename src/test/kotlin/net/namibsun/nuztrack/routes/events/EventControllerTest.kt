@@ -1,5 +1,6 @@
 package net.namibsun.nuztrack.routes.events
 
+import net.namibsun.nuztrack.constants.UnauthorizedException
 import net.namibsun.nuztrack.constants.enums.*
 import net.namibsun.nuztrack.data.NuzlockeRun
 import net.namibsun.nuztrack.data.NuzlockeRunService
@@ -7,6 +8,7 @@ import net.namibsun.nuztrack.data.TeamMember
 import net.namibsun.nuztrack.data.events.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
@@ -56,5 +58,15 @@ class EventControllerTest {
 
         verify(service, times(1)).getAllEvents(nuzlockeRun.id)
         verify(principal, times(1)).name
+    }
+
+    @Test
+    fun getEvents_unauthorized() {
+        whenever(principal.name).thenReturn("OtherUser")
+        whenever(runsService.getRun(nuzlockeRun.id)).thenReturn(nuzlockeRun)
+
+        assertThrows<UnauthorizedException> { controller.getEvents(nuzlockeRun.id, principal) }
+        verify(principal, times(1)).name
+        verify(runsService, times(1)).getRun(nuzlockeRun.id)
     }
 }

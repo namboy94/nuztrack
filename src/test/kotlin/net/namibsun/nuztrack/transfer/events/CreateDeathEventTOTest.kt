@@ -106,9 +106,20 @@ internal class CreateDeathEventTOTest {
         }.message).isEqualTo(ErrorMessages.LEVEL_BELOW_CURRENT.message)
     }
 
+    @Test
+    fun validate_NotInActiveParty() {
+        defaultMocks()
+        whenever(teamMemberService.getTeam(run.id)).thenReturn(Triple(listOf(), listOf(), listOf(memberTwo)))
+
+        assertThat(assertThrows<ValidationException> {
+            CreateDeathEventTO("Location", memberOne.id, 5, "Opponent", "Description").validate(run, teamMemberService)
+        }.message).isEqualTo(ErrorMessages.NOT_IN_PARTY.message)
+    }
+
     private fun defaultMocks() {
         whenever(teamMemberService.getTeamMember(run.id, memberOne.id)).thenReturn(memberOne)
         whenever(teamMemberService.getTeamMember(run.id, memberTwo.id)).thenReturn(memberTwo)
+        whenever(teamMemberService.getTeam(run.id)).thenReturn(Triple(listOf(memberOne), listOf(), listOf(memberTwo)))
     }
 
 }

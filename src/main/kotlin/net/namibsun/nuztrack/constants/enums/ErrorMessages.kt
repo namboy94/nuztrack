@@ -33,5 +33,6 @@ enum class ErrorMessages(val message: String) {
     INVALID_MILESTONE("This milestone is invalid for this game"),
     MILESTONE_IN_WRONG_LOCATION("The location provided is incorrect for this milestone"),
     NO_TEXT("No text was provided"),
-    MISSING_LOCATION("No location was provided for this event")
+    MISSING_LOCATION("No location was provided for this event"),
+    NOT_IN_PARTY("The Pokemon is not currently in the active party")
 }

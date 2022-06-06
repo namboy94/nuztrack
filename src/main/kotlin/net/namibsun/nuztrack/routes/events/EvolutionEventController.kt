@@ -1,6 +1,7 @@
 package net.namibsun.nuztrack.routes.events
 
 import net.namibsun.nuztrack.data.NuzlockeRunService
+import net.namibsun.nuztrack.data.TeamMemberService
 import net.namibsun.nuztrack.data.events.EvolutionEventService
 import net.namibsun.nuztrack.transfer.events.CreateEvolutionEventTO
 import net.namibsun.nuztrack.util.Authenticator
@@ -9,7 +10,11 @@ import org.springframework.web.bind.annotation.*
 import java.security.Principal
 
 @RestController
-class EvolutionEventController(val service: EvolutionEventService, runService: NuzlockeRunService) {
+class EvolutionEventController(
+        val service: EvolutionEventService,
+        teamMemberService: TeamMemberService,
+        runService: NuzlockeRunService
+) {
 
     val authenticator = Authenticator(runService)
 

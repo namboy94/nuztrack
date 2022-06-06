@@ -93,4 +93,17 @@ internal class TeamMemberServiceTest {
         verify(repository, times(1)).getTeamMemberByIdAndNuzlockeRunId(1, 2)
         verify(repository, times(1)).getTeamMemberByIdAndNuzlockeRunId(2, 1)
     }
+
+    @Test
+    fun setLevel() {
+        val member = TeamMember(50, "A", 1, 1, Natures.NAUGHTY, 1, ENCOUNTER)
+        whenever(repository.getReferenceById(member.id)).thenReturn(member)
+        whenever(repository.save(member)).thenReturn(member)
+
+        val adjusted = service.setLevel(member.id, 45)
+
+        assertThat(adjusted.level).isEqualTo(45)
+        verify(repository, times(1)).getReferenceById(member.id)
+        verify(repository, times(1)).save(member)
+    }
 }

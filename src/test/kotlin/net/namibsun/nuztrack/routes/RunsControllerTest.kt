@@ -191,7 +191,7 @@ internal class RunsControllerTest {
     }
 
     @Test
-    fun deleteRun_noAccess() {
+    fun deleteRun_noAccessRights() {
         whenever(principal.name).thenReturn(userTwo)
         whenever(service.getRun(exampleOne.id)).thenReturn(exampleOne)
 
