@@ -1,0 +1,27 @@
+post:
+  tags: [ "Events" ]
+  summary: "Create Death Event"
+  description: "Creates a new Death Event"
+  parameters:
+    - in: path
+      $ref: "../types/route_params.yaml#/runId"
+  requestBody:
+    description: "Parameters for the newly created Death Event"
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../entities/events/deaths.yaml#/CreateDeathEventTO"
+  responses:
+    "201":
+      description: "Created Death Event"
+      content:
+        application/json:
+          schema:
+            $ref: "../entities/events/deaths.yaml#/DeathEventTO"
+    "400":
+      description: "Validation error in the creation parameters"
+    "401":
+      description: "Tried to access a Nuzlocke Run of another user without permission"
+    "404":
+      description: "The Nuzlocke Run does not exist"

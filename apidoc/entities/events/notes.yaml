@@ -8,3 +8,14 @@ NoteEventTO:
       $ref: "./common.yaml#/EventTO"
     text:
       $ref: "../../types/events/notes.yaml#/text"
+
+CreateNoteEventTO:
+  description: Information needed to create a new Note Event
+  required:
+    - location
+    - text
+  properties:
+    location:
+      $ref: "../../types/events/common.yaml#/location"
+    text:
+      $ref: "../../types/events/notes.yaml#/text"

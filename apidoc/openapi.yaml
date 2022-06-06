@@ -46,6 +46,16 @@ paths:
     $ref: "./endpoints/events.yaml"
   /events/{runId}/encounters:
     $ref: "./endpoints/events_encounters.yaml"
+  /events/{runId}/deaths:
+    $ref: "./endpoints/events_deaths.yaml"
+  /events/{runId}/evolutions:
+    $ref: "./endpoints/events_evolutions.yaml"
+  /events/{runId}/notes:
+    $ref: "./endpoints/events_notes.yaml"
+  /events/{runId}/milestones:
+    $ref: "./endpoints/events_milestones.yaml"
+  /events/{runId}/team_member_switches:
+    $ref: "./endpoints/events_team_member_switches.yaml"
 
   /team/{runId}:
     $ref: "./endpoints/team_members.yaml"

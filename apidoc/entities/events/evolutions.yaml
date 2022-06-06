@@ -17,3 +17,20 @@ EvolutionEventTO:
       $ref: "../../types/events/evolutions.yaml#/previousPokedexNumber"
     newPokedexNumber:
       $ref: "../../types/events/evolutions.yaml#/newPokedexNumber"
+
+CreateEvolutionEventTO:
+  description: Information needed to create a new Evolution Event
+  required:
+    - location
+    - teamMemberId
+    - level
+    - newPokedexNumber
+  properties:
+    location:
+      $ref: "../../types/events/common.yaml#/location"
+    teamMemberId:
+      $ref: "../../types/events/common.yaml#/teamMemberId"
+    level:
+      $ref: "../../types/team_members.yaml#/level"
+    newPokedexNumber:
+      $ref: "../../types/events/evolutions.yaml#/newPokedexNumber"

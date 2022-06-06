@@ -11,3 +11,17 @@ TeamMemberSwitchEventTO:
       $ref: "../../types/events/common.yaml#/teamMemberId"
     switchType:
       $ref: "../../types/events/team_member_switches.yaml#/switchType"
+
+CreateTeamMemberSwitchEventTO:
+  description: Information needed to create a new Team Member Switch Event
+  required:
+    - location
+    - teamMemberId
+    - switchType
+  properties:
+    location:
+      $ref: "../../types/events/common.yaml#/location"
+    teamMemberId:
+      $ref: "../../types/events/common.yaml#/teamMemberId"
+    switchType:
+      $ref: "../../types/events/team_member_switches.yaml#/switchType"

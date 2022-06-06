@@ -17,3 +17,23 @@ DeathEventTO:
       $ref: "../../types/events/deaths.yaml#/opponent"
     description:
       $ref: "../../types/events/deaths.yaml#/description"
+
+CreateDeathEventTO:
+  description: Information needed to create a new Death Event
+  required:
+    - location
+    - teamMemberId
+    - level
+    - opponent
+    - description
+  properties:
+    location:
+      $ref: "../../types/events/common.yaml#/location"
+    teamMemberId:
+      $ref: "../../types/events/common.yaml#/teamMemberId"
+    level:
+      $ref: "../../types/team_members.yaml#/level"
+    opponent:
+      $ref: "../../types/events/deaths.yaml#/opponent"
+    description:
+      $ref: "../../types/events/deaths.yaml#/description"

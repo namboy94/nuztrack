@@ -1,0 +1,27 @@
+post:
+  tags: [ "Events" ]
+  summary: "Create Team Member Switch Event"
+  description: "Creates a new TeamMemberSwitch Event"
+  parameters:
+    - in: path
+      $ref: "../types/route_params.yaml#/runId"
+  requestBody:
+    description: "Parameters for the newly created TeamMemberSwitch Event"
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../entities/events/team_member_switches.yaml#/CreateTeamMemberSwitchEventTO"
+  responses:
+    "201":
+      description: "Created TeamMemberSwitch Event"
+      content:
+        application/json:
+          schema:
+            $ref: "../entities/events/team_member_switches.yaml#/TeamMemberSwitchEventTO"
+    "400":
+      description: "Validation error in the creation parameters"
+    "401":
+      description: "Tried to access a Nuzlocke Run of another user without permission"
+    "404":
+      description: "The Nuzlocke Run does not exist"

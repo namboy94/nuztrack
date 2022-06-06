@@ -6,5 +6,16 @@ MilestoneEventTO:
   properties:
     event:
       $ref: "./common.yaml#/EventTO"
-    text:
+    milestone:
+      $ref: "../../types/events/milestones.yaml#/milestone"
+
+CreateMilestoneEventTO:
+  description: Information needed to create a new Milestone Event
+  required:
+    - location
+    - milestone
+  properties:
+    location:
+      $ref: "../../types/events/common.yaml#/location"
+    milestone:
       $ref: "../../types/events/milestones.yaml#/milestone"
