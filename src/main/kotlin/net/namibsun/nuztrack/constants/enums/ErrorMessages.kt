@@ -34,5 +34,7 @@ enum class ErrorMessages(val message: String) {
     MILESTONE_IN_WRONG_LOCATION("The location provided is incorrect for this milestone"),
     NO_TEXT("No text was provided"),
     MISSING_LOCATION("No location was provided for this event"),
-    NOT_IN_PARTY("The Pokemon is not currently in the active party")
+    NOT_IN_PARTY("The Pokemon is not currently in the active party"),
+    HAS_NATURE_BUT_OLD_GAME("A nature was provided, but this game does not support these."),
+    HAS_ABILITY_BUT_OLD_GAME("An ability slot was provided, but this game does not support these.")
 }

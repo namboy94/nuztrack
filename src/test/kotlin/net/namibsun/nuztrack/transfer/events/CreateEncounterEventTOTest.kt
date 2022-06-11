@@ -18,12 +18,15 @@ internal class CreateEncounterEventTOTest {
 
     @Test
     fun validate() {
-        val run = buildRun()
-        defaultMocks(run)
+        val modernRun = buildRun()
+        val oldRun = buildRun(game = Games.RED)
+        val oldPokemon = CreateEncounterPokemonTO("Rob", null, null)
+        defaultMocks(modernRun)
 
         assertDoesNotThrow {
-            CreateEncounterEventTO("A", 1, 1, "male", true, validPokemon).validate(run, service)
-            CreateEncounterEventTO("A", 1, 1, "male", false, null).validate(run, service)
+            CreateEncounterEventTO("A", 1, 1, "male", true, validPokemon).validate(modernRun, service)
+            CreateEncounterEventTO("A", 1, 1, "male", false, null).validate(modernRun, service)
+            CreateEncounterEventTO("A", 1, 1, "male", true, oldPokemon).validate(oldRun, service)
         }
     }
 
@@ -98,8 +101,10 @@ internal class CreateEncounterEventTOTest {
     @Test
     fun validate_invalidNickname() {
         val run = buildRun()
+        val newRun = buildRun(game = Games.X)
         val tooShort = CreateEncounterPokemonTO("", Natures.ADAMANT.name, 1)
-        val tooLong = CreateEncounterPokemonTO("1234567890123", Natures.ADAMANT.name, 1)
+        val tooLongOld = CreateEncounterPokemonTO("12345678901", Natures.ADAMANT.name, 1)
+        val tooLongNew = CreateEncounterPokemonTO("1234567890123", Natures.ADAMANT.name, 1)
 
         defaultMocks(run)
 
@@ -107,8 +112,16 @@ internal class CreateEncounterEventTOTest {
             CreateEncounterEventTO("A", 1, 1, "male", true, tooShort).validate(run, service)
         }.message).isEqualTo(ErrorMessages.INVALID_NICKNAME.message)
         assertThat(assertThrows<ValidationException> {
-            CreateEncounterEventTO("A", 1, 1, "male", true, tooLong).validate(run, service)
+            CreateEncounterEventTO("A", 1, 1, "male", true, tooLongOld).validate(run, service)
         }.message).isEqualTo(ErrorMessages.INVALID_NICKNAME.message)
+        assertThat(assertThrows<ValidationException> {
+            CreateEncounterEventTO("A", 1, 1, "male", true, tooLongNew).validate(newRun, service)
+        }.message).isEqualTo(ErrorMessages.INVALID_NICKNAME.message)
+
+        assertDoesNotThrow {
+            CreateEncounterEventTO("A", 1, 1, "male", true, tooLongOld).validate(newRun, service)
+        }
+
     }
 
     @Test
@@ -198,8 +211,52 @@ internal class CreateEncounterEventTOTest {
         }.message).isEqualTo(ErrorMessages.DUPLICATE_ENCOUNTER.message)
     }
 
-    private fun buildRun(rules: List<Rules> = listOf()): NuzlockeRun {
-        return NuzlockeRun(1000, "User", "Name", Games.RED, rules, listOf(), RunStatus.ACTIVE)
+    @Test
+    fun validate_NoNatureInModernGame() {
+        val run = buildRun()
+        val bulba = CreateEncounterPokemonTO("Bulba", null, 1)
+        defaultMocks(run)
+
+        assertThat(assertThrows<ValidationException> {
+            CreateEncounterEventTO("A", 1, 1, "male", true, bulba).validate(run, service)
+        }.message).isEqualTo(ErrorMessages.INVALID_NATURE.message)
+    }
+
+    @Test
+    fun validate_NoAbilityInModernGame() {
+        val run = buildRun()
+        val bulba = CreateEncounterPokemonTO("Bulba", Natures.ADAMANT.name, null)
+        defaultMocks(run)
+
+        assertThat(assertThrows<ValidationException> {
+            CreateEncounterEventTO("A", 1, 1, "male", true, bulba).validate(run, service)
+        }.message).isEqualTo(ErrorMessages.INVALID_ABILITY_SLOT.message)
+    }
+
+    @Test
+    fun validate_natureInOldGame() {
+        val run = buildRun(game = Games.RED)
+        val bulba = CreateEncounterPokemonTO("Bulba", Natures.ADAMANT.name, null)
+        defaultMocks(run)
+
+        assertThat(assertThrows<ValidationException> {
+            CreateEncounterEventTO("A", 1, 1, "male", true, bulba).validate(run, service)
+        }.message).isEqualTo(ErrorMessages.HAS_NATURE_BUT_OLD_GAME.message)
+    }
+
+    @Test
+    fun validate_abilityInOldGame() {
+        val run = buildRun(game = Games.RED)
+        val bulba = CreateEncounterPokemonTO("Bulba", null, 1)
+        defaultMocks(run)
+
+        assertThat(assertThrows<ValidationException> {
+            CreateEncounterEventTO("A", 1, 1, "male", true, bulba).validate(run, service)
+        }.message).isEqualTo(ErrorMessages.HAS_ABILITY_BUT_OLD_GAME.message)
+    }
+
+    private fun buildRun(rules: List<Rules> = listOf(), game: Games = Games.FIRERED): NuzlockeRun {
+        return NuzlockeRun(1000, "User", "Name", game, rules, listOf(), RunStatus.ACTIVE)
     }
 
     private fun defaultMocks(run: NuzlockeRun) {

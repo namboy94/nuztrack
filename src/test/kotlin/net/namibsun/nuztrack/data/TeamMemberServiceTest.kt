@@ -66,6 +66,19 @@ internal class TeamMemberServiceTest {
     }
 
     @Test
+    fun createTeamMember_NoAbilityOrNature() {
+        whenever(repository.save(any<TeamMember>())).then(AdditionalAnswers.returnsFirstArg<EncounterEvent>())
+
+        val member = service.createTeamMember(ENCOUNTER, "Poli", null, null)
+
+        assertThat(member.level).isEqualTo(ENCOUNTER.level)
+        assertThat(member.nickname).isEqualTo("Poli")
+        assertThat(member.nature).isNull()
+        assertThat(member.abilitySlot).isNull()
+        verify(repository, times(1)).save(any<TeamMember>())
+    }
+
+    @Test
     fun getTeam() {
         whenever(repository.findAllByNuzlockeRunId(NUZLOCKE_RUN.id))
                 .thenReturn(listOf(teamMemberOne, teamMemberTwo, teamMemberThree))

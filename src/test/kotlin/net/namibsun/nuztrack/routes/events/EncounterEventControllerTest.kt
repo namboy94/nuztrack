@@ -37,7 +37,7 @@ internal class EncounterEventControllerTest {
             Rules.DUPLICATE_CLAUSE_INCLUDES_FAILED_ENCOUNTERS,
             Rules.DUPLICATE_CLAUSE_INCLUDES_ENTIRE_SPECIES
     )
-    private val nuzlockeRun = NuzlockeRun(5, user, "First", Games.RED, rules, listOf(), RunStatus.COMPLETED)
+    private val nuzlockeRun = NuzlockeRun(5, user, "First", Games.FIRERED, rules, listOf(), RunStatus.COMPLETED)
     private val encounterOne = EncounterEvent(nuzlockeRun, "Pewter City", 4, 14, Gender.MALE, true)
     private val encounterTwo = EncounterEvent(nuzlockeRun, "Mahogany Town", 7, 24, Gender.FEMALE, false)
     private val teamMember = TeamMember(0, "Nick", 120, 34, Natures.BOLD, 1, encounterOne)
@@ -57,7 +57,7 @@ internal class EncounterEventControllerTest {
             encounterOne.level,
             encounterOne.gender.name,
             encounterOne.caught,
-            CreateEncounterPokemonTO(teamMember.nickname, teamMember.nature.name, teamMember.abilitySlot)
+            CreateEncounterPokemonTO(teamMember.nickname, teamMember.nature?.name, teamMember.abilitySlot)
     )
     private val creatorTwo = CreateEncounterEventTO(
             encounterTwo.location,

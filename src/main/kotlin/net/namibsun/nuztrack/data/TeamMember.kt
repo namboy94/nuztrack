@@ -21,8 +21,8 @@ class TeamMember(
         @Column var nickname: String,
         @Column var pokedexNumber: Int,
         @Column var level: Int,
-        @Column val nature: Natures,
-        @Column val abilitySlot: Int,
+        @Column(nullable = true) val nature: Natures?,
+        @Column(nullable = true) val abilitySlot: Int?,
 
         @OneToOne(cascade = [CascadeType.ALL])
         @JoinColumn(name = "encounter_id")
@@ -75,8 +75,8 @@ class TeamMemberService(val db: TeamMemberRepository) {
     fun createTeamMember(
             encounter: EncounterEvent,
             nickname: String,
-            nature: Natures,
-            abilitySlot: Int
+            nature: Natures?,
+            abilitySlot: Int?
     ): TeamMember {
         return db.save(TeamMember(
                 encounter = encounter,

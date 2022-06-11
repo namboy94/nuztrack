@@ -10,7 +10,7 @@ internal class GamesTest {
     @Test
     fun getValueOfGameTitle_success() {
         assertThat(Games.valueOfWithChecks(Games.RED.name.lowercase())).isEqualTo(Games.RED)
-        assertThat(Games.valueOfWithChecks(Games.LEGENDS_ARCEUS.name.uppercase())).isEqualTo(Games.LEGENDS_ARCEUS)
+        assertThat(Games.valueOfWithChecks(Games.OMEGA_RUBY.name.uppercase())).isEqualTo(Games.OMEGA_RUBY)
     }
 
     @Test

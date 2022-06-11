@@ -9,7 +9,7 @@ import net.namibsun.nuztrack.data.events.EncounterEvent
 val NUZLOCKE_RUN = NuzlockeRun(
         userName = "Ash",
         name = "First",
-        game = Games.RED,
+        game = Games.FIRERED,
         rules = listOf(),
         customRules = listOf(),
         status = RunStatus.COMPLETED

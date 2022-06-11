@@ -4,6 +4,7 @@ import net.namibsun.nuztrack.constants.NotFoundException
 import net.namibsun.nuztrack.constants.Pokedex
 import net.namibsun.nuztrack.constants.ValidationException
 import net.namibsun.nuztrack.constants.enums.ErrorMessages
+import net.namibsun.nuztrack.constants.enums.Games
 import net.namibsun.nuztrack.constants.enums.Natures
 import net.namibsun.nuztrack.constants.enums.Rules
 import net.namibsun.nuztrack.data.NuzlockeRun
@@ -63,7 +64,7 @@ data class CreateEncounterEventTO(
         if (!caught && pokemon != null) {
             throw ValidationException(ErrorMessages.NOT_CAUGHT_BUT_POKEMON)
         }
-        pokemon?.validate(pokemonSpecies)
+        pokemon?.validate(pokemonSpecies, run.game)
         validateDuplicateClause(run, encounterService)
     }
 
@@ -88,16 +89,27 @@ data class CreateEncounterEventTO(
 
 data class CreateEncounterPokemonTO(
         val nickname: String,
-        val nature: String,
-        val abilitySlot: Int
+        val nature: String?,
+        val abilitySlot: Int?
 ) {
-    fun validate(pokemonSpecies: PokemonSpeciesTO) {
-        if (nickname.isEmpty() || nickname.length > 12) {
+    fun validate(pokemonSpecies: PokemonSpeciesTO, game: Games) {
+        val maxNicknameLength = if (game.generation <= 5) 10 else 12
+        if (nickname.isEmpty() || nickname.length > maxNicknameLength) {
             throw ValidationException(ErrorMessages.INVALID_NICKNAME)
         }
-        if (pokemonSpecies.abilities[abilitySlot] == null) {
-            throw ValidationException(ErrorMessages.INVALID_ABILITY_SLOT)
+
+        if (game.generation <= 2) {
+            if (nature != null) {
+                throw ValidationException(ErrorMessages.HAS_NATURE_BUT_OLD_GAME)
+            }
+            if (abilitySlot != null) {
+                throw ValidationException(ErrorMessages.HAS_ABILITY_BUT_OLD_GAME)
+            }
+        } else {
+            if (pokemonSpecies.abilities[abilitySlot] == null) {
+                throw ValidationException(ErrorMessages.INVALID_ABILITY_SLOT)
+            }
+            Natures.valueOfWithChecks(nature)
         }
-        Natures.valueOfWithChecks(nature)
     }
 }
