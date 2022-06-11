@@ -19,7 +19,7 @@ export default function Team(props: TeamProps) {
         <>
             <h1>Team</h1>
             <h2>Active</h2>
-            {team.active.map(x => <p key={x.id}>{x.nickname}</p>)}
+            {team.active.map(x => <p key={x.id}>{x.nickname} / {x.pokedexNumber} / {x.level}</p>)}
             <h2>Boxed</h2>
             {team.boxed.map(x => <p key={x.id}>{x.nickname}</p>)}
             <h2>Dead</h2>

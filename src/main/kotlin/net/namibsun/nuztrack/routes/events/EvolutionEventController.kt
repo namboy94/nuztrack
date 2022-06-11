@@ -35,6 +35,7 @@ class EvolutionEventController(
                 run, creator.location, member, creator.level, creator.newPokedexNumber
         )
         teamMemberService.setLevel(member.id, creator.level)
+        teamMemberService.evolveTo(member.id, creator.newPokedexNumber)
         return ResponseEntity<EvolutionEventTO>(EvolutionEventTO.fromEvolutionEvent(evolutionEvent), HttpStatus.CREATED)
     }
 

@@ -41,6 +41,7 @@ class EvolutionEventControllerTest {
                 run, creator.location, member, creator.level, member.pokedexNumber, creator.newPokedexNumber
         ))
         whenever(teamMemberService.setLevel(member.id, creator.level)).thenReturn(member)
+        whenever(teamMemberService.evolveTo(member.id, creator.newPokedexNumber)).thenReturn(member)
 
         val result = controller.createEvolutionEvent(run.id, creator, principal)
         val body = result.body!!
@@ -59,6 +60,7 @@ class EvolutionEventControllerTest {
                 run, creator.location, member, creator.level, creator.newPokedexNumber
         )
         verify(teamMemberService, times(1)).setLevel(member.id, creator.level)
+        verify(teamMemberService, times(1)).evolveTo(member.id, creator.newPokedexNumber)
     }
 
     @Test

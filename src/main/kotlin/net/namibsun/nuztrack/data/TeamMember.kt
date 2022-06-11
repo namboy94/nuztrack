@@ -93,4 +93,10 @@ class TeamMemberService(val db: TeamMemberRepository) {
         member.level = level
         return db.save(member)
     }
+
+    fun evolveTo(memberId: Long, newPokedexNumber: Int): TeamMember {
+        val member = db.getReferenceById(memberId)
+        member.pokedexNumber = newPokedexNumber
+        return db.save(member)
+    }
 }

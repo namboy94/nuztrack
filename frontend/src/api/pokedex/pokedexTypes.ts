@@ -1,5 +1,6 @@
 export type Pokedex = Map<number, PokemonSpecies>
 export type PokemonSpecies = {
+    pokedexNumber: number,
     name: string,
     sprite: string,
     types: PokemonTypes,
@@ -14,6 +15,7 @@ export type PokemonTypes = {
 export type PokemonNatures = string[]
 
 export type PokemonSpeciesTO = {
+    pokedexNumber: number,
     name: string,
     sprite: string,
     types: PokemonTypes,

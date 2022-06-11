@@ -20,6 +20,7 @@ internal class PokedexTest {
     fun getPokemon_success() {
         val squirtle = Pokedex.getPokemon(7)
         assertThat(squirtle).isEqualTo(PokemonSpeciesTO(
+                pokedexNumber = 7,
                 name = "Squirtle",
                 sprite = squirtle.sprite,
                 types = PokemonTypesTO("WATER", null),

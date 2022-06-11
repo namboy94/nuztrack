@@ -3,6 +3,7 @@ package net.namibsun.nuztrack.transfer
 typealias PokedexTO = Map<Int, PokemonSpeciesTO>
 
 data class PokemonSpeciesTO(
+        val pokedexNumber: Int,
         val name: String,
         val sprite: String,
         val types: PokemonTypesTO,

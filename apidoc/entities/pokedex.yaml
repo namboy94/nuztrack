@@ -9,6 +9,7 @@ PokedexMapping:
 PokemonSpeciesTO:
   description: Information about a Pokemon species
   required:
+    - pokedexNumber
     - name
     - sprite
     - types
@@ -16,6 +17,8 @@ PokemonSpeciesTO:
     - baseSpecies
     - evolutions
   properties:
+    pokedexNumber:
+      $ref: "../types/pokedex.yaml#/pokedexNumber"
     name:
       $ref: "../types/pokedex.yaml#/name"
     sprite:

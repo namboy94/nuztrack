@@ -38,7 +38,6 @@ export default function AddEncounterDialog(props: AddEncounterDialogProps) {
     const natures = props.natures
 
     const pokemonNameToPokedexIdMap = new Map<string, number>()
-
     props.pokedex.forEach((value, key) => {
         pokemonNameToPokedexIdMap.set(value.name, key)
     })

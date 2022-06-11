@@ -106,4 +106,17 @@ internal class TeamMemberServiceTest {
         verify(repository, times(1)).getReferenceById(member.id)
         verify(repository, times(1)).save(member)
     }
+
+    @Test
+    fun evolveTo() {
+        val member = TeamMember(50, "A", 1, 1, Natures.NAUGHTY, 1, ENCOUNTER)
+        whenever(repository.getReferenceById(member.id)).thenReturn(member)
+        whenever(repository.save(member)).thenReturn(member)
+
+        val adjusted = service.evolveTo(member.id, 2)
+
+        assertThat(adjusted.pokedexNumber).isEqualTo(2)
+        verify(repository, times(1)).getReferenceById(member.id)
+        verify(repository, times(1)).save(member)
+    }
 }
