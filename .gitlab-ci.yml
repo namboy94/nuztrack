@@ -12,7 +12,7 @@ github_mirror:
     - echo "$GITHUB_SSH_KEY" > ~/.ssh/id_rsa
     - chmod 0600 ~/.ssh/id_rsa
   script:
-    - git-mirror-pusher git@github.com:namboy94/nuztrack.git main develop
+    - git-mirror-pusher git@github.com:namboy94/nuztrack.git main kotlin
 
 test_backend:
   image: maven:3-openjdk-18
