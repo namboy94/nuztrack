@@ -12,6 +12,7 @@ import {performLoadingCheck} from "../../util/loading";
 import {Severity} from "../../components/Snackbar";
 import {useTeamQuery} from "../../api/team_member/teamMemberQuery";
 import AddEvolutionDialog from "./AddEvolutionDialog";
+import AddTeamSwitchDialog from "./AddTeamSwitchDialog";
 
 interface AddEventProps {
     run: NuzlockeRun,
@@ -25,6 +26,7 @@ export default function AddEvent(props: AddEventProps) {
     const [encounterDialogOpen, setEncounterDialogOpen] = useState(false)
     const [noteDialogOpen, setNoteDialogOpen] = useState(false)
     const [evolutionDialogOpen, setEvolutionDialogOpen] = useState(false)
+    const [teamMemberSwitchDialogOpen, setTeamMemberSwitchDialogOpen] = useState(false)
 
     const pokedexQuery = usePokedexQuery()
     const locationsQuery = useLocationsQuery(props.run.game)
@@ -48,7 +50,10 @@ export default function AddEvent(props: AddEventProps) {
             <Grid item xs={3}><Button variant="contained"
                                       onClick={() => setEvolutionDialogOpen(true)}>Evolution</Button></Grid>
             <Grid item xs={3}><Button variant="contained"
-                                      onClick={() => setEvolutionDialogOpen(true)}>Note</Button></Grid>
+                                      onClick={() => setNoteDialogOpen(true)}>Note</Button></Grid>
+            <Grid item xs={3}><Button variant="contained"
+                                      onClick={() => setTeamMemberSwitchDialogOpen(true)}>Team Member
+                Switch</Button></Grid>
             <AddMilestoneDialog
                 locations={locations}
                 run={props.run} displaySnack={props.displaySnack}
@@ -72,6 +77,10 @@ export default function AddEvent(props: AddEventProps) {
             <AddEvolutionDialog locations={locations} team={team} pokedex={pokedex}
                                 run={props.run} displaySnack={props.displaySnack}
                                 open={evolutionDialogOpen} onClose={() => setEvolutionDialogOpen(false)}/>
+            <AddTeamSwitchDialog locations={locations} team={team}
+                                 run={props.run} displaySnack={props.displaySnack}
+                                 open={teamMemberSwitchDialogOpen}
+                                 onClose={() => setTeamMemberSwitchDialogOpen(false)}/>
         </Grid>
     )
 }
