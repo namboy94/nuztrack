@@ -1,7 +1,6 @@
 package net.namibsun.nuztrack
 
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
@@ -17,7 +16,7 @@ internal class NuztrackApplicationTest {
     @Autowired
     lateinit var restTemplate: TestRestTemplate
 
-    @Test
+    //@Test
     fun testStartup() {
         main(arrayOf())
         val result = restTemplate.getForEntity("/api/games", ResponseEntity::class.java)

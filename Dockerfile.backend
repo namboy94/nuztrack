@@ -10,5 +10,5 @@ RUN cd nuztrack && mvn package && mv target/*.jar /app.jar
 RUN rm -rf nuztrack
 
 EXPOSE 8080
-ENV spring_profiles_active="postgres"
+ENV spring_profiles_active="prod"
 CMD ["/usr/bin/java", "-jar", "/app.jar"]

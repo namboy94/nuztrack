@@ -12,6 +12,7 @@ services:
     env_file: .env
     depends_on:
       - db
+      - auth
     networks:
       - net
     ports:
@@ -20,12 +21,18 @@ services:
   frontend:
     build:
       context: .
+      args:
+        - KEYCLOAK_URL=${KEYCLOAK_URL}
+        - BACKEND_URL=${BACKEND_URL}
       dockerfile: Dockerfile.frontend
     image: "nuztrack-frontend"
     container_name: "nuztrack-frontend"
+    env_file:
+      - .env
     depends_on:
       - db
       - backend
+      - auth
     networks:
       - net
     ports:
@@ -40,22 +47,33 @@ services:
     volumes:
       - data:/var/lib/postgresql/data
     restart: always
+  authdb:
+    image: postgres
+    container_name: "nuztrack-auth-db"
+    env_file: .env
+    environment:
+      - POSTGRES_DB=keycloak
+    networks:
+      - net
+    volumes:
+      - authdata:/var/lib/postgresql/data
+    restart: always
   auth:
     image: "quay.io/keycloak/keycloak:18.0.0"
     container_name: "nuztrack-auth"
-    command: start-dev
+    command: start --auto-build
     env_file: .env
     environment:
-      DB_VENDOR: POSTGRES
-      DB_ADDR: db
-      DB_DATABASE: keycloak
-      DB_USER: ${POSTGRES_USER}
-      DB_SCHEMA: public
-      DB_PASSWORD: ${POSTGRES_PASSWORD}
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_PROXY: edge
+      KC_FEATURES: docker
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://authdb/keycloak
+      KC_DB_USERNAME: ${POSTGRES_USER}
+      KC_HOSTNAME: ${KEYCLOAK_HOSTNAME}
+      KC_DB_PASSWORD: ${POSTGRES_PASSWORD}
+      KC_HOSTNAME_STRICT_HTTPS: "false"
     depends_on:
-      - db
+      - authdb
     networks:
       - net
     ports:
@@ -64,3 +82,4 @@ services:
 volumes:
   logs: ~
   data: ~
+  authdata: ~
