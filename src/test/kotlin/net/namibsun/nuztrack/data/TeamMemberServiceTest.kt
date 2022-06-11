@@ -20,23 +20,23 @@ internal class TeamMemberServiceTest {
     )
 
     private val teamMemberOne = TeamMember(
-            1, "A", 1, 1, Natures.BOLD, 1,
-            EncounterEvent(nuzlockeRun, "A", 1, 1, Gender.MALE, true),
+            1, "A", 1, 1, Gender.MALE, Natures.BOLD, 1,
+            EncounterEvent(nuzlockeRun, "A", 1, 1, true),
             teamSwitches = listOf(
                     TeamMemberSwitchEvent(nuzlockeRun, "A", TEAM_MEMBER, TeamMemberSwitchType.ADD)
             )
     )
     private val teamMemberTwo = TeamMember(
-            1, "B", 1, 1, Natures.ADAMANT, 1,
-            EncounterEvent(nuzlockeRun, "B", 1, 1, Gender.MALE, true),
+            1, "B", 1, 1, Gender.MALE, Natures.ADAMANT, 1,
+            EncounterEvent(nuzlockeRun, "B", 1, 1, true),
             teamSwitches = listOf(
                     TeamMemberSwitchEvent(nuzlockeRun, "B", TEAM_MEMBER, TeamMemberSwitchType.ADD),
                     TeamMemberSwitchEvent(nuzlockeRun, "B", TEAM_MEMBER, TeamMemberSwitchType.REMOVE)
             )
     )
     private val teamMemberThree = TeamMember(
-            1, "C", 1, 1, Natures.NAUGHTY, 1,
-            EncounterEvent(nuzlockeRun, "C", 1, 1, Gender.MALE, true),
+            1, "C", 1, 1, Gender.MALE, Natures.NAUGHTY, 1,
+            EncounterEvent(nuzlockeRun, "C", 1, 1, true),
             teamSwitches = listOf(
                     TeamMemberSwitchEvent(nuzlockeRun, "C", TEAM_MEMBER, TeamMemberSwitchType.ADD)
             ),
@@ -58,7 +58,7 @@ internal class TeamMemberServiceTest {
     fun createTeamMember() {
         whenever(repository.save(any<TeamMember>())).then(AdditionalAnswers.returnsFirstArg<EncounterEvent>())
 
-        val member = service.createTeamMember(ENCOUNTER, "Poli", Natures.BRAVE, 2)
+        val member = service.createTeamMember(ENCOUNTER, "Poli", Gender.MALE, Natures.BRAVE, 2)
 
         assertThat(member.level).isEqualTo(ENCOUNTER.level)
         assertThat(member.nickname).isEqualTo("Poli")
@@ -66,10 +66,10 @@ internal class TeamMemberServiceTest {
     }
 
     @Test
-    fun createTeamMember_NoAbilityOrNature() {
+    fun createTeamMember_NoAbilityOrNatureOrGender() {
         whenever(repository.save(any<TeamMember>())).then(AdditionalAnswers.returnsFirstArg<EncounterEvent>())
 
-        val member = service.createTeamMember(ENCOUNTER, "Poli", null, null)
+        val member = service.createTeamMember(ENCOUNTER, "Poli", null, null, null)
 
         assertThat(member.level).isEqualTo(ENCOUNTER.level)
         assertThat(member.nickname).isEqualTo("Poli")
@@ -109,7 +109,7 @@ internal class TeamMemberServiceTest {
 
     @Test
     fun setLevel() {
-        val member = TeamMember(50, "A", 1, 1, Natures.NAUGHTY, 1, ENCOUNTER)
+        val member = TeamMember(50, "A", 1, 1, Gender.MALE, Natures.NAUGHTY, 1, ENCOUNTER)
         whenever(repository.getReferenceById(member.id)).thenReturn(member)
         whenever(repository.save(member)).thenReturn(member)
 
@@ -122,7 +122,7 @@ internal class TeamMemberServiceTest {
 
     @Test
     fun evolveTo() {
-        val member = TeamMember(50, "A", 1, 1, Natures.NAUGHTY, 1, ENCOUNTER)
+        val member = TeamMember(50, "A", 1, 1, Gender.MALE, Natures.NAUGHTY, 1, ENCOUNTER)
         whenever(repository.getReferenceById(member.id)).thenReturn(member)
         whenever(repository.save(member)).thenReturn(member)
 

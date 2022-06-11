@@ -3,6 +3,7 @@ package net.namibsun.nuztrack.routes.events
 import net.namibsun.nuztrack.constants.UnauthorizedException
 import net.namibsun.nuztrack.constants.ValidationException
 import net.namibsun.nuztrack.constants.enums.Games
+import net.namibsun.nuztrack.constants.enums.Gender
 import net.namibsun.nuztrack.constants.enums.Natures
 import net.namibsun.nuztrack.constants.enums.RunStatus
 import net.namibsun.nuztrack.data.*
@@ -27,7 +28,7 @@ class EvolutionEventControllerTest {
 
     private val user = "Ash"
     private val run = NuzlockeRun(5, user, "First", Games.RED, listOf(), listOf(), RunStatus.COMPLETED)
-    private val member = TeamMember(1, "Squirtle", 7, 5, Natures.BOLD, 1, ENCOUNTER)
+    private val member = TeamMember(1, "Squirtle", 7, 5, Gender.MALE, Natures.BOLD, 1, ENCOUNTER)
     private val creator = CreateEvolutionEventTO("Location", member.id, 16, 8)
 
     @Test

@@ -14,10 +14,12 @@ internal class TeamMemberTOTest {
         val run = NuzlockeRun(
                 100, "A", "B", Games.RED, listOf(Rules.DEATH), listOf("TEST"), RunStatus.ACTIVE
         )
-        val encounter = EncounterEvent(run, "A", 1, 1, Gender.MALE, true)
-        val dummyMember = TeamMember(1, "Bob", 1, 1, Natures.BOLD, 1, encounter)
+        val encounter = EncounterEvent(run, "A", 1, 1, true)
+        val dummyMember = TeamMember(1, "Bob", 1, 1, Gender.MALE, Natures.BOLD, 1, encounter)
         val evolution = EvolutionEvent(run, "B", dummyMember, 1, 1, 2)
-        val member = TeamMember(1, "Bob", 1, 1, Natures.BOLD, 1, encounter, null, listOf(evolution), listOf())
+        val member = TeamMember(
+                1, "Bob", 1, 1, Gender.MALE, Natures.BOLD, 1, encounter, null, listOf(evolution), listOf()
+        )
 
         val converted = TeamMemberTO.fromTeamMember(member)
         Assertions.assertThat(converted.id).isEqualTo(member.id)

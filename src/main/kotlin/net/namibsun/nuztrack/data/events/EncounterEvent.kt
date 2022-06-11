@@ -1,10 +1,8 @@
 package net.namibsun.nuztrack.data.events
 
 import net.namibsun.nuztrack.constants.enums.EventType
-import net.namibsun.nuztrack.constants.enums.Gender
 import net.namibsun.nuztrack.data.NuzlockeRun
 import net.namibsun.nuztrack.data.TeamMember
-import net.namibsun.nuztrack.data.TeamMemberRepository
 import org.springframework.stereotype.Service
 import javax.persistence.*
 
@@ -16,7 +14,6 @@ class EncounterEvent(
         location: String,
         @Column val pokedexNumber: Int,
         @Column val level: Int,
-        @Column @Enumerated(EnumType.STRING) val gender: Gender,
         @Column val caught: Boolean,
 
         @OneToOne(mappedBy = "encounter", cascade = [CascadeType.ALL])
@@ -25,7 +22,7 @@ class EncounterEvent(
 ) : Event(nuzlockeRun = nuzlockeRun, location = location, eventType = EventType.ENCOUNTER)
 
 @Service
-class EncounterEventService(val db: EventRepository, val teamMemberRepository: TeamMemberRepository) {
+class EncounterEventService(val db: EventRepository) {
     fun getEncounterEvents(runId: Long): List<EncounterEvent> {
         return db.findAllByEventTypeAndNuzlockeRunIdOrderByTimestamp(EventType.ENCOUNTER, runId).map { it as EncounterEvent }
     }
@@ -35,10 +32,9 @@ class EncounterEventService(val db: EventRepository, val teamMemberRepository: T
             location: String,
             pokedexNumber: Int,
             level: Int,
-            gender: Gender,
             caught: Boolean
     ): EncounterEvent {
-        return db.save(EncounterEvent(nuzlockeRun, location, pokedexNumber, level, gender, caught))
+        return db.save(EncounterEvent(nuzlockeRun, location, pokedexNumber, level, caught))
     }
 
     fun getLocationsWithEncounters(runId: Long): List<String> {

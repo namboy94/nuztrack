@@ -20,10 +20,10 @@ internal class CreateDeathEventTOTest {
     private val teamMemberService: TeamMemberService = mock()
     private val run = NuzlockeRun(1000, "User", "Name", Games.RED, listOf(), listOf(), RunStatus.ACTIVE)
     private val memberOne = TeamMember(
-            1, "A", 7, 5, Natures.NAUGHTY, 1, EncounterEvent(run, "A", 7, 5, Gender.MALE, true)
+            1, "A", 7, 5, Gender.MALE, Natures.NAUGHTY, 1, EncounterEvent(run, "A", 7, 5, true)
     )
     private val memberTwo = TeamMember(
-            2, "B", 4, 5, Natures.NAUGHTY, 1, EncounterEvent(run, "B", 4, 5, Gender.FEMALE, true),
+            2, "B", 4, 5, Gender.FEMALE, Natures.NAUGHTY, 1, EncounterEvent(run, "B", 4, 5, true),
             death = DeathEvent(run, "B", TEAM_MEMBER, 1, "O", "D")
     )
 

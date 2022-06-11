@@ -26,9 +26,9 @@ class EventControllerTest {
     private val nuzlockeRun = NuzlockeRun(
             5, user, "First", Games.RED, listOf(Rules.ONLY_FIRST_ENCOUNTER), listOf(), RunStatus.COMPLETED
     )
-    private val encounterOne = EncounterEvent(nuzlockeRun, "Pallet Town", 7, 5, Gender.MALE, true)
-    private val encounterTwo = EncounterEvent(nuzlockeRun, "Viridian Forrest", 10, 3, Gender.FEMALE, false)
-    private val teamMember = TeamMember(0, "Nick", 8, 28, Natures.BOLD, 1, encounterOne)
+    private val encounterOne = EncounterEvent(nuzlockeRun, "Pallet Town", 7, 5, true)
+    private val encounterTwo = EncounterEvent(nuzlockeRun, "Viridian Forrest", 10, 3, false)
+    private val teamMember = TeamMember(0, "Nick", 8, 28, Gender.MALE, Natures.BOLD, 1, encounterOne)
     private val evolution = EvolutionEvent(nuzlockeRun, "Cerulean City", teamMember, 16, 7, 8)
     private val death = DeathEvent(nuzlockeRun, "Vermillion City", teamMember, 28, "Lt. Surge", "Zapped")
     private val switchOne = TeamMemberSwitchEvent(nuzlockeRun, "Route 1", teamMember, TeamMemberSwitchType.REMOVE)

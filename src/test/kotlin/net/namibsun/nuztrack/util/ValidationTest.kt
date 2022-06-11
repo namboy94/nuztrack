@@ -2,6 +2,7 @@ package net.namibsun.nuztrack.util
 
 import net.namibsun.nuztrack.constants.ValidationException
 import net.namibsun.nuztrack.constants.enums.ErrorMessages
+import net.namibsun.nuztrack.constants.enums.Gender
 import net.namibsun.nuztrack.constants.enums.Natures
 import net.namibsun.nuztrack.data.ENCOUNTER
 import net.namibsun.nuztrack.data.NUZLOCKE_RUN
@@ -44,7 +45,7 @@ class ValidationTest {
     @Test
     fun testValidateTeamMember_memberDead() {
         val member = TeamMember(
-                0, "", 1, 1, Natures.BOLD, 1, ENCOUNTER,
+                0, "", 1, 1, Gender.MALE, Natures.BOLD, 1, ENCOUNTER,
                 DeathEvent(NUZLOCKE_RUN, "", TEAM_MEMBER, 1, "", "")
         )
         assertThat(assertThrows<ValidationException> {
@@ -55,7 +56,7 @@ class ValidationTest {
 
     @Test
     fun testValidateTeamMemberLevel() {
-        val member = TeamMember(0, "", 1, 50, Natures.BOLD, 1, ENCOUNTER)
+        val member = TeamMember(0, "", 1, 50, Gender.MALE, Natures.BOLD, 1, ENCOUNTER)
         assertThat(assertThrows<ValidationException> {
             validateTeamMember(member, true, 49)
         }.message).isEqualTo(ErrorMessages.LEVEL_BELOW_CURRENT.message)

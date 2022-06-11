@@ -19,13 +19,13 @@ val ENCOUNTER = EncounterEvent(
         "Pallet Town",
         62,
         2,
-        Gender.MALE,
         true
 )
 val TEAM_MEMBER = TeamMember(
         nickname = "Poli",
         pokedexNumber = 62,
         level = 78,
+        gender = Gender.MALE,
         nature = Natures.BRAVE,
         abilitySlot = 1,
         encounter = ENCOUNTER

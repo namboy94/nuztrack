@@ -29,12 +29,12 @@ class TeamMemberRepositoryTest {
                 0, "AAAAAA", "AAA", Games.SILVER,
                 listOf(), listOf(), RunStatus.COMPLETED
         ))
-        val encounterOne = eventRepository.save(EncounterEvent(runOne, "A", 1, 1, Gender.MALE, true))
-        val encounterTwo = eventRepository.save(EncounterEvent(runOne, "A", 1, 1, Gender.MALE, true))
-        val encounterThree = eventRepository.save(EncounterEvent(runTwo, "A", 1, 1, Gender.MALE, true))
-        repository.save(TeamMember(0, "NICK", 1, 1, Natures.BRAVE, 1, encounterOne))
-        repository.save(TeamMember(0, "NICK", 1, 1, Natures.BRAVE, 1, encounterTwo))
-        repository.save(TeamMember(0, "NICK", 1, 1, Natures.BRAVE, 1, encounterThree))
+        val encounterOne = eventRepository.save(EncounterEvent(runOne, "A", 1, 1, true))
+        val encounterTwo = eventRepository.save(EncounterEvent(runOne, "A", 1, 1, true))
+        val encounterThree = eventRepository.save(EncounterEvent(runTwo, "A", 1, 1, true))
+        repository.save(TeamMember(0, "NICK", 1, 1, Gender.MALE, Natures.BRAVE, 1, encounterOne))
+        repository.save(TeamMember(0, "NICK", 1, 1, Gender.MALE, Natures.BRAVE, 1, encounterTwo))
+        repository.save(TeamMember(0, "NICK", 1, 1, Gender.MALE, Natures.BRAVE, 1, encounterThree))
 
         assertThat(repository.findAll().size).isEqualTo(3)
         assertThat(repository.findAllByNuzlockeRunId(runOne.id).size).isEqualTo(2)
@@ -45,15 +45,13 @@ class TeamMemberRepositoryTest {
     @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
     fun testAddEventsForTeamMember() {
         val run = runRepository.save(NUZLOCKE_RUN)
-        val encounter = eventRepository.save(EncounterEvent(
-                run, "A", 1, 1, Gender.MALE, true
-        ))
-
+        val encounter = eventRepository.save(EncounterEvent(run, "A", 1, 1, true))
 
         val teamMember = repository.save(TeamMember(
                 nickname = "B",
                 pokedexNumber = 1,
                 level = 2,
+                gender = Gender.MALE,
                 nature = Natures.BRAVE,
                 abilitySlot = 1,
                 encounter = encounter
@@ -73,19 +71,25 @@ class TeamMemberRepositoryTest {
         assertThat(repository.getReferenceById(teamMember.id).death).isNotNull
         assertThat(repository.getReferenceById(teamMember.id).teamSwitches.size).isEqualTo(2)
 
-        assertThat((eventRepository.findAllByEventTypeOrderByTimestamp(EventType.ENCOUNTER)[0] as EncounterEvent).teamMember).isNotNull
-        assertThat((eventRepository.findAllByEventTypeOrderByTimestamp(EventType.EVOLUTION)[0] as EvolutionEvent).teamMember).isNotNull
-        assertThat((eventRepository.findAllByEventTypeOrderByTimestamp(EventType.DEATH)[0] as DeathEvent).teamMember).isNotNull
+        assertThat((
+                eventRepository.findAllByEventTypeOrderByTimestamp(EventType.ENCOUNTER)[0] as EncounterEvent)
+                .teamMember).isNotNull
+        assertThat((
+                eventRepository.findAllByEventTypeOrderByTimestamp(EventType.EVOLUTION)[0] as EvolutionEvent)
+                .teamMember).isNotNull
+        assertThat((
+                eventRepository.findAllByEventTypeOrderByTimestamp(EventType.DEATH)[0] as DeathEvent)
+                .teamMember).isNotNull
         assertThat((eventRepository.findAllByEventTypeOrderByTimestamp(
                 EventType.TEAM_MEMBER_SWITCH
         )[0] as TeamMemberSwitchEvent).teamMember).isNotNull
     }
-    
+
     @Test
     fun getTeamMemberByIdAndNuzlockeRunId() {
         val run = runRepository.save(NUZLOCKE_RUN)
-        val encounter = eventRepository.save(EncounterEvent(run, "A", 1, 1, Gender.MALE, true))
-        val member = repository.save(TeamMember(0, "NICK", 1, 1, Natures.BRAVE, 1, encounter))
+        val encounter = eventRepository.save(EncounterEvent(run, "A", 1, 1, true))
+        val member = repository.save(TeamMember(0, "NICK", 1, 1, Gender.MALE, Natures.BRAVE, 1, encounter))
 
         assertThat(repository.getTeamMemberByIdAndNuzlockeRunId(run.id, member.id)).isEqualTo(member)
         assertThat(repository.getTeamMemberByIdAndNuzlockeRunId(1000, member.id)).isNull()

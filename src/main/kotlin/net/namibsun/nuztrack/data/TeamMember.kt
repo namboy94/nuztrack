@@ -1,5 +1,6 @@
 package net.namibsun.nuztrack.data
 
+import net.namibsun.nuztrack.constants.enums.Gender
 import net.namibsun.nuztrack.constants.enums.Natures
 import net.namibsun.nuztrack.constants.enums.TeamMemberSwitchType
 import net.namibsun.nuztrack.data.events.DeathEvent
@@ -21,6 +22,7 @@ class TeamMember(
         @Column var nickname: String,
         @Column var pokedexNumber: Int,
         @Column var level: Int,
+        @Column(nullable = true) @Enumerated(EnumType.STRING) val gender: Gender?,
         @Column(nullable = true) val nature: Natures?,
         @Column(nullable = true) val abilitySlot: Int?,
 
@@ -75,6 +77,7 @@ class TeamMemberService(val db: TeamMemberRepository) {
     fun createTeamMember(
             encounter: EncounterEvent,
             nickname: String,
+            gender: Gender?,
             nature: Natures?,
             abilitySlot: Int?
     ): TeamMember {
@@ -83,6 +86,7 @@ class TeamMemberService(val db: TeamMemberRepository) {
                 level = encounter.level,
                 pokedexNumber = encounter.pokedexNumber,
                 nickname = nickname,
+                gender = gender,
                 abilitySlot = abilitySlot,
                 nature = nature
         ))

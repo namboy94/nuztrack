@@ -1,7 +1,6 @@
 package net.namibsun.nuztrack.data.events
 
 import net.namibsun.nuztrack.constants.enums.EventType
-import net.namibsun.nuztrack.constants.enums.Gender
 import net.namibsun.nuztrack.data.ENCOUNTER
 import net.namibsun.nuztrack.data.NUZLOCKE_RUN
 import net.namibsun.nuztrack.data.TeamMemberRepository
@@ -13,11 +12,11 @@ import org.mockito.kotlin.*
 class EncounterEventServiceTest {
     private val repository: EventRepository = mock()
     private val teamMemberRepository: TeamMemberRepository = mock()
-    private val service = EncounterEventService(repository, teamMemberRepository)
+    private val service = EncounterEventService(repository)
 
     private val events = listOf<Event>(
-            EncounterEvent(NUZLOCKE_RUN, "Pallet Town", 1, 1, Gender.MALE, false),
-            EncounterEvent(NUZLOCKE_RUN, "Pokemon League", 2, 2, Gender.FEMALE, true)
+            EncounterEvent(NUZLOCKE_RUN, "Pallet Town", 1, 1, false),
+            EncounterEvent(NUZLOCKE_RUN, "Pokemon League", 2, 2, true)
     )
 
     @Test
@@ -31,7 +30,7 @@ class EncounterEventServiceTest {
     fun createEncounterEvent() {
         whenever(repository.save(any<EncounterEvent>())).then(AdditionalAnswers.returnsFirstArg<EncounterEvent>())
 
-        val encounter = service.createEncounterEvent(NUZLOCKE_RUN, "Pallet Town", 10, 50, Gender.FEMALE, false)
+        val encounter = service.createEncounterEvent(NUZLOCKE_RUN, "Pallet Town", 10, 50, false)
 
         assertThat(encounter.teamMember).isNull()
         assertThat(encounter.caught).isFalse
@@ -55,9 +54,9 @@ class EncounterEventServiceTest {
     @Test
     fun getEncounteredSpecies() {
         val runId = ENCOUNTER.nuzlockeRun.id
-        val one = EncounterEvent(NUZLOCKE_RUN, "A", 100, 1, Gender.MALE, true)
-        val two = EncounterEvent(NUZLOCKE_RUN, "A", 200, 1, Gender.MALE, false)
-        val three = EncounterEvent(NUZLOCKE_RUN, "A", 300, 1, Gender.MALE, false)
+        val one = EncounterEvent(NUZLOCKE_RUN, "A", 100, 1, true)
+        val two = EncounterEvent(NUZLOCKE_RUN, "A", 200, 1, false)
+        val three = EncounterEvent(NUZLOCKE_RUN, "A", 300, 1, false)
         whenever(repository.findAllByEventTypeAndNuzlockeRunIdOrderByTimestamp(
                 EventType.ENCOUNTER, runId
         )).thenReturn(listOf(one, two, three))

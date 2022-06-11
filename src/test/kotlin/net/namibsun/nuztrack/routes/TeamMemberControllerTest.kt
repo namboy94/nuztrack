@@ -28,23 +28,23 @@ internal class TeamMemberControllerTest {
     )
 
     private val teamMemberOne = TeamMember(
-            1, "A", 1, 1, Natures.BOLD, 1,
-            EncounterEvent(nuzlockeRun, "A", 1, 1, Gender.MALE, true),
+            1, "A", 1, 1, Gender.MALE, Natures.BOLD, 1,
+            EncounterEvent(nuzlockeRun, "A", 1, 1, true),
             teamSwitches = listOf(
                     TeamMemberSwitchEvent(nuzlockeRun, "A", TEAM_MEMBER, TeamMemberSwitchType.ADD)
             )
     )
     private val teamMemberTwo = TeamMember(
-            1, "B", 1, 1, Natures.ADAMANT, 1,
-            EncounterEvent(nuzlockeRun, "B", 1, 1, Gender.MALE, true),
+            1, "B", 1, 1, Gender.MALE, Natures.ADAMANT, 1,
+            EncounterEvent(nuzlockeRun, "B", 1, 1, true),
             teamSwitches = listOf(
                     TeamMemberSwitchEvent(nuzlockeRun, "B", TEAM_MEMBER, TeamMemberSwitchType.ADD),
                     TeamMemberSwitchEvent(nuzlockeRun, "B", TEAM_MEMBER, TeamMemberSwitchType.REMOVE)
             )
     )
     private val teamMemberThree = TeamMember(
-            1, "C", 1, 1, Natures.NAUGHTY, 1,
-            EncounterEvent(nuzlockeRun, "C", 1, 1, Gender.MALE, true),
+            1, "C", 1, 1, Gender.MALE, Natures.NAUGHTY, 1,
+            EncounterEvent(nuzlockeRun, "C", 1, 1, true),
             teamSwitches = listOf(
                     TeamMemberSwitchEvent(nuzlockeRun, "C", TEAM_MEMBER, TeamMemberSwitchType.ADD)
             ),

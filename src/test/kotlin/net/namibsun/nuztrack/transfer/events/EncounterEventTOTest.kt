@@ -1,7 +1,6 @@
 package net.namibsun.nuztrack.transfer.events
 
 import net.namibsun.nuztrack.constants.enums.Games
-import net.namibsun.nuztrack.constants.enums.Gender
 import net.namibsun.nuztrack.constants.enums.Rules
 import net.namibsun.nuztrack.constants.enums.RunStatus
 import net.namibsun.nuztrack.data.NuzlockeRun
@@ -16,7 +15,7 @@ internal class EncounterEventTOTest {
         val run = NuzlockeRun(
                 100, "A", "B", Games.RED, listOf(Rules.DEATH), listOf("TEST"), RunStatus.ACTIVE
         )
-        val event = EncounterEvent(run, "A", 1, 1, Gender.MALE, false)
+        val event = EncounterEvent(run, "A", 1, 1, false)
         val converted = EncounterEventTO.fromEncounterEvent(event)
         assertThat(converted.event.id).isEqualTo(event.id)
         assertThat(converted.event.runId).isEqualTo(run.id)
@@ -24,7 +23,6 @@ internal class EncounterEventTOTest {
         assertThat(converted.event.timestamp).isEqualTo(formatDateToIsoString(event.timestamp))
         assertThat(converted.pokedexNumber).isEqualTo(event.pokedexNumber)
         assertThat(converted.caught).isEqualTo(event.caught)
-        assertThat(converted.gender).isEqualTo(event.gender.name)
         assertThat(converted.teamMemberId).isEqualTo(null)
     }
 }

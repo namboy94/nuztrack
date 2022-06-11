@@ -1,5 +1,6 @@
 package net.namibsun.nuztrack.data.events
 
+import net.namibsun.nuztrack.constants.enums.Gender
 import net.namibsun.nuztrack.constants.enums.Natures
 import net.namibsun.nuztrack.data.ENCOUNTER
 import net.namibsun.nuztrack.data.NUZLOCKE_RUN
@@ -23,7 +24,7 @@ class EvolutionEventServiceTest {
     fun createEvolutionEvent() {
         whenever(repository.save(any<EvolutionEvent>())).then(AdditionalAnswers.returnsFirstArg<EvolutionEvent>())
 
-        val member = TeamMember(0, "Bulba", 1, 5, Natures.NAUGHTY, 1, ENCOUNTER)
+        val member = TeamMember(0, "Bulba", 1, 5, Gender.MALE, Natures.NAUGHTY, 1, ENCOUNTER)
         val evolution = service.createEvolutionEvent(NUZLOCKE_RUN, "Pallet Town", member, 50, 2)
 
         assertThat(evolution.previousPokedexNumber).isEqualTo(1)

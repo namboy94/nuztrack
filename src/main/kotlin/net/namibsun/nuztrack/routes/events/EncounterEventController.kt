@@ -40,13 +40,13 @@ class EncounterEventController(
                 creator.location,
                 creator.pokedexNumber,
                 creator.level,
-                Gender.valueOfWithChecks(creator.gender),
                 creator.caught
         )
         if (creator.caught && creator.pokemon != null) {
             val teamMember = teamMemberService.createTeamMember(
                     encounter,
                     creator.pokemon.nickname,
+                    Gender.valueOfWithChecks(creator.pokemon.gender),
                     Natures.valueOfWithChecks(creator.pokemon.nature),
                     creator.pokemon.abilitySlot
             )

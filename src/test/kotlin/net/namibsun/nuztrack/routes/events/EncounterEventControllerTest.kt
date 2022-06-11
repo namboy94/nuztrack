@@ -38,15 +38,14 @@ internal class EncounterEventControllerTest {
             Rules.DUPLICATE_CLAUSE_INCLUDES_ENTIRE_SPECIES
     )
     private val nuzlockeRun = NuzlockeRun(5, user, "First", Games.FIRERED, rules, listOf(), RunStatus.COMPLETED)
-    private val encounterOne = EncounterEvent(nuzlockeRun, "Pewter City", 4, 14, Gender.MALE, true)
-    private val encounterTwo = EncounterEvent(nuzlockeRun, "Mahogany Town", 7, 24, Gender.FEMALE, false)
-    private val teamMember = TeamMember(0, "Nick", 120, 34, Natures.BOLD, 1, encounterOne)
+    private val encounterOne = EncounterEvent(nuzlockeRun, "Pewter City", 4, 14, true)
+    private val encounterTwo = EncounterEvent(nuzlockeRun, "Mahogany Town", 7, 24, false)
+    private val teamMember = TeamMember(0, "Nick", 120, 34, Gender.MALE, Natures.BOLD, 1, encounterOne)
     private val encounterOneWithTeamMember = EncounterEvent(
             encounterOne.nuzlockeRun,
             encounterOne.location,
             encounterOne.pokedexNumber,
             encounterOne.level,
-            encounterOne.gender,
             encounterOne.caught,
             teamMember
     )
@@ -55,15 +54,18 @@ internal class EncounterEventControllerTest {
             encounterOne.location,
             encounterOne.pokedexNumber,
             encounterOne.level,
-            encounterOne.gender.name,
             encounterOne.caught,
-            CreateEncounterPokemonTO(teamMember.nickname, teamMember.nature?.name, teamMember.abilitySlot)
+            CreateEncounterPokemonTO(
+                    teamMember.nickname,
+                    teamMember.gender?.name,
+                    teamMember.nature?.name,
+                    teamMember.abilitySlot
+            )
     )
     private val creatorTwo = CreateEncounterEventTO(
             encounterTwo.location,
             encounterTwo.pokedexNumber,
             encounterTwo.level,
-            encounterTwo.gender.name,
             encounterTwo.caught,
             null
     )
@@ -78,12 +80,12 @@ internal class EncounterEventControllerTest {
                 encounterOne.location,
                 encounterOne.pokedexNumber,
                 encounterOne.level,
-                encounterOne.gender,
                 true
         )).thenReturn(encounterOneWithTeamMember)
         whenever(teamMemberService.createTeamMember(
                 encounterOne,
                 teamMember.nickname,
+                teamMember.gender,
                 teamMember.nature,
                 teamMember.abilitySlot
         )).thenReturn(teamMember)
@@ -99,8 +101,8 @@ internal class EncounterEventControllerTest {
 
         verify(principal, times(1)).name
         verify(runsService, times(1)).getRun(any())
-        verify(service, times(1)).createEncounterEvent(any(), any(), any(), any(), any(), any())
-        verify(teamMemberService, times(1)).createTeamMember(any(), any(), any(), any())
+        verify(service, times(1)).createEncounterEvent(any(), any(), any(), any(), any())
+        verify(teamMemberService, times(1)).createTeamMember(any(), any(), any(), any(), any())
         verify(service, times(1)).getLocationsWithEncounters(nuzlockeRun.id)
         verify(service, times(1)).getEncounteredSpecies(nuzlockeRun.id, true)
         verify(service, times(1)).getEncounteredSpecies(nuzlockeRun.id, false)
@@ -115,7 +117,6 @@ internal class EncounterEventControllerTest {
                 encounterTwo.location,
                 encounterTwo.pokedexNumber,
                 encounterTwo.level,
-                encounterTwo.gender,
                 false
         )).thenReturn(encounterTwo)
         whenever(service.getLocationsWithEncounters(nuzlockeRun.id)).thenReturn(listOf())
@@ -130,8 +131,8 @@ internal class EncounterEventControllerTest {
 
         verify(principal, times(1)).name
         verify(runsService, times(1)).getRun(any())
-        verify(service, times(1)).createEncounterEvent(any(), any(), any(), any(), any(), any())
-        verify(teamMemberService, times(0)).createTeamMember(any(), any(), any(), any())
+        verify(service, times(1)).createEncounterEvent(any(), any(), any(), any(), any())
+        verify(teamMemberService, times(0)).createTeamMember(any(), any(), any(), any(), any())
         verify(service, times(1)).getLocationsWithEncounters(nuzlockeRun.id)
         verify(service, times(1)).getEncounteredSpecies(nuzlockeRun.id, true)
         verify(service, times(1)).getEncounteredSpecies(nuzlockeRun.id, false)
@@ -142,7 +143,7 @@ internal class EncounterEventControllerTest {
         whenever(principal.name).thenReturn(user)
         whenever(runsService.getRun(nuzlockeRun.id)).thenReturn(nuzlockeRun)
 
-        val brokenCreator = CreateEncounterEventTO("", 0, 0, "", true, null)
+        val brokenCreator = CreateEncounterEventTO("", 0, 0, true, null)
 
         assertThrows<ValidationException> { controller.createEncounterEvent(nuzlockeRun.id, brokenCreator, principal) }
         verify(principal, times(1)).name

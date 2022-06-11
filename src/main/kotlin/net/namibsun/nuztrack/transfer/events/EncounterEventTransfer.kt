@@ -3,10 +3,7 @@ package net.namibsun.nuztrack.transfer.events
 import net.namibsun.nuztrack.constants.NotFoundException
 import net.namibsun.nuztrack.constants.Pokedex
 import net.namibsun.nuztrack.constants.ValidationException
-import net.namibsun.nuztrack.constants.enums.ErrorMessages
-import net.namibsun.nuztrack.constants.enums.Games
-import net.namibsun.nuztrack.constants.enums.Natures
-import net.namibsun.nuztrack.constants.enums.Rules
+import net.namibsun.nuztrack.constants.enums.*
 import net.namibsun.nuztrack.data.NuzlockeRun
 import net.namibsun.nuztrack.data.events.EncounterEvent
 import net.namibsun.nuztrack.data.events.EncounterEventService
@@ -18,7 +15,6 @@ data class EncounterEventTO(
         val event: EventTO,
         val pokedexNumber: Int,
         val level: Int,
-        val gender: String,
         val caught: Boolean,
         val teamMemberId: Long?
 ) {
@@ -28,7 +24,6 @@ data class EncounterEventTO(
                     EventTO.fromEvent(event),
                     event.pokedexNumber,
                     event.level,
-                    event.gender.name,
                     event.caught,
                     event.teamMember?.id
             )
@@ -40,7 +35,6 @@ data class CreateEncounterEventTO(
         val location: String,
         val pokedexNumber: Int,
         val level: Int,
-        val gender: String,
         val caught: Boolean,
         val pokemon: CreateEncounterPokemonTO?
 ) {
@@ -89,13 +83,25 @@ data class CreateEncounterEventTO(
 
 data class CreateEncounterPokemonTO(
         val nickname: String,
+        val gender: String?,
         val nature: String?,
         val abilitySlot: Int?
 ) {
     fun validate(pokemonSpecies: PokemonSpeciesTO, game: Games) {
+        // TODO Check if nickname already exists
+        // TODO check if gender is possible
+
         val maxNicknameLength = if (game.generation <= 5) 10 else 12
         if (nickname.isEmpty() || nickname.length > maxNicknameLength) {
             throw ValidationException(ErrorMessages.INVALID_NICKNAME)
+        }
+
+        if (game.generation == 1) {
+            if (gender != null) {
+                throw ValidationException(ErrorMessages.HAS_GENDER_BUT_OLD_GAME)
+            }
+        } else {
+            Gender.valueOfWithChecks(gender)
         }
 
         if (game.generation <= 2) {
