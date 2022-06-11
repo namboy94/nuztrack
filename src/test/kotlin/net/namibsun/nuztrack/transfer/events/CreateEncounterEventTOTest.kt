@@ -21,7 +21,9 @@ internal class CreateEncounterEventTOTest {
         val modernRun = buildRun()
         val oldRun = buildRun(game = Games.RED)
         val oldPokemon = CreateEncounterPokemonTO("Rob", null, null, null)
+
         defaultMocks(modernRun)
+        defaultMocks(oldRun)
 
         assertDoesNotThrow {
             CreateEncounterEventTO("A", 1, 1, true, validPokemon).validate(modernRun, service)
@@ -275,6 +277,19 @@ internal class CreateEncounterEventTOTest {
         assertThat(assertThrows<ValidationException> {
             CreateEncounterEventTO("A", 1, 1, true, bulba).validate(run, service)
         }.message).isEqualTo(ErrorMessages.HAS_GENDER_BUT_OLD_GAME.message)
+    }
+
+    @Test
+    fun validate_nicknameAlreadyUsed() {
+        val run = buildRun()
+        val bulba = CreateEncounterPokemonTO("Bulba", "male", Natures.ADAMANT.name, 1)
+
+        defaultMocks(run)
+        whenever(service.getNicknamesOfCaughtEncounters(run.id)).thenReturn(listOf("Bulba", "Char"))
+
+        assertThat(assertThrows<ValidationException> {
+            CreateEncounterEventTO("A", 1, 1, true, bulba).validate(run, service)
+        }.message).isEqualTo(ErrorMessages.NICKNAME_ALREADY_USED.message)
     }
 
     private fun buildRun(rules: List<Rules> = listOf(), game: Games = Games.FIRERED): NuzlockeRun {

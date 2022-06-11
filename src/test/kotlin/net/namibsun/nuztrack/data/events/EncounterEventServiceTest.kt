@@ -1,8 +1,10 @@
 package net.namibsun.nuztrack.data.events
 
 import net.namibsun.nuztrack.constants.enums.EventType
+import net.namibsun.nuztrack.constants.enums.Gender
 import net.namibsun.nuztrack.data.ENCOUNTER
 import net.namibsun.nuztrack.data.NUZLOCKE_RUN
+import net.namibsun.nuztrack.data.TeamMember
 import net.namibsun.nuztrack.data.TeamMemberRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -67,5 +69,27 @@ class EncounterEventServiceTest {
         assertThat(caught).isEqualTo(listOf(100))
         assertThat(failedToCatch).hasSameElementsAs(listOf(200, 300))
         verify(repository, times(2)).findAllByEventTypeAndNuzlockeRunIdOrderByTimestamp(EventType.ENCOUNTER, runId)
+    }
+
+    @Test
+    fun getNicknamesOfCaughtEncounters() {
+        val runId = ENCOUNTER.nuzlockeRun.id
+        val one = EncounterEvent(
+                NUZLOCKE_RUN, "A", 100, 1, true,
+                TeamMember(0, "AName", 1, 1, Gender.MALE, null, null, ENCOUNTER)
+        )
+        val two = EncounterEvent(
+                NUZLOCKE_RUN, "B", 200, 1, true,
+                TeamMember(0, "BName", 1, 1, Gender.MALE, null, null, ENCOUNTER))
+
+
+        whenever(repository.findAllByEventTypeAndNuzlockeRunIdOrderByTimestamp(
+                EventType.ENCOUNTER, runId
+        )).thenReturn(listOf(one, two))
+
+        val nicknames = service.getNicknamesOfCaughtEncounters(runId)
+
+        assertThat(nicknames).isEqualTo(listOf("AName", "BName"))
+        verify(repository, times(1)).findAllByEventTypeAndNuzlockeRunIdOrderByTimestamp(EventType.ENCOUNTER, runId)
     }
 }

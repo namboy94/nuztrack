@@ -41,6 +41,10 @@ class EncounterEventService(val db: EventRepository) {
         return getEncounterEvents(runId).map { it.location }
     }
 
+    fun getNicknamesOfCaughtEncounters(runId: Long): List<String> {
+        return getEncounterEvents(runId).filter { it.teamMember != null }.map { it.teamMember!!.nickname }
+    }
+
     fun getEncounteredSpecies(runId: Long, caught: Boolean): List<Int> {
         return getEncounterEvents(runId).filter { it.caught == caught }.map { it.pokedexNumber }
     }

@@ -3,7 +3,10 @@ package net.namibsun.nuztrack.transfer.events
 import net.namibsun.nuztrack.constants.NotFoundException
 import net.namibsun.nuztrack.constants.Pokedex
 import net.namibsun.nuztrack.constants.ValidationException
-import net.namibsun.nuztrack.constants.enums.*
+import net.namibsun.nuztrack.constants.enums.ErrorMessages
+import net.namibsun.nuztrack.constants.enums.Gender
+import net.namibsun.nuztrack.constants.enums.Natures
+import net.namibsun.nuztrack.constants.enums.Rules
 import net.namibsun.nuztrack.data.NuzlockeRun
 import net.namibsun.nuztrack.data.events.EncounterEvent
 import net.namibsun.nuztrack.data.events.EncounterEventService
@@ -58,7 +61,7 @@ data class CreateEncounterEventTO(
         if (!caught && pokemon != null) {
             throw ValidationException(ErrorMessages.NOT_CAUGHT_BUT_POKEMON)
         }
-        pokemon?.validate(pokemonSpecies, run.game)
+        pokemon?.validate(run, encounterService, pokemonSpecies)
         validateDuplicateClause(run, encounterService)
     }
 
@@ -87,16 +90,15 @@ data class CreateEncounterPokemonTO(
         val nature: String?,
         val abilitySlot: Int?
 ) {
-    fun validate(pokemonSpecies: PokemonSpeciesTO, game: Games) {
-        // TODO Check if nickname already exists
-        // TODO check if gender is possible
+    fun validate(run: NuzlockeRun, encounterService: EncounterEventService, pokemonSpecies: PokemonSpeciesTO) {
+        // TODO check if gender is possible for species
 
-        val maxNicknameLength = if (game.generation <= 5) 10 else 12
+        val maxNicknameLength = if (run.game.generation <= 5) 10 else 12
         if (nickname.isEmpty() || nickname.length > maxNicknameLength) {
             throw ValidationException(ErrorMessages.INVALID_NICKNAME)
         }
 
-        if (game.generation == 1) {
+        if (run.game.generation == 1) {
             if (gender != null) {
                 throw ValidationException(ErrorMessages.HAS_GENDER_BUT_OLD_GAME)
             }
@@ -104,7 +106,7 @@ data class CreateEncounterPokemonTO(
             Gender.valueOfWithChecks(gender)
         }
 
-        if (game.generation <= 2) {
+        if (run.game.generation <= 2) {
             if (nature != null) {
                 throw ValidationException(ErrorMessages.HAS_NATURE_BUT_OLD_GAME)
             }
@@ -117,5 +119,10 @@ data class CreateEncounterPokemonTO(
             }
             Natures.valueOfWithChecks(nature)
         }
+
+        if (encounterService.getNicknamesOfCaughtEncounters(run.id).contains(nickname)) {
+            throw ValidationException(ErrorMessages.NICKNAME_ALREADY_USED)
+        }
+
     }
 }
