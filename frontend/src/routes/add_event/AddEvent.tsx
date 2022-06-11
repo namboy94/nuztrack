@@ -2,7 +2,7 @@ import {Button, Grid} from "@mui/material";
 import * as React from "react";
 import {useState} from "react";
 import {NuzlockeRun} from "../../api/runs/runsTypes";
-import AddBadgeDialog from "./AddBadgeDialog";
+import AddMilestoneDialog from "./AddMilestoneDialog";
 import AddDeathDialog from "./AddDeathDialog";
 import AddNoteDialog from "./AddNoteDialog";
 import AddEncounterDialog from "./AddEncounterDialog";
@@ -11,6 +11,7 @@ import {useLocationsQuery} from "../../api/games/gamesQuery";
 import {performLoadingCheck} from "../../util/loading";
 import {Severity} from "../../components/Snackbar";
 import {useTeamQuery} from "../../api/team_member/teamMemberQuery";
+import AddEvolutionDialog from "./AddEvolutionDialog";
 
 interface AddEventProps {
     run: NuzlockeRun,
@@ -23,6 +24,8 @@ export default function AddEvent(props: AddEventProps) {
     const [deathDialogOpen, setDeathDialogOpen] = useState(false)
     const [encounterDialogOpen, setEncounterDialogOpen] = useState(false)
     const [noteDialogOpen, setNoteDialogOpen] = useState(false)
+    const [evolutionDialogOpen, setEvolutionDialogOpen] = useState(false)
+
     const pokedexQuery = usePokedexQuery()
     const locationsQuery = useLocationsQuery(props.run.game)
     const naturesQuery = useNaturesQuery()
@@ -42,8 +45,11 @@ export default function AddEvent(props: AddEventProps) {
                                       onClick={() => setEncounterDialogOpen(true)}>Encounter</Button></Grid>
             <Grid item xs={3}><Button variant="contained" onClick={() => setDeathDialogOpen(true)}>Death</Button></Grid>
             <Grid item xs={3}><Button variant="contained" onClick={() => setBadgeDialogOpen(true)}>Badge</Button></Grid>
-            <Grid item xs={3}><Button variant="contained" onClick={() => setNoteDialogOpen(true)}>Note</Button></Grid>
-            <AddBadgeDialog
+            <Grid item xs={3}><Button variant="contained"
+                                      onClick={() => setEvolutionDialogOpen(true)}>Evolution</Button></Grid>
+            <Grid item xs={3}><Button variant="contained"
+                                      onClick={() => setEvolutionDialogOpen(true)}>Note</Button></Grid>
+            <AddMilestoneDialog
                 locations={locations}
                 run={props.run} displaySnack={props.displaySnack}
                 open={badgeDialogOpen} onClose={() => setBadgeDialogOpen(false)}
@@ -63,6 +69,9 @@ export default function AddEvent(props: AddEventProps) {
                 run={props.run} displaySnack={props.displaySnack}
                 open={noteDialogOpen} onClose={() => setNoteDialogOpen(false)}
             />
+            <AddEvolutionDialog locations={locations} team={team} pokedex={pokedex}
+                                run={props.run} displaySnack={props.displaySnack}
+                                open={evolutionDialogOpen} onClose={() => setEvolutionDialogOpen(false)}/>
         </Grid>
     )
 }
