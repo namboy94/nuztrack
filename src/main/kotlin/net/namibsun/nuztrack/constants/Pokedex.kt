@@ -11,8 +11,8 @@ object Pokedex {
     private val pokedex: PokedexTO
 
     init {
-        val pokedexFile = ClassPathResource("data/pokemon.json").file
-        pokedex = jacksonObjectMapper().readValue(pokedexFile)
+        val pokedexStream = ClassPathResource("data/pokemon.json").inputStream
+        pokedex = jacksonObjectMapper().readValue(pokedexStream)
     }
 
     fun getPokemon(pokedexNumber: Int): PokemonSpeciesTO {

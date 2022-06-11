@@ -12,8 +12,8 @@ object GameLocationRegistry {
     private val gameLocations: Map<Games, List<GameLocationTO>>
 
     init {
-        val registryFile = ClassPathResource("data/locations.json").file
-        val rawGameLocations: Map<String, List<GameLocationTO>> = jacksonObjectMapper().readValue(registryFile)
+        val registryStream = ClassPathResource("data/locations.json").inputStream
+        val rawGameLocations: Map<String, List<GameLocationTO>> = jacksonObjectMapper().readValue(registryStream)
         gameLocations = rawGameLocations.entries.associate { Games.valueOf(it.key.uppercase()) to it.value }
     }
 
