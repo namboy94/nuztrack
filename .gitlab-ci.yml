@@ -1,0 +1,23 @@
+stages:
+  - mirror
+  - test
+  - deploy
+
+github_mirror:
+  image: namboy94/ci-docker-environment:0.19.0
+  stage: mirror
+  tags: [ docker ]
+  only: [ master, develop, kotlin ]
+  before_script:
+    - echo "$GITHUB_SSH_KEY" > ~/.ssh/id_rsa
+    - chmod 0600 ~/.ssh/id_rsa
+  script:
+    - git-mirror-pusher git@github.com:namboy94/nuztrack.git master develop
+
+test_backend:
+  image: maven:3-openjdk-18
+  stage: test
+  script:
+    - mvn -B clean verify
+    - cat target/site/jacoco/index.html | grep -o 'Total[^%]*%'
+  coverage: '/Total.*?([0-9]{1,3})%/'
