@@ -17,6 +17,7 @@ github_mirror:
 test_backend:
   image: maven:3-openjdk-18
   stage: test
+  tags: [ docker ]
   script:
     - mvn -B clean verify
     - cat target/site/jacoco/index.html | grep -o 'Total[^%]*%'
