@@ -4,20 +4,19 @@ export type CreateEncounterEvent = {
     location: string,
     pokedexNumber: number,
     level: number,
-    gender: string,
     caught: boolean,
     pokemon: CreateEncounterPokemon | null
 }
 export type CreateEncounterPokemon = {
     nickname: string,
-    nature: string,
-    abilitySlot: number
+    gender: string | null,
+    nature: string | null,
+    abilitySlot: number | null
 }
 export type EncounterEvent = {
     event: Event,
     pokedexNumber: number,
     level: number,
-    gender: string,
     caught: boolean,
     teamMemberId: number | null
 }

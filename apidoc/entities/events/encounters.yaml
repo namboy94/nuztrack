@@ -4,7 +4,6 @@ CreateEncounterEventTO:
     - location
     - pokedexNumber
     - level
-    - gender
     - caught
   properties:
     location:
@@ -13,8 +12,6 @@ CreateEncounterEventTO:
       $ref: "../../types/pokedex.yaml#/pokedexNumber"
     level:
       $ref: "../../types/team_members.yaml#/level"
-    gender:
-      $ref: "../../types/team_members.yaml#/gender"
     caught:
       $ref: "../../types/events/encounters.yaml#/caught"
     pokemon:
@@ -29,6 +26,8 @@ CreateEncounterPokemonTO:
   properties:
     nickname:
       $ref: "../../types/team_members.yaml#/nickname"
+    gender:
+      $ref: "../../types/team_members.yaml#/gender"
     nature:
       $ref: "../../types/team_members.yaml#/nature"
     abilitySlot:
@@ -49,8 +48,6 @@ EncounterEventTO:
       $ref: "../../types/pokedex.yaml#/pokedexNumber"
     level:
       $ref: "../../types/team_members.yaml#/level"
-    gender:
-      $ref: "../../types/team_members.yaml#/gender"
     caught:
       $ref: "../../types/events/encounters.yaml#/caught"
     teamMemberId:

@@ -26,6 +26,7 @@ TeamMemberTO:
     - nickname
     - pokedexNumber
     - level
+    - gender
     - nature
     - abilitySlot
     - encounterId
@@ -41,6 +42,8 @@ TeamMemberTO:
       $ref: "../types/pokedex.yaml#/pokedexNumber"
     level:
       $ref: "../types/team_members.yaml#/level"
+    gender:
+      $ref: "../types/team_members.yaml#/gender"
     nature:
       $ref: "../types/team_members.yaml#/nature"
     abilitySlot:

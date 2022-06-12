@@ -12,11 +12,13 @@ level:
 
 nature:
   type: string
+  nullable: true
   description: The nature of a Pokemon
   example: "MODEST"
 
 abilitySlot:
   type: integer
+  nullable: true
   description: The active ability slot of a team member
   minimum: 1
   maximum: 3
@@ -29,6 +31,7 @@ nickname:
 
 gender:
   type: string
+  nullable: true
   enum: [ "MALE", "FEMALE", "NEUTRAL" ]
   description: The gender of a Pokemon
   example: "MALE"
