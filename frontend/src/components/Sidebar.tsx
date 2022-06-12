@@ -11,22 +11,13 @@ import HomeIcon from '@mui/icons-material/Home';
 import {Link, useLocation} from "react-router-dom";
 import {item, itemCategory} from "./style/sidebarStyle"
 import {structure} from "./Sidebar.structure";
-import {NuzlockeRun} from "../api/runs/runsTypes";
 
-export interface SidebarProps {
-    run: NuzlockeRun | null
-}
-
-export default function Sidebar(props: SidebarProps) {
+export default function Sidebar() {
 
     const location = useLocation();
     let sections = structure;
 
-    if (props.run === null) {
-        sections = []
-    } else {
-        sections[0]["id"] = props.run.name
-    }
+    sections = []
 
     return (
         <Drawer variant="permanent"

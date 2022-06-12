@@ -133,6 +133,7 @@ export default function AddEncounterDialog(props: AddEncounterDialogProps) {
             pokemonCreator = {
                 nature: nature,
                 nickname: nickname,
+                gender: gender,
                 abilitySlot: abilitiesMap.get(ability)!!
             }
         }
@@ -141,7 +142,6 @@ export default function AddEncounterDialog(props: AddEncounterDialogProps) {
             location: location,
             pokedexNumber: pokedexNumber!!,
             level: level,
-            gender: gender,
             caught: caught,
             pokemon: pokemonCreator
         }
