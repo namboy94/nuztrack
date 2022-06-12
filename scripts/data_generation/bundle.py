@@ -29,6 +29,7 @@ def combine(locations, badges):
 
             # Remove special forms of Pokemon, TODO integrate those at some point
             location["encounters"] = [abs(x) for x in location["encounters"]]
+            location["gameKey"] = game
 
             adjusted.append(location)
 
@@ -36,7 +37,8 @@ def combine(locations, badges):
             adjusted.append({
                 "name": badge.pop("location"),
                 "milestones": [badge],
-                "encounters": []
+                "encounters": [],
+                "gameKey": game
             })
         combined[game] = adjusted
     return combined

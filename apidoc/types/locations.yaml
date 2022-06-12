@@ -28,3 +28,8 @@ levelCap:
   type: integer
   description: The level of the Milestone trainer's ace Pokemon
   example: 55
+
+gameKey:
+  type: string
+  description: The key for the game of the location
+  example: "FIRERED"
