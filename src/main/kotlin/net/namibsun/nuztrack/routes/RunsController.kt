@@ -27,6 +27,7 @@ class RunsController(val service: NuzlockeRunService) {
     @PostMapping("/api/runs")
     @ResponseBody
     fun createRun(@RequestBody createRun: CreateNuzlockeRunTO, principal: Principal): ResponseEntity<NuzlockeRunTO> {
+        // TODO Add Trainer Information (OT and ID)
         createRun.validate()
         val game = Games.valueOfWithChecks(createRun.game)
         val rules = createRun.rules.map { Rules.valueOfWithChecks(it) }

@@ -15,7 +15,7 @@ export default function Dashboard() {
     const [snackBarMessage, setSnackBarMessage] = useState("")
     const [snackBarSeverity, setSnackBarSeverity] = useState<Severity>("info")
 
-    const displaySnack = (message: string, severity: Severity) => {
+    const notify = (message: string, severity: Severity) => {
         setSnackBarOpen(true)
         setSnackBarMessage(message)
         setSnackBarSeverity(severity)
@@ -31,7 +31,7 @@ export default function Dashboard() {
                 <Header onDrawerToggle={() => setMobileOpen(!mobileOpen)}/>
                 <Box component="main" sx={{flex: 1, py: 6, px: 4, bgcolor: '#eaeff1'}}>
                     <Paper sx={{maxWidth: 1200, margin: 'auto', overflow: 'hidden'}}>
-                        <Router displaySnack={displaySnack}/>
+                        <Router notify={notify}/>
                     </Paper>
                 </Box>
                 <Box component="footer" sx={{p: 2, bgcolor: '#eaeff1'}}>

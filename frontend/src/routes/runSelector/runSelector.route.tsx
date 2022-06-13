@@ -1,16 +1,21 @@
-import {useRunSelectorRouteViewModel} from "./hooks/runSelector.route.vm";
+import {useRunSelectorDataLoader} from "./hooks/runSelector.data.hook";
 import {Button} from "@mui/material";
 import * as React from "react";
 import AddIcon from '@mui/icons-material/Add';
-import {RunsTable} from "./components/runs.table.";
-import {useDeleteRunDialog} from "./hooks/deleteRun.hook";
-import {useCreateNewRunDialog} from "./hooks/createNewRun.hook";
+import {useDeleteRunDialogProps} from "./hooks/DeleteRunDialog.hooks";
+import {CreateNewRunDialog} from "./components/CreateNewRunDialog";
+import {useCreateNewRunDialogProps} from "./hooks/CreateNewRunDialog.hooks";
+import {RouteProps} from "../common/RouteProps";
+import {DeleteRunDialog} from "./components/DeleteRunDialog";
+import {useRunsTableProps} from "./hooks/RunsTable.hooks";
+import {RunsTable} from "./components/RunsTable";
 
-export function RunSelectorRoute() {
+export function RunSelectorRoute(props: RouteProps) {
 
-    const [loading, runs] = useRunSelectorRouteViewModel()
-    const [deleteDialog, openDeleteDialog] = useDeleteRunDialog()
-    const [createDialog, openCreateDialog] = useCreateNewRunDialog()
+    const loading = useRunSelectorDataLoader()
+    const [openDeleteDialog, deleteDialogProps] = useDeleteRunDialogProps()
+    const [openCreateDialog, createDialogProps] = useCreateNewRunDialogProps(props.notify)
+    const runsTableProps = useRunsTableProps(openDeleteDialog)
 
     if (loading) {
         return <h1>LOADING</h1>
@@ -21,11 +26,14 @@ export function RunSelectorRoute() {
             <Button variant="contained"
                     size={"large"}
                     startIcon={<AddIcon/>}
-                    onClick={openCreateDialog}
-            >Create New Nuzlocke Run</Button>
-            <RunsTable runs={runs} openDeleteDialog={openDeleteDialog}/>
-            {createDialog}
-            {deleteDialog}
+                    onClick={openCreateDialog}>
+                Create New Nuzlocke Run
+            </Button>
+
+            <RunsTable {...runsTableProps}/>
+            <CreateNewRunDialog {...createDialogProps}/>
+            <DeleteRunDialog {...deleteDialogProps}/>
+
         </div>
     )
 }

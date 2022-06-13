@@ -3,6 +3,7 @@ import React from "react";
 
 
 export type Severity = "warning" | "error" | "info" | "success"
+export type NotificationFN = (message: string, severity: Severity) => void
 
 interface SnackbarProps {
     open: boolean,

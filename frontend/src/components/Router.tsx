@@ -1,18 +1,17 @@
 import {Route, Routes} from "react-router-dom";
 import React from "react";
-import {Severity} from "./Snackbar";
+import {NotificationFN} from "./Snackbar";
 import {RunSelectorRoute} from "../routes/runSelector/runSelector.route";
 
 export interface RouterProps {
-    displaySnack: (message: string, severity: Severity) => void
+    notify: NotificationFN
 }
 
 export default function Router(props: RouterProps) {
-    const {displaySnack} = props
-    //const runSelector = <RunSelectorRoute run={run} setRunId={setRunId} displaySnack={displaySnack}/>
+    const {notify} = props
     return (
         <Routes>
-            <Route path="/" element={<RunSelectorRoute/>}/>
+            <Route path="/" element={<RunSelectorRoute notify={notify}/>}/>
             {/*<Route path="/" element={runSelector}/>*/}
             {/*<Route path="/select_run" element={runSelector}/>*/}
             {/*<Route path="/add_event" element={<AddEventRoute run={run} displaySnack={displaySnack}/>}/>*/}

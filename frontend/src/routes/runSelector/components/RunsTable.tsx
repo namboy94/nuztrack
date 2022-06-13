@@ -3,15 +3,17 @@ import {Button, Card, CardActions, CardContent, Grid, Typography} from "@mui/mat
 import * as React from "react";
 
 export interface RunsTableProps {
-    runs: NuzlockeRun[],
-    openDeleteDialog: (run: NuzlockeRun) => void
+    openDeleteDialog: (run: NuzlockeRun) => void,
+    runs: NuzlockeRun[]
 }
 
 export function RunsTable(props: RunsTableProps) {
 
+    const {runs, openDeleteDialog} = props
+
     return (
         <Grid container spacing={2} id="runs">
-            {props.runs.map((run) =>
+            {runs.map((run) =>
                 <Grid item xs={4} key={run.id}>
                     <Card>
                         <CardContent>
@@ -20,8 +22,8 @@ export function RunsTable(props: RunsTableProps) {
                             </Typography>
                         </CardContent>
                         <CardActions>
-                            <Button variant="contained" onClick={() => console.log("SELECT")}>Select</Button>
-                            <Button variant="contained" onClick={() => props.openDeleteDialog(run)}>Delete</Button>
+                            <Button variant="contained" onClick={() => console.log("TODO SELECT")}>Select</Button>
+                            <Button variant="contained" onClick={() => openDeleteDialog(run)}>Delete</Button>
                         </CardActions>
                     </Card>
                 </Grid>

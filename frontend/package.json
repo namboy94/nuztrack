@@ -20,6 +20,7 @@
     "axios-mock-adapter": "^1.20.0",
     "axios-observable": "^1.5.0",
     "keycloak-js": "^18.0.0",
+    "observable-hooks": "^4.2.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-query": "^3.39.0",
