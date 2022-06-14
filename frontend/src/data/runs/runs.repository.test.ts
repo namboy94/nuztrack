@@ -60,4 +60,26 @@ describe("Runs Repository", () => {
             }
         })
     })
+    it("should select a Nuzlocke Run", (done) => {
+        runsRepository.setActiveRun(NUZLOCKE_RUN)
+        runsRepository.queryActiveRun$().subscribe({
+            next: result => {
+                expect(result).toEqual(NUZLOCKE_RUN)
+                done()
+            }
+        })
+        runsRepository.setActiveRun(NUZLOCKE_RUN_2)
+        runsRepository.queryActiveRun$().subscribe({next: result => expect(result).toEqual(NUZLOCKE_RUN)})
+    })
+    it("should select a new Nuzlocke Run", (done) => {
+        runsRepository.setActiveRun(NUZLOCKE_RUN)
+
+        runsRepository.setActiveRun(NUZLOCKE_RUN_2)
+        runsRepository.queryActiveRun$().subscribe({
+            next: result => {
+                expect(result).toEqual(NUZLOCKE_RUN_2)
+                done()
+            }
+        })
+    })
 })

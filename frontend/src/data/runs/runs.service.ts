@@ -25,6 +25,10 @@ class RunsService {
         return this.repo.queryRun$(runId)
     }
 
+    getActiveRun$(): Observable<NuzlockeRun | undefined> {
+        return this.repo.queryActiveRun$()
+    }
+
     addRun$(runCreator: NuzlockeRunCreator): Observable<NuzlockeRun> {
         const creatorTO = this.converter.convertNuzlockeRunCreatorModelToTO(runCreator)
         return this.api.postRun$(creatorTO).pipe(
@@ -38,6 +42,10 @@ class RunsService {
             tap(() => this.repo.deleteRun(runId)),
             ignoreElements()
         )
+    }
+
+    selectActiveRun(run: NuzlockeRun) {
+        this.repo.setActiveRun(run)
     }
 }
 

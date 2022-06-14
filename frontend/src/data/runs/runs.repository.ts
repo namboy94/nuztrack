@@ -3,6 +3,7 @@ import {
     deleteEntities,
     selectAllEntities,
     selectEntity,
+    selectFirst,
     setEntities,
     upsertEntities,
     withEntities
@@ -13,6 +14,11 @@ import {Observable} from "rxjs";
 class RunsRepository {
     private runsStore = createStore(
         {name: "runs"},
+        withEntities<NuzlockeRun, "id">({idKey: "id"})
+    )
+
+    private activeRunStore = createStore(
+        {name: "activeRun"},
         withEntities<NuzlockeRun, "id">({idKey: "id"})
     )
 
@@ -32,12 +38,20 @@ class RunsRepository {
         return this.runsStore.pipe(selectEntity(runId))
     }
 
+    queryActiveRun$(): Observable<NuzlockeRun | undefined> {
+        return this.activeRunStore.pipe(selectFirst())
+    }
+
     addRun(run: NuzlockeRun) {
         this.runsStore.update(upsertEntities(run))
     }
 
     deleteRun(runId: number) {
         this.runsStore.update(deleteEntities(runId))
+    }
+
+    setActiveRun(run: NuzlockeRun) {
+        this.activeRunStore.update(setEntities([run]))
     }
 }
 

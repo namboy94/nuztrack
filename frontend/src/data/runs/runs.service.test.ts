@@ -77,4 +77,20 @@ describe("RunsService", () => {
             }
         })
     })
+    it("should retrieve the active run", (done) => {
+        const repoMock = jest.spyOn(runsRepository, "queryActiveRun$").mockReturnValue(of(NUZLOCKE_RUN))
+        runsService.getActiveRun$().subscribe({
+            next: result => {
+                expect(result).toEqual(NUZLOCKE_RUN)
+                expect(repoMock).toHaveBeenCalledTimes(1)
+                done()
+            }
+        })
+    })
+    it("should set the active run", (done) => {
+        const repoMock = jest.spyOn(runsRepository, "setActiveRun").mockImplementation()
+        runsService.selectActiveRun(NUZLOCKE_RUN)
+        expect(repoMock).toHaveBeenCalledTimes(1)
+        done()
+    })
 })
