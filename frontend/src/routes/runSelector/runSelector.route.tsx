@@ -15,7 +15,7 @@ export function RunSelectorRoute(props: RouteProps) {
     const loading = useRunSelectorDataLoader()
     const [openDeleteDialog, deleteDialogProps] = useDeleteRunDialogProps()
     const [openCreateDialog, createDialogProps] = useCreateNewRunDialogProps(props.notify)
-    const runsTableProps = useRunsTableProps(openDeleteDialog)
+    const runsTableProps = useRunsTableProps(props.notify, openDeleteDialog)
 
     if (loading) {
         return <h1>LOADING</h1>
@@ -29,6 +29,8 @@ export function RunSelectorRoute(props: RouteProps) {
                     onClick={openCreateDialog}>
                 Create New Nuzlocke Run
             </Button>
+
+            <div style={{height: 10}}/>
 
             <RunsTable {...runsTableProps}/>
             <CreateNewRunDialog {...createDialogProps}/>

@@ -82,4 +82,24 @@ describe("Runs Repository", () => {
             }
         })
     })
+    it("should unselect the current run if it is deleted", (done) => {
+        runsRepository.setActiveRun(NUZLOCKE_RUN)
+        runsRepository.deleteRun(NUZLOCKE_RUN.id)
+        runsRepository.queryActiveRun$().subscribe({
+            next: result => {
+                expect(result).toBeUndefined()
+                done()
+            }
+        })
+    })
+    it("should unselect the current run", (done) => {
+        runsRepository.setActiveRun(NUZLOCKE_RUN)
+        runsRepository.setActiveRun(undefined)
+        runsRepository.queryActiveRun$().subscribe({
+            next: result => {
+                expect(result).toBeUndefined()
+                done()
+            }
+        })
+    })
 })

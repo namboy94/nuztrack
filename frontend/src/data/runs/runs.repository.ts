@@ -10,6 +10,7 @@ import {
 } from "@ngneat/elf-entities";
 import {NuzlockeRun} from "./runs.model";
 import {Observable} from "rxjs";
+import {localStorageStrategy, persistState} from "@ngneat/elf-persist-state";
 
 class RunsRepository {
     private runsStore = createStore(
@@ -20,6 +21,10 @@ class RunsRepository {
     private activeRunStore = createStore(
         {name: "activeRun"},
         withEntities<NuzlockeRun, "id">({idKey: "id"})
+    )
+    private activeRunPersistence = persistState(
+        this.activeRunStore,
+        {key: "activeRun", storage: localStorageStrategy}
     )
 
     clear() {
@@ -48,10 +53,15 @@ class RunsRepository {
 
     deleteRun(runId: number) {
         this.runsStore.update(deleteEntities(runId))
+        this.activeRunStore.update(deleteEntities(runId))
     }
 
-    setActiveRun(run: NuzlockeRun) {
-        this.activeRunStore.update(setEntities([run]))
+    setActiveRun(run: NuzlockeRun | undefined) {
+        if (run === undefined) {
+            this.activeRunStore.update(setEntities([]))
+        } else {
+            this.activeRunStore.update(setEntities([run]))
+        }
     }
 }
 

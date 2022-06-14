@@ -47,6 +47,10 @@ class RunsService {
     selectActiveRun(run: NuzlockeRun) {
         this.repo.setActiveRun(run)
     }
+
+    closeActiveRun() {
+        this.repo.setActiveRun(undefined)
+    }
 }
 
 export const runsService = new RunsService()
