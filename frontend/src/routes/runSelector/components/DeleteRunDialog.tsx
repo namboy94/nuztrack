@@ -18,14 +18,16 @@ export function DeleteRunDialog(props: DeleteRunDialogProps) {
 
     return (
         <Dialog open={open} onClose={onClose}>
-            <DialogTitle>Delete Run '{run.name}'?</DialogTitle>
+            <DialogTitle data-testid="title">Delete Run '{run.name}'?</DialogTitle>
             <DialogActions>
-                <Button variant="contained"
+                <Button data-testid="cancel-button"
+                        variant="contained"
                         color="info"
                         onClick={onClose}>
                     Cancel
                 </Button>
-                <Button variant="contained"
+                <Button data-testid="delete-button"
+                        variant="contained"
                         color="error"
                         onClick={deleteRun}>
                     Delete

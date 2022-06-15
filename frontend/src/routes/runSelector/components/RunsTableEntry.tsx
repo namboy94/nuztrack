@@ -32,32 +32,35 @@ export function RunsTableEntry(props: RunsTableEntryProps) {
         <Card>
             <Box sx={{position: 'relative'}}>
                 <CardMedia
+                    data-testid="run-image"
                     height="250"
                     component="img"
                     alt={run.game}
                     image={BACKEND_URL + "/covers/" + run.game + ".webp"}
                 />
-                <Box sx={{
+                <Box data-testid="run-info" sx={{
                     ...titleStyleBase,
                     color: textColor,
                     padding: "10px",
                     paddingTop: "20px",
                     bgcolor: textBG,
                 }}>
-                    <Typography variant="h4">{run.name}</Typography>
-                    <Typography variant="body1">{run.status}</Typography>
+                    <Typography data-testid="run-title" variant="h4">{run.name}</Typography>
+                    <Typography data-testid="run-status" variant="body1">{run.status}</Typography>
 
                 </Box>
                 <Box sx={titleStyleBase}>
                     <CardActions style={{justifyContent: 'right'}}>
                         <Stack direction={"column"}>
-                            <Button color="error"
+                            <Button data-testid="open-delete-button"
+                                    color="error"
                                     variant="contained"
                                     style={{margin: 3}}
                                     onClick={() => openDeleteDialog(run)}>
                                 Delete
                             </Button>
-                            <Button color={buttonColor}
+                            <Button data-testid="select-button"
+                                    color={buttonColor}
                                     variant="contained"
                                     style={{margin: 3}}
                                     onClick={() => buttonFn(run)}>
