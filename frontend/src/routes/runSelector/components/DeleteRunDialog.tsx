@@ -1,16 +1,16 @@
 import {NuzlockeRun} from "../../../data/runs/runs.model";
 import {Button, Dialog, DialogActions, DialogTitle} from "@mui/material";
 import React from "react";
-import {runsService} from "../../../data/runs/runs.service";
 
 export interface DeleteRunDialogProps {
-    open: boolean,
-    onClose: () => void,
+    open: boolean
+    onClose: () => void
     run: NuzlockeRun | null
+    deleteRun: () => void
 }
 
 export function DeleteRunDialog(props: DeleteRunDialogProps) {
-    const {open, run, onClose} = props
+    const {open, run, onClose, deleteRun} = props
 
     if (run === null) {
         return <></>
@@ -27,7 +27,7 @@ export function DeleteRunDialog(props: DeleteRunDialogProps) {
                 </Button>
                 <Button variant="contained"
                         color="error"
-                        onClick={() => runsService.deleteRun$(run.id).subscribe({complete: onClose})}>
+                        onClick={deleteRun}>
                     Delete
                 </Button>
             </DialogActions>

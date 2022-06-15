@@ -1,8 +1,10 @@
 import {useState} from "react";
 import {NuzlockeRun} from "../../../data/runs/runs.model";
 import {DeleteRunDialogProps} from "../components/DeleteRunDialog";
+import {runsService} from "../../../data/runs/runs.service";
+import {NotificationFN} from "../../../components/Snackbar";
 
-export function useDeleteRunDialogProps(): [(run: NuzlockeRun) => void, DeleteRunDialogProps] {
+export function useDeleteRunDialogProps(notify: NotificationFN): [(run: NuzlockeRun) => void, DeleteRunDialogProps] {
     const [open, setOpen] = useState(false)
     const [run, setRun] = useState<NuzlockeRun | null>(null)
 
@@ -14,11 +16,22 @@ export function useDeleteRunDialogProps(): [(run: NuzlockeRun) => void, DeleteRu
         setOpen(false)
         setRun(null)
     }
+    const deleteRun = () => {
+        if (run !== null) {
+            runsService.deleteRun$(run.id).subscribe({
+                complete: () => {
+                    closeDialog()
+                    notify(`Run ${run.name} has been deleted`, "info")
+                }
+            })
+        }
+    }
 
     const props = {
         open: open,
         run: run,
-        onClose: closeDialog
+        onClose: closeDialog,
+        deleteRun: deleteRun
     }
 
     return [openDialog, props]

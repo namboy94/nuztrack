@@ -1,10 +1,10 @@
 import {Observable} from "rxjs";
 import {DependencyList, useEffect, useState} from "react";
 
-export function useService<T>(serviceObservable: Observable<T>, deps: DependencyList): boolean {
+export function useService<T>(serviceFunction: () => Observable<T>, deps: DependencyList): boolean {
     const [loading, setLoading] = useState(true)
     useEffect(() => {
-        const subscription = serviceObservable.subscribe({
+        const subscription = serviceFunction().subscribe({
             complete: () => setLoading(false)
         })
         return () => subscription.unsubscribe()
@@ -13,10 +13,10 @@ export function useService<T>(serviceObservable: Observable<T>, deps: Dependency
 }
 
 
-export function useQuery<T>(queryObservable: Observable<T>, initial: T, deps: DependencyList): T {
+export function useQuery<T>(queryFunction: () => Observable<T>, initial: T, deps: DependencyList): T {
     const [queryResult, setQueryResult] = useState<T>(initial)
     useEffect(() => {
-        const subscription = queryObservable.subscribe({
+        const subscription = queryFunction().subscribe({
             next: result => {
                 setQueryResult(result)
             }

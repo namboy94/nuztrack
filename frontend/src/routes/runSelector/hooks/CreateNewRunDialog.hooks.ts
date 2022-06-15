@@ -12,8 +12,8 @@ import {useQuery} from "../../../util/observable.hooks";
 export function useCreateNewRunDialogProps(notify: NotificationFN): [() => void, CreateNewRunDialogProps] {
 
     const [open, setOpen] = useState(false)
-    const rulesDetails = useQuery(rulesService.getRulesDetails$(), undefined, [])
-    const gameList = useQuery(gamesService.getGameList$(), undefined, [])
+    const rulesDetails = useQuery(() => rulesService.getRulesDetails$(), undefined, [])
+    const gameList = useQuery(() => gamesService.getGameList$(), undefined, [])
     const state = useCreateNewRunDialogState(gameList, rulesDetails)
 
     const openDialog = () => setOpen(true)
