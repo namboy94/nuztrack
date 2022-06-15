@@ -4,14 +4,29 @@ import {CreateNewRunDialogProps} from "../components/CreateNewRunDialog";
 import {NUZLOCKE_RUN, NUZLOCKE_RUN_CREATOR} from "../../../data/runs/runs.testconstants";
 import {runsService} from "../../../data/runs/runs.service";
 import {of, throwError} from "rxjs";
+import {gamesService} from "../../../data/games/games.service";
+import {GAME_LIST} from "../../../data/games/games.testconstants";
+import {rulesService} from "../../../data/rules/rules.service";
+import {RULES_DETAILS} from "../../../data/rules/rules.testconstants";
 
 describe("useCreateNewRunDialogProps", () => {
 
     const notify = jest.fn()
 
     function createMocksAndRender(): { current: [(() => void), CreateNewRunDialogProps] } {
+        jest.spyOn(gamesService, "getGameList$").mockReturnValue(of(GAME_LIST))
+        jest.spyOn(rulesService, "getRulesDetails$").mockReturnValue(of(RULES_DETAILS))
         return renderHook(() => useCreateNewRunDialogProps(notify)).result
     }
+
+    it("should test the data loading", (done) => {
+        const props = createMocksAndRender().current[1]
+        expect(props.gameList).toEqual(GAME_LIST)
+        expect(props.rulesDetails).toEqual(RULES_DETAILS)
+        expect(gamesService.getGameList$).toHaveBeenCalledTimes(1)
+        expect(rulesService.getRulesDetails$).toHaveBeenCalledTimes(1)
+        done()
+    })
 
     it("should test opening the dialog", (done) => {
         const result = createMocksAndRender()
@@ -64,8 +79,8 @@ describe("useCreateNewRunDialogProps", () => {
         act(() => props.state.reset())
         props = result.current[1]
         expect(props.state.name).toEqual("")
-        expect(props.state.game).toEqual("RED")
-        expect(props.state.rules).toEqual([])
+        expect(props.state.game).toEqual(Array.from(GAME_LIST.keys())[0])
+        expect(props.state.rules).toEqual(RULES_DETAILS.defaultRules)
         expect(props.state.customRules).toEqual([])
 
         done()
@@ -95,8 +110,8 @@ describe("useCreateNewRunDialogProps", () => {
 
         expect(props.open).toBeFalsy()
         expect(props.state.name).toEqual("")
-        expect(props.state.game).toEqual("RED")
-        expect(props.state.rules).toEqual([])
+        expect(props.state.game).toEqual(Array.from(GAME_LIST.keys())[0])
+        expect(props.state.rules).toEqual(RULES_DETAILS.defaultRules)
         expect(props.state.customRules).toEqual([])
 
         expect(runsService.addRun$).toHaveBeenCalledTimes(1)
@@ -129,4 +144,48 @@ describe("useCreateNewRunDialogProps", () => {
         expect(notify).toHaveBeenCalledWith(expect.anything(), "error")
         done()
     })
+
+    it("should not submit twice", (done) => {
+        jest.spyOn(runsService, "addRun$").mockReturnValue(of(NUZLOCKE_RUN))
+
+        const result = createMocksAndRender()
+        let props = result.current[1]
+
+        act(() => {
+            props.state.setName(NUZLOCKE_RUN_CREATOR.name)
+            props.state.setGame(NUZLOCKE_RUN_CREATOR.game)
+            props.state.setRules(NUZLOCKE_RUN_CREATOR.rules)
+            props.state.setCustomRules(NUZLOCKE_RUN_CREATOR.customRules)
+        })
+        props = result.current[1]
+
+        act(() => props.submit())
+        props = result.current[1]
+
+        act(() => props.submit())
+        props = result.current[1]
+
+        expect(runsService.addRun$).toHaveBeenCalledTimes(1)
+        expect(runsService.addRun$).toHaveBeenCalledWith(NUZLOCKE_RUN_CREATOR)
+        expect(notify).toHaveBeenCalledTimes(1)
+        expect(notify).toHaveBeenCalledWith(expect.anything(), "success")
+        done()
+    })
+
+    it("should be initialized correctly", (done) => {
+        jest.spyOn(gamesService, "getGameList$").mockReturnValue(of(undefined))
+        jest.spyOn(rulesService, "getRulesDetails$").mockReturnValue(of(undefined))
+        let props = renderHook(() => useCreateNewRunDialogProps(notify)).result.current[1]
+        expect(props.state.game).toEqual("")
+        expect(props.state.rules).toEqual([])
+
+        jest.spyOn(gamesService, "getGameList$").mockReturnValue(of(GAME_LIST))
+        jest.spyOn(rulesService, "getRulesDetails$").mockReturnValue(of(RULES_DETAILS))
+        props = renderHook(() => useCreateNewRunDialogProps(notify)).result.current[1]
+        expect(props.state.game).toEqual(Array.from(GAME_LIST.keys())[0])
+        expect(props.state.rules).toEqual(RULES_DETAILS.defaultRules)
+
+        done()
+    })
+
 })
