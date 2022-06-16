@@ -38,7 +38,7 @@ export function RunsTableEntry(props: RunsTableEntryProps) {
                     alt={run.game}
                     image={BACKEND_URL + "/covers/" + run.game + ".webp"}
                 />
-                <Box data-testid="run-info" sx={{
+                <Box sx={{
                     ...titleStyleBase,
                     color: textColor,
                     padding: "10px",

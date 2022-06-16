@@ -1,4 +1,4 @@
-import {useRunSelectorDataLoader} from "./hooks/runSelector.data.hook";
+import {useRunSelectorDataLoader} from "./hooks/RunSelector.data.hook";
 import {Button} from "@mui/material";
 import * as React from "react";
 import AddIcon from '@mui/icons-material/Add';
@@ -13,7 +13,7 @@ import {RunsTable} from "./components/RunsTable";
 export function RunSelectorRoute(props: RouteProps) {
 
     const loading = useRunSelectorDataLoader()
-    const [openDeleteDialog, deleteDialogProps] = useDeleteRunDialogProps()
+    const [openDeleteDialog, deleteDialogProps] = useDeleteRunDialogProps(props.notify)
     const [openCreateDialog, createDialogProps] = useCreateNewRunDialogProps(props.notify)
     const runsTableProps = useRunsTableProps(props.notify, openDeleteDialog)
 
@@ -23,7 +23,8 @@ export function RunSelectorRoute(props: RouteProps) {
 
     return (
         <div>
-            <Button variant="contained"
+            <Button data-testid="open-create-button"
+                    variant="contained"
                     size={"large"}
                     startIcon={<AddIcon/>}
                     onClick={openCreateDialog}>

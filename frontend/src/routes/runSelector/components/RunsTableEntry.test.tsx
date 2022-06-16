@@ -2,6 +2,7 @@ import {RunsTableEntry, RunsTableEntryProps} from "./RunsTableEntry";
 import {NuzlockeRun} from "../../../data/runs/runs.model";
 import {NUZLOCKE_RUN} from "../../../data/runs/runs.testconstants";
 import {render, screen} from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
 describe("RunsTableEntry", () => {
 
@@ -23,12 +24,10 @@ describe("RunsTableEntry", () => {
     it("should render the component", (done) => {
         renderComponent()
 
-        const infoBox = screen.getByTestId("run-info")
         const title = screen.getByTestId("run-title")
         const status = screen.getByTestId("run-status")
         const image = screen.getByTestId("run-image")
 
-        expect(infoBox).toBeInTheDocument()
         expect(title).toBeInTheDocument()
         expect(status).toBeInTheDocument()
         expect(image).toBeInTheDocument()
@@ -43,14 +42,48 @@ describe("RunsTableEntry", () => {
     it("should correctly render active run", (done) => {
         renderComponent(true)
 
-        const infoBox = screen.getByTestId("run-info")
+        const selectButton = screen.getByTestId("select-button")
+        expect(selectButton.textContent).toEqual("Close")
 
-        expect(infoBox.style).toEqual("black")
-        //
-        //
-        // expect(title.textContent).toEqual(NUZLOCKE_RUN.name)
-        // expect(status.textContent).toEqual(NUZLOCKE_RUN.status)
-        // expect(image.outerHTML).toContain(NUZLOCKE_RUN.game)
+        done()
+    })
+
+    it("should correctly render inactive run", (done) => {
+        renderComponent(false)
+
+        const selectButton = screen.getByTestId("select-button")
+        expect(selectButton.textContent).toEqual("Select")
+
+        done()
+    })
+
+    it("should push the select button", (done) => {
+        renderComponent(false)
+
+        const selectButton = screen.getByTestId("select-button")
+        userEvent.click(selectButton)
+
+        expect(selectActiveRun).toHaveBeenCalledTimes(1)
+
+        done()
+    })
+    it("should push the delete button", (done) => {
+        renderComponent(false)
+
+        const selectButton = screen.getByTestId("open-delete-button")
+        userEvent.click(selectButton)
+
+        expect(openDeleteDialog).toHaveBeenCalledTimes(1)
+
+        done()
+    })
+    it("should push the close button", (done) => {
+        renderComponent(true)
+
+        const selectButton = screen.getByTestId("select-button")
+        userEvent.click(selectButton)
+
+        expect(closeRun).toHaveBeenCalledTimes(1)
 
         done()
     })

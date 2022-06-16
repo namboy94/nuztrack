@@ -19,7 +19,11 @@ export function RunsTable(props: RunsTableProps) {
     return (
         <Grid container spacing={2} id="runs">
             {runs.map((run) =>
-                <Grid item xs={4} key={run.id}>
+                <Grid
+                    data-testid="run-entry-grid"
+                    item xs={4}
+                    key={run.id}
+                >
                     <RunsTableEntry
                         run={run}
                         active={run.id === activeRun?.id}

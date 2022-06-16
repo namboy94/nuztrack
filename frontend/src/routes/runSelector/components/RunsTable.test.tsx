@@ -1,6 +1,6 @@
 import {NuzlockeRun} from "../../../data/runs/runs.model";
 import {NUZLOCKE_RUN, NUZLOCKE_RUN_2} from "../../../data/runs/runs.testconstants";
-import {render} from "@testing-library/react";
+import {render, screen} from "@testing-library/react";
 import {RunsTable, RunsTableProps} from "./RunsTable";
 
 describe("RunsTable", () => {
@@ -21,6 +21,10 @@ describe("RunsTable", () => {
     }
 
     it("should render the component", (done) => {
+        renderComponent()
 
+        const runEntries = screen.getAllByTestId("run-entry-grid")
+        expect(runEntries.length).toEqual(2)
+        done()
     })
 })

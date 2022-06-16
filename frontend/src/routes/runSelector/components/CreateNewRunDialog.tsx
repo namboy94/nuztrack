@@ -41,7 +41,7 @@ export function CreateNewRunDialog(props: CreateNewRunDialogProps) {
     const {open, onClose, gameList, rulesDetails, state, submit} = props
 
     if (gameList === undefined || rulesDetails === undefined) {
-        return <h1>LOADING</h1>
+        return <></>
     }
 
     return (
@@ -51,17 +51,20 @@ export function CreateNewRunDialog(props: CreateNewRunDialogProps) {
                 <Grid container spacing={2}>
                     <Grid item>
                         <TextField
+                            data-testid="name-input"
                             autoFocus
                             margin="dense"
                             variant="outlined"
                             type="text"
                             required
                             label="Run Name"
+                            value={state.name}
                             onChange={x => state.setName(x.target.value)}
                         />
                     </Grid>
                     <Grid item>
                         <Autocomplete
+                            data-testid="game-input"
                             sx={{width: 200}}
                             options={Array.from(gameList.keys())}
                             value={state.game}
@@ -78,6 +81,7 @@ export function CreateNewRunDialog(props: CreateNewRunDialogProps) {
                     {Array.from(rulesDetails.rules.keys()).map(key =>
                         <FormControlLabel label={rulesDetails.rules.get(key)} key={key} control={
                             <Checkbox
+                                data-testid="rule-input"
                                 name={key}
                                 checked={state.rules.includes(key)}
                                 onChange={x => {
@@ -91,8 +95,10 @@ export function CreateNewRunDialog(props: CreateNewRunDialogProps) {
                     )}
                 </FormGroup>
                 <TextField
+                    data-testid="custom-rules-input"
                     onChange={(x) => state.setCustomRules(x.target.value.split("\n"))}
                     fullWidth
+                    value={state.customRules.join("\n")}
                     margin="dense"
                     variant="filled"
                     multiline
@@ -102,9 +108,11 @@ export function CreateNewRunDialog(props: CreateNewRunDialogProps) {
                 />
             </DialogContent>
             <DialogActions>
-                <Button variant="contained" color="error"
+                <Button data-testid="cancel-button"
+                        variant="contained" color="error"
                         onClick={onClose}>Cancel</Button>
-                <Button variant="contained" color="success"
+                <Button data-testid="create-button"
+                        variant="contained" color="success"
                         onClick={submit}>Create</Button>
             </DialogActions>
         </Dialog>

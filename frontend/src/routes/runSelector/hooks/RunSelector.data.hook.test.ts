@@ -3,7 +3,7 @@ import {EMPTY} from "rxjs";
 import {rulesService} from "../../../data/rules/rules.service";
 import {gamesService} from "../../../data/games/games.service";
 import {renderHook} from "@testing-library/react";
-import {useRunSelectorDataLoader} from "./runSelector.data.hook";
+import {useRunSelectorDataLoader} from "./RunSelector.data.hook";
 
 describe("useRunSelectorDataLoader", () => {
     it("should load the data", (done) => {

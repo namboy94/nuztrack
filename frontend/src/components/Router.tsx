@@ -1,7 +1,7 @@
 import {Route, Routes} from "react-router-dom";
 import React from "react";
 import {NotificationFN} from "./Snackbar";
-import {RunSelectorRoute} from "../routes/runSelector/runSelector.route";
+import {RunSelectorRoute} from "../routes/runSelector/RunSelector.route";
 
 export interface RouterProps {
     notify: NotificationFN
