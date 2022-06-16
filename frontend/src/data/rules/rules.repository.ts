@@ -10,7 +10,7 @@ interface RulesDetailsWrapper {
 
 class RulesRepository {
     private rulesDetailsStore = createStore(
-        {name: "games"},
+        {name: "rules"},
         withEntities<RulesDetailsWrapper>()
     )
 
