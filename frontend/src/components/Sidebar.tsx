@@ -11,13 +11,18 @@ import HomeIcon from '@mui/icons-material/Home';
 import {Link, useLocation} from "react-router-dom";
 import {item, itemCategory} from "./style/sidebarStyle"
 import {structure} from "./Sidebar.structure";
+import {useQuery} from "../util/observable.hooks";
+import {runsService} from "../data/runs/runs.service";
 
 export default function Sidebar() {
 
     const location = useLocation();
     let sections = structure;
+    const run = useQuery(() => runsService.getActiveRun$(), undefined, [])
 
-    sections = []
+    if (run === undefined) {
+        sections = []
+    }
 
     return (
         <Drawer variant="permanent"
