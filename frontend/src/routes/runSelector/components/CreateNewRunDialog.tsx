@@ -13,20 +13,20 @@ import {
 } from "@mui/material";
 import React from "react";
 import {RulesDetails} from "../../../data/rules/rules.model";
-import {GameList} from "../../../data/games/games.model";
+import {Game} from "../../../data/games/games.model";
 
 export interface CreateNewRunDialogProps {
     open: boolean
     onClose: () => void
-    gameList: GameList | undefined
+    games: Game[] | undefined
     rulesDetails: RulesDetails | undefined
     state: CreateNewRunDialogState
     submit: () => void
 }
 
 export interface CreateNewRunDialogState {
-    game: string,
-    setGame: (game: string) => void,
+    game: Game,
+    setGame: (game: Game) => void,
     name: string,
     setName: (name: string) => void,
     rules: string[],
@@ -38,9 +38,9 @@ export interface CreateNewRunDialogState {
 
 export function CreateNewRunDialog(props: CreateNewRunDialogProps) {
 
-    const {open, onClose, gameList, rulesDetails, state, submit} = props
+    const {open, onClose, games, rulesDetails, state, submit} = props
 
-    if (gameList === undefined || rulesDetails === undefined) {
+    if (games === undefined || rulesDetails === undefined) {
         return <></>
     }
 
@@ -66,10 +66,10 @@ export function CreateNewRunDialog(props: CreateNewRunDialogProps) {
                         <Autocomplete
                             data-testid="game-input"
                             sx={{width: 200}}
-                            options={Array.from(gameList.keys())}
+                            options={games}
                             value={state.game}
                             disableClearable
-                            getOptionLabel={x => gameList.get(x)!!}
+                            getOptionLabel={game => game.title}
                             onChange={(_, newGame) => state.setGame(newGame)}
                             renderInput={(params) =>
                                 <TextField label="Game" margin="dense" variant={"outlined"} {...params}/>}

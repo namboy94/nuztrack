@@ -1,10 +1,12 @@
-export interface GameListTO {
-    [key: string]: string
+export interface GameTO {
+    title: string,
+    key: string
+    generation: number
 }
 
 export interface GameLocationTO {
     name: string,
-    gameKey: string,
+    game: GameTO,
     encounters: number[],
     milestones: MilestoneTO[]
 }

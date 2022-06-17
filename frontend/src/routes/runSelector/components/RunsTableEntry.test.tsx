@@ -34,7 +34,7 @@ describe("RunsTableEntry", () => {
 
         expect(title.textContent).toEqual(NUZLOCKE_RUN.name)
         expect(status.textContent).toEqual(NUZLOCKE_RUN.status)
-        expect(image.outerHTML).toContain(NUZLOCKE_RUN.game)
+        expect(image.outerHTML).toContain(NUZLOCKE_RUN.game.title)
 
         done()
     })

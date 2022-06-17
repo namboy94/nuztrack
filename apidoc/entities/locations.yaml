@@ -7,8 +7,8 @@ LocationTO:
   properties:
     name:
       $ref: "../types/locations.yaml#/locationName"
-    gameKey:
-      $ref: "../types/locations.yaml#/gameKey"
+    game:
+      $ref: "./games.yaml#/GameTO"
     encounters:
       $ref: "../types/locations.yaml#/encounterIds"
     milestones:

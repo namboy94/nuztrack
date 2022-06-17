@@ -1,12 +1,7 @@
 import {createStore} from '@ngneat/elf';
-import {selectAllEntities, selectEntity, setEntities, upsertEntities, withEntities} from "@ngneat/elf-entities";
+import {selectAllEntities, setEntities, upsertEntities, withEntities} from "@ngneat/elf-entities";
 import {map, Observable} from "rxjs";
-import {GameList, GameLocation} from "./games.model";
-
-interface GameListWrapper {
-    gameList: GameList
-    id: number
-}
+import {Game, GameLocation} from "./games.model";
 
 interface GameLocationWrapper {
     location: GameLocation
@@ -15,10 +10,11 @@ interface GameLocationWrapper {
 
 
 class GamesRepository {
-    private gameListStore = createStore(
+    private gamesStore = createStore(
         {name: "games"},
-        withEntities<GameListWrapper>()
+        withEntities<Game, "key">({idKey: "key"})
     )
+
     private locationsStore = createStore(
         {name: "locations"},
         withEntities<GameLocationWrapper>()
@@ -30,11 +26,11 @@ class GamesRepository {
 
     // noinspection JSMethodCanBeStatic
     private generateIdForGameLocation(gameLocation: GameLocation): string {
-        return gameLocation.gameKey + gameLocation.name
+        return gameLocation.game.key + gameLocation.name
     }
 
-    setGameList(gameList: GameList) {
-        this.gameListStore.update(setEntities([{gameList: gameList, id: 1}]))
+    setGames(games: Game[]) {
+        this.gamesStore.update(setEntities(games))
     }
 
     addGameLocations(gameLocations: GameLocation[]) {
@@ -42,14 +38,14 @@ class GamesRepository {
         this.locationsStore.update(upsertEntities(wrapped))
     }
 
-    queryGameList$(): Observable<GameList | undefined> {
-        return this.gameListStore.pipe(selectEntity(1), map(x => x?.gameList))
+    queryGames$(): Observable<Game[] | undefined> {
+        return this.gamesStore.pipe(selectAllEntities())
     }
 
-    queryGameLocations$(gameKey: string): Observable<GameLocation[]> {
+    queryGameLocations$(game: Game): Observable<GameLocation[]> {
         return this.locationsStore.pipe(
             selectAllEntities(),
-            map(wrapped => wrapped.map(x => x.location).filter(x => x.gameKey === gameKey))
+            map(wrapped => wrapped.map(x => x.location).filter(x => x.game.key === game.key))
         )
     }
 }

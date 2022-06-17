@@ -1,11 +1,13 @@
 get:
   tags: [ "Information" ]
   summary: "Get Games"
-  description: "Retrieves a mapping of game keys to game titles"
+  description: "Retrieves a list of objects detailing a Pokemon game"
   responses:
     "200":
       description: "Success"
       content:
         application/json:
           schema:
-            $ref: "../entities/games.yaml#/GamesMapping"
+            type: array
+            items:
+              $ref: "../entities/games.yaml#/GameTO"

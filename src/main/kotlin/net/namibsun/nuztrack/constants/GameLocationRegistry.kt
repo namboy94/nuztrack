@@ -4,20 +4,20 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import net.namibsun.nuztrack.constants.enums.ErrorMessages
 import net.namibsun.nuztrack.constants.enums.Games
-import net.namibsun.nuztrack.transfer.GameLocationTO
+import net.namibsun.nuztrack.transfer.GameLocationFileTO
 import net.namibsun.nuztrack.transfer.MilestoneTO
 import org.springframework.core.io.ClassPathResource
 
 object GameLocationRegistry {
-    private val gameLocations: Map<Games, List<GameLocationTO>>
+    private val gameLocations: Map<Games, List<GameLocationFileTO>>
 
     init {
         val registryStream = ClassPathResource("data/locations.json").inputStream
-        val rawGameLocations: Map<String, List<GameLocationTO>> = jacksonObjectMapper().readValue(registryStream)
+        val rawGameLocations: Map<String, List<GameLocationFileTO>> = jacksonObjectMapper().readValue(registryStream)
         gameLocations = rawGameLocations.entries.associate { Games.valueOf(it.key.uppercase()) to it.value }
     }
 
-    fun getLocationsForGame(game: Games): List<GameLocationTO> {
+    fun getLocationsForGame(game: Games): List<GameLocationFileTO> {
         return gameLocations[game] ?: throw NotFoundException(ErrorMessages.INVALID_GAME)
     }
 

@@ -6,8 +6,9 @@ gameKey:
 gameTitle:
   type: string
   description: The title of a mainline Pokemon game
-  example: "HeartGold"
+  example: "Brilliant Diamond"
 
-gameMapping:
-  description: "Game keys mapped to game titles"
-  example: { "FIRERED": "FireRed", "OMEGA_RUBY": "Omega Ruby" }
+gameGeneration:
+  type: integer
+  description: The generation of a mainline Pokemon game
+  example: 8

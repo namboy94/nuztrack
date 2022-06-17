@@ -13,7 +13,7 @@ class TeamConverter {
     convertTeamMemberTOToModel(to: TeamMemberTO, teamState: TeamState, runId: number): TeamMember {
         return {
             ...to,
-            gender: Gender[to.gender as keyof typeof Gender],
+            gender: to.gender === null ? null : Gender[to.gender as keyof typeof Gender],
             teamState: teamState,
             runId: runId
         }

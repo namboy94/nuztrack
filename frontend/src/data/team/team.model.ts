@@ -17,9 +17,9 @@ export interface TeamMember {
     nickname: string
     pokedexNumber: number
     level: number
-    gender: Gender
-    nature: string
-    abilitySlot: number
+    gender: Gender | null
+    nature: string | null
+    abilitySlot: number | null
     encounterId: number
     deathId: number | null
     evolutionIds: number[]

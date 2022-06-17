@@ -6,6 +6,6 @@ import {useService} from "../../../util/observable.hooks";
 export function useRunSelectorDataLoader(): boolean {
     const loadingRuns = useService(() => runsService.loadRuns$(), [])
     const loadingRules = useService(() => rulesService.loadRulesDetails$(), [])
-    const loadingGames = useService(() => gamesService.loadGameList$(), [])
+    const loadingGames = useService(() => gamesService.loadGames$(), [])
     return loadingRules || loadingRuns || loadingGames
 }

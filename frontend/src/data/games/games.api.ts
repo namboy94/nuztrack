@@ -1,9 +1,9 @@
 import axios from "axios-observable";
 import {map, Observable} from "rxjs";
-import {GameListTO, GameLocationTO} from "./games.transfer";
+import {GameLocationTO, GameTO} from "./games.transfer";
 
 class GamesApi {
-    getGameList$(): Observable<GameListTO> {
+    getGames$(): Observable<GameTO[]> {
         return axios.get("/api/games").pipe(map(x => x.data))
     }
 

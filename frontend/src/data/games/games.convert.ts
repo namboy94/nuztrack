@@ -1,9 +1,9 @@
-import {GameListTO, GameLocationTO, MilestoneTO} from "./games.transfer";
-import {GameList, GameLocation, Milestone} from "./games.model";
+import {GameLocationTO, GameTO, MilestoneTO} from "./games.transfer";
+import {Game, GameLocation, Milestone} from "./games.model";
 
 class GamesConverter {
-    convertGameListTOToModel(to: GameListTO): GameList {
-        return new Map<string, string>(Object.entries(to))
+    convertGameTOToModel(to: GameTO): Game {
+        return {...to}
     }
 
     convertGameLocationTOToModel(to: GameLocationTO): GameLocation {

@@ -30,14 +30,14 @@ export const TEAM_MEMBER_1: TeamMember = {
     teamSwitchIds: []
 }
 export const TEAM_MEMBER_2_TO: TeamMemberTO = {
-    abilitySlot: 1,
+    abilitySlot: null,
     deathId: 2,
     encounterId: 2,
     evolutionIds: [],
-    gender: "MALE",
+    gender: null,
     id: 2,
     level: 5,
-    nature: "BOLD",
+    nature: null,
     nickname: "Char",
     pokedexNumber: 4,
     teamSwitchIds: [2]
@@ -45,14 +45,14 @@ export const TEAM_MEMBER_2_TO: TeamMemberTO = {
 export const TEAM_MEMBER_2: TeamMember = {
     runId: 1,
     teamState: TeamState.DEAD,
-    abilitySlot: 1,
+    abilitySlot: null,
     deathId: 2,
     encounterId: 2,
     evolutionIds: [],
-    gender: Gender.MALE,
+    gender: null,
     id: 2,
     level: 5,
-    nature: "BOLD",
+    nature: null,
     nickname: "Char",
     pokedexNumber: 4,
     teamSwitchIds: [2]

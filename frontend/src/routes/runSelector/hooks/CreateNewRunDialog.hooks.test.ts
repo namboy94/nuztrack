@@ -5,7 +5,7 @@ import {NUZLOCKE_RUN, NUZLOCKE_RUN_CREATOR} from "../../../data/runs/runs.testco
 import {runsService} from "../../../data/runs/runs.service";
 import {of, throwError} from "rxjs";
 import {gamesService} from "../../../data/games/games.service";
-import {GAME_LIST} from "../../../data/games/games.testconstants";
+import {GAME_4, GAMES} from "../../../data/games/games.testconstants";
 import {rulesService} from "../../../data/rules/rules.service";
 import {RULES_DETAILS} from "../../../data/rules/rules.testconstants";
 
@@ -14,16 +14,16 @@ describe("useCreateNewRunDialogProps", () => {
     const notify = jest.fn()
 
     function createMocksAndRender(): { current: [(() => void), CreateNewRunDialogProps] } {
-        jest.spyOn(gamesService, "getGameList$").mockReturnValue(of(GAME_LIST))
+        jest.spyOn(gamesService, "getGames$").mockReturnValue(of(GAMES))
         jest.spyOn(rulesService, "getRulesDetails$").mockReturnValue(of(RULES_DETAILS))
         return renderHook(() => useCreateNewRunDialogProps(notify)).result
     }
 
     it("should test the data loading", (done) => {
         const props = createMocksAndRender().current[1]
-        expect(props.gameList).toEqual(GAME_LIST)
+        expect(props.games).toEqual(GAMES)
         expect(props.rulesDetails).toEqual(RULES_DETAILS)
-        expect(gamesService.getGameList$).toHaveBeenCalledTimes(1)
+        expect(gamesService.getGames$).toHaveBeenCalledTimes(1)
         expect(rulesService.getRulesDetails$).toHaveBeenCalledTimes(1)
         done()
     })
@@ -66,20 +66,20 @@ describe("useCreateNewRunDialogProps", () => {
 
         act(() => {
             props.state.setName("TEST")
-            props.state.setGame("BLUE")
+            props.state.setGame(GAME_4)
             props.state.setRules(["ABC"])
             props.state.setCustomRules(["XYZ"])
         })
         props = result.current[1]
         expect(props.state.name).toEqual("TEST")
-        expect(props.state.game).toEqual("BLUE")
+        expect(props.state.game).toEqual(GAME_4)
         expect(props.state.rules).toEqual(["ABC"])
         expect(props.state.customRules).toEqual(["XYZ"])
 
         act(() => props.state.reset())
         props = result.current[1]
         expect(props.state.name).toEqual("")
-        expect(props.state.game).toEqual(Array.from(GAME_LIST.keys())[0])
+        expect(props.state.game).toEqual(GAMES[0])
         expect(props.state.rules).toEqual(RULES_DETAILS.defaultRules)
         expect(props.state.customRules).toEqual([])
 
@@ -110,7 +110,7 @@ describe("useCreateNewRunDialogProps", () => {
 
         expect(props.open).toBeFalsy()
         expect(props.state.name).toEqual("")
-        expect(props.state.game).toEqual(Array.from(GAME_LIST.keys())[0])
+        expect(props.state.game).toEqual(GAMES[0])
         expect(props.state.rules).toEqual(RULES_DETAILS.defaultRules)
         expect(props.state.customRules).toEqual([])
 
@@ -173,16 +173,16 @@ describe("useCreateNewRunDialogProps", () => {
     })
 
     it("should be initialized correctly", (done) => {
-        jest.spyOn(gamesService, "getGameList$").mockReturnValue(of(undefined))
+        jest.spyOn(gamesService, "getGames$").mockReturnValue(of(undefined))
         jest.spyOn(rulesService, "getRulesDetails$").mockReturnValue(of(undefined))
         let props = renderHook(() => useCreateNewRunDialogProps(notify)).result.current[1]
-        expect(props.state.game).toEqual("")
+        expect(props.state.game).toEqual({"generation": 1, "key": "RED", "title": "Red"})
         expect(props.state.rules).toEqual([])
 
-        jest.spyOn(gamesService, "getGameList$").mockReturnValue(of(GAME_LIST))
+        jest.spyOn(gamesService, "getGames$").mockReturnValue(of(GAMES))
         jest.spyOn(rulesService, "getRulesDetails$").mockReturnValue(of(RULES_DETAILS))
         props = renderHook(() => useCreateNewRunDialogProps(notify)).result.current[1]
-        expect(props.state.game).toEqual(Array.from(GAME_LIST.keys())[0])
+        expect(props.state.game).toEqual(GAMES[0])
         expect(props.state.rules).toEqual(RULES_DETAILS.defaultRules)
 
         done()

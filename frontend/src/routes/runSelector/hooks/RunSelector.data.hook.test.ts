@@ -9,7 +9,7 @@ describe("useRunSelectorDataLoader", () => {
     it("should load the data", (done) => {
         const loadRunsMock = jest.spyOn(runsService, "loadRuns$").mockReturnValue(EMPTY)
         const loadRulesMock = jest.spyOn(rulesService, "loadRulesDetails$").mockReturnValue(EMPTY)
-        const loadGamesMock = jest.spyOn(gamesService, "loadGameList$").mockReturnValue(EMPTY)
+        const loadGamesMock = jest.spyOn(gamesService, "loadGames$").mockReturnValue(EMPTY)
 
         const result = renderHook(useRunSelectorDataLoader)
         expect(result.result.current).toEqual(false)

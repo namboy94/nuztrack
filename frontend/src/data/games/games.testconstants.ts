@@ -1,18 +1,18 @@
-import {GameList, GameLocation, Milestone} from "./games.model";
-import {GameListTO, GameLocationTO, MilestoneTO} from "./games.transfer";
+import {Game, GameLocation, Milestone} from "./games.model";
+import {GameLocationTO, GameTO, MilestoneTO} from "./games.transfer";
 
-export const GAME_LIST: GameList = new Map<string, string>([
-    ["RED", "Red"],
-    ["BLUE", "Blue"],
-    ["GREEN", "Green"],
-    ["YELLOW", "Yellow"]
-])
-export const GAME_LIST_TO: GameListTO = {
-    "RED": "Red",
-    "BLUE": "Blue",
-    "GREEN": "Green",
-    "YELLOW": "Yellow"
-}
+export const GAME_1_TO: GameTO = {generation: 1, key: "RED", title: "Red"}
+export const GAME_2_TO: GameTO = {generation: 3, key: "FIRERED", title: "FireRed"}
+export const GAME_3_TO: GameTO = {generation: 6, key: "X", title: "X"}
+export const GAME_4_TO: GameTO = {generation: 7, key: "ULTRA_SUN", title: "Ultra Sun"}
+
+export const GAME_1: Game = {generation: 1, key: "RED", title: "Red"}
+export const GAME_2: Game = {generation: 3, key: "FIRERED", title: "FireRed"}
+export const GAME_3: Game = {generation: 6, key: "X", title: "X"}
+export const GAME_4: Game = {generation: 7, key: "ULTRA_SUN", title: "Ultra Sun"}
+
+export const GAMES_TO = [GAME_1_TO, GAME_2_TO, GAME_3_TO, GAME_4_TO]
+export const GAMES = [GAME_1, GAME_2, GAME_3, GAME_4]
 export const MILESTONE: Milestone = {
     image: "URL",
     level_cap: 60,
@@ -26,25 +26,25 @@ export const MILESTONE_TO: MilestoneTO = {
     name: "Earth Badge"
 }
 export const GAME_LOCATION_PALLET: GameLocation = {
-    gameKey: "RED",
+    game: GAME_1,
     encounters: [1, 4, 7],
     milestones: [],
     name: "Pallet Town"
 }
 export const GAME_LOCATION_PALLET_TO: GameLocationTO = {
-    gameKey: "RED",
+    game: GAME_1_TO,
     encounters: [1, 4, 7],
     milestones: [],
     name: "Pallet Town"
 }
 export const GAME_LOCATION_VIRIDIAN: GameLocation = {
-    gameKey: "BLUE",
+    game: GAME_2,
     encounters: [60],
     milestones: [MILESTONE],
     name: "Viridian City"
 }
 export const GAME_LOCATION_VIRIDIAN_TO: GameLocationTO = {
-    gameKey: "BLUE",
+    game: GAME_2_TO,
     encounters: [60],
     milestones: [MILESTONE_TO],
     name: "Viridian City"

@@ -5,7 +5,7 @@ import {runsService} from "../../../data/runs/runs.service";
 import {rulesService} from "../../../data/rules/rules.service";
 import {gamesService} from "../../../data/games/games.service";
 import {RulesDetails} from "../../../data/rules/rules.model";
-import {GameList} from "../../../data/games/games.model";
+import {Game} from "../../../data/games/games.model";
 import {NotificationFN} from "../../../components/Snackbar";
 import {useQuery} from "../../../util/observable.hooks";
 
@@ -13,8 +13,8 @@ export function useCreateNewRunDialogProps(notify: NotificationFN): [() => void,
 
     const [open, setOpen] = useState(false)
     const rulesDetails = useQuery(() => rulesService.getRulesDetails$(), undefined, [])
-    const gameList = useQuery(() => gamesService.getGameList$(), undefined, [])
-    const state = useCreateNewRunDialogState(gameList, rulesDetails)
+    const games = useQuery(() => gamesService.getGames$(), undefined, [])
+    const state = useCreateNewRunDialogState(games, rulesDetails)
 
     const openDialog = () => setOpen(true)
     const closeDialog = () => {
@@ -27,7 +27,7 @@ export function useCreateNewRunDialogProps(notify: NotificationFN): [() => void,
     const props = {
         open: open,
         onClose: closeDialog,
-        gameList: gameList,
+        games: games,
         rulesDetails: rulesDetails,
         state: state,
         submit: submit,
@@ -37,23 +37,29 @@ export function useCreateNewRunDialogProps(notify: NotificationFN): [() => void,
 }
 
 function useCreateNewRunDialogState(
-    gameList: GameList | undefined,
+    games: Game[] | undefined,
     rulesDetails: RulesDetails | undefined
 ): CreateNewRunDialogState {
 
+    const defaultGame: Game = {
+        generation: 1,
+        key: "RED",
+        title: "Red"
+    }
+
     const [initialized, setInitialized] = useState(false)
-    const [game, setGame] = useState<string>("")
+    const [game, setGame] = useState(defaultGame)
     const [name, setName] = useState("")
     const [rules, setRules] = useState<string[]>([])
     const [customRules, setCustomRules] = useState<string[]>([])
 
     const reset = () => {
-        setGame(Array.from(gameList?.keys() ?? ["RED"])[0])
+        setGame(games === undefined ? defaultGame : games[0])
         setName("")
         setRules(rulesDetails?.defaultRules ?? [])
         setCustomRules([])
     }
-    if (!initialized && gameList !== undefined && rulesDetails !== undefined) {
+    if (!initialized && games !== undefined && rulesDetails !== undefined) {
         setInitialized(true)
         reset()
     }
@@ -82,12 +88,12 @@ function useCreateNewRunDialogSubmit(
             rules: state.rules
         }
         runsService.addRun$(creator).subscribe({
-            error: () => {
-                notify("ERROR", "error")
+            error: e => {
+                notify(`Failed to create Nuzlocke Run: '${e}'`, "error")
                 setSubmitting(false)
             },
-            complete: () => {
-                notify("SUCCESS", "success")
+            next: result => {
+                notify(`Succesfully created Nuzlocke Run '${result.name}'`, "success")
                 onClose()
                 setTimeout(() => setSubmitting(false), 1000)
             }

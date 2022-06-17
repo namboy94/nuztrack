@@ -35,8 +35,8 @@ export function RunsTableEntry(props: RunsTableEntryProps) {
                     data-testid="run-image"
                     height="250"
                     component="img"
-                    alt={run.game}
-                    image={BACKEND_URL + "/covers/" + run.game + ".webp"}
+                    alt={run.game.title}
+                    image={BACKEND_URL + "/covers/" + run.game.key + ".webp"}
                 />
                 <Box sx={{
                     ...titleStyleBase,

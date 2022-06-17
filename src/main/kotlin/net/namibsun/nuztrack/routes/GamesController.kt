@@ -3,7 +3,7 @@ package net.namibsun.nuztrack.routes
 import net.namibsun.nuztrack.constants.GameLocationRegistry
 import net.namibsun.nuztrack.constants.enums.Games
 import net.namibsun.nuztrack.transfer.GameLocationTO
-import net.namibsun.nuztrack.transfer.GamesListTO
+import net.namibsun.nuztrack.transfer.GameTO
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -15,8 +15,8 @@ class GamesController {
 
     @GetMapping("/api/games")
     @ResponseBody
-    fun getGames(): ResponseEntity<GamesListTO> {
-        val gamesList = Games.values().associate { it.name.uppercase() to it.title }
+    fun getGames(): ResponseEntity<List<GameTO>> {
+        val gamesList = Games.values().map { GameTO.fromGame(it) }
         return ResponseEntity.ok(gamesList)
     }
 
@@ -24,6 +24,7 @@ class GamesController {
     @ResponseBody
     fun getLocations(@PathVariable gameTitle: String): ResponseEntity<List<GameLocationTO>> {
         val game = Games.valueOfWithChecks(gameTitle)
-        return ResponseEntity.ok(GameLocationRegistry.getLocationsForGame(game))
+        val locations = GameLocationRegistry.getLocationsForGame(game)
+        return ResponseEntity.ok(locations.map { GameLocationTO.fromGameLocationFileTO(it) })
     }
 }

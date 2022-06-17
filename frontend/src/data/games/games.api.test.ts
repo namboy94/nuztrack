@@ -1,14 +1,14 @@
 import axios from "axios-observable";
 import {buildResponse} from "../../util/test/axios";
-import {GAME_LIST_TO, GAME_LOCATION_PALLET_TO, GAME_LOCATION_VIRIDIAN_TO} from "./games.testconstants";
+import {GAME_LOCATION_PALLET_TO, GAME_LOCATION_VIRIDIAN_TO, GAMES_TO} from "./games.testconstants";
 import {gamesApi} from "./games.api";
 
 describe("GamesApi", () => {
     it("should get all games", (done) => {
-        const getMock = jest.spyOn(axios, "get").mockReturnValue(buildResponse(GAME_LIST_TO))
-        gamesApi.getGameList$().subscribe({
+        const getMock = jest.spyOn(axios, "get").mockReturnValue(buildResponse(GAMES_TO))
+        gamesApi.getGames$().subscribe({
             next: x => {
-                expect(x).toEqual(GAME_LIST_TO)
+                expect(x).toEqual(GAMES_TO)
             },
             complete: () => {
                 expect(getMock).toHaveBeenCalledWith(`/api/games`)

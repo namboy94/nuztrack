@@ -16,7 +16,7 @@ NuzlockeRunTO:
     name:
       $ref: "../types/runs.yaml#/runName"
     game:
-      $ref: "../types/games.yaml#/gameKey"
+      $ref: "./games.yaml#/GameTO"
     rules:
       $ref: "../types/rules.yaml#/ruleKeys"
     customRules:

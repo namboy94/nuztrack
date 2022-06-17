@@ -11,13 +11,13 @@ internal class NuzlockeRunTOTest {
     @Test
     fun testConverting() {
         val run = NuzlockeRun(
-                100, "A", "B", Games.RED, listOf(Rules.DEATH), listOf("TEST"), RunStatus.ACTIVE
+            100, "A", "B", Games.RED, listOf(Rules.DEATH), listOf("TEST"), RunStatus.ACTIVE
         )
         val converted = NuzlockeRunTO.fromNuzlockeRun(run)
         assertThat(converted.id).isEqualTo(run.id)
         assertThat(converted.userName).isEqualTo(run.userName)
         assertThat(converted.name).isEqualTo(run.name)
-        assertThat(converted.game).isEqualTo(run.game.name)
+        assertThat(converted.game.key).isEqualTo(run.game.name)
         assertThat(converted.rules).isEqualTo(run.rules.map { it.name.uppercase() })
         assertThat(converted.customRules).isEqualTo(run.customRules)
         assertThat(RunStatus.valueOfWithChecks(converted.status)).isEqualTo(run.status)

@@ -3,6 +3,7 @@ package net.namibsun.nuztrack.routes
 import net.namibsun.nuztrack.constants.ValidationException
 import net.namibsun.nuztrack.constants.enums.ErrorMessages
 import net.namibsun.nuztrack.constants.enums.Games
+import net.namibsun.nuztrack.transfer.GameTO
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -14,7 +15,7 @@ internal class GamesControllerTest {
     @Test
     fun getGames() {
         val result = controller.getGames()
-        assertThat(result.body).isEqualTo(Games.values().associate { it.name.uppercase() to it.title })
+        assertThat(result.body).isEqualTo(Games.values().map { GameTO.fromGame(it) })
     }
 
     @Test

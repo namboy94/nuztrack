@@ -9,9 +9,9 @@ export interface TeamMemberTO {
     nickname: string
     pokedexNumber: number
     level: number
-    gender: string
-    nature: string
-    abilitySlot: number
+    gender: string | null
+    nature: string | null
+    abilitySlot: number | null
     encounterId: number
     deathId: number | null
     evolutionIds: number[]

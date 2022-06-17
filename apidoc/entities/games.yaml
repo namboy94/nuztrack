@@ -1,6 +1,13 @@
-GamesMapping:
-  description: A mapping of game keys to game titles
-  type: object
-  additionalProperties:
-    $ref: "../types/games.yaml#/gameKey"
-  $ref: "../types/games.yaml#/gameMapping"
+GamesTO:
+  description: An object detailing a Pokemon game
+  required:
+    - title
+    - key
+    - generation
+  properties:
+    title:
+      $ref: "../types/games.yaml#/gameTitle"
+    key:
+      $ref: "../types/games.yaml#/gameKey"
+    generation:
+      $ref: "../types/games.yaml#/gameGeneration"

@@ -2,7 +2,7 @@ import {runsApi} from "../../data/runs/runs.api";
 import {EMPTY, of} from "rxjs";
 import {NUZLOCKE_RUN, NUZLOCKE_RUN_2_TO, NUZLOCKE_RUN_TO} from "../../data/runs/runs.testconstants";
 import {gamesApi} from "../../data/games/games.api";
-import {GAME_LIST, GAME_LIST_TO} from "../../data/games/games.testconstants";
+import {GAMES_TO} from "../../data/games/games.testconstants";
 import {rulesApi} from "../../data/rules/rules.api";
 import {RULES_DETAILS, RULES_DETAILS_TO} from "../../data/rules/rules.testconstants";
 import {act, fireEvent, render, screen, within} from "@testing-library/react";
@@ -21,7 +21,7 @@ describe("RunSelectorRoute", () => {
         jest.spyOn(runsApi, "getRuns$").mockReturnValue(of([NUZLOCKE_RUN_TO]))
         jest.spyOn(runsApi, "postRun$").mockReturnValue(of(NUZLOCKE_RUN_2_TO))
         jest.spyOn(runsApi, "deleteRun$").mockReturnValue(EMPTY)
-        jest.spyOn(gamesApi, "getGameList$").mockReturnValue(of(GAME_LIST_TO))
+        jest.spyOn(gamesApi, "getGames$").mockReturnValue(of(GAMES_TO))
         jest.spyOn(rulesApi, "getRulesDetails$").mockReturnValue(of(RULES_DETAILS_TO))
         jest.spyOn(router, "useNavigate").mockReturnValue(navigate)
     })
@@ -63,7 +63,7 @@ describe("RunSelectorRoute", () => {
 
         const expected: NuzlockeRunCreatorTO = {
             customRules: ["XYZ", "ABC"],
-            game: Array.from(GAME_LIST.keys())[1],
+            game: GAMES_TO[1].key,
             name: "MyRun",
             rules: RULES_DETAILS.defaultRules
         }
