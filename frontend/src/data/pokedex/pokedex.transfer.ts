@@ -3,6 +3,7 @@ export interface PokedexTO {
 }
 
 export interface PokemonSpeciesTO {
+    pokedexNumber: number
     name: string
     sprite: string
     types: PokemonTypesTO
