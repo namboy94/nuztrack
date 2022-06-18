@@ -2,9 +2,16 @@ import {eventsService} from "../../../data/events/events.service";
 import {of, throwError} from "rxjs";
 import {ENCOUNTER_EVENT_FAILED, ENCOUNTER_EVENT_SUCCESSFUL} from "../../../data/events/events.testconstants";
 import {pokedexService} from "../../../data/pokedex/pokedex.service";
-import {NATURES, POKEDEX} from "../../../data/pokedex/pokedex.testconstants";
+import {
+    NATURES,
+    POKEDEX,
+    POKEMON_SPECIES_BULBASAUR,
+    POKEMON_SPECIES_CHARMANDER,
+    POKEMON_SPECIES_IVYSAUR,
+    POKEMON_SPECIES_SQUIRTLE
+} from "../../../data/pokedex/pokedex.testconstants";
 import {gamesService} from "../../../data/games/games.service";
-import {GAME_LOCATION_PALLET, GAME_LOCATION_VIRIDIAN} from "../../../data/games/games.testconstants";
+import {GAME_LOCATION_PALLET, GAME_LOCATION_VIRIDIAN, LOCATION_REGISTRY} from "../../../data/games/games.testconstants";
 import {act, renderHook} from "@testing-library/react";
 import {useEncounterEventDialogProps} from "./EncounterEventDialog.hooks";
 import {NUZLOCKE_RUN} from "../../../data/runs/runs.testconstants";
@@ -22,13 +29,13 @@ describe("useEncounterEventDialogProps", () => {
         jest.spyOn(eventsService, "getEncounterEvents$").mockReturnValue(of(events))
         jest.spyOn(pokedexService, "getPokedex$").mockReturnValue(of(POKEDEX))
         jest.spyOn(pokedexService, "getNatures$").mockReturnValue(of(NATURES))
-        jest.spyOn(gamesService, "getGameLocations$").mockReturnValue(of(locations))
+        jest.spyOn(gamesService, "getGameLocationRegistry$").mockReturnValue(of(LOCATION_REGISTRY))
         return renderHook(() => useEncounterEventDialogProps(NUZLOCKE_RUN, notify)).result
     }
 
     function fillEntries(state: EncounterEventDialogState) {
-        state.setLocation("ABC")
-        state.setPokemonSpecies(123)
+        state.setLocation(GAME_LOCATION_PALLET.name)
+        state.setPokemonSpecies(POKEMON_SPECIES_SQUIRTLE)
         state.setLevel(50)
         state.setGender(Gender.FEMALE)
         state.setCaught(true)
@@ -38,36 +45,42 @@ describe("useEncounterEventDialogProps", () => {
     }
 
     function expectChangedEntries(state: EncounterEventDialogState) {
-        expect(state.location).toEqual("ABC")
-        expect(state.pokemonSpecies).toEqual(123)
+        expect(state.location).toEqual(GAME_LOCATION_PALLET.name)
+        expect(state.pokemonSpecies).toEqual(POKEMON_SPECIES_SQUIRTLE)
         expect(state.level).toEqual(50)
         expect(state.gender).toEqual(Gender.FEMALE)
         expect(state.caught).toEqual(true)
         expect(state.nickname).toEqual("XYZ")
         expect(state.nature).toEqual("BOLD")
         expect(state.abilitySlot).toEqual(3)
+        expect(state.possibleAbilitySlots).toEqual([1, 3])
+        expect(state.possibleEncounters).toEqual([
+            POKEMON_SPECIES_BULBASAUR, POKEMON_SPECIES_CHARMANDER, POKEMON_SPECIES_SQUIRTLE
+        ])
     }
 
     function expectDefaultEntries(state: EncounterEventDialogState) {
         expect(state.location).toEqual("")
-        expect(state.pokemonSpecies).toEqual(1)
+        expect(state.pokemonSpecies).toEqual(undefined)
         expect(state.level).toEqual(5)
         expect(state.gender).toEqual(Gender.MALE)
         expect(state.caught).toEqual(false)
         expect(state.nickname).toEqual("")
         expect(state.nature).toEqual("ADAMANT")
         expect(state.abilitySlot).toEqual(1)
+        expect(state.possibleAbilitySlots).toEqual([1])
+        expect(state.possibleEncounters).toEqual([])
     }
 
     it("should test the data loading", (done) => {
         const result = createMocksAndRender().current[1]
-        expect(result.locations).toEqual([GAME_LOCATION_VIRIDIAN])
+        expect(result.locations).toEqual([GAME_LOCATION_VIRIDIAN.name])
         expect(result.pokedex).toEqual(POKEDEX)
         expect(result.natures).toEqual(NATURES)
         expect(eventsService.getEncounterEvents$).toHaveBeenCalledTimes(1)
         expect(pokedexService.getPokedex$).toHaveBeenCalledTimes(1)
         expect(pokedexService.getNatures$).toHaveBeenCalledTimes(1)
-        expect(gamesService.getGameLocations$).toHaveBeenCalledTimes(1)
+        expect(gamesService.getGameLocationRegistry$).toHaveBeenCalledTimes(1)
         done()
     })
 
@@ -102,8 +115,8 @@ describe("useEncounterEventDialogProps", () => {
         const expected: CreateEncounterEvent = {
             caught: true,
             level: 50,
-            location: "ABC",
-            pokedexNumber: 123,
+            location: GAME_LOCATION_PALLET.name,
+            pokedexNumber: POKEMON_SPECIES_SQUIRTLE.pokedexNumber,
             pokemon: {abilitySlot: 3, gender: Gender.FEMALE, nature: "BOLD", nickname: "XYZ"}
         }
 
@@ -151,5 +164,39 @@ describe("useEncounterEventDialogProps", () => {
 
         done()
 
+    })
+    it("should reset capture details if caught is set to false", (done) => {
+        const result = createMocksAndRender()
+        let [openDialog, current] = result.current
+
+        act(() => {
+            openDialog()
+            fillEntries(current.state)
+            current.state.setCaught(false)
+        })
+
+        current = result.current[1]
+
+        expect(current.state.possibleAbilitySlots).toEqual([1])
+        expect(current.state.nature).toEqual("ADAMANT")
+        expect(current.state.abilitySlot).toEqual(1)
+        expect(current.state.nickname).toEqual("")
+        done()
+    })
+    it("should set the possible encounters for a location if it is set", (done) => {
+        const result = createMocksAndRender()
+        let [openDialog, current] = result.current
+
+        act(() => {
+            openDialog()
+            fillEntries(current.state)
+            current.state.setLocation(GAME_LOCATION_VIRIDIAN.name)
+        })
+
+        current = result.current[1]
+
+        expect(current.state.possibleEncounters).toEqual([POKEMON_SPECIES_IVYSAUR])
+
+        done()
     })
 })

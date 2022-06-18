@@ -25,4 +25,8 @@ export class GameLocationRegistry {
     getLocationByName(locationName: string): GameLocation | null {
         return this.nameMapping.get(locationName) ?? null
     }
+
+    getLocationNames(): string[] {
+        return this.data.map(x => x.name)
+    }
 }

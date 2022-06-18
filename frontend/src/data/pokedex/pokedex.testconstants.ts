@@ -100,6 +100,39 @@ export const POKEMON_SPECIES_SQUIRTLE: PokemonSpecies = {
         secondary: null
     }
 }
+export const POKEMON_SPECIES_CHARMANDER_TO: PokemonSpeciesTO = {
+    pokedexNumber: 4,
+    abilities: {
+        1: "Blaze",
+        2: null,
+        3: "Solar Power"
+    },
+    baseSpecies: 4,
+    evolutions: [5],
+    name: "Charmander",
+    sprite: "http://charmander.png",
+    types: {
+        primary: "FIRE",
+        secondary: null
+    }
+}
+
+export const POKEMON_SPECIES_CHARMANDER: PokemonSpecies = {
+    pokedexNumber: 4,
+    abilities: {
+        1: "Blaze",
+        2: null,
+        3: "Solar Power"
+    },
+    baseSpecies: 4,
+    evolutions: [5],
+    name: "Charmander",
+    sprite: "http://charmander.png",
+    types: {
+        primary: "FIRE",
+        secondary: null
+    }
+}
 
 export const NATURES_TO: NaturesTO = ["ADAMANT", "JOLLY", "MODEST", "TIMID"]
 export const NATURES: Natures = ["ADAMANT", "JOLLY", "MODEST", "TIMID"]
@@ -107,11 +140,13 @@ export const NATURES: Natures = ["ADAMANT", "JOLLY", "MODEST", "TIMID"]
 export const POKEDEX_TO: PokedexTO = {
     "1": POKEMON_SPECIES_BULBASAUR_TO,
     "2": POKEMON_SPECIES_IVYSAUR_TO,
+    "4": POKEMON_SPECIES_CHARMANDER_TO,
     "7": POKEMON_SPECIES_SQUIRTLE_TO
 }
 export const POKEDEX_DATA: PokedexData = new Map<number, PokemonSpecies>([
     [1, POKEMON_SPECIES_BULBASAUR],
     [2, POKEMON_SPECIES_IVYSAUR],
+    [4, POKEMON_SPECIES_CHARMANDER],
     [7, POKEMON_SPECIES_SQUIRTLE]
 ])
 export const POKEDEX: Pokedex = new Pokedex(POKEDEX_DATA)

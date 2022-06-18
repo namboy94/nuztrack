@@ -1,6 +1,7 @@
 import {
     POKEDEX,
     POKEMON_SPECIES_BULBASAUR,
+    POKEMON_SPECIES_CHARMANDER,
     POKEMON_SPECIES_IVYSAUR,
     POKEMON_SPECIES_SQUIRTLE
 } from "./pokedex.testconstants";
@@ -8,7 +9,7 @@ import {
 describe("Pokedex", () => {
     it("should get a list of all Pokemon Species", () => {
         expect(POKEDEX.getAllSpecies()).toEqual([
-            POKEMON_SPECIES_BULBASAUR, POKEMON_SPECIES_IVYSAUR, POKEMON_SPECIES_SQUIRTLE
+            POKEMON_SPECIES_BULBASAUR, POKEMON_SPECIES_IVYSAUR, POKEMON_SPECIES_CHARMANDER, POKEMON_SPECIES_SQUIRTLE
         ])
     })
     it("should get a specific Pokemon", () => {

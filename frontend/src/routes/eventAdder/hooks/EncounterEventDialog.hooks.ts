@@ -8,6 +8,9 @@ import {useState} from "react";
 import {Gender} from "../../../data/team/team.model";
 import {NotificationFN} from "../../../components/Snackbar";
 import {CreateEncounterEvent, CreateEncounterPokemon} from "../../../data/events/events.model";
+import {Pokedex, PokemonSpecies} from "../../../data/pokedex/pokedex.model";
+import {GameLocationRegistry} from "../../../data/games/games.model";
+import {useResetState} from "../../../util/state.hook";
 
 export function useEncounterEventDialogProps(
     run: NuzlockeRun,
@@ -19,10 +22,9 @@ export function useEncounterEventDialogProps(
     const natures = useQuery(() => pokedexService.getNatures$(), [], [])
     const encounters = useQuery(() => eventsService.getEncounterEvents$(run.id), [], [])
     const encounterLocations = encounters.map(encounter => encounter.location)
-    const locations = useQuery(() => gamesService.getGameLocations$(run.game), [], []).filter(
-        location => !encounterLocations.includes(location.name)
-    )
-    const state = useEncounterEventDialogState()
+    const locationRegistry = useQuery(() => gamesService.getGameLocationRegistry$(run.game), undefined, [])
+    const locations = locationRegistry?.getLocationNames().filter(x => !encounterLocations.includes(x)) ?? []
+    const state = useEncounterEventDialogState(pokedex, locationRegistry)
 
     const onClose = () => {
         setOpen(false)
@@ -34,6 +36,7 @@ export function useEncounterEventDialogProps(
     return [
         () => setOpen(true),
         {
+            run: run,
             locations: locations,
             natures: natures,
             onClose: onClose,
@@ -45,42 +48,82 @@ export function useEncounterEventDialogProps(
     ]
 }
 
-function useEncounterEventDialogState(): EncounterEventDialogState {
-    const [location, setLocation] = useState("")
-    const [pokemonSpecies, setPokemonSpecies] = useState(1)
-    const [level, setLevel] = useState(5)
-    const [gender, setGender] = useState(Gender.MALE)
-    const [caught, setCaught] = useState(false)
-    const [nickname, setNickname] = useState("")
-    const [nature, setNature] = useState("ADAMANT")
-    const [abilitySlot, setAbilitySlot] = useState(1)
+function useEncounterEventDialogState(
+    pokedex: Pokedex | undefined,
+    locationRegistry: GameLocationRegistry | undefined
+): EncounterEventDialogState {
+    const [pokemonSpecies, setPokemonSpecies, resetPokemonSpecies] =
+        useResetState<PokemonSpecies | undefined>(undefined)
+    const [location, setLocation, resetLocation] = useResetState("")
+    const [possibleEncounters, setPossibleEncounters, resetPossibleEncounters] = useResetState<PokemonSpecies[]>([])
+    const [level, setLevel, resetLevel] = useResetState(5)
+    const [gender, setGender, resetGender] = useResetState(Gender.MALE)
+    const [caught, setCaught, resetCaught] = useResetState(false)
+    const [nickname, setNickname, resetNickname] = useResetState("")
+    const [nature, setNature, resetNature] = useResetState("ADAMANT")
+    const [abilitySlot, setAbilitySlot, resetAbilitySlot] = useResetState(1)
+    const [possibleAbilitySlots, setPossibleAbilitySlots, resetPossibleAbilitySlots] = useResetState([1])
 
     const reset = () => {
-        setLocation("")
-        setPokemonSpecies(1)
-        setLevel(5)
-        setGender(Gender.MALE)
-        setCaught(false)
-        setNickname("")
-        setNature("ADAMANT")
-        setAbilitySlot(1)
+        resetLocation()
+        resetPokemonSpecies()
+        resetPossibleEncounters()
+        resetLevel()
+        resetGender()
+        resetCaught()
+        resetCaptureDetails()
+    }
+
+    const resetCaptureDetails = () => {
+        resetNickname()
+        resetNature()
+        resetAbilitySlot()
+        resetPossibleAbilitySlots()
+    }
+
+    const selectLocation = (location: string) => {
+        reset()
+        setLocation(location)
+        const gameLocation = locationRegistry?.getLocationByName(location) ?? null
+        if (gameLocation !== null && pokedex !== undefined) {
+            setPossibleEncounters(gameLocation.encounters.map(x => pokedex.getSpecies(x)))
+        }
+    }
+
+    const selectPokemonSpecies = (species: PokemonSpecies | undefined) => {
+        resetCaptureDetails()
+        if (species !== undefined) {
+            setPokemonSpecies(species)
+            setPossibleAbilitySlots(pokedex?.getValidAbilitySlots(species.pokedexNumber) ?? [1])
+        }
+    }
+
+    const handleCaught = (caught: boolean) => {
+        if (caught && pokemonSpecies !== null) {
+            setCaught(caught)
+        }
+        if (!caught) {
+            resetCaptureDetails()
+        }
     }
 
     return {
         location: location,
-        setLocation: setLocation,
+        setLocation: selectLocation,
         pokemonSpecies: pokemonSpecies,
-        setPokemonSpecies: setPokemonSpecies,
+        setPokemonSpecies: selectPokemonSpecies,
+        possibleEncounters: possibleEncounters,
         level: level,
         setLevel: setLevel,
         gender: gender,
         setGender: setGender,
         caught: caught,
-        setCaught: setCaught,
+        setCaught: handleCaught,
         nickname: nickname,
         setNickname: setNickname,
         nature: nature, setNature,
         abilitySlot: abilitySlot, setAbilitySlot,
+        possibleAbilitySlots: possibleAbilitySlots,
         reset: reset
     }
 }
@@ -99,7 +142,7 @@ function useEncounterEventSubmit(
     }
     const creator: CreateEncounterEvent = {
         location: state.location,
-        pokedexNumber: state.pokemonSpecies,
+        pokedexNumber: state.pokemonSpecies?.pokedexNumber ?? -1,
         level: state.level,
         caught: state.caught,
         pokemon: pokemon

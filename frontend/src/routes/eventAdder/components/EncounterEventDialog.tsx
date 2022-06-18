@@ -14,24 +14,26 @@ import {
 } from "@mui/material";
 import React from "react";
 import {Gender} from "../../../data/team/team.model";
-import {Natures, Pokedex} from "../../../data/pokedex/pokedex.model";
-import {GameLocation} from "../../../data/games/games.model";
+import {Pokedex, PokemonSpecies} from "../../../data/pokedex/pokedex.model";
+import {NuzlockeRun} from "../../../data/runs/runs.model";
 
 export interface EncounterEventDialogProps {
     open: boolean
     onClose: () => void
+    run: NuzlockeRun,
     state: EncounterEventDialogState
     submit: () => void
     pokedex: Pokedex | undefined
-    natures: Natures | undefined
-    locations: GameLocation[]
+    natures: string[] | undefined
+    locations: string[]
 }
 
 export interface EncounterEventDialogState {
     location: string
     setLocation: (location: string) => void
-    pokemonSpecies: number
-    setPokemonSpecies: (pokedexNumber: number) => void
+    possibleEncounters: PokemonSpecies[]
+    pokemonSpecies: PokemonSpecies | undefined
+    setPokemonSpecies: (pokemonSpecies: PokemonSpecies | undefined) => void
     level: number
     setLevel: (level: number) => void
     gender: Gender
@@ -40,65 +42,102 @@ export interface EncounterEventDialogState {
     setCaught: (caught: boolean) => void
     nickname: string
     setNickname: (nickname: string) => void
-    nature: string,
+    nature: string
     setNature: (nature: string) => void
     abilitySlot: number
     setAbilitySlot: (abilitySlot: number) => void
+    possibleAbilitySlots: number[]
     reset: () => void
 }
 
 export function EncounterEventDialog(props: EncounterEventDialogProps) {
 
-    const {state, open, onClose} = props
+    const {state, open, onClose, submit, pokedex, natures, locations} = props
+
+    if (pokedex === undefined || natures === undefined) {
+        return <></>
+    }
+
 
     return (<Dialog open={open} onClose={onClose}>
         <DialogTitle>Add Encounter Event</DialogTitle>
         <Autocomplete
+            data-testid="location-input"
             freeSolo
             options={locations}
-            onChange={(_, newLocation) => selectLocation(newLocation)}
-            renderInput={(params) => <TextField
-                {...params} label="Location" value={location}
-                onChange={x => selectLocation(x.target.value)}
-            />}
+            onChange={(_, newLocation) => state.setLocation(newLocation ?? "")}
+            value={state.location}
+            renderInput={(params) => <TextField{...params} label="Location"/>}
         />
         <Autocomplete
-            freeSolo
-            options={encounters}
-            onChange={(_, newPokemon) => selectPokemon(newPokemon)}
-            renderInput={(params) => <TextField
-                {...params} label="Pokemon" value={pokemon}
-                onChange={x => selectPokemon(x.target.value)}
-            />}
+            data-testid="pokemon-species-input"
+            disableClearable
+            value={state.pokemonSpecies}
+            options={pokedex.getAllSpecies()}
+            getOptionLabel={pokemon => pokemon?.name ?? ""}
+            onChange={(_, newPokemon) => state.setPokemonSpecies(newPokemon)}
+            renderInput={(params) => <TextField{...params} label="Pokemon"/>}
         />
         <TextField
-            label="Level" type="number" value={level}
-            onChange={x => setLevel(parseInt(x.target.value))}
+            data-testid="level-input"
+            label="Level"
+            type="number"
+            value={state.level}
+            onChange={x => state.setLevel(parseInt(x.target.value))}
         />
-        <Select fullWidth value={gender} onChange={x => setGender(x.target.value)}>
-            <MenuItem value="Male">Male</MenuItem>
-            <MenuItem value="Female">Female</MenuItem>
-            <MenuItem value="Neutral">Neutral</MenuItem>
-        </Select>
-
+        {props.run.game.generation > 1 &&
+            <Select
+                data-testid="gender-input"
+                fullWidth
+                value={state.gender}
+                onChange={x => state.setGender(x.target.value as Gender)}
+            >
+                <MenuItem value={Gender.MALE}>Male</MenuItem>
+                <MenuItem value={Gender.FEMALE}>Female</MenuItem>
+                <MenuItem value={Gender.NEUTRAL}>Neutral</MenuItem>
+            </Select>
+        }
         <FormGroup>
             <FormControlLabel control={
                 <Checkbox
+                    data-testid="caught-input"
                     name="caught"
-                    checked={caught}
-                    value={caught}
-                    onChange={x => setCaught(x.target.checked)}/>
+                    checked={state.caught}
+                    value={state.caught}
+                    onChange={x => state.setCaught(x.target.checked)}/>
             } label="Caught?"/>
         </FormGroup>
 
-        <Collapse in={caught}>
-            <TextField label="Nickname" value={nickname} onChange={x => setNickname(x.target.value)}/>
-            <Select fullWidth value={nature} onChange={x => setNature(x.target.value)}>
-                {natures.map((x: string) => <MenuItem value={x} key={x}>{x}</MenuItem>)}
-            </Select>
-            <Select fullWidth value={ability} onChange={x => setAbility(x.target.value)}>
-                {abilities.map((x: string) => <MenuItem value={x} key={x}>{x}</MenuItem>)}
-            </Select>
+        <Collapse in={state.caught}>
+            <TextField
+                data-testid="nickname-input"
+                label="Nickname"
+                value={state.nickname}
+                onChange={x => state.setNickname(x.target.value)}
+            />
+            {props.run.game.generation > 2 &&
+                <>
+                    <Autocomplete
+                        data-testid="nature-input"
+                        disableClearable
+                        value={state.nature}
+                        options={natures}
+                        onChange={(_, newNature) => state.setNature(newNature)}
+                        renderInput={(params) => <TextField{...params} label="Nature"/>}
+                    />
+                    <Autocomplete
+                        data-testid="ability-slot-input"
+                        disableClearable
+                        value={state.abilitySlot}
+                        options={state.possibleAbilitySlots}
+                        getOptionLabel={abilitySlot =>
+                            pokedex.getAbilityName(state.pokemonSpecies?.pokedexNumber ?? -1, abilitySlot)
+                        }
+                        onChange={(_, newSlot) => state.setAbilitySlot(newSlot)}
+                        renderInput={(params) => <TextField{...params} label="Nature"/>}
+                    />
+                </>
+            }
         </Collapse>
 
         <DialogActions>
