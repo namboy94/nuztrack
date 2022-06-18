@@ -2,7 +2,7 @@ import {gamesApi} from "./games.api";
 import {gamesRepository} from "./games.repository";
 import {gamesConverter} from "./games.convert";
 import {ignoreElements, map, Observable, tap} from "rxjs";
-import {Game, GameLocation} from "./games.model";
+import {Game, GameLocationRegistry} from "./games.model";
 
 class GamesService {
     private api = gamesApi
@@ -29,8 +29,8 @@ class GamesService {
         return this.repo.queryGames$()
     }
 
-    getGameLocations$(game: Game): Observable<GameLocation[]> {
-        return this.repo.queryGameLocations$(game)
+    getGameLocationRegistry$(game: Game): Observable<GameLocationRegistry> {
+        return this.repo.queryGameLocations$(game).pipe(map(data => new GameLocationRegistry(data)))
     }
 
 }

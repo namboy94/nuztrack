@@ -1,6 +1,6 @@
 import {of} from "rxjs";
 import {gamesApi} from "./games.api";
-import {GAME_LOCATION_PALLET, GAME_LOCATION_VIRIDIAN, GAMES, GAMES_TO} from "./games.testconstants";
+import {GAME_LOCATION_PALLET, GAME_LOCATION_VIRIDIAN, GAMES, GAMES_TO, LOCATION_REGISTRY} from "./games.testconstants";
 import {gamesRepository} from "./games.repository";
 import {gamesService} from "./games.service";
 
@@ -47,8 +47,8 @@ describe("GamesService", () => {
         const apiMock = jest.spyOn(gamesApi, "getGameLocations$").mockImplementation()
         const repoMock = jest.spyOn(gamesRepository, "queryGameLocations$")
             .mockReturnValue(of([GAME_LOCATION_PALLET]))
-        gamesService.getGameLocations$(GAME_LOCATION_PALLET.game).subscribe({
-            next: result => expect(result).toEqual([GAME_LOCATION_PALLET]),
+        gamesService.getGameLocationRegistry$(GAME_LOCATION_PALLET.game).subscribe({
+            next: result => expect(result).toEqual(LOCATION_REGISTRY),
             complete: () => {
                 expect(apiMock).toHaveBeenCalledTimes(0)
                 expect(repoMock).toHaveBeenCalledTimes(1)

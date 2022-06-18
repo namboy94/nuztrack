@@ -12,3 +12,17 @@ export interface GameLocation extends GameLocationTO {
 
 export interface Milestone extends MilestoneTO {
 }
+
+export class GameLocationRegistry {
+    private data: GameLocation[]
+    private nameMapping: Map<string, GameLocation>
+
+    constructor(data: GameLocation[]) {
+        this.data = data
+        this.nameMapping = new Map<string, GameLocation>(this.data.map(location => [location.name, location]))
+    }
+
+    getLocationByName(locationName: string): GameLocation | null {
+        return this.nameMapping.get(locationName) ?? null
+    }
+}

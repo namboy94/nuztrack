@@ -1,4 +1,4 @@
-import {Game, GameLocation, Milestone} from "./games.model";
+import {Game, GameLocation, GameLocationRegistry, Milestone} from "./games.model";
 import {GameLocationTO, GameTO, MilestoneTO} from "./games.transfer";
 
 export const GAME_1_TO: GameTO = {generation: 1, key: "RED", title: "Red"}
@@ -49,3 +49,4 @@ export const GAME_LOCATION_VIRIDIAN_TO: GameLocationTO = {
     milestones: [MILESTONE_TO],
     name: "Viridian City"
 }
+export const LOCATION_REGISTRY = new GameLocationRegistry([GAME_LOCATION_PALLET, GAME_LOCATION_VIRIDIAN])
