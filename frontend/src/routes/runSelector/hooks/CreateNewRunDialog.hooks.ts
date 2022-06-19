@@ -89,7 +89,7 @@ function useCreateNewRunDialogSubmit(
         }
         runsService.addRun$(creator).subscribe({
             error: e => {
-                notify(`Failed to create Nuzlocke Run: '${e}'`, "error")
+                notify(`Failed to create Nuzlocke Run: '${e.response.data.reason}'`, "error")
                 setSubmitting(false)
             },
             next: result => {
