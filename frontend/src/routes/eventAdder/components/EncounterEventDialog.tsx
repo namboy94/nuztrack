@@ -18,6 +18,7 @@ import React from "react";
 import {Gender} from "../../../data/team/team.model";
 import {Pokedex, PokemonSpecies} from "../../../data/pokedex/pokedex.model";
 import {NuzlockeRun} from "../../../data/runs/runs.model";
+import {LocationInput} from "./common/LocationInput";
 
 export interface EncounterEventDialogProps {
     open: boolean
@@ -63,15 +64,7 @@ export function EncounterEventDialog(props: EncounterEventDialogProps) {
     return (<Dialog open={open} onClose={onClose}>
         <DialogTitle>Add Encounter Event</DialogTitle>
         <Grid container direction="column">
-            <Autocomplete
-                sx={{margin: 1}}
-                data-testid="location-input"
-                freeSolo
-                options={locations}
-                onChange={(_, newLocation) => state.setLocation(newLocation ?? "")}
-                value={state.location}
-                renderInput={(params) => <TextField{...params} label="Location"/>}
-            />
+            <LocationInput location={state.location} setLocation={state.setLocation} locations={locations}/>
             <Autocomplete
                 sx={{margin: 1}}
                 data-testid="pokemon-species-input"

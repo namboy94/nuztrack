@@ -25,3 +25,24 @@ export function useQuery<T>(queryFunction: () => Observable<T>, initial: T, deps
     }, deps)
     return queryResult
 }
+
+export function useSubmitter(observerFN: () => Observable<any>, onSuccess: () => void, onError: (e: any) => void): () => void {
+    const [submitting, setSubmitting] = useState(false)
+
+    return () => {
+        if (submitting) {
+            return
+        }
+        setSubmitting(true)
+        observerFN().subscribe({
+            error: e => {
+                onError(e)
+                setSubmitting(false)
+            },
+            complete: () => {
+                onSuccess()
+                setTimeout(() => setSubmitting(false), 1000)
+            }
+        })
+    }
+}
