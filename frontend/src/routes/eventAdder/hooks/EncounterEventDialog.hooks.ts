@@ -1,5 +1,5 @@
 import {NuzlockeRun} from "../../../data/runs/runs.model";
-import {useQuery} from "../../../util/observable.hooks";
+import {useQuery, useSubmitter} from "../../../util/observable.hooks";
 import {pokedexService} from "../../../data/pokedex/pokedex.service";
 import {eventsService} from "../../../data/events/events.service";
 import {gamesService} from "../../../data/games/games.service";
@@ -148,6 +148,7 @@ function useEncounterEventSubmit(
     onClose: () => void,
     notify: NotificationFN
 ): () => void {
+
     const pokemon: CreateEncounterPokemon = {
         abilitySlot: state.abilitySlot,
         gender: state.gender,
@@ -175,16 +176,13 @@ function useEncounterEventSubmit(
             creator.pokemon.abilitySlot = null
         }
     }
-    
-    return () => {
-        eventsService.createEncounterEvent$(run.id, creator).subscribe({
-            next: () => {
-                notify("Encounter was saved successfully", "success")
-                onClose()
-            },
-            error: e => {
-                notify(`Failed to create encounter event: ${e.response.data.reason}`, "error")
-            }
-        })
+
+    const onSuccess = () => {
+        notify("Encounter was saved successfully", "success")
+        onClose()
     }
+
+    const onError = (e: any) => notify(`Failed to create encounter event: ${e.response.data.reason}`, "error")
+
+    return useSubmitter(() => eventsService.createEncounterEvent$(run.id, creator), onSuccess, onError)
 }

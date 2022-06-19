@@ -7,7 +7,7 @@ import {gamesService} from "../../../data/games/games.service";
 import {RulesDetails} from "../../../data/rules/rules.model";
 import {Game} from "../../../data/games/games.model";
 import {NotificationFN} from "../../../components/Snackbar";
-import {useQuery} from "../../../util/observable.hooks";
+import {useQuery, useSubmitter} from "../../../util/observable.hooks";
 
 export function useCreateNewRunDialogProps(notify: NotificationFN): [() => void, CreateNewRunDialogProps] {
 
@@ -72,31 +72,19 @@ function useCreateNewRunDialogSubmit(
     onClose: () => void,
     notify: NotificationFN
 ): () => void {
-
-    const [submitting, setSubmitting] = useState(false)
-
-    return () => {
-        if (submitting) {
-            return
-        }
-        setSubmitting(true)
-
-        const creator: NuzlockeRunCreator = {
-            customRules: state.customRules,
-            game: state.game,
-            name: state.name,
-            rules: state.rules
-        }
-        runsService.addRun$(creator).subscribe({
-            error: e => {
-                notify(`Failed to create Nuzlocke Run: '${e.response.data.reason}'`, "error")
-                setSubmitting(false)
-            },
-            next: result => {
-                notify(`Succesfully created Nuzlocke Run '${result.name}'`, "success")
-                onClose()
-                setTimeout(() => setSubmitting(false), 1000)
-            }
-        })
+    const creator: NuzlockeRunCreator = {
+        customRules: state.customRules,
+        game: state.game,
+        name: state.name,
+        rules: state.rules
     }
+
+    const onSuccess = () => {
+        notify("Succesfully created Nuzlocke Run", "success")
+        onClose()
+    }
+
+    const onError = (e: any) => notify(`Failed to create Nuzlocke Run: '${e.response.data.reason}'`, "error")
+
+    return useSubmitter(() => runsService.addRun$(creator), onSuccess, onError)
 }
