@@ -123,6 +123,7 @@ describe("useCreateNewRunDialogProps", () => {
 
     it("should test submitting unsuccessfully", (done) => {
         jest.spyOn(runsService, "addRun$").mockReturnValue(throwError(() => {
+            throw {response: {data: {reason: "TEST"}}}
         }))
 
         const result = createMocksAndRender()
@@ -141,7 +142,7 @@ describe("useCreateNewRunDialogProps", () => {
 
         expect(runsService.addRun$).toHaveBeenCalledTimes(1)
         expect(notify).toHaveBeenCalledTimes(1)
-        expect(notify).toHaveBeenCalledWith(expect.anything(), "error")
+        expect(notify).toHaveBeenCalledWith("Failed to create Nuzlocke Run: 'TEST'", "error")
         done()
     })
 

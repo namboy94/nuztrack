@@ -16,32 +16,44 @@ import {act, renderHook} from "@testing-library/react";
 import {useEncounterEventDialogProps} from "./EncounterEventDialog.hooks";
 import {NUZLOCKE_RUN} from "../../../data/runs/runs.testconstants";
 import {Gender} from "../../../data/team/team.model";
-import {EncounterEventDialogState} from "../components/EncounterEventDialog";
+import {EncounterEventDialogProps, EncounterEventDialogState} from "../components/EncounterEventDialog";
 import {CreateEncounterEvent} from "../../../data/events/events.model";
+
+type PropsGetter = () => EncounterEventDialogProps
 
 describe("useEncounterEventDialogProps", () => {
 
     const notify = jest.fn()
     const events = [ENCOUNTER_EVENT_SUCCESSFUL, ENCOUNTER_EVENT_FAILED]
-    const locations = [GAME_LOCATION_PALLET, GAME_LOCATION_VIRIDIAN]
 
-    function createMocksAndRender() {
+    function createMocksAndRender(): [() => void, PropsGetter] {
         jest.spyOn(eventsService, "getEncounterEvents$").mockReturnValue(of(events))
         jest.spyOn(pokedexService, "getPokedex$").mockReturnValue(of(POKEDEX))
         jest.spyOn(pokedexService, "getNatures$").mockReturnValue(of(NATURES))
         jest.spyOn(gamesService, "getGameLocationRegistry$").mockReturnValue(of(LOCATION_REGISTRY))
-        return renderHook(() => useEncounterEventDialogProps(NUZLOCKE_RUN, notify)).result
+        const result = renderHook(() => useEncounterEventDialogProps(NUZLOCKE_RUN, notify)).result
+        return [result.current[0], () => result.current[1]]
     }
 
-    function fillEntries(state: EncounterEventDialogState) {
-        state.setLocation(GAME_LOCATION_PALLET.name)
-        state.setPokemonSpecies(POKEMON_SPECIES_SQUIRTLE)
-        state.setLevel(50)
-        state.setGender(Gender.FEMALE)
-        state.setCaught(true)
-        state.setNickname("XYZ")
-        state.setNature("BOLD")
-        state.setAbilitySlot(3)
+    function fillEntries(propsGetter: PropsGetter) {
+        let state = propsGetter().state
+        act(() => {
+            state.setLocation(GAME_LOCATION_PALLET.name)
+            state.setPokemonSpecies(POKEMON_SPECIES_SQUIRTLE)
+            state.setLevel(50)
+            state.setGender(Gender.FEMALE)
+        })
+        state = propsGetter().state
+        act(() => {
+            state.setCaught(true)
+        })
+        state = propsGetter().state
+        act(() => {
+            state.setNickname("XYZ")
+            state.setNature("BOLD")
+            state.setAbilitySlot(3)
+        })
+
     }
 
     function expectChangedEntries(state: EncounterEventDialogState) {
@@ -61,7 +73,7 @@ describe("useEncounterEventDialogProps", () => {
 
     function expectDefaultEntries(state: EncounterEventDialogState) {
         expect(state.location).toEqual("")
-        expect(state.pokemonSpecies).toEqual(undefined)
+        expect(state.pokemonSpecies).toEqual(null)
         expect(state.level).toEqual(5)
         expect(state.gender).toEqual(Gender.MALE)
         expect(state.caught).toEqual(false)
@@ -73,7 +85,7 @@ describe("useEncounterEventDialogProps", () => {
     }
 
     it("should test the data loading", (done) => {
-        const result = createMocksAndRender().current[1]
+        const result = createMocksAndRender()[1]()
         expect(result.locations).toEqual([GAME_LOCATION_VIRIDIAN.name])
         expect(result.pokedex).toEqual(POKEDEX)
         expect(result.natures).toEqual(NATURES)
@@ -85,32 +97,29 @@ describe("useEncounterEventDialogProps", () => {
     })
 
     it("should open the dialog, change the values, and close the dialog", (done) => {
-        const result = createMocksAndRender()
-        let [openDialog, current] = result.current
-
+        let [openDialog, propsGetter] = createMocksAndRender()
+        let current = propsGetter()
         expect(current.open).toBeFalsy()
 
         act(openDialog)
-        current = result.current[1]
+        current = propsGetter()
         expect(current.open).toBeTruthy()
 
-        act(() => fillEntries(current.state))
-        current = result.current[1]
-        expectChangedEntries(current.state)
+        fillEntries(propsGetter)
+        current = propsGetter()
 
         act(current.onClose)
-        current = result.current[1]
+        current = propsGetter()
         expect(current.open).toBeFalsy()
         expectDefaultEntries(current.state)
 
         done()
     })
     it("should submit a new encounter event", (done) => {
-
         jest.spyOn(eventsService, "createEncounterEvent$").mockReturnValue(of(ENCOUNTER_EVENT_SUCCESSFUL))
 
-        const result = createMocksAndRender()
-        let [openDialog, current] = result.current
+        let [openDialog, propsGetter] = createMocksAndRender()
+        let current = propsGetter()
 
         const expected: CreateEncounterEvent = {
             caught: true,
@@ -120,14 +129,12 @@ describe("useEncounterEventDialogProps", () => {
             pokemon: {abilitySlot: 3, gender: Gender.FEMALE, nature: "BOLD", nickname: "XYZ"}
         }
 
-        act(() => {
-            openDialog()
-            fillEntries(current.state)
-        })
+        act(() => openDialog())
+        fillEntries(propsGetter)
 
-        current = result.current[1]
+        current = propsGetter()
         act(() => current.submit())
-        current = result.current[1]
+        current = propsGetter()
 
         expect(notify).toHaveBeenCalledTimes(1)
         expect(notify).toHaveBeenCalledWith(expect.anything(), "success")
@@ -142,19 +149,18 @@ describe("useEncounterEventDialogProps", () => {
     it("should submit a bad encounter event", (done) => {
 
         jest.spyOn(eventsService, "createEncounterEvent$").mockReturnValue(throwError(() => {
+            throw {response: {data: {reason: "TEST"}}}
         }))
 
-        const result = createMocksAndRender()
-        let [openDialog, current] = result.current
+        let [openDialog, propsGetter] = createMocksAndRender()
+        let current = propsGetter()
 
-        act(() => {
-            openDialog()
-            fillEntries(current.state)
-        })
+        act(() => openDialog())
+        fillEntries(propsGetter)
 
-        current = result.current[1]
+        current = propsGetter()
         act(() => current.submit())
-        current = result.current[1]
+        current = propsGetter()
 
         expect(notify).toHaveBeenCalledTimes(1)
         expect(notify).toHaveBeenCalledWith(expect.anything(), "error")
@@ -166,16 +172,14 @@ describe("useEncounterEventDialogProps", () => {
 
     })
     it("should reset capture details if caught is set to false", (done) => {
-        const result = createMocksAndRender()
-        let [openDialog, current] = result.current
+        let [openDialog, propsGetter] = createMocksAndRender()
+        let current = propsGetter()
 
-        act(() => {
-            openDialog()
-            fillEntries(current.state)
-            current.state.setCaught(false)
-        })
+        act(() => openDialog())
+        fillEntries(propsGetter)
+        act(() => current.state.setCaught(false))
 
-        current = result.current[1]
+        current = propsGetter()
 
         expect(current.state.possibleAbilitySlots).toEqual([1])
         expect(current.state.nature).toEqual("ADAMANT")
@@ -184,18 +188,91 @@ describe("useEncounterEventDialogProps", () => {
         done()
     })
     it("should set the possible encounters for a location if it is set", (done) => {
-        const result = createMocksAndRender()
-        let [openDialog, current] = result.current
+        let [openDialog, propsGetter] = createMocksAndRender()
+        let current = propsGetter()
 
-        act(() => {
-            openDialog()
-            fillEntries(current.state)
-            current.state.setLocation(GAME_LOCATION_VIRIDIAN.name)
-        })
+        act(() => openDialog())
+        fillEntries(propsGetter)
+        act(() => current.state.setLocation(GAME_LOCATION_VIRIDIAN.name))
 
-        current = result.current[1]
-
+        current = propsGetter()
         expect(current.state.possibleEncounters).toEqual([POKEMON_SPECIES_IVYSAUR])
+
+        done()
+    })
+    it("should not reset capture details if caught is set to false", (done) => {
+        let [openDialog, propsGetter] = createMocksAndRender()
+        let current = propsGetter()
+
+        expect(current.open).toBeFalsy()
+
+        act(openDialog)
+        current = propsGetter()
+        expect(current.open).toBeTruthy()
+
+        fillEntries(propsGetter)
+        current = propsGetter()
+        expectChangedEntries(current.state)
+
+        act(() => current.state.setCaught(false))
+        current = propsGetter()
+
+        expect(current.state.nickname).toEqual("")
+        expect(current.state.nature).toEqual("ADAMANT")
+        expect(current.state.abilitySlot).toEqual(1)
+        expect(current.state.caught).toEqual(false)
+
+        done()
+    })
+    it("should not set caught to true if no Pokemon is set", (done) => {
+        let [openDialog, propsGetter] = createMocksAndRender()
+        let current = propsGetter()
+
+        act(openDialog)
+        current = propsGetter()
+
+        expect(current.state.caught).toEqual(false)
+        expect(current.state.pokemonSpecies).toEqual(null)
+
+        act(() => current.state.setCaught(true))
+        current = propsGetter()
+
+        expect(current.state.caught).toEqual(false)
+
+        done()
+    })
+    it("should not set level to a level below 1 or above 100", (done) => {
+        let [openDialog, propsGetter] = createMocksAndRender()
+        let current = propsGetter()
+
+        act(openDialog)
+        current = propsGetter()
+        expect(current.state.level).toEqual(5)
+
+        act(() => current.state.setLevel(0))
+        current = propsGetter()
+        expect(current.state.level).toEqual(5)
+
+        act(() => current.state.setLevel(101))
+        current = propsGetter()
+        expect(current.state.level).toEqual(5)
+
+        done()
+    })
+    it("should not set nickname to a name that's too long", (done) => {
+        let [openDialog, propsGetter] = createMocksAndRender()
+        let current = propsGetter()
+
+        act(openDialog)
+        current = propsGetter()
+
+        act(() => current.state.setNickname("ABC"))
+        current = propsGetter()
+        expect(current.state.nickname).toEqual("ABC")
+
+        act(() => current.state.setNickname("1234567890123"))
+        current = propsGetter()
+        expect(current.state.nickname).toEqual("ABC")
 
         done()
     })

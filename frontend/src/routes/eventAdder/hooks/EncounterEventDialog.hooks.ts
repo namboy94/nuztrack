@@ -24,7 +24,7 @@ export function useEncounterEventDialogProps(
     const encounterLocations = encounters.map(encounter => encounter.location)
     const locationRegistry = useQuery(() => gamesService.getGameLocationRegistry$(run.game), undefined, [])
     const locations = locationRegistry?.getLocationNames().filter(x => !encounterLocations.includes(x)) ?? []
-    const state = useEncounterEventDialogState(pokedex, locationRegistry)
+    const state = useEncounterEventDialogState(run, pokedex, locationRegistry)
 
     const onClose = () => {
         setOpen(false)
@@ -49,11 +49,11 @@ export function useEncounterEventDialogProps(
 }
 
 function useEncounterEventDialogState(
+    run: NuzlockeRun,
     pokedex: Pokedex | undefined,
     locationRegistry: GameLocationRegistry | undefined
 ): EncounterEventDialogState {
-    const [pokemonSpecies, setPokemonSpecies, resetPokemonSpecies] =
-        useResetState<PokemonSpecies | undefined>(undefined)
+    const [pokemonSpecies, setPokemonSpecies, resetPokemonSpecies] = useResetState<PokemonSpecies | null>(null)
     const [location, setLocation, resetLocation] = useResetState("")
     const [possibleEncounters, setPossibleEncounters, resetPossibleEncounters] = useResetState<PokemonSpecies[]>([])
     const [level, setLevel, resetLevel] = useResetState(5)
@@ -75,35 +75,49 @@ function useEncounterEventDialogState(
     }
 
     const resetCaptureDetails = () => {
+        resetCaught()
         resetNickname()
         resetNature()
         resetAbilitySlot()
         resetPossibleAbilitySlots()
     }
 
-    const selectLocation = (location: string) => {
+    const selectLocation = (newLocation: string) => {
         reset()
-        setLocation(location)
-        const gameLocation = locationRegistry?.getLocationByName(location) ?? null
+        setLocation(newLocation)
+        const gameLocation = locationRegistry?.getLocationByName(newLocation) ?? null
         if (gameLocation !== null && pokedex !== undefined) {
             setPossibleEncounters(gameLocation.encounters.map(x => pokedex.getSpecies(x)))
         }
     }
 
-    const selectPokemonSpecies = (species: PokemonSpecies | undefined) => {
+    const selectPokemonSpecies = (newSpecies: PokemonSpecies | null) => {
         resetCaptureDetails()
-        if (species !== undefined) {
-            setPokemonSpecies(species)
-            setPossibleAbilitySlots(pokedex?.getValidAbilitySlots(species.pokedexNumber) ?? [1])
+        if (newSpecies !== null) {
+            setPokemonSpecies(newSpecies)
+            setPossibleAbilitySlots(pokedex?.getValidAbilitySlots(newSpecies.pokedexNumber) ?? [1])
         }
     }
 
-    const handleCaught = (caught: boolean) => {
-        if (caught && pokemonSpecies !== null) {
-            setCaught(caught)
+    const selectLevel = (newLevel: number) => {
+        if (newLevel >= 1 && newLevel <= 100) {
+            setLevel(newLevel)
         }
-        if (!caught) {
+    }
+
+    const handleCaught = (newCaught: boolean) => {
+        if (newCaught && pokemonSpecies !== null) {
+            setCaught(true)
+        } else {
             resetCaptureDetails()
+            setCaught(false)
+        }
+    }
+
+    const selectNickname = (newNickname: string) => {
+        const maxsize = run.game.generation <= 5 ? 10 : 12
+        if (newNickname.length <= maxsize) {
+            setNickname(newNickname)
         }
     }
 
@@ -114,13 +128,13 @@ function useEncounterEventDialogState(
         setPokemonSpecies: selectPokemonSpecies,
         possibleEncounters: possibleEncounters,
         level: level,
-        setLevel: setLevel,
+        setLevel: selectLevel,
         gender: gender,
         setGender: setGender,
         caught: caught,
         setCaught: handleCaught,
         nickname: nickname,
-        setNickname: setNickname,
+        setNickname: selectNickname,
         nature: nature, setNature,
         abilitySlot: abilitySlot, setAbilitySlot,
         possibleAbilitySlots: possibleAbilitySlots,
@@ -147,6 +161,15 @@ function useEncounterEventSubmit(
         caught: state.caught,
         pokemon: pokemon
     }
+
+    if (run.game.generation === 1) {
+        creator.pokemon.gender = null
+    }
+    if (run.game.generation < 3) {
+        creator.pokemon.nature = null
+        creator.pokemon.abilitySlot = null
+    }
+
     return () => {
         eventsService.createEncounterEvent$(run.id, creator).subscribe({
             next: () => {
@@ -154,7 +177,7 @@ function useEncounterEventSubmit(
                 onClose()
             },
             error: e => {
-                notify(`Failed to create encounter event: ${e}`, "error")
+                notify(`Failed to create encounter event: ${e.response.data.reason}`, "error")
             }
         })
     }
