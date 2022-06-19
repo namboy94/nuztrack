@@ -1,46 +1,75 @@
-import {act, render, renderHook, screen, within} from "@testing-library/react";
-import {EncounterEventDialog, EncounterEventDialogProps} from "./EncounterEventDialog";
-import {useEncounterEventDialogProps} from "../hooks/EncounterEventDialog.hooks";
+import {fireEvent, render, screen, within} from "@testing-library/react";
+import {EncounterEventDialog, EncounterEventDialogProps, EncounterEventDialogState} from "./EncounterEventDialog";
 import {NUZLOCKE_RUN} from "../../../data/runs/runs.testconstants";
-import {pokedexService} from "../../../data/pokedex/pokedex.service";
-import {eventsService} from "../../../data/events/events.service";
-import {gamesService} from "../../../data/games/games.service";
-import {NATURES, POKEDEX} from "../../../data/pokedex/pokedex.testconstants";
-import {of} from "rxjs";
-import {ENCOUNTER_EVENT_SUCCESSFUL} from "../../../data/events/events.testconstants";
+import {
+    NATURES,
+    POKEDEX,
+    POKEMON_SPECIES_BULBASAUR,
+    POKEMON_SPECIES_CHARMANDER,
+    POKEMON_SPECIES_SQUIRTLE
+} from "../../../data/pokedex/pokedex.testconstants";
 import {LOCATION_REGISTRY} from "../../../data/games/games.testconstants";
-import userEvent from "@testing-library/user-event";
+import {Gender} from "../../../data/team/team.model";
 
 describe("EncounterEventDialog", () => {
-
-    const notify = jest.fn()
+    const reset = jest.fn()
+    const setAbilitySlot = jest.fn()
+    const setCaught = jest.fn()
+    const setGender = jest.fn()
+    const setLevel = jest.fn()
+    const setLocation = jest.fn()
+    const setNature = jest.fn()
+    const setNickname = jest.fn()
+    const setPokemonSpecies = jest.fn()
+    const submit = jest.fn()
+    const onClose = jest.fn()
 
     afterEach(() => {
         jest.resetAllMocks()
     })
 
-    function generateProps(): EncounterEventDialogProps {
-        jest.spyOn(pokedexService, "getPokedex$").mockReturnValue(of(POKEDEX))
-        jest.spyOn(pokedexService, "getNatures$").mockReturnValue(of(NATURES))
-        jest.spyOn(eventsService, "getEncounterEvents$").mockReturnValue(of([ENCOUNTER_EVENT_SUCCESSFUL]))
-        jest.spyOn(gamesService, "getGameLocationRegistry$").mockReturnValue(of(LOCATION_REGISTRY))
-
-        const hook = renderHook(() => useEncounterEventDialogProps(NUZLOCKE_RUN, notify)).result
-        const [openFn,] = hook.current
-
-        act(openFn)
-        const [, props] = hook.current
-
+    function renderComponent(notLoaded: boolean = false): EncounterEventDialogProps {
+        const state: EncounterEventDialogState = {
+            abilitySlot: 1,
+            caught: true,
+            gender: Gender.MALE,
+            level: 7,
+            location: "Test Town",
+            nature: "MODEST",
+            nickname: "Nick",
+            pokemonSpecies: POKEMON_SPECIES_CHARMANDER,
+            possibleAbilitySlots: [1, 3],
+            possibleEncounters: [POKEMON_SPECIES_BULBASAUR, POKEMON_SPECIES_CHARMANDER, POKEMON_SPECIES_SQUIRTLE],
+            reset: reset,
+            setAbilitySlot: setAbilitySlot,
+            setCaught: setCaught,
+            setGender: setGender,
+            setLevel: setLevel,
+            setLocation: setLocation,
+            setNature: setNature,
+            setNickname: setNickname,
+            setPokemonSpecies: setPokemonSpecies
+        }
+        const props: EncounterEventDialogProps = {
+            locations: LOCATION_REGISTRY.getLocationNames(),
+            natures: NATURES,
+            open: true,
+            pokedex: POKEDEX,
+            run: NUZLOCKE_RUN,
+            state: state,
+            submit: submit,
+            onClose: onClose
+        }
+        if (notLoaded) {
+            props.pokedex = undefined
+            props.natures = undefined
+        }
+        render(<EncounterEventDialog {...props}/>)
         return props
     }
 
-    function renderComponent(props: EncounterEventDialogProps) {
-        render(<EncounterEventDialog {...props}/>)
-    }
-
-    it("should render all inputs", (done) => {
-        const props = generateProps()
-        renderComponent(props)
+    it("should render all inputs correctly", (done) => {
+        const props = renderComponent()
 
         const locationInput = screen.getByTestId("location-input")
         const pokemonSpeciesInput = screen.getByTestId("pokemon-species-input")
@@ -61,16 +90,134 @@ describe("EncounterEventDialog", () => {
         expect(abilitySlotInput).toBeInTheDocument()
 
         expect(within(locationInput).getByRole("combobox").getAttribute("value")).toEqual(props.state.location)
-        expect(within(pokemonSpeciesInput).getByRole("combobox").getAttribute("value")).toEqual("")
-        //expect(genderInput.outerHTML).toEqual(props.state.gender)
+        expect(within(pokemonSpeciesInput).getByRole("combobox")
+            .getAttribute("value")).toEqual(props.state.pokemonSpecies!!.name)
+        expect(within(genderInput).getByRole("button").getAttribute("tabindex")).toEqual(props.state.gender.toString())
         expect(parseInt(within(levelInput).getByRole("spinbutton").getAttribute("value")!!)).toEqual(props.state.level)
         expect(within(caughtInput).getByRole("checkbox").getAttribute("value")).toEqual(`${props.state.caught}`)
-        //expect(within(nicknameInput).getByRole("textbox").getAttribute("value")).toEqual(props.state.nickname)
-        //expect(within(natureInput).getByRole("combobox").getAttribute("value")).toEqual(props.state.nature)
-        //expect(within(abilitySlotInput).getByRole("combobox").getAttribute("value")).toEqual(props.state.abilitySlot)
+        expect(within(nicknameInput).getByRole("textbox", {hidden: true})
+            .getAttribute("value")).toEqual(props.state.nickname)
+        expect(within(natureInput).getByRole("combobox", {hidden: true})
+            .getAttribute("value")).toEqual(props.state.nature)
+        expect(within(abilitySlotInput).getByRole("combobox", {hidden: true}).getAttribute("value"))
+            .toEqual(POKEDEX.getAbilityName(props.state.pokemonSpecies!!.pokedexNumber, props.state.abilitySlot))
 
-        userEvent.click(caughtInput)
 
+        done()
+    })
+    it("should test changing the location", (done) => {
+        renderComponent()
+        const locationInput = screen.getByTestId("location-input")
+
+        fireEvent.change(within(locationInput).getByRole("combobox"), {target: {value: "Test"}})
+        fireEvent.keyDown(locationInput, {key: "Enter"})
+
+        expect(setLocation).toHaveBeenCalledTimes(1)
+        expect(setLocation).toHaveBeenCalledWith("Test")
+
+        done()
+    })
+    it("should test changing the pokemon species", (done) => {
+        renderComponent()
+        const pokemonSpeciesInput = screen.getByTestId("pokemon-species-input")
+
+        fireEvent.focus(pokemonSpeciesInput)
+        fireEvent.change(within(pokemonSpeciesInput).getByRole("combobox"), {target: {value: "Squi"}})
+        fireEvent.keyDown(pokemonSpeciesInput, {key: "ArrowDown"})
+        fireEvent.keyDown(pokemonSpeciesInput, {key: "Enter"})
+
+        expect(setPokemonSpecies).toHaveBeenCalledTimes(1)
+        expect(setPokemonSpecies).toHaveBeenCalledWith(POKEMON_SPECIES_SQUIRTLE)
+
+        done()
+    })
+    it("should test changing the gender", (done) => {
+        renderComponent()
+        const genderInput = screen.getByTestId("gender-input")
+
+        fireEvent.mouseDown(within(genderInput).getByRole("button"))
+        const femaleInput = screen.getByTestId("female-gender-select")
+        fireEvent.click(femaleInput)
+
+        expect(setGender).toHaveBeenCalledTimes(1)
+        expect(setGender).toHaveBeenCalledWith(Gender.FEMALE)
+
+        done()
+    })
+    it("should test changing the level", (done) => {
+        renderComponent()
+        const levelInput = screen.getByTestId("level-input")
+
+        fireEvent.change(within(levelInput).getByRole("spinbutton"), {target: {value: 85}})
+
+        expect(setLevel).toHaveBeenCalledTimes(1)
+        expect(setLevel).toHaveBeenCalledWith(85)
+
+        done()
+    })
+    it("should test changing caught", (done) => {
+        renderComponent()
+        const caughtInput = screen.getByTestId("caught-input")
+
+        fireEvent.click(caughtInput)
+
+        expect(setCaught).toHaveBeenCalledTimes(1)
+        expect(setCaught).toHaveBeenCalledWith(false)
+        done()
+    })
+    it("should test changing nickname", (done) => {
+        renderComponent()
+        const nicknameInput = screen.getByTestId("nickname-input")
+
+        fireEvent.change(within(nicknameInput).getByRole("textbox", {hidden: true}), {target: {value: "Test"}})
+
+        expect(setNickname).toHaveBeenCalledTimes(1)
+        expect(setNickname).toHaveBeenCalledWith("Test")
+        done()
+    })
+    it("should test changing nature", (done) => {
+        renderComponent()
+        const natureInput = screen.getByTestId("nature-input")
+
+        fireEvent.focus(natureInput)
+        fireEvent.change(within(natureInput).getByRole("combobox"), {target: {value: "Timi"}})
+        fireEvent.keyDown(natureInput, {key: "ArrowDown"})
+        fireEvent.keyDown(natureInput, {key: "Enter"})
+
+        expect(setNature).toHaveBeenCalledTimes(1)
+        expect(setNature).toHaveBeenCalledWith("TIMID")
+        done()
+    })
+    it("should test changing ability", (done) => {
+        renderComponent()
+        const abilitySlotInput = screen.getByTestId("ability-slot-input")
+
+        fireEvent.focus(abilitySlotInput)
+        fireEvent.change(within(abilitySlotInput).getByRole("combobox"), {target: {value: "Sola"}})
+        fireEvent.keyDown(abilitySlotInput, {key: "ArrowDown"})
+        fireEvent.keyDown(abilitySlotInput, {key: "Enter"})
+
+        expect(setAbilitySlot).toHaveBeenCalledTimes(1)
+        expect(setAbilitySlot).toHaveBeenCalledWith(3)
+        done()
+    })
+    it("should submit", (done) => {
+        renderComponent()
+        const button = screen.getByTestId("submit-button")
+        fireEvent.click(button)
+        expect(submit).toHaveBeenCalledTimes(1)
+        done()
+    })
+    it("should cancel", (done) => {
+        renderComponent()
+        const button = screen.getByTestId("cancel-button")
+        fireEvent.click(button)
+        expect(onClose).toHaveBeenCalledTimes(1)
+        done()
+    })
+    it("should not render anything if data is not loaded", (done) => {
+        renderComponent(true)
+        expect(screen.queryByTestId("submit-button")).not.toBeInTheDocument()
         done()
     })
 })

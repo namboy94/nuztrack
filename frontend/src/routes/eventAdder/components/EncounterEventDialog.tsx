@@ -116,9 +116,9 @@ export function EncounterEventDialog(props: EncounterEventDialogProps) {
                             value={state.gender}
                             onChange={x => state.setGender(x.target.value as Gender)}
                         >
-                            <MenuItem value={Gender.MALE}>♂</MenuItem>
-                            <MenuItem value={Gender.FEMALE}>♀</MenuItem>
-                            <MenuItem value={Gender.NEUTRAL}>N</MenuItem>
+                            <MenuItem data-testid="male-gender-select" value={Gender.MALE}>♂</MenuItem>
+                            <MenuItem data-testid="female-gender-select" value={Gender.FEMALE}>♀</MenuItem>
+                            <MenuItem data-testid="neutral-gender-select" value={Gender.NEUTRAL}>N</MenuItem>
                         </Select>
                     }
                 </Grid>
@@ -180,8 +180,8 @@ export function EncounterEventDialog(props: EncounterEventDialogProps) {
                 }
             </Collapse>
             <DialogActions>
-                <Button onClick={onClose}>Cancel</Button>
-                <Button onClick={submit}>Add</Button>
+                <Button data-testid="cancel-button" onClick={onClose}>Cancel</Button>
+                <Button data-testid="submit-button" onClick={submit}>Add</Button>
             </DialogActions>
         </Grid>
     </Dialog>)

@@ -5,6 +5,7 @@ import {RunSelectorRoute} from "../routes/runSelector/RunSelector.route";
 import {useQuery} from "../util/observable.hooks";
 import {runsService} from "../data/runs/runs.service";
 import {EventAdderRoute} from "../routes/eventAdder/EventAdder.route";
+import {EventLogRoute} from "../routes/eventLog/EventLogRoute";
 
 export interface RouterProps {
     notify: NotificationFN
@@ -23,6 +24,7 @@ export default function Router(props: RouterProps) {
             <Routes>
                 <Route path="/" element={<RunSelectorRoute notify={notify}/>}/>
                 <Route path="/add_event" element={<EventAdderRoute run={run} notify={notify}/>}/>
+                <Route path="/log" element={<EventLogRoute run={run} notify={notify}/>}/>
                 {/*<Route path="/overview" element={<OverviewRoute run={run}/>}/>*/}
                 {/*<Route path="/team" element={<TeamRoute run={props.run}/>}/>*/}
                 {/*<Route path="/map" element={<Map/>}/>*/}
