@@ -17,10 +17,10 @@ import java.security.Principal
 
 @RestController
 class EncounterEventController(
-        val encounterService: EncounterEventService,
-        val teamMemberService: TeamMemberService,
-        val teamMemberSwitchEventService: TeamMemberSwitchEventService,
-        runService: NuzlockeRunService
+    val encounterService: EncounterEventService,
+    val teamMemberService: TeamMemberService,
+    val teamMemberSwitchEventService: TeamMemberSwitchEventService,
+    runService: NuzlockeRunService
 ) {
 
     val authenticator = Authenticator(runService)
@@ -28,35 +28,35 @@ class EncounterEventController(
     @PostMapping("/api/events/{runId}/encounters")
     @ResponseBody
     fun createEncounterEvent(
-            @PathVariable runId: Long,
-            @RequestBody creator: CreateEncounterEventTO,
-            principal: Principal
+        @PathVariable runId: Long,
+        @RequestBody creator: CreateEncounterEventTO,
+        principal: Principal
     ): ResponseEntity<EncounterEventTO> {
         val run = this.authenticator.loadAuthenticatedRun(runId, principal.name)
         creator.validate(run, encounterService)
 
         val encounter = encounterService.createEncounterEvent(
-                run,
-                creator.location,
-                creator.pokedexNumber,
-                creator.level,
-                creator.caught
+            run,
+            creator.location,
+            creator.pokedexNumber,
+            creator.level,
+            creator.caught
         )
         if (creator.caught && creator.pokemon != null) {
             val teamMember = teamMemberService.createTeamMember(
-                    encounter,
-                    creator.pokemon.nickname,
-                    Gender.valueOfWithChecks(creator.pokemon.gender),
-                    Natures.valueOfWithChecks(creator.pokemon.nature),
-                    creator.pokemon.abilitySlot
+                encounter,
+                creator.pokemon.nickname,
+                if (creator.pokemon.gender == null) null else Gender.valueOfWithChecks(creator.pokemon.gender),
+                if (creator.pokemon.nature == null) null else Natures.valueOfWithChecks(creator.pokemon.nature),
+                creator.pokemon.abilitySlot
             )
-            // TODO Only auto-add if team has less than 6 active members
-            teamMemberSwitchEventService.createTeamMemberSwitchEvent(
+            val activeTeam = teamMemberService.getTeam(run.id).first
+            if (activeTeam.size < 6) {
+                teamMemberSwitchEventService.createTeamMemberSwitchEvent(
                     run, creator.location, teamMember, TeamMemberSwitchType.ADD
-            )
+                )
+            }
         }
-
-
 
         return ResponseEntity<EncounterEventTO>(EncounterEventTO.fromEncounterEvent(encounter), HttpStatus.CREATED)
     }

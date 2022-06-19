@@ -82,7 +82,13 @@ class EventsConverter {
     }
 
     convertCreateEncounterEventModelToTO(model: CreateEncounterEvent): CreateEncounterEventTO {
-        return {...model, pokemon: {...model.pokemon, gender: Gender[model.pokemon.gender]}}
+        return {
+            ...model,
+            pokemon: {
+                ...model.pokemon,
+                gender: model.pokemon.gender !== null ? Gender[model.pokemon.gender] : null
+            }
+        }
     }
 
     convertCreateDeathEventModelToTO(model: CreateDeathEvent): CreateDeathEventTO {

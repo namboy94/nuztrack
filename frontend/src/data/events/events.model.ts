@@ -39,9 +39,9 @@ export interface CreateEncounterEvent {
 
 export interface CreateEncounterPokemon {
     nickname: string
-    gender: Gender
-    nature: string
-    abilitySlot: number
+    gender: Gender | null
+    nature: string | null
+    abilitySlot: number | null
 }
 
 export interface DeathEvent extends Event {

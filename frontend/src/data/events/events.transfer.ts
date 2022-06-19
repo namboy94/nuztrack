@@ -23,9 +23,9 @@ export interface CreateEncounterEventTO {
 
 export interface CreateEncounterPokemonTO {
     nickname: string
-    gender: string
-    nature: string
-    abilitySlot: number
+    gender: string | null
+    nature: string | null
+    abilitySlot: number | null
 }
 
 export interface DeathEventTO {
