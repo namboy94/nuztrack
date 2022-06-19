@@ -18,7 +18,7 @@ export interface CreateEncounterEventTO {
     pokedexNumber: number
     level: number
     caught: boolean
-    pokemon: CreateEncounterPokemonTO
+    pokemon: CreateEncounterPokemonTO | null
 }
 
 export interface CreateEncounterPokemonTO {

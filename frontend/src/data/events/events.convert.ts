@@ -82,12 +82,13 @@ class EventsConverter {
     }
 
     convertCreateEncounterEventModelToTO(model: CreateEncounterEvent): CreateEncounterEventTO {
+        const pokemon = (model.pokemon === null) ? null : {
+            ...model.pokemon,
+            gender: model.pokemon.gender !== null ? Gender[model.pokemon.gender] : null
+        }
         return {
             ...model,
-            pokemon: {
-                ...model.pokemon,
-                gender: model.pokemon.gender !== null ? Gender[model.pokemon.gender] : null
-            }
+            pokemon: pokemon
         }
     }
 

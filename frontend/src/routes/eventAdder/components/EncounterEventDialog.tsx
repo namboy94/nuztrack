@@ -1,5 +1,6 @@
 import {
     Autocomplete,
+    Box,
     Button,
     Checkbox,
     Collapse,
@@ -80,6 +81,17 @@ export function EncounterEventDialog(props: EncounterEventDialogProps) {
                     ...pokedex.getAllSpecies().filter(x => !state.possibleEncounters.includes(x))
                 ]}
                 groupBy={species => state.possibleEncounters.includes(species) ? state.location : "All"}
+                renderOption={(p, option) => (
+                    <Box component="li" sx={{'& > img': {mr: 2, flexShrink: 0}}} {...p}>
+                        <img
+                            loading="lazy"
+                            width="100"
+                            src={option.sprite}
+                            alt={option.name}
+                        />
+                        {option.name}
+                    </Box>
+                )}
                 getOptionLabel={pokemon => pokemon?.name ?? ""}
                 onChange={(_, newPokemon) => state.setPokemonSpecies(newPokemon)}
                 renderInput={(params) => <TextField{...params} label="Pokemon"/>}

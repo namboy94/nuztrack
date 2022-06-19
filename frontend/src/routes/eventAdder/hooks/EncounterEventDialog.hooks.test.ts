@@ -11,13 +11,19 @@ import {
     POKEMON_SPECIES_SQUIRTLE
 } from "../../../data/pokedex/pokedex.testconstants";
 import {gamesService} from "../../../data/games/games.service";
-import {GAME_LOCATION_PALLET, GAME_LOCATION_VIRIDIAN, LOCATION_REGISTRY} from "../../../data/games/games.testconstants";
+import {
+    GAME_1,
+    GAME_LOCATION_PALLET,
+    GAME_LOCATION_VIRIDIAN,
+    LOCATION_REGISTRY
+} from "../../../data/games/games.testconstants";
 import {act, renderHook} from "@testing-library/react";
 import {useEncounterEventDialogProps} from "./EncounterEventDialog.hooks";
 import {NUZLOCKE_RUN} from "../../../data/runs/runs.testconstants";
 import {Gender} from "../../../data/team/team.model";
 import {EncounterEventDialogProps, EncounterEventDialogState} from "../components/EncounterEventDialog";
 import {CreateEncounterEvent} from "../../../data/events/events.model";
+import {NuzlockeRun} from "../../../data/runs/runs.model";
 
 type PropsGetter = () => EncounterEventDialogProps
 
@@ -26,12 +32,12 @@ describe("useEncounterEventDialogProps", () => {
     const notify = jest.fn()
     const events = [ENCOUNTER_EVENT_SUCCESSFUL, ENCOUNTER_EVENT_FAILED]
 
-    function createMocksAndRender(): [() => void, PropsGetter] {
+    function createMocksAndRender(run: NuzlockeRun): [() => void, PropsGetter] {
         jest.spyOn(eventsService, "getEncounterEvents$").mockReturnValue(of(events))
         jest.spyOn(pokedexService, "getPokedex$").mockReturnValue(of(POKEDEX))
         jest.spyOn(pokedexService, "getNatures$").mockReturnValue(of(NATURES))
         jest.spyOn(gamesService, "getGameLocationRegistry$").mockReturnValue(of(LOCATION_REGISTRY))
-        const result = renderHook(() => useEncounterEventDialogProps(NUZLOCKE_RUN, notify)).result
+        const result = renderHook(() => useEncounterEventDialogProps(run, notify)).result
         return [result.current[0], () => result.current[1]]
     }
 
@@ -84,8 +90,28 @@ describe("useEncounterEventDialogProps", () => {
         expect(state.possibleEncounters).toEqual([])
     }
 
+    function verifySubmission(run: NuzlockeRun, expected: CreateEncounterEvent) {
+
+        let [openDialog, propsGetter] = createMocksAndRender(run)
+        let current = propsGetter()
+
+        act(() => openDialog())
+        fillEntries(propsGetter)
+
+        current = propsGetter()
+        act(() => current.submit())
+        current = propsGetter()
+
+        expect(notify).toHaveBeenCalledTimes(1)
+        expect(notify).toHaveBeenCalledWith(expect.anything(), "success")
+        expect(eventsService.createEncounterEvent$).toHaveBeenCalledTimes(1)
+        expect(eventsService.createEncounterEvent$).toHaveBeenCalledWith(NUZLOCKE_RUN.id, expected)
+        expectDefaultEntries(current.state)
+        expect(current.open).toBeFalsy()
+    }
+
     it("should test the data loading", (done) => {
-        const result = createMocksAndRender()[1]()
+        const result = createMocksAndRender(NUZLOCKE_RUN)[1]()
         expect(result.locations).toEqual([GAME_LOCATION_VIRIDIAN.name])
         expect(result.pokedex).toEqual(POKEDEX)
         expect(result.natures).toEqual(NATURES)
@@ -97,7 +123,7 @@ describe("useEncounterEventDialogProps", () => {
     })
 
     it("should open the dialog, change the values, and close the dialog", (done) => {
-        let [openDialog, propsGetter] = createMocksAndRender()
+        let [openDialog, propsGetter] = createMocksAndRender(NUZLOCKE_RUN)
         let current = propsGetter()
         expect(current.open).toBeFalsy()
 
@@ -117,10 +143,6 @@ describe("useEncounterEventDialogProps", () => {
     })
     it("should submit a new encounter event", (done) => {
         jest.spyOn(eventsService, "createEncounterEvent$").mockReturnValue(of(ENCOUNTER_EVENT_SUCCESSFUL))
-
-        let [openDialog, propsGetter] = createMocksAndRender()
-        let current = propsGetter()
-
         const expected: CreateEncounterEvent = {
             caught: true,
             level: 50,
@@ -129,22 +151,21 @@ describe("useEncounterEventDialogProps", () => {
             pokemon: {abilitySlot: 3, gender: Gender.FEMALE, nature: "BOLD", nickname: "XYZ"}
         }
 
-        act(() => openDialog())
-        fillEntries(propsGetter)
-
-        current = propsGetter()
-        act(() => current.submit())
-        current = propsGetter()
-
-        expect(notify).toHaveBeenCalledTimes(1)
-        expect(notify).toHaveBeenCalledWith(expect.anything(), "success")
-        expect(eventsService.createEncounterEvent$).toHaveBeenCalledTimes(1)
-        expect(eventsService.createEncounterEvent$).toHaveBeenCalledWith(NUZLOCKE_RUN.id, expected)
-        expectDefaultEntries(current.state)
-        expect(current.open).toBeFalsy()
-
+        verifySubmission(NUZLOCKE_RUN, expected)
         done()
-
+    })
+    it("should submit a new encounter event for an old game", (done) => {
+        jest.spyOn(eventsService, "createEncounterEvent$").mockReturnValue(of(ENCOUNTER_EVENT_SUCCESSFUL))
+        const run = {...NUZLOCKE_RUN, game: GAME_1}
+        const expected: CreateEncounterEvent = {
+            caught: true,
+            level: 50,
+            location: GAME_LOCATION_PALLET.name,
+            pokedexNumber: POKEMON_SPECIES_SQUIRTLE.pokedexNumber,
+            pokemon: {abilitySlot: null, gender: null, nature: null, nickname: "XYZ"}
+        }
+        verifySubmission(run, expected)
+        done()
     })
     it("should submit a bad encounter event", (done) => {
 
@@ -152,7 +173,7 @@ describe("useEncounterEventDialogProps", () => {
             throw {response: {data: {reason: "TEST"}}}
         }))
 
-        let [openDialog, propsGetter] = createMocksAndRender()
+        let [openDialog, propsGetter] = createMocksAndRender(NUZLOCKE_RUN)
         let current = propsGetter()
 
         act(() => openDialog())
@@ -172,7 +193,7 @@ describe("useEncounterEventDialogProps", () => {
 
     })
     it("should reset capture details if caught is set to false", (done) => {
-        let [openDialog, propsGetter] = createMocksAndRender()
+        let [openDialog, propsGetter] = createMocksAndRender(NUZLOCKE_RUN)
         let current = propsGetter()
 
         act(() => openDialog())
@@ -188,7 +209,7 @@ describe("useEncounterEventDialogProps", () => {
         done()
     })
     it("should set the possible encounters for a location if it is set", (done) => {
-        let [openDialog, propsGetter] = createMocksAndRender()
+        let [openDialog, propsGetter] = createMocksAndRender(NUZLOCKE_RUN)
         let current = propsGetter()
 
         act(() => openDialog())
@@ -201,7 +222,7 @@ describe("useEncounterEventDialogProps", () => {
         done()
     })
     it("should not reset capture details if caught is set to false", (done) => {
-        let [openDialog, propsGetter] = createMocksAndRender()
+        let [openDialog, propsGetter] = createMocksAndRender(NUZLOCKE_RUN)
         let current = propsGetter()
 
         expect(current.open).toBeFalsy()
@@ -225,7 +246,7 @@ describe("useEncounterEventDialogProps", () => {
         done()
     })
     it("should not set caught to true if no Pokemon is set", (done) => {
-        let [openDialog, propsGetter] = createMocksAndRender()
+        let [openDialog, propsGetter] = createMocksAndRender(NUZLOCKE_RUN)
         let current = propsGetter()
 
         act(openDialog)
@@ -242,7 +263,7 @@ describe("useEncounterEventDialogProps", () => {
         done()
     })
     it("should not set level to a level below 1 or above 100", (done) => {
-        let [openDialog, propsGetter] = createMocksAndRender()
+        let [openDialog, propsGetter] = createMocksAndRender(NUZLOCKE_RUN)
         let current = propsGetter()
 
         act(openDialog)
@@ -260,7 +281,7 @@ describe("useEncounterEventDialogProps", () => {
         done()
     })
     it("should not set nickname to a name that's too long", (done) => {
-        let [openDialog, propsGetter] = createMocksAndRender()
+        let [openDialog, propsGetter] = createMocksAndRender(NUZLOCKE_RUN)
         let current = propsGetter()
 
         act(openDialog)

@@ -34,7 +34,7 @@ export interface CreateEncounterEvent {
     pokedexNumber: number
     level: number
     caught: boolean
-    pokemon: CreateEncounterPokemon
+    pokemon: CreateEncounterPokemon | null
 }
 
 export interface CreateEncounterPokemon {

@@ -162,14 +162,20 @@ function useEncounterEventSubmit(
         pokemon: pokemon
     }
 
-    if (run.game.generation === 1) {
-        creator.pokemon.gender = null
-    }
-    if (run.game.generation < 3) {
-        creator.pokemon.nature = null
-        creator.pokemon.abilitySlot = null
+    if (!state.caught) {
+        creator.pokemon = null
     }
 
+    if (creator.pokemon !== null) {
+        if (run.game.generation === 1) {
+            creator.pokemon.gender = null
+        }
+        if (run.game.generation < 3) {
+            creator.pokemon.nature = null
+            creator.pokemon.abilitySlot = null
+        }
+    }
+    
     return () => {
         eventsService.createEncounterEvent$(run.id, creator).subscribe({
             next: () => {
