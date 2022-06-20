@@ -25,10 +25,15 @@ export function NoteEventDialog(props: NoteEventDialogProps) {
         <Dialog open={open} onClose={onClose}>
             <DialogTitle>Add Note</DialogTitle>
             <LocationInput location={state.location} setLocation={state.setLocation} locations={locations}/>
-            <TextField multiline label="Note" value={state.text} onChange={x => state.setText(x.target.value)}/>
+            <TextField
+                data-testid="note-text-input"
+                multiline
+                label="Note"
+                value={state.text}
+                onChange={x => state.setText(x.target.value)}/>
             <DialogActions>
-                <Button onClick={onClose}>Cancel</Button>
-                <Button onClick={submit}>Add</Button>
+                <Button data-testid="cancel-button" onClick={onClose}>Cancel</Button>
+                <Button data-testid="submit-button" onClick={submit}>Add</Button>
             </DialogActions>
         </Dialog>
     )
