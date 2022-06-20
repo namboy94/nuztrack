@@ -8,6 +8,7 @@ import {NUZLOCKE_RUN} from "../../../data/runs/runs.testconstants";
 import {teamService} from "../../../data/team/team.service";
 
 describe("useEventAdderDataLoader", () => {
+
     it("should load the data", (done) => {
         jest.spyOn(eventsService, "loadEvents$").mockReturnValue(EMPTY)
         jest.spyOn(pokedexService, "loadPokedexData$").mockReturnValue(EMPTY)
@@ -25,7 +26,7 @@ describe("useEventAdderDataLoader", () => {
         expect(gamesService.loadGameLocations$).toHaveBeenCalledTimes(1)
         expect(gamesService.loadGameLocations$).toHaveBeenCalledWith(NUZLOCKE_RUN.game)
         expect(teamService.loadTeam$).toHaveBeenCalledTimes(1)
-        expect(teamService.loadTeam$).toHaveBeenCalledWith(1)
+        expect(teamService.loadTeam$).toHaveBeenCalledWith(NUZLOCKE_RUN.id)
         done()
     })
 })

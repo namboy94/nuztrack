@@ -1,5 +1,5 @@
 import {eventsApi} from "./events.api";
-import {of} from "rxjs";
+import {EMPTY, of} from "rxjs";
 import {
     CREATE_DEATH_EVENT,
     CREATE_DEATH_EVENT_TO,
@@ -32,10 +32,15 @@ import {
 import {eventsService} from "./events.service";
 import {eventsRepository} from "./events.repository";
 import {EventType} from "./events.model";
+import {teamService} from "../team/team.service";
 
 describe("EventsService", () => {
 
     const runId = EVENT_LIST[0].runId
+
+    beforeEach(() => {
+        jest.spyOn(teamService, "loadTeam$").mockReturnValue(EMPTY)
+    })
 
     afterEach(() => {
         jest.clearAllMocks()
@@ -154,6 +159,7 @@ describe("EventsService", () => {
                 expect(eventsApi.postEncounterEvent$).toHaveBeenCalledWith(runId, CREATE_ENCOUNTER_EVENT_TO)
                 expect(eventsRepository.addEvent).toHaveBeenCalledTimes(1)
                 expect(eventsRepository.addEvent).toHaveBeenCalledWith(ENCOUNTER_EVENT_SUCCESSFUL)
+                expect(teamService.loadTeam$).toHaveBeenCalledTimes(1)
                 done()
             }
         })
@@ -168,6 +174,7 @@ describe("EventsService", () => {
                 expect(eventsApi.postDeathEvent$).toHaveBeenCalledWith(runId, CREATE_DEATH_EVENT_TO)
                 expect(eventsRepository.addEvent).toHaveBeenCalledTimes(1)
                 expect(eventsRepository.addEvent).toHaveBeenCalledWith(DEATH_EVENT)
+                expect(teamService.loadTeam$).toHaveBeenCalledTimes(1)
                 done()
             }
         })
@@ -182,6 +189,7 @@ describe("EventsService", () => {
                 expect(eventsApi.postEvolutionEvent$).toHaveBeenCalledWith(runId, CREATE_EVOLUTION_EVENT_TO)
                 expect(eventsRepository.addEvent).toHaveBeenCalledTimes(1)
                 expect(eventsRepository.addEvent).toHaveBeenCalledWith(EVOLUTION_EVENT)
+                expect(teamService.loadTeam$).toHaveBeenCalledTimes(1)
                 done()
             }
         })
@@ -196,6 +204,7 @@ describe("EventsService", () => {
                 expect(eventsApi.postMilestoneEvent$).toHaveBeenCalledWith(runId, CREATE_MILESTONE_EVENT_TO)
                 expect(eventsRepository.addEvent).toHaveBeenCalledTimes(1)
                 expect(eventsRepository.addEvent).toHaveBeenCalledWith(MILESTONE_EVENT)
+                expect(teamService.loadTeam$).toHaveBeenCalledTimes(0)
                 done()
             }
         })
@@ -210,6 +219,7 @@ describe("EventsService", () => {
                 expect(eventsApi.postNoteEvent$).toHaveBeenCalledWith(runId, CREATE_NOTE_EVENT_TO)
                 expect(eventsRepository.addEvent).toHaveBeenCalledTimes(1)
                 expect(eventsRepository.addEvent).toHaveBeenCalledWith(NOTE_EVENT)
+                expect(teamService.loadTeam$).toHaveBeenCalledTimes(0)
                 done()
             }
         })
@@ -226,6 +236,7 @@ describe("EventsService", () => {
                 )
                 expect(eventsRepository.addEvent).toHaveBeenCalledTimes(1)
                 expect(eventsRepository.addEvent).toHaveBeenCalledWith(TEAM_MEMBER_SWITCH_EVENT)
+                expect(teamService.loadTeam$).toHaveBeenCalledTimes(1)
                 done()
             }
         })
