@@ -3,13 +3,18 @@ import {
     POKEMON_SPECIES_BULBASAUR,
     POKEMON_SPECIES_CHARMANDER,
     POKEMON_SPECIES_IVYSAUR,
-    POKEMON_SPECIES_SQUIRTLE
+    POKEMON_SPECIES_SQUIRTLE,
+    POKEMON_SPECIES_WARTORTLE
 } from "./pokedex.testconstants";
 
 describe("Pokedex", () => {
     it("should get a list of all Pokemon Species", () => {
         expect(POKEDEX.getAllSpecies()).toEqual([
-            POKEMON_SPECIES_BULBASAUR, POKEMON_SPECIES_IVYSAUR, POKEMON_SPECIES_CHARMANDER, POKEMON_SPECIES_SQUIRTLE
+            POKEMON_SPECIES_BULBASAUR,
+            POKEMON_SPECIES_IVYSAUR,
+            POKEMON_SPECIES_CHARMANDER,
+            POKEMON_SPECIES_SQUIRTLE,
+            POKEMON_SPECIES_WARTORTLE
         ])
     })
     it("should get a specific Pokemon", () => {
@@ -26,5 +31,9 @@ describe("Pokedex", () => {
     })
     it("should get N/A instead of the name of an ability that does not exist", () => {
         expect(POKEDEX.getAbilityName(POKEMON_SPECIES_SQUIRTLE.pokedexNumber, 2)).toEqual("N/A")
+    })
+    it("should get the evolutions of a Pokemon", () => {
+        expect(POKEDEX.getEvolutionSpecies(POKEMON_SPECIES_BULBASAUR.pokedexNumber))
+            .toEqual([POKEMON_SPECIES_IVYSAUR])
     })
 })

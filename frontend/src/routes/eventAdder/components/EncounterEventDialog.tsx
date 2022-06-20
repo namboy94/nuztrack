@@ -1,6 +1,5 @@
 import {
     Autocomplete,
-    Box,
     Button,
     Checkbox,
     Collapse,
@@ -19,6 +18,8 @@ import {Gender} from "../../../data/team/team.model";
 import {Pokedex, PokemonSpecies} from "../../../data/pokedex/pokedex.model";
 import {NuzlockeRun} from "../../../data/runs/runs.model";
 import {LocationInput} from "./common/LocationInput";
+import {LevelInput} from "./common/LevelInput";
+import {PokemonSpeciesSelectInput} from "./common/PokemonSpeciesSelectInput";
 
 export interface EncounterEventDialogProps {
     open: boolean
@@ -65,40 +66,18 @@ export function EncounterEventDialog(props: EncounterEventDialogProps) {
         <DialogTitle>Add Encounter Event</DialogTitle>
         <Grid container direction="column">
             <LocationInput location={state.location} setLocation={state.setLocation} locations={locations}/>
-            <Autocomplete
-                sx={{margin: 1}}
-                data-testid="pokemon-species-input"
-                value={state.pokemonSpecies}
-                options={[
+            <PokemonSpeciesSelectInput
+                pokemonSpecies={state.pokemonSpecies}
+                setPokemonSpecies={state.setPokemonSpecies}
+                pokemonSpeciesOptions={[
                     ...pokedex.getAllSpecies().filter(x => state.possibleEncounters.includes(x)),
                     ...pokedex.getAllSpecies().filter(x => !state.possibleEncounters.includes(x))
                 ]}
-                groupBy={species => state.possibleEncounters.includes(species) ? state.location : "All"}
-                renderOption={(p, option) => (
-                    <Box component="li" sx={{'& > img': {mr: 2, flexShrink: 0}}} {...p}>
-                        <img
-                            loading="lazy"
-                            width="100"
-                            src={option.sprite}
-                            alt={option.name}
-                        />
-                        {option.name}
-                    </Box>
-                )}
-                getOptionLabel={pokemon => pokemon?.name ?? ""}
-                onChange={(_, newPokemon) => state.setPokemonSpecies(newPokemon)}
-                renderInput={(params) => <TextField{...params} label="Pokemon"/>}
+                groupFn={species => state.possibleEncounters.includes(species) ? state.location : "All"}
             />
             <Grid container spacing={0}>
                 <Grid item>
-                    <TextField
-                        sx={{margin: 1, width: 80}}
-                        data-testid="level-input"
-                        label="Level"
-                        type="number"
-                        value={state.level}
-                        onChange={x => state.setLevel(parseInt(x.target.value))}
-                    />
+                    <LevelInput level={state.level} setLevel={state.setLevel}/>
                 </Grid>
                 <Grid item>
                     {props.run.game.generation > 1 &&

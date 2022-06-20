@@ -7,12 +7,15 @@ import {Button} from "@mui/material";
 import * as React from "react";
 import {useNoteEventDialogProps} from "./hooks/NoteEventDialog.hooks";
 import {NoteEventDialog} from "./components/NoteEventDialog";
+import {useEvolutionEventDialogProps} from "./hooks/EvolutionEventDialog.hooks";
+import {EvolutionEventDialog} from "./components/EvolutionEventDialog";
 
 export function EventAdderRoute(props: RunRouteProps) {
 
     const loading = useEventAdderDataLoader(props.run)
     const [openEncounterEventDialog, encounterEventDialogProps] = useEncounterEventDialogProps(props.run, props.notify)
     const [openNoteEventDialog, noteEventDialogProps] = useNoteEventDialogProps(props.run, props.notify)
+    const [openEvolutionEventDialog, evolutionEventDialogProps] = useEvolutionEventDialogProps(props.run, props.notify)
 
     if (loading) {
         return <h1>LOADING</h1>
@@ -34,8 +37,16 @@ export function EventAdderRoute(props: RunRouteProps) {
                     onClick={openNoteEventDialog}>
                 Note
             </Button>
+            <Button data-testid="open-evolution-dialog-button"
+                    variant="contained"
+                    size={"large"}
+                    startIcon={<AddIcon/>}
+                    onClick={openEvolutionEventDialog}>
+                Evolution
+            </Button>
             <EncounterEventDialog {...encounterEventDialogProps}/>
             <NoteEventDialog {...noteEventDialogProps}/>
+            <EvolutionEventDialog {...evolutionEventDialogProps}/>
         </>
     )
 }

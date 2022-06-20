@@ -22,6 +22,10 @@ export class Pokedex {
     getAbilityName(pokedexNumber: number, abilitySlot: number): string {
         return this.getSpecies(pokedexNumber).abilities[abilitySlot as 1 | 2 | 3] ?? "N/A"
     }
+
+    getEvolutionSpecies(pokedexNumber: number): PokemonSpecies[] {
+        return this.getSpecies(pokedexNumber).evolutions.map(evoNumber => this.getSpecies(evoNumber)!!)
+    }
 }
 
 

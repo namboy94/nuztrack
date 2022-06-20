@@ -73,6 +73,7 @@ class EventsService {
     }
 
     createEncounterEvent$(runId: number, creator: CreateEncounterEvent): Observable<EncounterEvent> {
+        // TODO Update team after encounter
         const to = this.converter.convertCreateEncounterEventModelToTO(creator)
         return this.api.postEncounterEvent$(runId, to).pipe(
             map(eventTO => this.converter.convertEncounterEventTOToModel(eventTO)),
@@ -81,6 +82,7 @@ class EventsService {
     }
 
     createDeathEvent$(runId: number, creator: CreateDeathEvent): Observable<DeathEvent> {
+        // TODO Update team when death occurs
         const to = this.converter.convertCreateDeathEventModelToTO(creator)
         return this.api.postDeathEvent$(runId, to).pipe(
             map(eventTO => this.converter.convertDeathEventTOToModel(eventTO)),
@@ -89,6 +91,7 @@ class EventsService {
     }
 
     createEvolutionEvent$(runId: number, creator: CreateEvolutionEvent): Observable<EvolutionEvent> {
+        // TODO Update team when evolving
         const to = this.converter.convertCreateEvolutionEventModelToTO(creator)
         return this.api.postEvolutionEvent$(runId, to).pipe(
             map(eventTO => this.converter.convertEvolutionEventTOToModel(eventTO)),
@@ -115,6 +118,7 @@ class EventsService {
     createTeamMemberSwitchEvent$(
         runId: number, creator: CreateTeamMemberSwitchEvent
     ): Observable<TeamMemberSwitchEvent> {
+        // TODO Update team when switching out or in
         const to = this.converter.convertCreateTeamMemberSwitchEventModelToTO(creator)
         return this.api.postTeamMemberSwitchEvent$(runId, to).pipe(
             map(eventTO => this.converter.convertTeamMemberSwitchEventTOToModel(eventTO)),
