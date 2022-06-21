@@ -1,12 +1,12 @@
 import {teamApi} from "./team.api";
-import {TEAM, TEAM_MEMBER_1, TEAM_MEMBER_2, TEAM_MEMBER_3, TEAM_TO} from "./team.testconstants";
+import {TEAM, TEAM_MEMBER_1, TEAM_MEMBER_2, TEAM_MEMBER_3, TEAM_MEMBERS, TEAM_TO} from "./team.testconstants";
 import {of} from "rxjs";
 import {teamRepository} from "./team.repository";
 import {teamService} from "./team.service";
 import {TeamState} from "./team.model";
 
 describe("TeamService", () => {
-    const runId = TEAM[0].runId
+    const runId = TEAM_MEMBERS[0].runId
     it("should load team", (done) => {
         jest.spyOn(teamApi, "getTeam$").mockReturnValue(of(TEAM_TO))
         jest.spyOn(teamRepository, "setTeamMembers").mockImplementation(jest.fn())
@@ -15,13 +15,13 @@ describe("TeamService", () => {
                 expect(teamApi.getTeam$).toHaveBeenCalledTimes(1)
                 expect(teamApi.getTeam$).toHaveBeenCalledWith(runId)
                 expect(teamRepository.setTeamMembers).toHaveBeenCalledTimes(1)
-                expect(teamRepository.setTeamMembers).toHaveBeenCalledWith(TEAM)
+                expect(teamRepository.setTeamMembers).toHaveBeenCalledWith(TEAM_MEMBERS)
                 done()
             }
         })
     })
-    it("should get the entire team", (done) => {
-        jest.spyOn(teamRepository, "queryTeamMembers$").mockReturnValue(of(TEAM))
+    it("should get the team", (done) => {
+        jest.spyOn(teamRepository, "queryTeamMembers$").mockReturnValue(of(TEAM_MEMBERS))
         teamService.getTeam$(runId).subscribe({
             next: result => {
                 expect(result).toEqual(TEAM)

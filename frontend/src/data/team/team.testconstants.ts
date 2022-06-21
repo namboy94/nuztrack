@@ -1,5 +1,5 @@
 import {TeamMemberTO, TeamTO} from "./team.transfer";
-import {Gender, TeamMember, TeamState} from "./team.model";
+import {Gender, Team, TeamMember, TeamState} from "./team.model";
 
 export const TEAM_MEMBER_1_TO: TeamMemberTO = {
     abilitySlot: 1,
@@ -90,8 +90,9 @@ export const TEAM_TO: TeamTO = {
     boxed: [TEAM_MEMBER_3_TO],
     dead: [TEAM_MEMBER_2_TO]
 }
-export const TEAM: TeamMember[] = [
+export const TEAM_MEMBERS: TeamMember[] = [
     TEAM_MEMBER_1,
     TEAM_MEMBER_3,
     TEAM_MEMBER_2,
 ]
+export const TEAM = new Team(TEAM_MEMBERS)

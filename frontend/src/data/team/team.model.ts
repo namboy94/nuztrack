@@ -25,3 +25,21 @@ export interface TeamMember {
     evolutionIds: number[]
     teamSwitchIds: number[]
 }
+
+export class Team {
+    private readonly data: TeamMember[]
+    private idMap: Map<number, TeamMember>
+
+    constructor(data: TeamMember[]) {
+        this.data = data
+        this.idMap = new Map<number, TeamMember>(data.map(member => [member.id, member]))
+    }
+
+    getTeamMembers(): TeamMember[] {
+        return this.data
+    }
+
+    getTeamMemberById(id: number): TeamMember | null {
+        return this.idMap.get(id) ?? null
+    }
+}

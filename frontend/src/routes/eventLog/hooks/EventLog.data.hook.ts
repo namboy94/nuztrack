@@ -1,12 +1,14 @@
 import {NuzlockeRun} from "../../../data/runs/runs.model";
-import {useQuery} from "../../../util/observable.hooks";
+import {useService} from "../../../util/observable.hooks";
 import {eventsService} from "../../../data/events/events.service";
-import {EventLogProps} from "../components/EventLog";
+import {pokedexService} from "../../../data/pokedex/pokedex.service";
+import {gamesService} from "../../../data/games/games.service";
+import {teamService} from "../../../data/team/team.service";
 
-export function useEventLogProps(run: NuzlockeRun): EventLogProps {
-    const events = useQuery(() => eventsService.getEvents$(run.id), [], [])
-    events.sort((a, b) => a.timestamp < b.timestamp ? -1 : 1)
-    return {
-        events: events
-    }
+export function useEventLogDataLoader(run: NuzlockeRun) {
+    const eventsLoading = useService(() => eventsService.loadEvents$(run.id), [])
+    const pokedexLoading = useService(() => pokedexService.loadPokedexData$(), [])
+    const locationsLoading = useService(() => gamesService.loadGameLocations$(run.game), [])
+    const teamLoading = useService(() => teamService.loadTeam$(run.id), [])
+    return eventsLoading || pokedexLoading || locationsLoading || teamLoading
 }

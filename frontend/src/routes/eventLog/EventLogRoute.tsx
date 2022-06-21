@@ -1,8 +1,8 @@
 import {RunRouteProps} from "../common/RouteProps";
 import * as React from "react";
-import {useEventLogDataLoader} from "./hooks/EventLog.hooks";
-import {useEventLogProps} from "./hooks/EventLog.data.hook";
 import {EventLog} from "./components/EventLog";
+import {useEventLogDataLoader} from "./hooks/EventLog.data.hook";
+import {useEventLogProps} from "./hooks/EventLog.hooks";
 
 export function EventLogRoute(props: RunRouteProps) {
 

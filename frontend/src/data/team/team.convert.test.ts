@@ -1,5 +1,5 @@
 import {teamConverter} from "./team.convert";
-import {TEAM, TEAM_MEMBER_1, TEAM_MEMBER_1_TO, TEAM_TO} from "./team.testconstants";
+import {TEAM_MEMBER_1, TEAM_MEMBER_1_TO, TEAM_MEMBERS, TEAM_TO} from "./team.testconstants";
 
 describe("TeamConverter", () => {
     it("should convert a TeamMember TO to model", (done) => {
@@ -10,8 +10,8 @@ describe("TeamConverter", () => {
         done()
     })
     it("should convert a Team TO to list of TeamMembers", (done) => {
-        const converted = teamConverter.convertTeamToTeamMembers(TEAM_TO, TEAM[0].runId)
-        expect(converted).toEqual(TEAM)
+        const converted = teamConverter.convertTeamToTeamMembers(TEAM_TO, TEAM_MEMBERS[0].runId)
+        expect(converted).toEqual(TEAM_MEMBERS)
         done()
     })
 })

@@ -2,7 +2,7 @@ import {teamApi} from "./team.api";
 import {teamRepository} from "./team.repository";
 import {ignoreElements, map, Observable, tap} from "rxjs";
 import {teamConverter} from "./team.convert";
-import {TeamMember, TeamState} from "./team.model";
+import {Team, TeamMember, TeamState} from "./team.model";
 
 class TeamService {
     private api = teamApi
@@ -17,8 +17,8 @@ class TeamService {
         )
     }
 
-    getTeam$(runId: number): Observable<TeamMember[]> {
-        return this.repo.queryTeamMembers$(runId)
+    getTeam$(runId: number): Observable<Team> {
+        return this.repo.queryTeamMembers$(runId).pipe(map(members => new Team(members)))
     }
 
     getActiveTeamMembers$(runId: number): Observable<TeamMember[]> {

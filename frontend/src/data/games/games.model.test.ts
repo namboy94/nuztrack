@@ -17,4 +17,8 @@ describe("GamesModel", () => {
         expect(LOCATION_REGISTRY.getMilestones()).toEqual([MILESTONE])
         done()
     })
+    it("should get the milestone using its name", (done) => {
+        expect(LOCATION_REGISTRY.getMilestoneByName(MILESTONE.name)).toEqual(MILESTONE)
+        done()
+    })
 })
