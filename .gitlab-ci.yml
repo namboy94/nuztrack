@@ -12,7 +12,7 @@ github_mirror:
     - echo "$GITHUB_SSH_KEY" > ~/.ssh/id_rsa
     - chmod 0600 ~/.ssh/id_rsa
   script:
-    - git branch --delete kotlin
+    - git branch -D kotlin
     - git-mirror-pusher git@github.com:namboy94/nuztrack.git main kotlin
 
 test_backend:
