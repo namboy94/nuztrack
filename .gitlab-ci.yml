@@ -12,6 +12,8 @@ github_mirror:
     - echo "$GITHUB_SSH_KEY" > ~/.ssh/id_rsa
     - chmod 0600 ~/.ssh/id_rsa
   script:
+    - git checkout kotlin
+    - git pull -f
     - git-mirror-pusher git@github.com:namboy94/nuztrack.git main kotlin
 
 test_backend:
