@@ -1,4 +1,4 @@
-GamesTO:
+GameTO:
   description: An object detailing a Pokemon game
   required:
     - title
