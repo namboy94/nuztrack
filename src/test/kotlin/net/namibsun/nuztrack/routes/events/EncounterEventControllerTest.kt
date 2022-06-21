@@ -97,6 +97,7 @@ internal class EncounterEventControllerTest {
         whenever(service.getLocationsWithEncounters(nuzlockeRun.id)).thenReturn(listOf())
         whenever(service.getEncounteredSpecies(nuzlockeRun.id, true)).thenReturn(listOf())
         whenever(service.getEncounteredSpecies(nuzlockeRun.id, false)).thenReturn(listOf())
+        whenever(teamMemberService.getTeam(nuzlockeRun.id)).thenReturn(Triple(listOf(), listOf(), listOf()))
 
         val result = controller.createEncounterEvent(nuzlockeRun.id, creatorOne, principal)
 
@@ -111,6 +112,7 @@ internal class EncounterEventControllerTest {
         verify(service, times(1)).getLocationsWithEncounters(nuzlockeRun.id)
         verify(service, times(1)).getEncounteredSpecies(nuzlockeRun.id, true)
         verify(service, times(1)).getEncounteredSpecies(nuzlockeRun.id, false)
+        verify(teamMemberService, times(1)).getTeam(nuzlockeRun.id)
     }
 
     @Test
@@ -128,6 +130,7 @@ internal class EncounterEventControllerTest {
         whenever(service.getEncounteredSpecies(run.id, false)).thenReturn(listOf())
         whenever(service.createEncounterEvent(any(), any(), any(), any(), any())).thenReturn(encounterOneWithTeamMember)
         whenever(teamMemberService.createTeamMember(any(), any(), any(), any(), any())).thenReturn(teamMember)
+        whenever(teamMemberService.getTeam(run.id)).thenReturn(Triple(listOf(), listOf(), listOf()))
 
         assertDoesNotThrow {
             val result = controller.createEncounterEvent(run.id, creator, principal)
@@ -140,6 +143,7 @@ internal class EncounterEventControllerTest {
         verify(teamMemberService, times(1)).createTeamMember(
             encounterOneWithTeamMember, creator.pokemon!!.nickname, null, null, null
         )
+        verify(teamMemberService, times(1)).getTeam(run.id)
     }
 
     @Test
