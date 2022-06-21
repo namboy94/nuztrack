@@ -1,4 +1,4 @@
-import {GAME_LOCATION_PALLET, GAME_LOCATION_VIRIDIAN, LOCATION_REGISTRY} from "./games.testconstants";
+import {GAME_LOCATION_PALLET, GAME_LOCATION_VIRIDIAN, LOCATION_REGISTRY, MILESTONE} from "./games.testconstants";
 
 describe("GamesModel", () => {
     it("should get a location by its name", (done) => {
@@ -11,6 +11,10 @@ describe("GamesModel", () => {
     })
     it("should get location list", (done) => {
         expect(LOCATION_REGISTRY.getLocationNames()).toEqual([GAME_LOCATION_PALLET.name, GAME_LOCATION_VIRIDIAN.name])
+        done()
+    })
+    it("should get the milestones", (done) => {
+        expect(LOCATION_REGISTRY.getMilestones()).toEqual([MILESTONE])
         done()
     })
 })

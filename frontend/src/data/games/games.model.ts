@@ -29,4 +29,8 @@ export class GameLocationRegistry {
     getLocationNames(): string[] {
         return this.data.map(x => x.name)
     }
+
+    getMilestones(): Milestone[] {
+        return this.data.filter(x => x.milestones.length > 0).map(x => x.milestones).flat()
+    }
 }

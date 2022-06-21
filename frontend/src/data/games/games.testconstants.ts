@@ -25,6 +25,18 @@ export const MILESTONE_TO: MilestoneTO = {
     location: "Viridian City",
     name: "Earth Badge"
 }
+export const MILESTONE_2: Milestone = {
+    image: "URL",
+    level_cap: 14,
+    location: "Pewter City",
+    name: "Boulder Badge"
+}
+export const MILESTONE_2_TO: MilestoneTO = {
+    image: "URL",
+    level_cap: 14,
+    location: "Pewter City",
+    name: "Boulder Badge"
+}
 export const GAME_LOCATION_PALLET: GameLocation = {
     game: GAME_1,
     encounters: [1, 4, 7],
