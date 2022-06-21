@@ -16,7 +16,7 @@ services:
     networks:
       - net
     ports:
-      - "8080:8080"
+      - "${BACKEND_PORT}:8080"
     restart: always
   frontend:
     build:
@@ -36,7 +36,7 @@ services:
     networks:
       - net
     ports:
-      - "3000:3000"
+      - "${FRONTEND_PORT}:3000"
     restart: always
   db:
     image: postgres
@@ -77,7 +77,7 @@ services:
     networks:
       - net
     ports:
-      - "8081:8080"
+      - "${AUTH_PORT}:8080"
     restart: always
 volumes:
   logs: ~

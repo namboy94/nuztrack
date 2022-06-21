@@ -32,3 +32,13 @@ test_frontend:
     - npm install
     - CI=true npm test -- --coverage
   coverage: '/All files\s*\|\s*([\d\.]+)/'
+
+deploy_app:
+  stage: deploy
+  tags: [ privileged ]
+  only: [ master, develop, kotlin ]
+  script:
+    - echo "$PROD_ENV" > .env
+    - docker-compose build
+    - docker-compose up -d
+    - rm .env
