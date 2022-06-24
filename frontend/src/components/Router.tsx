@@ -25,14 +25,6 @@ export default function Router(props: RouterProps) {
                 <Route path="/" element={<RunSelectorRoute notify={notify}/>}/>
                 <Route path="/add_event" element={<EventAdderRoute run={run} notify={notify}/>}/>
                 <Route path="/log" element={<EventLogRoute run={run} notify={notify}/>}/>
-                {/*<Route path="/overview" element={<OverviewRoute run={run}/>}/>*/}
-                {/*<Route path="/team" element={<TeamRoute run={props.run}/>}/>*/}
-                {/*<Route path="/map" element={<Map/>}/>*/}
-                {/*<Route path="/log" element={<LogRoute run={props.run}/>}/>*/}
-                {/*<Route path="/status" element={<Status/>}/>*/}
-                {/*<Route path="/settings" element={<Settings/>}/>*/}
-                {/*<Route path="/export" element={<Export/>}/>*/}
-                {/*<Route path="/close" element={<Close setRunId={setRunId}/>}/>*/}
             </Routes>
         )
     }
