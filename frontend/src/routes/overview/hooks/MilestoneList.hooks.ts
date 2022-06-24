@@ -1,5 +1,5 @@
 import {NuzlockeRun} from "../../../data/runs/runs.model";
-import {NotificationFN} from "../../../components/Snackbar";
+import {NotificationFN} from "../../../global/Snackbar";
 import {useQuery} from "../../../util/observable.hooks"
 import {gamesService} from "../../../data/games/games.service";
 import {eventsService} from "../../../data/events/events.service";

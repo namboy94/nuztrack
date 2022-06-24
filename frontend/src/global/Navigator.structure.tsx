@@ -5,23 +5,20 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import PetsIcon from "@mui/icons-material/Pets";
 import * as React from "react";
 
-export const structure = [
+export const navigatorStructure = [
     {
         id: 'Run Name',
         children: [
             {id: 'Add Event', icon: <AddIcon/>, path: "/add_event"},
             {id: 'Log', icon: <FormatListBulletedIcon/>, path: "/log"},
             {id: 'Overview', icon: <InfoIcon/>, path: "/overview"},
-            {id: 'Team', icon: <PetsIcon/>, path: "/team"},
-            // {id: 'Map', icon: <MapIcon/>, path: "/map"},
-            // {id: 'Status', icon: <CheckIcon/>, path: "/status"},
+            {id: 'Team', icon: <PetsIcon/>, path: "/team"}
         ],
     },
     {
         id: 'Other',
         children: [
-            {id: 'Settings', icon: <SettingsIcon/>, path: "/settings"},
-            // {id: 'Export', icon: <ImportExportIcon/>, path: "/export"},
+            {id: 'Settings', icon: <SettingsIcon/>, path: "/settings"}
         ],
     },
 ];

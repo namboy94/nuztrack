@@ -1,5 +1,5 @@
 import {NuzlockeRun} from "../../../data/runs/runs.model";
-import {NotificationFN} from "../../../components/Snackbar";
+import {NotificationFN} from "../../../global/Snackbar";
 import {MilestoneEventDialogProps, MilestoneEventDialogState} from "../components/MilestoneEventDialog";
 import {useState} from "react";
 import {useQuery, useSubmitter} from "../../../util/observable.hooks";

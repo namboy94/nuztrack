@@ -6,7 +6,7 @@ import {rulesService} from "../../../data/rules/rules.service";
 import {gamesService} from "../../../data/games/games.service";
 import {RulesDetails} from "../../../data/rules/rules.model";
 import {Game} from "../../../data/games/games.model";
-import {NotificationFN} from "../../../components/Snackbar";
+import {NotificationFN} from "../../../global/Snackbar";
 import {useQuery, useSubmitter} from "../../../util/observable.hooks";
 
 export function useCreateNewRunDialogProps(notify: NotificationFN): [() => void, CreateNewRunDialogProps] {

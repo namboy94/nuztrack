@@ -6,12 +6,16 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import {keycloak} from "../util/keycloak";
+import LogoutIcon from '@mui/icons-material/Logout';
+
+const lightColor = 'rgba(255, 255, 255, 0.7)';
 
 interface HeaderProps {
     onDrawerToggle: () => void;
 }
 
 export default function Header(props: HeaderProps) {
+    const {onDrawerToggle} = props;
 
     return (
         <React.Fragment>
@@ -31,7 +35,9 @@ export default function Header(props: HeaderProps) {
                         <Grid item xs/>
                         <Grid item>
                             <IconButton color="inherit" sx={{p: 0.5}} onClick={() => keycloak.logout()}>
-                                <Avatar alt="User Avatar"/>
+                                <Avatar alt="User Avatar">
+                                    <LogoutIcon/>
+                                </Avatar>
                             </IconButton>
                         </Grid>
                     </Grid>

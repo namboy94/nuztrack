@@ -1,5 +1,5 @@
 import {NuzlockeRun} from "../../../data/runs/runs.model";
-import {NotificationFN} from "../../../components/Snackbar";
+import {NotificationFN} from "../../../global/Snackbar";
 import {useState} from "react";
 import {useQuery, useSubmitter} from "../../../util/observable.hooks";
 import {pokedexService} from "../../../data/pokedex/pokedex.service";

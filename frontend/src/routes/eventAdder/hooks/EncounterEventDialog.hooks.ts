@@ -6,7 +6,7 @@ import {gamesService} from "../../../data/games/games.service";
 import {EncounterEventDialogProps, EncounterEventDialogState} from "../components/EncounterEventDialog";
 import {useState} from "react";
 import {Gender} from "../../../data/team/team.model";
-import {NotificationFN} from "../../../components/Snackbar";
+import {NotificationFN} from "../../../global/Snackbar";
 import {CreateEncounterEvent, CreateEncounterPokemon} from "../../../data/events/events.model";
 import {Pokedex, PokemonSpecies} from "../../../data/pokedex/pokedex.model";
 import {GameLocationRegistry} from "../../../data/games/games.model";

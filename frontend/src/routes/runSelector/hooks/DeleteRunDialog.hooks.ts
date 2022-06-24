@@ -2,7 +2,7 @@ import {useState} from "react";
 import {NuzlockeRun} from "../../../data/runs/runs.model";
 import {DeleteRunDialogProps} from "../components/DeleteRunDialog";
 import {runsService} from "../../../data/runs/runs.service";
-import {NotificationFN} from "../../../components/Snackbar";
+import {NotificationFN} from "../../../global/Snackbar";
 
 export function useDeleteRunDialogProps(notify: NotificationFN): [(run: NuzlockeRun) => void, DeleteRunDialogProps] {
     const [open, setOpen] = useState(false)

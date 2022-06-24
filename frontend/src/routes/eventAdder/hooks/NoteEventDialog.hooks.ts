@@ -1,5 +1,5 @@
 import {NuzlockeRun} from "../../../data/runs/runs.model";
-import {NotificationFN} from "../../../components/Snackbar";
+import {NotificationFN} from "../../../global/Snackbar";
 import {useQuery, useSubmitter} from "../../../util/observable.hooks";
 import {gamesService} from "../../../data/games/games.service";
 import {useState} from "react";

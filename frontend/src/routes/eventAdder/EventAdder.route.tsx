@@ -34,9 +34,12 @@ export function EventAdderRoute(props: RunRouteProps) {
         return <h1>LOADING</h1>
     }
 
+    const buttonStyle = {width: "150px", height: "150px", margin: "5px"}
+
     return (
         <>
             <Button data-testid="open-encounter-dialog-button"
+                    style={buttonStyle}
                     variant="contained"
                     size={"large"}
                     startIcon={<AddIcon/>}
@@ -44,6 +47,7 @@ export function EventAdderRoute(props: RunRouteProps) {
                 Encounter
             </Button>
             <Button data-testid="open-note-dialog-button"
+                    style={buttonStyle}
                     variant="contained"
                     size={"large"}
                     startIcon={<AddIcon/>}
@@ -51,6 +55,7 @@ export function EventAdderRoute(props: RunRouteProps) {
                 Note
             </Button>
             <Button data-testid="open-evolution-dialog-button"
+                    style={buttonStyle}
                     variant="contained"
                     size={"large"}
                     startIcon={<AddIcon/>}
@@ -58,6 +63,7 @@ export function EventAdderRoute(props: RunRouteProps) {
                 Evolution
             </Button>
             <Button data-testid="open-death-dialog-button"
+                    style={buttonStyle}
                     variant="contained"
                     size={"large"}
                     startIcon={<AddIcon/>}
@@ -65,13 +71,15 @@ export function EventAdderRoute(props: RunRouteProps) {
                 Death
             </Button>
             <Button data-testid="open-milestone-dialog-button"
+                    style={buttonStyle}
                     variant="contained"
                     size={"large"}
                     startIcon={<AddIcon/>}
                     onClick={openMilestoneEventDialog}>
-                Death
+                Milestone
             </Button>
             <Button data-testid="open-remove-team-member-dialog-button"
+                    style={buttonStyle}
                     variant="contained"
                     size={"large"}
                     startIcon={<AddIcon/>}
@@ -79,6 +87,7 @@ export function EventAdderRoute(props: RunRouteProps) {
                 Remove Team Member
             </Button>
             <Button data-testid="open-add-team-member-dialog-button"
+                    style={buttonStyle}
                     variant="contained"
                     size={"large"}
                     startIcon={<AddIcon/>}

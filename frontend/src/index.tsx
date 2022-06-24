@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './components/App';
+import App from './global/App';
 import {keycloak} from "./util/keycloak";
 import axios from "axios";
 import {BACKEND_URL} from "./util/config";
