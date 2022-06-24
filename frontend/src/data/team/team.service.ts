@@ -32,6 +32,10 @@ class TeamService {
     getDeadTeamMembers$(runId: number): Observable<TeamMember[]> {
         return this.repo.queryTeamMembersByTeamState$(runId, TeamState.DEAD)
     }
+
+    getTeamMembersByState$(runId: number, state: TeamState): Observable<TeamMember[]> {
+        return this.repo.queryTeamMembersByTeamState$(runId, state)
+    }
 }
 
 export const teamService = new TeamService()

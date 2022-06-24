@@ -64,4 +64,15 @@ describe("TeamService", () => {
             }
         })
     })
+    it("should get the team members by state", (done) => {
+        jest.spyOn(teamRepository, "queryTeamMembersByTeamState$").mockReturnValue(of([TEAM_MEMBER_1]))
+        teamService.getTeamMembersByState$(runId, TeamState.ACTIVE).subscribe({
+            next: result => {
+                expect(result).toEqual([TEAM_MEMBER_1])
+                expect(teamRepository.queryTeamMembersByTeamState$).toHaveBeenCalledTimes(1)
+                expect(teamRepository.queryTeamMembersByTeamState$).toHaveBeenCalledWith(runId, TeamState.ACTIVE)
+                done()
+            }
+        })
+    })
 })
