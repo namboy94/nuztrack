@@ -21,7 +21,8 @@ export function MilestoneLogEntry(props: MilestoneLogEntryProps) {
                 width: 70,
                 height: 70,
                 marginRight: 3,
-                backgroundColor: "#e1f7c8"
+                backgroundColor: "#e1f7c8",
+                padding: 2
             }}/>
             <ListItemText primary={title} secondary={subtitle}/>
         </ListItem>

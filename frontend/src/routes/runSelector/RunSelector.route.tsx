@@ -9,6 +9,7 @@ import {RouteProps} from "../common/RouteProps";
 import {DeleteRunDialog} from "./components/DeleteRunDialog";
 import {useRunsTableProps} from "./hooks/RunsTable.hooks";
 import {RunsTable} from "./components/RunsTable";
+import {LoadingIndicator} from "../common/components/LoadingIndicator";
 
 export function RunSelectorRoute(props: RouteProps) {
 
@@ -18,7 +19,7 @@ export function RunSelectorRoute(props: RouteProps) {
     const runsTableProps = useRunsTableProps(props.notify, openDeleteDialog)
 
     if (loading) {
-        return <h1>LOADING</h1>
+        return <LoadingIndicator/>
     }
 
     return (

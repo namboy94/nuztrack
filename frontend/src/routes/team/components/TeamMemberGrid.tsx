@@ -2,6 +2,8 @@ import {Pokedex} from "../../../data/pokedex/pokedex.model";
 import {TeamMember, TeamState} from "../../../data/team/team.model";
 import {Button, Card, CardActions, CardContent, CardMedia, Grid, Typography} from "@mui/material";
 import Paper from "@mui/material/Paper";
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
 export interface TeamMemberGridProps {
     pokedex: Pokedex | undefined
@@ -27,16 +29,19 @@ export function TeamMemberGrid(props: TeamMemberGridProps) {
                     </CardContent>
                     <CardMedia
                         onClick={() => showDetails(teamMember)}
-                        style={{backgroundColor: "gray", borderRadius: "15px"}}
+                        style={{backgroundColor: "#DDDDDD", borderRadius: "15px"}}
                         image={pokedex.getSpecies(teamMember.pokedexNumber)!!.sprite}
                         component="img"
-                        height="100"
+                        height="120"
                         alt={teamMember.nickname}
                     />
                     {state != TeamState.DEAD ?
                         <CardActions>
                             <Button onClick={() => movePokemon(teamMember)}>
-                                {state === TeamState.ACTIVE ? "To Box" : "To Party"}
+                                {state === TeamState.ACTIVE ? <ArrowDownwardIcon/> : <ArrowUpwardIcon/>}
+                            </Button>
+                            <Button onClick={() => movePokemon(teamMember)}>
+                                {state === TeamState.ACTIVE ? <ArrowDownwardIcon/> : <ArrowUpwardIcon/>}
                             </Button>
                         </CardActions>
                         : <></>}

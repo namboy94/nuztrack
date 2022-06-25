@@ -4,6 +4,7 @@ import {Divider, Typography} from "@mui/material";
 import {TeamMemberGrid} from "./components/TeamMemberGrid";
 import {usePokemonGridProps} from "./hooks/TeamMemberGrid.hooks";
 import {TeamState} from "../../data/team/team.model";
+import {LoadingIndicator} from "../common/components/LoadingIndicator";
 
 export function TeamRoute(props: RunRouteProps) {
     const {run, notify} = props
@@ -13,7 +14,7 @@ export function TeamRoute(props: RunRouteProps) {
     const deadPokemonGridProps = usePokemonGridProps(run, notify, TeamState.DEAD)
 
     if (loading) {
-        return <h1>Loading...</h1>
+        return <LoadingIndicator/>
     }
 
     return <>

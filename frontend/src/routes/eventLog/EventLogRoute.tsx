@@ -3,6 +3,7 @@ import * as React from "react";
 import {EventLog} from "./components/EventLog";
 import {useEventLogDataLoader} from "./hooks/EventLog.data.hook";
 import {useEventLogProps} from "./hooks/EventLog.hooks";
+import {LoadingIndicator} from "../common/components/LoadingIndicator";
 
 export function EventLogRoute(props: RunRouteProps) {
 
@@ -10,7 +11,7 @@ export function EventLogRoute(props: RunRouteProps) {
     const eventLogProps = useEventLogProps(props.run)
 
     if (loading) {
-        return <h1>LOADING</h1>
+        return <LoadingIndicator/>
     }
 
     return (

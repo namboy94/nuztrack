@@ -16,6 +16,7 @@ import {MilestoneEventDialog} from "./components/MilestoneEventDialog";
 import {useTeamMemberSwitchEventDialogProps} from "./hooks/TeamMemberSwitchEventDialog.hooks";
 import {SwitchType} from "../../data/events/events.model";
 import {TeamMemberSwitchEventDialog} from "./components/TeamMemberSwitchEventDialog";
+import {LoadingIndicator} from "../common/components/LoadingIndicator";
 
 export function EventAdderRoute(props: RunRouteProps) {
 
@@ -31,7 +32,7 @@ export function EventAdderRoute(props: RunRouteProps) {
         useTeamMemberSwitchEventDialogProps(props.run, props.notify, SwitchType.ADD)
 
     if (loading) {
-        return <h1>LOADING</h1>
+        return <LoadingIndicator/>
     }
 
     const buttonStyle = {width: "150px", height: "150px", margin: "5px"}
