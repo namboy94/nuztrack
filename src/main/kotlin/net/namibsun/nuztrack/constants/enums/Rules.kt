@@ -17,7 +17,10 @@ enum class Rules(val description: String) {
     NO_ITEMS_IN_BATTLE("Items may not be used in battle"),
     NO_X_ITEMS("X-Items may not be used"),
     NO_POKE_MARTS("PokéMarts may not be used"),
-    NO_POKE_CENTERS("PokéCenters nay not be used");
+    NO_POKE_CENTERS("PokéCenters nay not be used"),
+    SET_MODE("The game has to be set to Set Mode"),
+    GYM_CHALLENGE_WITHOUT_INTERUPTION("A gym challenge may not be exited after entering the gym until the gym leader" +
+            " has been defeated");
 
     companion object {
         fun valueOfWithChecks(string: String?): Rules {
