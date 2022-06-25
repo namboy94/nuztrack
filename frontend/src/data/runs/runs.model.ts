@@ -1,4 +1,4 @@
-import {NuzlockeRunCreatorTO, NuzlockeRunTO} from "./runs.transfer";
+import {CreateMultiRunTO, MultiRunOptionTO, NuzlockeRunCreatorTO, NuzlockeRunTO} from "./runs.transfer";
 import {Game} from "../games/games.model";
 
 export interface NuzlockeRun extends Omit<NuzlockeRunTO, "status" | "game"> {
@@ -8,6 +8,13 @@ export interface NuzlockeRun extends Omit<NuzlockeRunTO, "status" | "game"> {
 
 export interface NuzlockeRunCreator extends Omit<NuzlockeRunCreatorTO, "game"> {
     game: Game
+}
+
+export interface CreateMultiRun extends Omit<CreateMultiRunTO, "game"> {
+    game: Game
+}
+
+export interface MultiRunOption extends MultiRunOptionTO {
 }
 
 export enum RunStatus {

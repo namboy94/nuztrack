@@ -4,7 +4,7 @@ import {NUZLOCKE_RUN, NUZLOCKE_RUN_2} from "./runs.testconstants";
 describe("Runs Repository", () => {
 
     beforeEach(() => {
-        runsRepository.fill([NUZLOCKE_RUN, NUZLOCKE_RUN_2])
+        runsRepository.fillRuns([NUZLOCKE_RUN, NUZLOCKE_RUN_2])
     })
 
     it("should query all runs", (done) => {
@@ -24,7 +24,7 @@ describe("Runs Repository", () => {
         })
     })
     it("should add a single run", (done) => {
-        runsRepository.clear()
+        runsRepository.clearRuns()
         runsRepository.addRun(NUZLOCKE_RUN_2)
         runsRepository.queryRuns$().subscribe({
             next: results => {

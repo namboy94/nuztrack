@@ -14,7 +14,7 @@ describe("RunsService", () => {
     it("should fill the repository", (done) => {
         const runs = [NUZLOCKE_RUN_TO, NUZLOCKE_RUN_2_TO]
         const apiMock = jest.spyOn(runsApi, "getRuns$").mockReturnValue(of(runs))
-        const repoMock = jest.spyOn(runsRepository, "fill").mockImplementation()
+        const repoMock = jest.spyOn(runsRepository, "fillRuns").mockImplementation()
         runsService.loadRuns$().subscribe({
             complete: () => {
                 expect(apiMock).toHaveBeenCalledTimes(1)

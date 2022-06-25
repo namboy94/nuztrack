@@ -1,5 +1,5 @@
-import {NuzlockeRun, NuzlockeRunCreator, RunStatus} from "./runs.model";
-import {NuzlockeRunCreatorTO, NuzlockeRunTO} from "./runs.transfer";
+import {CreateMultiRun, MultiRunOption, NuzlockeRun, NuzlockeRunCreator, RunStatus} from "./runs.model";
+import {CreateMultiRunTO, MultiRunOptionTO, NuzlockeRunCreatorTO, NuzlockeRunTO} from "./runs.transfer";
 import {gamesConverter} from "../games/games.convert";
 
 class RunsConverter {
@@ -13,6 +13,14 @@ class RunsConverter {
 
     convertNuzlockeRunCreatorModelToTO(model: NuzlockeRunCreator): NuzlockeRunCreatorTO {
         return {...model, game: model.game.key}
+    }
+
+    convertCreateMultiRunModelToTO(model: CreateMultiRun): CreateMultiRunTO {
+        return {...model, game: model.game.key}
+    }
+
+    convertMultiRunOptionTOToModel(to: MultiRunOptionTO): MultiRunOption {
+        return to
     }
 }
 

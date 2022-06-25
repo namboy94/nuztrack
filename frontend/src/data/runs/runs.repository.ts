@@ -8,7 +8,7 @@ import {
     upsertEntities,
     withEntities
 } from "@ngneat/elf-entities";
-import {NuzlockeRun} from "./runs.model";
+import {MultiRunOption, NuzlockeRun} from "./runs.model";
 import {Observable} from "rxjs";
 import {localStorageStrategy, persistState} from "@ngneat/elf-persist-state";
 
@@ -16,6 +16,11 @@ class RunsRepository {
     private runsStore = createStore(
         {name: "runs"},
         withEntities<NuzlockeRun, "id">({idKey: "id"})
+    )
+
+    private multiRunOptionStore = createStore(
+        {name: "multiRuns"},
+        withEntities<MultiRunOption, "key">({idKey: "key"})
     )
 
     private activeRunStore = createStore(
@@ -27,11 +32,11 @@ class RunsRepository {
         {key: "activeRun", storage: localStorageStrategy}
     )
 
-    clear() {
-        this.fill([])
+    clearRuns() {
+        this.fillRuns([])
     }
 
-    fill(runs: NuzlockeRun[]) {
+    fillRuns(runs: NuzlockeRun[]) {
         this.runsStore.update(setEntities(runs))
     }
 
@@ -62,6 +67,14 @@ class RunsRepository {
         } else {
             this.activeRunStore.update(setEntities([run]))
         }
+    }
+
+    setMultiRunOptions(options: MultiRunOption[]) {
+        this.multiRunOptionStore.update(setEntities(options))
+    }
+
+    queryMultiRunOptions$() {
+        return this.multiRunOptionStore.pipe(selectAllEntities())
     }
 }
 

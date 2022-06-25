@@ -1,6 +1,6 @@
 import axios from "axios-observable";
 import {map, Observable} from "rxjs";
-import {NuzlockeRunCreatorTO, NuzlockeRunTO} from "./runs.transfer";
+import {CreateMultiRunTO, MultiRunOptionTO, NuzlockeRunCreatorTO, NuzlockeRunTO} from "./runs.transfer";
 
 class RunsApi {
     getRuns$(): Observable<NuzlockeRunTO[]> {
@@ -17,6 +17,14 @@ class RunsApi {
 
     deleteRun$(id: number): Observable<null> {
         return axios.delete(`/api/runs/${id}`).pipe(map(() => null))
+    }
+
+    postMultiRun$(creator: CreateMultiRunTO): Observable<NuzlockeRunTO> {
+        return axios.post("/api/runs/multi", creator).pipe(map(x => x.data))
+    }
+
+    getMultiRunOptions$(): Observable<MultiRunOptionTO[]> {
+        return axios.get("/api/runs/multi/options").pipe(map(x => x.data))
     }
 }
 

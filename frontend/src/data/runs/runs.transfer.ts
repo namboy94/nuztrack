@@ -16,3 +16,15 @@ export interface NuzlockeRunCreatorTO {
     rules: string[],
     customRules: string[]
 }
+
+export interface CreateMultiRunTO {
+    runId: number,
+    options: string[],
+    game: string,
+    name: string
+}
+
+export interface MultiRunOptionTO {
+    key: string
+    description: string
+}

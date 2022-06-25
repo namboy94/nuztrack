@@ -38,5 +38,6 @@ enum class ErrorMessages(val message: String) {
     HAS_NATURE_BUT_OLD_GAME("A nature was provided, but this game does not support these."),
     HAS_ABILITY_BUT_OLD_GAME("An ability slot was provided, but this game does not support these."),
     HAS_GENDER_BUT_OLD_GAME("A gender was provided, but this game does not support these."),
-    NICKNAME_ALREADY_USED("This nickname has already been used")
+    NICKNAME_ALREADY_USED("This nickname has already been used"),
+    INVALID_MULTI_RUN_OPTION("This option is not a valid multi-run option")
 }

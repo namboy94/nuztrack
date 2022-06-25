@@ -29,7 +29,7 @@ describe("RunSelectorRoute", () => {
     afterEach(() => {
         jest.resetAllMocks()
         jest.clearAllMocks()
-        runsRepository.clear()
+        runsRepository.clearRuns()
     })
 
     function renderRoute() {
