@@ -35,6 +35,10 @@ def load_pokemon(_cachedir):
                 continue
 
             species = pokebase.pokemon(pokedex_number)
+
+            if species.species.evolution_chain is None:
+                break
+
             abilities = {1: None, 2: None, 3: None}
             for ability in species.abilities:
                 abilities[ability.slot] = ability.ability.name.replace("-", " ").title()
@@ -65,6 +69,8 @@ def load_pokemon(_cachedir):
             with open(pokefile, "w") as f:
                 json.dump(pokemon[pokedex_number], f)
     except HTTPError:
+        pass
+    finally:
         return pokemon
 
 

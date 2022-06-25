@@ -1,3 +1,4 @@
+import copy
 import json
 import os
 from subprocess import Popen, check_output, DEVNULL
@@ -5,7 +6,7 @@ from subprocess import Popen, check_output, DEVNULL
 COMMIT = "d06cc1cd1987497865307bed0eca6db4143be5e2"
 gh_badge_url_base = "https://raw.githubusercontent.com/diballesteros/nuzlocke/master/src/assets/img/badges/"
 gamemap = {
-    "R_B_Y": ["RED", "BLUE", "GREEN", "YELLOW"],
+    "R_B_Y": ["RED", "BLUE", "YELLOW"],
     "G_S_C": ["GOLD", "SILVER", "CRYSTAL"],
     "R_S_E": ["RUBY", "SAPPHIRE", "EMERALD"],
     "FR_LG": ["FIRERED", "LEAFGREEN"],
@@ -21,7 +22,7 @@ gamemap = {
     "BD_SP": ["BRILLIANT_DIAMOND", "SHINING_PEARL"]
 }
 badgemap = {
-    "REDANDBLUE": ["RED", "BLUE", "GREEN", "YELLOW"],
+    "REDANDBLUE": ["RED", "BLUE"],
     "YELLOW": ["YELLOW"],
     "GOLDSILVERCRYSTAL": ["GOLD", "SILVER", "CRYSTAL"],
     "RUBYANDSAPPHIRE": ["RUBY", "SAPPHIRE"],
@@ -185,7 +186,7 @@ def process_badges(badge_data):
         capkeys = [x["value"] for x in caps[genkey]]
         for capkey in capkeys:
             lvl_caps = cap_dict[capkey]
-            combined[capkey] = list(gen_badges)
+            combined[capkey] = copy.deepcopy(gen_badges)
             for i, cap in enumerate(lvl_caps):
                 combined[capkey][i]["level_cap"] = int(cap)
     return combined

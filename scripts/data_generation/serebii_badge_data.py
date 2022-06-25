@@ -5,7 +5,7 @@ import requests
 from bs4 import BeautifulSoup
 
 serebii_badge_game_mapping = {
-    "rb": ["RED", "BLUE", "GREEN", "YELLOW", "FIRERED", "LEAFGREEN"],
+    "rb": ["RED", "BLUE", "YELLOW", "FIRERED", "LEAFGREEN"],
     "gs": ["GOLD", "SILVER", "CRYSTAL", "SOULSILVER", "HEARTGOLD"],
     "rubysapphire": ["RUBY", "SAPPHIRE", "EMERALD", "OMEGA_RUBY", "ALPHA_SAPPHIRE"],
     "platinum": ["PLATINUM", "PEARL", "DIAMOND", "BRILLIANT_DIAMOND", "SHINING_PEARL"],

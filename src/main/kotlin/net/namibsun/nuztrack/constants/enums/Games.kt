@@ -3,7 +3,7 @@ package net.namibsun.nuztrack.constants.enums
 import net.namibsun.nuztrack.util.safeValueOf
 
 enum class Games(val title: String, val generation: Int) {
-    RED("Red", 1), BLUE("Blue", 1), GREEN("Green", 1), YELLOW("Yellow", 1),
+    RED("Red", 1), BLUE("Blue", 1), YELLOW("Yellow", 1),
     SILVER("Silver", 2), GOLD("Gold", 2), CRYSTAL("Crystal", 2),
     RUBY("Ruby", 3), SAPPHIRE("Sapphire", 3), EMERALD("Emerald", 3),
     FIRERED("FireRed", 3), LEAFGREEN("LeafGreen", 3),

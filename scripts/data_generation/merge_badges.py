@@ -25,7 +25,7 @@ def merge(netlify_badges, serebii_badges):
             locations.insert(8, None)
             locations.remove("Cerulean City")
             locations.insert(11, "Cerulean City")
-        if game in ["RED", "BLUE", "GREEN", "YELLOW", "FIRERED", "LEAFGREEN"]:
+        if game in ["RED", "BLUE", "YELLOW", "FIRERED", "LEAFGREEN"]:
             locations[4] = "Saffron City"
             locations[5] = "Fuchsia City"
         if game in ["SUN", "MOON"]:
