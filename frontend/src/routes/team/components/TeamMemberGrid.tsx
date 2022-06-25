@@ -4,6 +4,7 @@ import {Button, Card, CardActions, CardContent, CardMedia, Grid, Typography} fro
 import Paper from "@mui/material/Paper";
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import InfoIcon from '@mui/icons-material/Info';
 
 export interface TeamMemberGridProps {
     pokedex: Pokedex | undefined
@@ -35,16 +36,13 @@ export function TeamMemberGrid(props: TeamMemberGridProps) {
                         height="120"
                         alt={teamMember.nickname}
                     />
-                    {state != TeamState.DEAD ?
-                        <CardActions>
+                    <CardActions style={{justifyContent: "center"}}>
+                        {state != TeamState.DEAD ?
                             <Button onClick={() => movePokemon(teamMember)}>
                                 {state === TeamState.ACTIVE ? <ArrowDownwardIcon/> : <ArrowUpwardIcon/>}
-                            </Button>
-                            <Button onClick={() => movePokemon(teamMember)}>
-                                {state === TeamState.ACTIVE ? <ArrowDownwardIcon/> : <ArrowUpwardIcon/>}
-                            </Button>
-                        </CardActions>
-                        : <></>}
+                            </Button> : <></>}
+                        <Button onClick={() => console.log("info")}><InfoIcon/></Button>
+                    </CardActions>
                 </Card>
             </Paper>
         </Grid>)}
