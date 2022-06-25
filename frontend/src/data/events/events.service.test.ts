@@ -20,6 +20,7 @@ import {
     ENCOUNTER_EVENT_SUCCESSFUL_TO,
     EVENT_LIST,
     EVENT_LOG_TO,
+    EVENT_REGISTRY,
     EVOLUTION_EVENT,
     EVOLUTION_EVENT_TO,
     MILESTONE_EVENT,
@@ -64,6 +65,16 @@ describe("EventsService", () => {
         eventsService.getEvents$(runId).subscribe({
             next: result => {
                 expect(result).toEqual(EVENT_LIST)
+                expect(eventsRepository.queryEvents$).toHaveBeenCalledTimes(1)
+                done()
+            }
+        })
+    })
+    it("should get the events and create event registry", (done) => {
+        jest.spyOn(eventsRepository, "queryEvents$").mockReturnValue(of(EVENT_LIST))
+        eventsService.getEventRegistry$(runId).subscribe({
+            next: result => {
+                expect(result).toEqual(EVENT_REGISTRY)
                 expect(eventsRepository.queryEvents$).toHaveBeenCalledTimes(1)
                 done()
             }

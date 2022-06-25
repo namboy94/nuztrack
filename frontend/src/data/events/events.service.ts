@@ -12,6 +12,7 @@ import {
     DeathEvent,
     EncounterEvent,
     Event,
+    EventRegistry,
     EventType,
     EvolutionEvent,
     MilestoneEvent,
@@ -35,6 +36,10 @@ class EventsService {
 
     getEvents$(runId: number): Observable<Event[]> {
         return this.repo.queryEvents$(runId)
+    }
+
+    getEventRegistry$(runId: number): Observable<EventRegistry> {
+        return this.getEvents$(runId).pipe(map(events => new EventRegistry(events)))
     }
 
     getEncounterEvents$(runId: number): Observable<EncounterEvent[]> {

@@ -110,3 +110,23 @@ export interface EventLog {
     notes: NoteEvent[]
     milestones: MilestoneEvent[]
 }
+
+export class EventRegistry {
+    private readonly events: Event[]
+    private eventMap: Map<number, Event>
+
+    constructor(events: Event[]) {
+        this.events = [...events].sort((a, b) => a.timestamp < b.timestamp ? -1 : 1)
+        this.eventMap = new Map<number, Event>(
+            events.map(event => [event.id, event])
+        )
+    }
+
+    getEventById(id: number): Event | null {
+        return this.eventMap.get(id) ?? null
+    }
+
+    getAllEvents(): Event[] {
+        return this.events
+    }
+}

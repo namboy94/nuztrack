@@ -24,6 +24,7 @@ import {
     DeathEvent,
     EncounterEvent,
     Event,
+    EventRegistry,
     EventType,
     EvolutionEvent,
     MilestoneEvent,
@@ -277,3 +278,4 @@ export const EVENT_LIST: Event[] = [
     NOTE_EVENT,
     TEAM_MEMBER_SWITCH_EVENT
 ]
+export const EVENT_REGISTRY = new EventRegistry(EVENT_LIST)
