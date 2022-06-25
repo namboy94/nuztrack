@@ -3,6 +3,7 @@ import {
     DeathEvent,
     EncounterEvent,
     Event,
+    EventRegistry,
     EventType,
     EvolutionEvent,
     MilestoneEvent,
@@ -19,6 +20,7 @@ import {DeathLogEntry} from "./DeathLogEntry";
 import {EvolutionLogEntry} from "./EvolutionLogEntry";
 
 export interface EventLogEntryProps {
+    eventRegistry: EventRegistry
     event: Event
     pokedex: Pokedex
     locationRegistry: GameLocationRegistry
@@ -27,20 +29,40 @@ export interface EventLogEntryProps {
 
 export function EventLogEntry(props: EventLogEntryProps) {
 
-    const {event, pokedex, locationRegistry, team} = props
+    const {event, pokedex, locationRegistry, team, eventRegistry} = props
 
     if (event.type === EventType.ENCOUNTER) {
-        return <EncounterLogEntry event={event as EncounterEvent} pokedex={pokedex}/>
+        return <EncounterLogEntry
+            event={event as EncounterEvent}
+            pokedex={pokedex}
+        />
     } else if (event.type === EventType.MILESTONE) {
-        return <MilestoneLogEntry event={event as MilestoneEvent} locationRegistry={locationRegistry}/>
+        return <MilestoneLogEntry
+            event={event as MilestoneEvent}
+            locationRegistry={locationRegistry}
+        />
     } else if (event.type === EventType.NOTE) {
-        return <NoteLogEntry event={event as NoteEvent}/>
+        return <NoteLogEntry
+            event={event as NoteEvent}
+        />
     } else if (event.type === EventType.TEAM_MEMBER_SWITCH) {
-        return <TeamMemberSwitchLogEntry event={event as TeamMemberSwitchEvent} team={team} pokedex={pokedex}/>
+        return <TeamMemberSwitchLogEntry
+            event={event as TeamMemberSwitchEvent}
+            team={team}
+            pokedex={pokedex}
+            eventRegistry={eventRegistry}
+        />
     } else if (event.type === EventType.EVOLUTION) {
-        return <EvolutionLogEntry event={event as EvolutionEvent} team={team} pokedex={pokedex}/>
+        return <EvolutionLogEntry
+            event={event as EvolutionEvent}
+            team={team} pokedex={pokedex}
+        />
     } else if (event.type === EventType.DEATH) {
-        return <DeathLogEntry event={event as DeathEvent} team={team} pokedex={pokedex}/>
+        return <DeathLogEntry
+            event={event as DeathEvent}
+            team={team}
+            pokedex={pokedex}
+        />
     } else {
         return <></>
     }

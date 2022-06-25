@@ -1,4 +1,4 @@
-import {Event} from "../../../data/events/events.model";
+import {EventRegistry} from "../../../data/events/events.model";
 import {Pokedex} from "../../../data/pokedex/pokedex.model";
 import List from "@mui/material/List";
 import {EventLogEntry} from "./EventLogEntry";
@@ -7,7 +7,7 @@ import {GameLocationRegistry} from "../../../data/games/games.model";
 import {Team} from "../../../data/team/team.model";
 
 export interface EventLogProps {
-    events: Event[]
+    eventRegistry: EventRegistry | undefined
     pokedex: Pokedex | undefined
     locationRegistry: GameLocationRegistry | undefined
     team: Team | undefined
@@ -15,17 +15,22 @@ export interface EventLogProps {
 
 export function EventLog(props: EventLogProps) {
 
-    const {events, pokedex, locationRegistry, team} = props
+    const {eventRegistry, pokedex, locationRegistry, team} = props
 
-    if (pokedex === undefined || locationRegistry === undefined || team === undefined) {
+    if (pokedex === undefined || locationRegistry === undefined || team === undefined || eventRegistry === undefined) {
         return <></>
     }
 
     return (
         <List sx={{width: "100%", bgcolor: 'background.paper'}}>
-            {events.map(event =>
+            {eventRegistry.getAllEvents().map(event =>
                 <>
-                    <EventLogEntry event={event} pokedex={pokedex} locationRegistry={locationRegistry} team={team}/>
+                    <EventLogEntry
+                        eventRegistry={eventRegistry}
+                        event={event}
+                        pokedex={pokedex}
+                        locationRegistry={locationRegistry}
+                        team={team}/>
                     <Divider variant="inset" component="li"/>
                 </>
             )}

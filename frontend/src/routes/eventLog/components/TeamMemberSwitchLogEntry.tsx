@@ -1,9 +1,10 @@
-import {SwitchType, TeamMemberSwitchEvent} from "../../../data/events/events.model";
+import {EventRegistry, EvolutionEvent, SwitchType, TeamMemberSwitchEvent} from "../../../data/events/events.model";
 import {Pokedex} from "../../../data/pokedex/pokedex.model";
 import {Avatar, ListItem, ListItemText} from "@mui/material";
 import {Team} from "../../../data/team/team.model";
 
 export interface TeamMemberSwitchLogEntryProps {
+    eventRegistry: EventRegistry
     event: TeamMemberSwitchEvent
     pokedex: Pokedex
     team: Team
@@ -11,17 +12,21 @@ export interface TeamMemberSwitchLogEntryProps {
 
 export function TeamMemberSwitchLogEntry(props: TeamMemberSwitchLogEntryProps) {
 
-    const {event, pokedex, team} = props
+    const {event, pokedex, team, eventRegistry} = props
 
     const member = team.getTeamMemberById(event.teamMemberId)!!
-    const species = pokedex.getSpecies(member.pokedexNumber)!!
+    const evolutions = member.evolutionIds
+        .map(evolutionId => eventRegistry.getEventById(evolutionId)!! as EvolutionEvent)
+        .filter(evolution => evolution.timestamp > event.timestamp)
+        .map(evolution => evolution.previousPokedexNumber)
 
-    let title = ""
-    if (event.switchType == SwitchType.ADD) {
-        title = `Added ${member.nickname} to the active party`
-    } else {
-        title = `Removed ${member.nickname} from the active party`
-    }
+    const pokedexNumber = evolutions.length === 0 ? member.pokedexNumber : evolutions[0]
+    const species = pokedex.getSpecies(pokedexNumber)!!
+
+    const title = event.switchType == SwitchType.ADD
+        ? `Added ${member.nickname} to the active party`
+        : `Removed ${member.nickname} from the active party`
+
     const subtitle = `${event.location}, ${event.timestamp.toString()}`
     const iconColor = event.switchType == SwitchType.ADD ? "#ebffb5" : "#eaeff1"
 
