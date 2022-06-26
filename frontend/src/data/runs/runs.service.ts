@@ -67,7 +67,8 @@ class RunsService {
     continueMultiRun$(creator: CreateMultiRun): Observable<NuzlockeRun> {
         return this.api.postMultiRun$(this.converter.convertCreateMultiRunModelToTO(creator)).pipe(
             map(runTO => this.converter.convertNuzlockeRunTOToModel(runTO)),
-            tap(run => this.repo.addRun(run))
+            tap(run => this.repo.addRun(run)),
+            tap(run => this.selectActiveRun(run))
         )
     }
 }

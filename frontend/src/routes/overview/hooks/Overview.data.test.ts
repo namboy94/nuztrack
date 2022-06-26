@@ -6,6 +6,7 @@ import {NUZLOCKE_RUN} from "../../../data/runs/runs.testconstants";
 import {useOverviewDataLoader} from "./Overview.data";
 import {pokedexService} from "../../../data/pokedex/pokedex.service";
 import {teamService} from "../../../data/team/team.service";
+import {runsService} from "../../../data/runs/runs.service";
 
 describe("OverviewDataLoader", () => {
 
@@ -14,6 +15,8 @@ describe("OverviewDataLoader", () => {
         jest.spyOn(gamesService, "loadGameLocations$").mockReturnValue(EMPTY)
         jest.spyOn(pokedexService, "loadPokedexData$").mockReturnValue(EMPTY)
         jest.spyOn(teamService, "loadTeam$").mockReturnValue(EMPTY)
+        jest.spyOn(runsService, "loadMultiRunOptions$").mockReturnValue(EMPTY)
+        jest.spyOn(gamesService, "loadGames$").mockReturnValue(EMPTY)
 
         const result = renderHook(() => useOverviewDataLoader(NUZLOCKE_RUN)).result.current
 
@@ -25,6 +28,8 @@ describe("OverviewDataLoader", () => {
         expect(pokedexService.loadPokedexData$).toHaveBeenCalledTimes(1)
         expect(teamService.loadTeam$).toHaveBeenCalledTimes(1)
         expect(teamService.loadTeam$).toHaveBeenCalledWith(NUZLOCKE_RUN.id)
+        expect(gamesService.loadGames$).toHaveBeenCalledTimes(1)
+        expect(runsService.loadMultiRunOptions$).toHaveBeenCalledTimes(1)
         done()
     })
 })

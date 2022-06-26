@@ -31,7 +31,7 @@ class MultiRunRouter(
 
     val authenticator = Authenticator(runService)
 
-    @GetMapping
+    @GetMapping("/api/runs/multi/options")
     @ResponseBody
     fun getMultiRunOptions(): ResponseEntity<List<MultiRunOptionTO>> {
         return ResponseEntity.ok(MultiRunOptions.values().map { MultiRunOptionTO(it.name, it.description) })
@@ -48,8 +48,8 @@ class MultiRunRouter(
                 userName = principal.name,
                 name = createMultiRun.name,
                 game = Games.valueOfWithChecks(createMultiRun.game),
-                rules = currentRun.rules,
-                customRules = currentRun.customRules,
+                rules = currentRun.rules.map { it },
+                customRules = currentRun.customRules.map { it },
                 multiRun = multiRun
         )
 
