@@ -46,4 +46,4 @@ deploy_app:
   artifacts:
     paths:
       - backup.tar.gz
-      expire_in: 1 month
+    expire_in: 1 month
