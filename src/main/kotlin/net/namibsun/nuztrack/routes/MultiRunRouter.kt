@@ -64,7 +64,7 @@ class MultiRunRouter(
             teamMembersToTransfer.addAll(team.second)
         }
         if (options.contains(MultiRunOptions.INCLUDE_DEAD)) {
-            teamMembersToTransfer.addAll(team.second)
+            teamMembersToTransfer.addAll(team.third)
         }
 
         for (teamMember in teamMembersToTransfer) {
