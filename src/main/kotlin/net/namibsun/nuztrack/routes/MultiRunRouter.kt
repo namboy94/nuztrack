@@ -112,6 +112,15 @@ class MultiRunRouter(
                 )
             }
         }
+
+        if (options.contains(MultiRunOptions.INCLUDE_FAILED_ENCOUNTERS)) {
+            for (encounter in encounterEventService.getEncounterEvents(currentRun.id).filter { !it.caught }) {
+                encounterEventService.createEncounterEvent(
+                        newRun, encounter.location, encounter.pokedexNumber, encounter.level, false
+                )
+            }
+        }
+
         return ResponseEntity<NuzlockeRunTO>(NuzlockeRunTO.fromNuzlockeRun(newRun), HttpStatus.CREATED)
     }
 }
