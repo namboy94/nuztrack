@@ -17,7 +17,6 @@ mkdir backup
 
 docker-compose up --no-recreate -d
 sleep 20
-docker exec "$APP" printenv > backup/.env
 docker exec -i "$DB" bash -c 'pg_dump $POSTGRES_DB -U $POSTGRES_USER' > backup/db.sql
 docker exec -i "$AUTHDB" bash -c 'pg_dump $POSTGRES_DB -U $POSTGRES_USER' > backup/authdb.sql
 tar -zcvpf "$TARGET" backup

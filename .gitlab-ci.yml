@@ -39,6 +39,11 @@ deploy_app:
   only: [ master, develop, kotlin ]
   script:
     - echo "$PROD_ENV" > .env
+    - scripts/backup.sh backup.tar.gz
     - docker-compose build
     - docker-compose up -d
     - rm .env
+  artifacts:
+    paths:
+      - backup.tar.gz
+      expire_in: 1 month
