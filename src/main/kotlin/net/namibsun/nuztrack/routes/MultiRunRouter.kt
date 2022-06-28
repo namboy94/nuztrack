@@ -116,7 +116,11 @@ class MultiRunRouter(
         if (options.contains(MultiRunOptions.INCLUDE_FAILED_ENCOUNTERS)) {
             for (encounter in encounterEventService.getEncounterEvents(currentRun.id).filter { !it.caught }) {
                 encounterEventService.createEncounterEvent(
-                        newRun, encounter.location, encounter.pokedexNumber, encounter.level, false
+                        newRun,
+                        "Previous Game",
+                        encounter.pokedexNumber,
+                        encounter.level,
+                        false
                 )
             }
         }

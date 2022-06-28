@@ -29,13 +29,23 @@ namespace Nuztrack
             
             ConvertPokemonParty(party);
             ConvertPokemonParty(box);
+
+            int partyIndex = 0;
+            for (int i = 0; i < box.Count && partyIndex < party.Count; i++)
+            {
+                if (box[i].Species == 0)
+                {
+                    box[i] = party[partyIndex];
+                    partyIndex++;
+                }
+            }
             
-            targetSave.PartyData = party;
             targetSave.BoxData = box;
             targetSave.OT = sourceSave.OT;
             targetSave.TrainerID7 = sourceSave.TrainerID7;
 
             targetSave.SetBoxData(sourceSave.GetBoxData(sourceSave.BoxCount - 1), targetSave.BoxCount - 1);
+
             
             File.WriteAllBytes(target, targetSave.Write());
         }
