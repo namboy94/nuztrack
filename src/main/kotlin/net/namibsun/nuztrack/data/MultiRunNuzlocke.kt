@@ -22,6 +22,13 @@ interface MultiRunNuzlockeRepository : JpaRepository<MultiRunNuzlocke, Long>
 
 @Service
 class MultiRunNuzlockeService(val db: MultiRunNuzlockeRepository) {
+
+    fun linkRuns(existing: NuzlockeRun, newRun: NuzlockeRun): MultiRunNuzlocke {
+        val multiRun = getOrCreateMultiRunForRun(existing)
+        val runs = multiRun.runs + listOf(newRun)
+        return db.save(MultiRunNuzlocke(id = multiRun.id, runs = runs))
+    }
+
     fun getOrCreateMultiRunForRun(run: NuzlockeRun): MultiRunNuzlocke {
         return (if (run.multiRun == null) {
             db.save(MultiRunNuzlocke(runs = listOf(run)))

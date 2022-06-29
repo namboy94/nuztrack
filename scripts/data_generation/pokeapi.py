@@ -63,7 +63,10 @@ def load_pokemon(_cachedir):
                     "secondary": types[2]
                 },
                 "baseSpecies": species.species.evolution_chain.chain.species.id,
-                "evolutions": evolutions
+                "evolutions": evolutions,
+                "genderRate": species.species.gender_rate,
+                "isLegendary": species.species.is_legendary or species.species.is_mythical,
+                "generation": species.species.generation.id
             }
 
             with open(pokefile, "w") as f:

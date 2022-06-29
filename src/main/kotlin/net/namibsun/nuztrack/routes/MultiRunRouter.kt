@@ -2,13 +2,8 @@ package net.namibsun.nuztrack.routes
 
 import net.namibsun.nuztrack.constants.Pokedex
 import net.namibsun.nuztrack.constants.enums.Games
-import net.namibsun.nuztrack.constants.enums.Gender
 import net.namibsun.nuztrack.constants.enums.MultiRunOptions
-import net.namibsun.nuztrack.constants.enums.Natures
-import net.namibsun.nuztrack.data.MultiRunNuzlockeService
-import net.namibsun.nuztrack.data.NuzlockeRunService
-import net.namibsun.nuztrack.data.TeamMember
-import net.namibsun.nuztrack.data.TeamMemberService
+import net.namibsun.nuztrack.data.*
 import net.namibsun.nuztrack.data.events.DeathEventService
 import net.namibsun.nuztrack.data.events.EncounterEventService
 import net.namibsun.nuztrack.transfer.CreateMultiRunTO
@@ -29,33 +24,45 @@ class MultiRunRouter(
         val deathEventService: DeathEventService
 ) {
 
+    @Suppress("LeakingThis")
     val authenticator = Authenticator(runService)
 
     @GetMapping("/api/runs/multi/options")
     @ResponseBody
     fun getMultiRunOptions(): ResponseEntity<List<MultiRunOptionTO>> {
-        return ResponseEntity.ok(MultiRunOptions.values().map { MultiRunOptionTO(it.name, it.description) })
+        return ResponseEntity.ok(MultiRunOptions.values().map { MultiRunOptionTO.fromOption(it) })
     }
 
     @PostMapping("/api/runs/multi")
     @ResponseBody
-    fun createRun(@RequestBody createMultiRun: CreateMultiRunTO, principal: Principal): ResponseEntity<NuzlockeRunTO> {
-        val currentRun = authenticator.loadAuthenticatedRun(createMultiRun.runId, principal.name)
+    fun createMultiRun(@RequestBody createMultiRun: CreateMultiRunTO, principal: Principal): ResponseEntity<NuzlockeRunTO> {
         createMultiRun.validate()
 
-        val multiRun = multiRunNuzlockeService.getOrCreateMultiRunForRun(currentRun)
+        val currentRun = authenticator.loadAuthenticatedRun(createMultiRun.runId, principal.name)
         val newRun = runService.createRun(
                 userName = principal.name,
                 name = createMultiRun.name,
                 game = Games.valueOfWithChecks(createMultiRun.game),
                 rules = currentRun.rules.map { it },
-                customRules = currentRun.customRules.map { it },
-                multiRun = multiRun
+                customRules = currentRun.customRules.map { it }
         )
+        multiRunNuzlockeService.linkRuns(currentRun, newRun)
 
         val options = createMultiRun.options.map { MultiRunOptions.valueOfWithChecks(it) }
+        val teamMembersToTransfer = this.collectTransferTargets(currentRun.id, options)
+        for (teamMember in teamMembersToTransfer) {
+            this.transferTeamMemberToNewGame(newRun, teamMember, options)
+        }
+        if (options.contains(MultiRunOptions.INCLUDE_FAILED_ENCOUNTERS)) {
+            this.transferFailedEncounters(currentRun, newRun)
+        }
 
-        val team = teamMemberService.getTeam(currentRun.id)
+        val freshRun = runService.getRun(newRun.id) ?: newRun
+        return ResponseEntity<NuzlockeRunTO>(NuzlockeRunTO.fromNuzlockeRun(freshRun), HttpStatus.CREATED)
+    }
+
+    private fun collectTransferTargets(runId: Long, options: List<MultiRunOptions>): List<TeamMember> {
+        val team = teamMemberService.getTeam(runId)
         val teamMembersToTransfer = mutableListOf<TeamMember>()
         if (options.contains(MultiRunOptions.INCLUDE_PARTY)) {
             teamMembersToTransfer.addAll(team.first)
@@ -66,65 +73,63 @@ class MultiRunRouter(
         if (options.contains(MultiRunOptions.INCLUDE_DEAD)) {
             teamMembersToTransfer.addAll(team.third)
         }
+        return teamMembersToTransfer
+    }
 
-        for (teamMember in teamMembersToTransfer) {
-            val level = if (options.contains(MultiRunOptions.RESET_LEVELS) && teamMember.death == null) {
-                5
-            } else {
-                teamMember.level
-            }
-            val pokedexNumber = if (options.contains(MultiRunOptions.RESET_SPECIES) && teamMember.death == null) {
-                Pokedex.getPokemon(teamMember.pokedexNumber).baseSpecies
-            } else {
-                teamMember.pokedexNumber
-            }
-            val gender = if (newRun.game.generation == 1) {
-                null
-            } else if (newRun.game.generation > 1 && currentRun.game.generation == 1) {
-                Gender.NEUTRAL
-            } else {
-                teamMember.gender
-            }
-            val nature = if (newRun.game.generation < 3) null else teamMember.nature ?: Natures.BASHFUL
-            val abilitySlot = if (newRun.game.generation < 3) null else teamMember.abilitySlot ?: 1
-            val encounter = encounterEventService.createEncounterEvent(
-                    nuzlockeRun = newRun,
-                    location = "Previous Game",
-                    pokedexNumber = pokedexNumber,
-                    level = level,
-                    true
+    private fun transferTeamMemberToNewGame(
+            newRun: NuzlockeRun,
+            teamMember: TeamMember,
+            options: List<MultiRunOptions>
+    ) {
+        val resetLevel = options.contains(MultiRunOptions.RESET_LEVELS) && teamMember.death == null
+        val resetSpecies = options.contains(MultiRunOptions.RESET_SPECIES) && teamMember.death == null
+
+        val level = if (resetLevel) 5 else teamMember.level
+        val baseSpecies = Pokedex.getBaseSpeciesForGame(teamMember.pokedexNumber, newRun.game)
+        val pokedexNumber = if (resetSpecies) baseSpecies else teamMember.pokedexNumber
+
+        val generatedGender = Pokedex.generateGender(teamMember.pokedexNumber, newRun.game)
+        val gender = if (teamMember.gender == null) generatedGender else teamMember.gender
+
+        val nature = if (teamMember.nature == null) Pokedex.generateNature(newRun.game) else teamMember.nature
+        val generatedAbilitySlot = Pokedex.generateAbilitySlot(teamMember.pokedexNumber, newRun.game)
+        val abilitySlot = if (teamMember.abilitySlot == null) generatedAbilitySlot else teamMember.abilitySlot
+
+        val encounter = encounterEventService.createEncounterEvent(
+                nuzlockeRun = newRun,
+                location = "Previous Game",
+                pokedexNumber = pokedexNumber,
+                level = level,
+                true
+        )
+        val newTeamMember = teamMemberService.createTeamMember(
+                encounter = encounter,
+                nickname = teamMember.nickname,
+                gender = gender,
+                nature = nature,
+                abilitySlot = abilitySlot
+        )
+        if (teamMember.death != null) {
+            deathEventService.createDeathEvent(
+                    newRun,
+                    "Previous Game",
+                    newTeamMember,
+                    teamMember.level,
+                    teamMember.death!!.opponent,
+                    teamMember.death!!.description
             )
-            val newTeamMember = teamMemberService.createTeamMember(
-                    encounter = encounter,
-                    nickname = teamMember.nickname,
-                    gender = gender,
-                    nature = nature,
-                    abilitySlot = abilitySlot
+        }
+    }
+
+    private fun transferFailedEncounters(currentRun: NuzlockeRun, newRun: NuzlockeRun) {
+        for (encounter in encounterEventService.getEncounterEvents(currentRun.id).filter { !it.caught }) {
+            encounterEventService.createEncounterEvent(
+                    newRun,
+                    "Previous Game",
+                    encounter.pokedexNumber,
+                    encounter.level,
+                    false
             )
-            if (teamMember.death != null) {
-                deathEventService.createDeathEvent(
-                        newRun,
-                        "Previous Game",
-                        newTeamMember,
-                        teamMember.level,
-                        teamMember.death!!.opponent,
-                        teamMember.death!!.description
-                )
-            }
         }
-
-        if (options.contains(MultiRunOptions.INCLUDE_FAILED_ENCOUNTERS)) {
-            for (encounter in encounterEventService.getEncounterEvents(currentRun.id).filter { !it.caught }) {
-                encounterEventService.createEncounterEvent(
-                        newRun,
-                        "Previous Game",
-                        encounter.pokedexNumber,
-                        encounter.level,
-                        false
-                )
-            }
-        }
-
-        return ResponseEntity<NuzlockeRunTO>(NuzlockeRunTO.fromNuzlockeRun(newRun), HttpStatus.CREATED)
     }
 }

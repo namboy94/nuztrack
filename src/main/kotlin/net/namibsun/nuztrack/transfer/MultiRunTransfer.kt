@@ -22,4 +22,10 @@ data class CreateMultiRunTO(
     }
 }
 
-data class MultiRunOptionTO(val key: String, val description: String)
+data class MultiRunOptionTO(val key: String, val description: String) {
+    companion object {
+        fun fromOption(option: MultiRunOptions): MultiRunOptionTO {
+            return MultiRunOptionTO(option.name, option.description)
+        }
+    }
+}

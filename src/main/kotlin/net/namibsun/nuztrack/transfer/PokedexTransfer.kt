@@ -9,7 +9,10 @@ data class PokemonSpeciesTO(
         val types: PokemonTypesTO,
         val abilities: Map<Int, String?>,
         val baseSpecies: Int,
-        val evolutions: List<Int>
+        val evolutions: List<Int>,
+        val genderRate: Int,
+        val isLegendary: Boolean,
+        val generation: Int
 )
 
 data class PokemonTypesTO(val primary: String, val secondary: String?)
