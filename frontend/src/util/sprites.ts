@@ -22,10 +22,10 @@ export function getSpriteUrl(speciesName: string, game: Game, shiny: boolean) {
         ["WHITE", "black-white"],
         ["BLACK_2", "black-white"],
         ["WHITE_2", "black-white"],
-        ["X", "x"],
-        ["Y", "y"],
-        ["OMEGA_RUBY", "omega-ruby-alpha-sapphire"],
-        ["ALPHA_SAPPHIRE", "omega-ruby-alpha-sapphire"]
+        ["X", "x-y"],
+        ["Y", "y-y"],
+        ["OMEGA_RUBY", "omega-ruby-alpha-sapphire/dex"],
+        ["ALPHA_SAPPHIRE", "omega-ruby-alpha-sapphire/dex"]
     ])
     const gameKey = gameKeys.get(game.key) ?? (game.generation === 7 ? "bank" : "home")
     const shinyKey = shiny ? "shiny" : "normal"
