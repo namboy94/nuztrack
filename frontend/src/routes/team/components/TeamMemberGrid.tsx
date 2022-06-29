@@ -5,8 +5,11 @@ import Paper from "@mui/material/Paper";
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import InfoIcon from '@mui/icons-material/Info';
+import {getSpriteUrl} from "../../../util/sprites";
+import {NuzlockeRun} from "../../../data/runs/runs.model";
 
 export interface TeamMemberGridProps {
+    run: NuzlockeRun
     pokedex: Pokedex | undefined
     teamMembers: TeamMember[]
     state: TeamState
@@ -15,7 +18,7 @@ export interface TeamMemberGridProps {
 }
 
 export function TeamMemberGrid(props: TeamMemberGridProps) {
-    const {pokedex, teamMembers, state, movePokemon, showDetails} = props
+    const {pokedex, teamMembers, state, movePokemon, showDetails, run} = props
 
     if (pokedex === undefined) {
         return null
@@ -31,7 +34,7 @@ export function TeamMemberGrid(props: TeamMemberGridProps) {
                     <CardMedia
                         onClick={() => showDetails(teamMember)}
                         style={{backgroundColor: "#DDDDDD", borderRadius: "15px"}}
-                        image={pokedex.getSpecies(teamMember.pokedexNumber)!!.sprite}
+                        image={getSpriteUrl(pokedex.getSpecies(teamMember.pokedexNumber)!!.name, run.game, false)}
                         component="img"
                         height="120"
                         alt={teamMember.nickname}

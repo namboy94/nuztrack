@@ -15,6 +15,7 @@ export function usePokemonGridProps(run: NuzlockeRun, notify: NotificationFN, st
         teamMembers: teamMembers,
         state: state,
         movePokemon: (teamMember: TeamMember) => console.log(teamMember.nickname),
-        showDetails: (teamMember: TeamMember) => console.log(teamMember.nickname)
+        showDetails: (teamMember: TeamMember) => console.log(teamMember.nickname),
+        run: run
     }
 }
