@@ -1,8 +1,7 @@
 package net.namibsun.nuztrack.data
 
-import net.namibsun.nuztrack.constants.enums.Games
-import net.namibsun.nuztrack.constants.enums.Rules
 import net.namibsun.nuztrack.constants.enums.RunStatus
+import net.namibsun.nuztrack.testconstants.NuzlockeRunBuilder
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.mockito.AdditionalAnswers
@@ -13,22 +12,18 @@ class NuzlockeRunServiceTest {
 
     private val repository: NuzlockeRunRepository = mock()
     private val service = NuzlockeRunService(repository)
-    private val username = "Ash"
-    private val exampleOne = NuzlockeRun(
-            5, username, "First", Games.RED, listOf(Rules.DEATH), listOf("myRules"), status = RunStatus.COMPLETED
-    )
-    private val exampleTwo = NuzlockeRun(
-            10, username, "Second", Games.YELLOW, listOf(), listOf("myRules"), status = RunStatus.FAILED
-    )
+
+    private val runOne = NuzlockeRunBuilder().status(RunStatus.COMPLETED).build()
+    private val runTwo = NuzlockeRunBuilder().id(2).build()
 
     @Test
     fun getRun_runExists() {
-        whenever(repository.findById(exampleOne.id)).thenReturn(Optional.of(exampleOne))
+        whenever(repository.findById(runOne.id)).thenReturn(Optional.of(runOne))
 
-        val result = service.getRun(exampleOne.id)
+        val result = service.getRun(runOne.id)
 
-        verify(repository, times(1)).findById(5)
-        assertThat(result).isEqualTo(exampleOne)
+        verify(repository, times(1)).findById(runOne.id)
+        assertThat(result).isEqualTo(runOne)
     }
 
     @Test
@@ -43,12 +38,12 @@ class NuzlockeRunServiceTest {
 
     @Test
     fun getRuns_userHasRuns() {
-        whenever(repository.findByUserName(username)).thenReturn(listOf(exampleOne, exampleTwo))
+        whenever(repository.findByUserName(runOne.userName)).thenReturn(listOf(runOne, runTwo))
 
-        val ashResults = service.getRuns(username)
+        val ashResults = service.getRuns(runOne.userName)
 
-        verify(repository, times(1)).findByUserName(username)
-        assertThat(ashResults).hasSameElementsAs(listOf(exampleOne, exampleTwo))
+        verify(repository, times(1)).findByUserName(runOne.userName)
+        assertThat(ashResults).hasSameElementsAs(listOf(runOne, runTwo))
     }
 
     @Test
@@ -65,17 +60,17 @@ class NuzlockeRunServiceTest {
     @Test
     fun createRun_valid() {
         @Suppress("RemoveExplicitTypeArguments")
-        whenever(repository.save(any<NuzlockeRun>())).thenReturn(exampleOne)
+        whenever(repository.save(any<NuzlockeRun>())).thenReturn(runOne)
 
         val result = service.createRun(
-                exampleOne.userName,
-                exampleOne.name,
-                exampleOne.game,
-                exampleOne.rules,
-                exampleOne.customRules
+                runOne.userName,
+                runOne.name,
+                runOne.game,
+                runOne.rules,
+                runOne.customRules
         )
 
-        assertThat(result).isEqualTo(exampleOne)
+        assertThat(result).isEqualTo(runOne)
         verify(repository, times(1)).save(any())
     }
 
@@ -84,25 +79,25 @@ class NuzlockeRunServiceTest {
         whenever(repository.save(any<NuzlockeRun>())).then(AdditionalAnswers.returnsFirstArg<NuzlockeRun>())
 
         val result = service.createRun(
-                exampleOne.userName,
-                exampleOne.name,
-                exampleOne.game,
-                exampleOne.rules,
-                exampleOne.customRules
+                runOne.userName,
+                runOne.name,
+                runOne.game,
+                runOne.rules,
+                runOne.customRules
         )
-        assertThat(result.status).isNotEqualTo(exampleOne.status)
+        assertThat(result.status).isNotEqualTo(runOne.status)
         assertThat(result.status).isEqualTo(RunStatus.ACTIVE)
         verify(repository, times(1)).save(any())
     }
 
     @Test
     fun deleteRun() {
-        whenever(repository.deleteById(exampleOne.id)).then {}
+        whenever(repository.deleteById(runOne.id)).then {}
 
-        val result = service.deleteRun(exampleOne.id)
+        val result = service.deleteRun(runOne.id)
 
         assertThat(result).isEqualTo(Unit)
-        verify(repository, times(1)).deleteById(exampleOne.id)
+        verify(repository, times(1)).deleteById(runOne.id)
     }
 
 }
