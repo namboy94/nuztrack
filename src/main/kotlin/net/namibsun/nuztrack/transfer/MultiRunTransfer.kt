@@ -4,6 +4,7 @@ import net.namibsun.nuztrack.constants.ValidationException
 import net.namibsun.nuztrack.constants.enums.ErrorMessages
 import net.namibsun.nuztrack.constants.enums.Games
 import net.namibsun.nuztrack.constants.enums.MultiRunOptions
+import net.namibsun.nuztrack.data.NuzlockeRun
 
 data class CreateMultiRunTO(
         val runId: Long,
@@ -11,14 +12,16 @@ data class CreateMultiRunTO(
         val game: String,
         val name: String
 ) {
-    fun validate() {
-
+    fun validate(run: NuzlockeRun) {
         if (name.isEmpty()) {
             throw ValidationException(ErrorMessages.EMPTY_NAME)
         }
 
+        if (Games.valueOfWithChecks(game).generation < run.game.generation) {
+            throw ValidationException(ErrorMessages.MULTI_RUN_BACKWARDS)
+        }
+
         options.map { MultiRunOptions.valueOfWithChecks(it) }
-        Games.valueOfWithChecks(game)
     }
 }
 

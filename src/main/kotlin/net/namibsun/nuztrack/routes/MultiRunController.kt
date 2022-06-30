@@ -36,9 +36,9 @@ class MultiRunController(
     @PostMapping("/api/runs/multi")
     @ResponseBody
     fun createMultiRun(@RequestBody createMultiRun: CreateMultiRunTO, principal: Principal): ResponseEntity<NuzlockeRunTO> {
-        createMultiRun.validate()
-
         val currentRun = authenticator.loadAuthenticatedRun(createMultiRun.runId, principal.name)
+        createMultiRun.validate(currentRun)
+
         val newRun = runService.createRun(
                 userName = principal.name,
                 name = createMultiRun.name,
