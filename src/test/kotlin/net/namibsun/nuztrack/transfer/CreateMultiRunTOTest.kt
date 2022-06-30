@@ -2,7 +2,7 @@ package net.namibsun.nuztrack.transfer
 
 import net.namibsun.nuztrack.constants.ValidationException
 import net.namibsun.nuztrack.constants.enums.ErrorMessages
-import net.namibsun.nuztrack.testconstants.transfer.CreateMultiRunTOBuilder
+import net.namibsun.nuztrack.testbuilders.transfer.CreateMultiRunTOBuilder
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows

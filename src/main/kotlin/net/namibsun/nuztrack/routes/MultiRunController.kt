@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*
 import java.security.Principal
 
 @RestController
-class MultiRunRouter(
+class MultiRunController(
         val multiRunNuzlockeService: MultiRunNuzlockeService,
         val runService: NuzlockeRunService,
         val teamMemberService: TeamMemberService,
@@ -114,7 +114,7 @@ class MultiRunRouter(
                     newRun,
                     "Previous Game",
                     newTeamMember,
-                    teamMember.level,
+                    teamMember.death!!.level,
                     teamMember.death!!.opponent,
                     teamMember.death!!.description
             )

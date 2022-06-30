@@ -16,7 +16,7 @@ class TeamMemberSwitchEvent(
 
         @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.PERSIST])
         @JoinColumn(name = "team_member_id", nullable = false)
-        val teamMember: TeamMember,
+        var teamMember: TeamMember,
 
         @Column val switchType: TeamMemberSwitchType
 

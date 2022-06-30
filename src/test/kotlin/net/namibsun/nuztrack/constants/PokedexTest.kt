@@ -4,7 +4,7 @@ import net.namibsun.nuztrack.constants.enums.ErrorMessages
 import net.namibsun.nuztrack.constants.enums.Games
 import net.namibsun.nuztrack.constants.enums.Gender
 import net.namibsun.nuztrack.constants.enums.Natures
-import net.namibsun.nuztrack.testconstants.transfer.PokemonSpeciesTOBuilder
+import net.namibsun.nuztrack.testbuilders.transfer.PokemonSpeciesTOBuilder
 import net.namibsun.nuztrack.transfer.PokedexTO
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test

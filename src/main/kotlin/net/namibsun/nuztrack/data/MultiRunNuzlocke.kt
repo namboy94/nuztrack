@@ -14,7 +14,7 @@ class MultiRunNuzlocke(
 
         @OneToMany(mappedBy = "multiRun", cascade = [CascadeType.ALL])
         @OrderBy("id")
-        val runs: List<NuzlockeRun> = listOf(),
+        var runs: MutableList<NuzlockeRun> = mutableListOf(),
 )
 
 @Repository
@@ -25,15 +25,15 @@ class MultiRunNuzlockeService(val db: MultiRunNuzlockeRepository) {
 
     fun linkRuns(existing: NuzlockeRun, newRun: NuzlockeRun): MultiRunNuzlocke {
         val multiRun = getOrCreateMultiRunForRun(existing)
-        val runs = multiRun.runs + listOf(newRun)
-        return db.save(MultiRunNuzlocke(id = multiRun.id, runs = runs))
+        multiRun.runs.add(newRun)
+        return db.save(multiRun)
     }
 
     fun getOrCreateMultiRunForRun(run: NuzlockeRun): MultiRunNuzlocke {
         return (if (run.multiRun == null) {
-            db.save(MultiRunNuzlocke(runs = listOf(run)))
+            db.save(MultiRunNuzlocke(runs = mutableListOf(run)))
         } else {
-            db.findByIdOrNull(run.id)
-        }) ?: db.save(MultiRunNuzlocke(runs = listOf(run)))
+            db.findByIdOrNull(run.multiRun!!.id)
+        }) ?: db.save(MultiRunNuzlocke(runs = mutableListOf(run)))
     }
 }

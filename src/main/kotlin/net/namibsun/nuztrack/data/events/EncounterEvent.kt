@@ -17,7 +17,7 @@ class EncounterEvent(
         @Column val caught: Boolean,
 
         @OneToOne(mappedBy = "encounter", cascade = [CascadeType.ALL])
-        val teamMember: TeamMember? = null
+        var teamMember: TeamMember? = null
 
 ) : Event(nuzlockeRun = nuzlockeRun, location = location, eventType = EventType.ENCOUNTER)
 

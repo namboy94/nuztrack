@@ -12,7 +12,7 @@ import javax.persistence.*
 class DeathEvent(
         nuzlockeRun: NuzlockeRun,
         location: String,
-        @OneToOne(cascade = [CascadeType.ALL]) @JoinColumn(name = "death_id") val teamMember: TeamMember,
+        @OneToOne(cascade = [CascadeType.ALL]) @JoinColumn(name = "death_id") var teamMember: TeamMember,
         @Column val level: Int,
         @Column val opponent: String,
         @Column val description: String

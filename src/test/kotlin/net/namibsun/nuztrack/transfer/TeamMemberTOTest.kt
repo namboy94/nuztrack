@@ -18,7 +18,7 @@ internal class TeamMemberTOTest {
         val dummyMember = TeamMember(1, "Bob", 1, 1, Gender.MALE, Natures.BOLD, 1, encounter)
         val evolution = EvolutionEvent(run, "B", dummyMember, 1, 1, 2)
         val member = TeamMember(
-                1, "Bob", 1, 1, Gender.MALE, Natures.BOLD, 1, encounter, null, listOf(evolution), listOf()
+                1, "Bob", 1, 1, Gender.MALE, Natures.BOLD, 1, encounter, null, mutableListOf(evolution), mutableListOf()
         )
 
         val converted = TeamMemberTO.fromTeamMember(member)

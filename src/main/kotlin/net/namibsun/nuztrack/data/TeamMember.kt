@@ -28,18 +28,18 @@ class TeamMember(
 
         @OneToOne(cascade = [CascadeType.ALL])
         @JoinColumn(name = "encounter_id")
-        val encounter: EncounterEvent,
+        var encounter: EncounterEvent,
 
         @OneToOne(mappedBy = "teamMember", cascade = [CascadeType.ALL])
-        val death: DeathEvent? = null,
+        var death: DeathEvent? = null,
 
         @OneToMany(mappedBy = "teamMember", cascade = [CascadeType.ALL])
         @OrderBy("timestamp")
-        val evolutions: List<EvolutionEvent> = listOf(),
+        var evolutions: MutableList<EvolutionEvent> = mutableListOf(),
 
         @OneToMany(mappedBy = "teamMember", cascade = [CascadeType.ALL])
         @OrderBy("timestamp")
-        val teamSwitches: List<TeamMemberSwitchEvent> = listOf(),
+        var teamSwitches: MutableList<TeamMemberSwitchEvent> = mutableListOf(),
 )
 
 @Repository

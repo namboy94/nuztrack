@@ -1,4 +1,4 @@
-package net.namibsun.nuztrack.testconstants
+package net.namibsun.nuztrack.testbuilders
 
 import net.namibsun.nuztrack.constants.enums.Games
 import net.namibsun.nuztrack.constants.enums.Rules
@@ -15,7 +15,7 @@ data class NuzlockeRunBuilder(
         var rules: List<Rules> = Rules.defaultRules(),
         var customRules: List<String> = listOf("Meowth has 9 lives"),
         var status: RunStatus = RunStatus.ACTIVE,
-        var events: List<Event> = listOf(),
+        var events: MutableList<Event> = mutableListOf(),
         var multiRun: MultiRunNuzlocke? = null,
 ) {
     fun id(id: Long) = apply { this.id = id }
@@ -25,8 +25,7 @@ data class NuzlockeRunBuilder(
     fun rules(rules: List<Rules>) = apply { this.rules = rules }
     fun customRules(customRules: List<String>) = apply { this.customRules = customRules }
     fun status(status: RunStatus) = apply { this.status = status }
-    fun events(events: List<Event>) = apply { this.events = events }
+    fun events(events: MutableList<Event>) = apply { this.events = events }
     fun multiRun(multiRun: MultiRunNuzlocke) = apply { this.multiRun = multiRun }
     fun build() = NuzlockeRun(id, userName, name, game, rules, customRules, status, events, multiRun)
-
 }

@@ -24,7 +24,7 @@ class Event(
 
         @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.PERSIST])
         @JoinColumn(name = "nuzlocke_run_id", nullable = false)
-        val nuzlockeRun: NuzlockeRun,
+        var nuzlockeRun: NuzlockeRun,
 
         @Column val location: String,
         @Column @Enumerated(EnumType.STRING) val eventType: EventType

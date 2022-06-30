@@ -29,7 +29,7 @@ class DeathEventControllerTest {
     private val run = NuzlockeRun(5, user, "First", Games.RED, listOf(), listOf(), RunStatus.COMPLETED)
     private val member = TeamMember(
             1, "Squirtle", 7, 5, Gender.MALE, Natures.BOLD, 1, ENCOUNTER,
-            teamSwitches = listOf(TeamMemberSwitchEvent(run, "Oak's Lab", TEAM_MEMBER, TeamMemberSwitchType.ADD))
+            teamSwitches = mutableListOf(TeamMemberSwitchEvent(run, "Oak's Lab", TEAM_MEMBER, TeamMemberSwitchType.ADD))
     )
     private val creator = CreateDeathEventTO("Location", member.id, 10, "Gary", "Died")
 

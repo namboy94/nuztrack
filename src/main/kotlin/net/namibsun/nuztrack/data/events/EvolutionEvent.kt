@@ -15,7 +15,7 @@ class EvolutionEvent(
 
         @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.PERSIST])
         @JoinColumn(name = "team_member_id", nullable = false)
-        val teamMember: TeamMember,
+        var teamMember: TeamMember,
 
         @Column val level: Int,
         @Column val previousPokedexNumber: Int,

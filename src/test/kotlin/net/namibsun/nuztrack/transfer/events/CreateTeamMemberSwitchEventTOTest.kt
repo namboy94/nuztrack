@@ -22,7 +22,7 @@ internal class CreateTeamMemberSwitchEventTOTest {
     private val run = NuzlockeRun(1000, "User", "Name", Games.RED, listOf(), listOf(), RunStatus.ACTIVE)
     private val memberOne = TeamMember(
             1, "Squirtle", 7, 5, Gender.MALE, Natures.NAUGHTY, 1, EncounterEvent(run, "A", 7, 5, true),
-            teamSwitches = listOf(TeamMemberSwitchEvent(run, "", TEAM_MEMBER, TeamMemberSwitchType.ADD))
+            teamSwitches = mutableListOf(TeamMemberSwitchEvent(run, "", TEAM_MEMBER, TeamMemberSwitchType.ADD))
     )
     private val memberTwo = TeamMember(
             2, "Charmander", 4, 5, Gender.FEMALE, Natures.NAUGHTY, 1, EncounterEvent(run, "B", 4, 5, true),
@@ -30,7 +30,7 @@ internal class CreateTeamMemberSwitchEventTOTest {
     )
     private val memberThree = TeamMember(
             3, "Eevee", 133, 5, Gender.FEMALE, Natures.NAUGHTY, 1, EncounterEvent(run, "B", 133, 5, true),
-            teamSwitches = listOf()
+            teamSwitches = mutableListOf()
     )
 
     @Test

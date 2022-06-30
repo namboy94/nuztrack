@@ -1,7 +1,7 @@
 package net.namibsun.nuztrack.data
 
-import net.namibsun.nuztrack.testconstants.MultiRunNuzlockeBuilder
-import net.namibsun.nuztrack.testconstants.NuzlockeRunBuilder
+import net.namibsun.nuztrack.testbuilders.MultiRunNuzlockeBuilder
+import net.namibsun.nuztrack.testbuilders.NuzlockeRunBuilder
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.*

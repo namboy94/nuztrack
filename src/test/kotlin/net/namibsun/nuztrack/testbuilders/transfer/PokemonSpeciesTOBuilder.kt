@@ -1,4 +1,4 @@
-package net.namibsun.nuztrack.testconstants.transfer
+package net.namibsun.nuztrack.testbuilders.transfer
 
 import net.namibsun.nuztrack.transfer.PokemonSpeciesTO
 import net.namibsun.nuztrack.transfer.PokemonTypesTO

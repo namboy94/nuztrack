@@ -32,11 +32,11 @@ class NuzlockeRun(
 
         @OneToMany(mappedBy = "nuzlockeRun", cascade = [CascadeType.ALL])
         @OrderBy("timestamp")
-        val events: List<Event> = listOf(),
+        var events: MutableList<Event> = mutableListOf(),
 
         @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.PERSIST])
         @JoinColumn(name = "multi_run_nuzlocke_id", nullable = true)
-        val multiRun: MultiRunNuzlocke? = null,
+        var multiRun: MultiRunNuzlocke? = null,
 )
 
 @Repository
@@ -60,12 +60,10 @@ class NuzlockeRunService(val db: NuzlockeRunRepository) {
             name: String,
             game: Games,
             rules: List<Rules>,
-            customRules: List<String>,
-            multiRun: MultiRunNuzlocke? = null
+            customRules: List<String>
     ): NuzlockeRun {
         return db.save(NuzlockeRun(
                 userName = userName,
-                multiRun = multiRun,
                 name = name,
                 game = game,
                 rules = rules,
