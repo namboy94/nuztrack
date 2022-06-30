@@ -2,7 +2,18 @@ package net.namibsun.nuztrack.transfer
 
 import net.namibsun.nuztrack.data.TeamMember
 
-data class TeamTO(val active: List<TeamMemberTO>, val boxed: List<TeamMemberTO>, val dead: List<TeamMemberTO>)
+data class TeamTO(val active: List<TeamMemberTO>, val boxed: List<TeamMemberTO>, val dead: List<TeamMemberTO>) {
+    companion object {
+        fun fromTeam(team: Triple<List<TeamMember>, List<TeamMember>, List<TeamMember>>): TeamTO {
+            val (active, boxed, dead) = team
+            return TeamTO(
+                    active = active.map { TeamMemberTO.fromTeamMember(it) },
+                    boxed = boxed.map { TeamMemberTO.fromTeamMember(it) },
+                    dead = dead.map { TeamMemberTO.fromTeamMember(it) }
+            )
+        }
+    }
+}
 
 data class TeamMemberTO(
         val id: Long,

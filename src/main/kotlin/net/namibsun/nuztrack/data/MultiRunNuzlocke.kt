@@ -1,7 +1,6 @@
 package net.namibsun.nuztrack.data
 
 import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
 import org.springframework.stereotype.Service
 import javax.persistence.*
@@ -21,19 +20,15 @@ class MultiRunNuzlocke(
 interface MultiRunNuzlockeRepository : JpaRepository<MultiRunNuzlocke, Long>
 
 @Service
-class MultiRunNuzlockeService(val db: MultiRunNuzlockeRepository) {
+class MultiRunNuzlockeService(val db: MultiRunNuzlockeRepository, val runDb: NuzlockeRunRepository) {
 
     fun linkRuns(existing: NuzlockeRun, newRun: NuzlockeRun): MultiRunNuzlocke {
-        val multiRun = getOrCreateMultiRunForRun(existing)
-        multiRun.runs.add(newRun)
-        return db.save(multiRun)
-    }
-
-    fun getOrCreateMultiRunForRun(run: NuzlockeRun): MultiRunNuzlocke {
-        return (if (run.multiRun == null) {
-            db.save(MultiRunNuzlocke(runs = mutableListOf(run)))
-        } else {
-            db.findByIdOrNull(run.multiRun!!.id)
-        }) ?: db.save(MultiRunNuzlocke(runs = mutableListOf(run)))
+        if (existing.multiRun == null) {
+            existing.multiRun = db.save(MultiRunNuzlocke())
+            runDb.save(existing)
+        }
+        newRun.multiRun = existing.multiRun
+        runDb.save(newRun)
+        return newRun.multiRun!!
     }
 }

@@ -5,70 +5,41 @@ import net.namibsun.nuztrack.testbuilders.NuzlockeRunBuilder
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.*
-import java.util.*
 
 class MultiRunNuzlockeServiceTest {
 
     private val repository: MultiRunNuzlockeRepository = mock()
-    private val service = MultiRunNuzlockeService(repository)
-    private val multiRun = MultiRunNuzlockeBuilder().build()
-    private val newRunOne = NuzlockeRunBuilder().id(3).build()
-    private val newRunTwo = NuzlockeRunBuilder().id(4).build()
-
-    @Test
-    fun getOrCreateMultiRunForRun_multiRunExists() {
-        whenever(repository.findById(multiRun.id)).thenReturn(Optional.of(multiRun))
-
-        val result = service.getOrCreateMultiRunForRun(multiRun.runs[0])
-
-        verify(repository, times(1)).findById(multiRun.id)
-        verify(repository, times(0)).save(any())
-        Assertions.assertThat(result).isEqualTo(multiRun)
-    }
-
-    @Test
-    fun getOrCreateMultiRunForRun_noMultiRun() {
-        whenever(repository.save(any<MultiRunNuzlocke>())).thenReturn(multiRun)
-
-        val result = service.getOrCreateMultiRunForRun(newRunOne)
-
-        verify(repository, times(0)).findById(any())
-        verify(repository, times(1)).save(any())
-        Assertions.assertThat(result).isEqualTo(multiRun)
-    }
-
-    @Test
-    fun getOrCreateMultiRunForRun_multiRunCouldNotBeFound() {
-        whenever(repository.save(any<MultiRunNuzlocke>())).thenReturn(multiRun)
-        whenever(repository.findById(multiRun.id)).thenReturn(Optional.empty())
-
-        val result = service.getOrCreateMultiRunForRun(multiRun.runs[0])
-
-        verify(repository, times(1)).findById(multiRun.id)
-        verify(repository, times(1)).save(any())
-        Assertions.assertThat(result).isEqualTo(multiRun)
-    }
+    private val runRepository: NuzlockeRunRepository = mock()
+    private val service = MultiRunNuzlockeService(repository, runRepository)
+    private val multiRun = MultiRunNuzlockeBuilder()
+            .runs(mutableListOf(NuzlockeRunBuilder().id(1).build()))
+            .build()
+    private val otherRun = NuzlockeRunBuilder().id(2).build()
+    private val newRun = NuzlockeRunBuilder().id(3).build()
 
     @Test
     fun linkRuns_withExisting() {
-        whenever(repository.findById(multiRun.id)).thenReturn(Optional.of(multiRun))
         whenever(repository.save(any<MultiRunNuzlocke>())).thenReturn(multiRun)
+        whenever(runRepository.save(any<NuzlockeRun>())).thenAnswer { args -> args.getArgument(0) }
 
-        val result = service.linkRuns(multiRun.runs[0], newRunOne)
+        val result = service.linkRuns(multiRun.runs[0], newRun)
 
-        verify(repository, times(1)).findById(multiRun.id)
-        verify(repository, times(1)).save(any())
+        verify(repository, times(0)).save(any())
+        verify(runRepository, times(0)).save(multiRun.runs[0])
+        verify(runRepository, times(1)).save(newRun)
         Assertions.assertThat(result).isEqualTo(multiRun)
     }
 
     @Test
     fun linkRuns_withTwoNew() {
         whenever(repository.save(any<MultiRunNuzlocke>())).thenReturn(multiRun)
+        whenever(runRepository.save(any<NuzlockeRun>())).thenAnswer { args -> args.getArgument(0) }
 
-        val result = service.linkRuns(newRunOne, newRunTwo)
+        val result = service.linkRuns(otherRun, newRun)
 
-        verify(repository, times(0)).findById(any())
-        verify(repository, times(2)).save(any())
+        verify(repository, times(1)).save(any())
+        verify(runRepository, times(1)).save(otherRun)
+        verify(runRepository, times(1)).save(newRun)
         Assertions.assertThat(result).isEqualTo(multiRun)
     }
 
