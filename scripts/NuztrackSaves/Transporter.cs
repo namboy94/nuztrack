@@ -26,16 +26,17 @@ public class Transporter
             throw new ArgumentException("Can't convert from newer generation to older generation");
         }
         
-        var party = sourceGame.PartyData;
-        var box = sourceGame.BoxData;
-
-        AdjustPartyToNuztrackSave(party);
-
-        AdjustPartyToNuztrackSave(box);
-        FillBoxWithParty(box, party);
-        targetGame.BoxData = box;
         AdjustTrainerData(targetGame, sourceGame);
         
+        var party = sourceGame.PartyData;
+        var sourceBox = sourceGame.BoxData;
+        var targetBox = targetGame.BoxData;
+        FillBoxWithParty(sourceBox, party);
+        FillTargetBoxAndConvert(targetGame.PKMType, targetBox, sourceBox);
+        
+        AdjustPartyToNuztrackSave(targetBox, targetGame);
+        
+        targetGame.BoxData = targetBox;
         File.WriteAllBytes(_targetSaveFile, targetGame.Write());
     }
 
@@ -60,7 +61,15 @@ public class Transporter
             }
     }
 
-    private void AdjustPartyToNuztrackSave(IList<PKM> party)
+    private void FillTargetBoxAndConvert(Type format, IList<PKM> targetBox, IList<PKM> sourceBox)
+    {
+        for (int i = 0; i < sourceBox.Count; i++)
+        {
+            targetBox[i] = EntityConverter.ConvertToType(sourceBox[i], format, out _)!;
+        }
+    }
+    
+    private void AdjustPartyToNuztrackSave(IList<PKM> party, SaveFile targetGame)
     {
         for (var i = 0; i < party.Count; i++)
         {
@@ -70,6 +79,9 @@ public class Transporter
                 continue;
             }
             AdjustPokemonToNuztrackSave(pokemon);
+            pokemon.TrainerID7 = targetGame.TrainerID7;
+            pokemon.TrainerSID7 = targetGame.TrainerSID7;
+            pokemon.OT_Name = targetGame.OT;
             party[i] = pokemon;
         }
     }
