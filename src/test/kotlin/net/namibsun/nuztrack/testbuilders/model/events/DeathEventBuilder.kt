@@ -14,8 +14,12 @@ data class DeathEventBuilder(
         var opponent: String = "BLUE",
         var description: String = "Died to Alakazam's Psychic"
 ) {
+    fun nuzlockeRun(nuzlockeRun: NuzlockeRun) = apply { this.nuzlockeRun = nuzlockeRun }
     fun location(location: String) = apply { this.location = location }
     fun teamMember(teamMember: TeamMember) = apply { this.teamMember = teamMember }
+    fun level(level: Int) = apply { this.level = level }
+    fun opponent(opponent: String) = apply { this.opponent = opponent }
+    fun description(description: String) = apply { this.description }
     fun build(): DeathEvent {
         val death = DeathEvent(nuzlockeRun, location, teamMember, level, opponent, description)
         teamMember.death = death

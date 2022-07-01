@@ -9,5 +9,7 @@ class MilestoneEventBuilder(
         var location: String = "Pallet Town",
         var milestone: String = "String"
 ) {
+    fun nuzlockeRun(nuzlockeRun: NuzlockeRun) = apply { this.nuzlockeRun = nuzlockeRun }
+    fun milestone(milestone: String) = apply { this.milestone = milestone }
     fun build() = MilestoneEvent(nuzlockeRun, location, milestone)
 }

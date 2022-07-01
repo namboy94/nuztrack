@@ -9,5 +9,7 @@ data class NoteEventBuilder(
         var location: String = "Pallet Town",
         var text: String = "Note Text"
 ) {
+    fun nuzlockeRun(nuzlockeRun: NuzlockeRun) = apply { this.nuzlockeRun = nuzlockeRun }
+    fun text(text: String) = apply { this.text = text }
     fun build() = NoteEvent(nuzlockeRun, location, text)
 }

@@ -1,7 +1,12 @@
 package net.namibsun.nuztrack.data
 
 import net.namibsun.nuztrack.constants.enums.RunStatus
+import net.namibsun.nuztrack.data.events.EventRepository
 import net.namibsun.nuztrack.testbuilders.model.NuzlockeRunBuilder
+import net.namibsun.nuztrack.testbuilders.model.TeamMemberBuilder
+import net.namibsun.nuztrack.testbuilders.model.events.DeathEventBuilder
+import net.namibsun.nuztrack.testbuilders.model.events.EncounterEventBuilder
+import net.namibsun.nuztrack.testbuilders.model.events.EvolutionEventBuilder
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.mockito.AdditionalAnswers
@@ -11,7 +16,9 @@ import java.util.*
 class NuzlockeRunServiceTest {
 
     private val repository: NuzlockeRunRepository = mock()
-    private val service = NuzlockeRunService(repository)
+    private val eventRepository: EventRepository = mock()
+    private val teamMemberRepository: TeamMemberRepository = mock()
+    private val service = NuzlockeRunService(repository, eventRepository, teamMemberRepository)
 
     private val runOne = NuzlockeRunBuilder().status(RunStatus.COMPLETED).build()
     private val runTwo = NuzlockeRunBuilder().id(2).build()
@@ -92,12 +99,25 @@ class NuzlockeRunServiceTest {
 
     @Test
     fun deleteRun() {
-        whenever(repository.deleteById(runOne.id)).then {}
+        val run = NuzlockeRunBuilder().build()
+        val encounter = EncounterEventBuilder().nuzlockeRun(run).caught(true).build()
+        val teamMember = TeamMemberBuilder().encounter(encounter).build()
+        val death = DeathEventBuilder().nuzlockeRun(run).teamMember(teamMember).build()
+        val evolution = EvolutionEventBuilder().nuzlockeRun(run).teamMember(teamMember).build()
+        val events = listOf(encounter, death, evolution)
 
-        val result = service.deleteRun(runOne.id)
+        whenever(repository.deleteById(run.id)).then {}
+        whenever(eventRepository.findAllByNuzlockeRunIdOrderByTimestamp(run.id)).thenReturn(events)
+        whenever(eventRepository.delete(any())).then {}
+        whenever(teamMemberRepository.delete(teamMember)).then {}
 
-        assertThat(result).isEqualTo(Unit)
-        verify(repository, times(1)).deleteById(runOne.id)
+        service.deleteRun(run.id)
+
+        verify(repository, times(1)).deleteById(run.id)
+        verify(eventRepository, times(1)).findAllByNuzlockeRunIdOrderByTimestamp(run.id)
+        verify(eventRepository, times(1)).delete(encounter)
+        verify(eventRepository, times(1)).delete(death)
+        verify(eventRepository, times(1)).delete(evolution)
+        verify(teamMemberRepository, times(1)).delete(teamMember)
     }
-
 }

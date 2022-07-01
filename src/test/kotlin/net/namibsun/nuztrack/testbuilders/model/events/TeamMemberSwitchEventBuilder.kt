@@ -13,6 +13,7 @@ data class TeamMemberSwitchEventBuilder(
         var teamMember: TeamMember = TeamMemberBuilder().build(),
         var switchType: TeamMemberSwitchType = TeamMemberSwitchType.ADD
 ) {
+    fun nuzlockeRun(nuzlockeRun: NuzlockeRun) = apply { this.nuzlockeRun = nuzlockeRun }
     fun teamMember(teamMember: TeamMember) = apply { this.teamMember = teamMember }
     fun build() = TeamMemberSwitchEvent(nuzlockeRun, location, teamMember, switchType)
 }
