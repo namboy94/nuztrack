@@ -44,7 +44,7 @@ internal class SecurityConfig : KeycloakWebSecurityConfigurerAdapter() {
     override fun configure(http: HttpSecurity) {
         super.configure(http)
         http.authorizeRequests()
-                .antMatchers("/**")
+                .antMatchers("/api/**")
                 .hasRole("user")
                 .anyRequest()
                 .permitAll()
