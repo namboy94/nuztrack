@@ -1,4 +1,4 @@
-package net.namibsun.nuztrack.testbuilders
+package net.namibsun.nuztrack.testbuilders.model
 
 import net.namibsun.nuztrack.constants.enums.Games
 import net.namibsun.nuztrack.constants.enums.Rules

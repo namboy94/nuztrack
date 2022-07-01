@@ -1,9 +1,10 @@
-package net.namibsun.nuztrack.testbuilders
+package net.namibsun.nuztrack.testbuilders.model.events
 
-import TeamMemberBuilder
 import net.namibsun.nuztrack.data.NuzlockeRun
 import net.namibsun.nuztrack.data.TeamMember
 import net.namibsun.nuztrack.data.events.EvolutionEvent
+import net.namibsun.nuztrack.testbuilders.model.NuzlockeRunBuilder
+import net.namibsun.nuztrack.testbuilders.model.TeamMemberBuilder
 
 data class EvolutionEventBuilder(
         var nuzlockeRun: NuzlockeRun = NuzlockeRunBuilder().build(),

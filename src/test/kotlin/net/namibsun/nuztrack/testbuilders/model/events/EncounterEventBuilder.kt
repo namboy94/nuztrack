@@ -1,8 +1,9 @@
-package net.namibsun.nuztrack.testbuilders
+package net.namibsun.nuztrack.testbuilders.model.events
 
 import net.namibsun.nuztrack.data.NuzlockeRun
 import net.namibsun.nuztrack.data.TeamMember
 import net.namibsun.nuztrack.data.events.EncounterEvent
+import net.namibsun.nuztrack.testbuilders.model.NuzlockeRunBuilder
 
 data class EncounterEventBuilder(
         var nuzlockeRun: NuzlockeRun = NuzlockeRunBuilder().build(),

@@ -1,3 +1,5 @@
+package net.namibsun.nuztrack.testbuilders.model
+
 import net.namibsun.nuztrack.constants.enums.Gender
 import net.namibsun.nuztrack.constants.enums.Natures
 import net.namibsun.nuztrack.data.TeamMember
@@ -5,7 +7,7 @@ import net.namibsun.nuztrack.data.events.DeathEvent
 import net.namibsun.nuztrack.data.events.EncounterEvent
 import net.namibsun.nuztrack.data.events.EvolutionEvent
 import net.namibsun.nuztrack.data.events.TeamMemberSwitchEvent
-import net.namibsun.nuztrack.testbuilders.EncounterEventBuilder
+import net.namibsun.nuztrack.testbuilders.model.events.EncounterEventBuilder
 
 data class TeamMemberBuilder(
         private var id: Long = 1,

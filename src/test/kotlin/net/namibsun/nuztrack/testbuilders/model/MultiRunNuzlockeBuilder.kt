@@ -1,4 +1,4 @@
-package net.namibsun.nuztrack.testbuilders
+package net.namibsun.nuztrack.testbuilders.model
 
 import net.namibsun.nuztrack.data.MultiRunNuzlocke
 import net.namibsun.nuztrack.data.NuzlockeRun

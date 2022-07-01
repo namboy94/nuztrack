@@ -1,7 +1,7 @@
 package net.namibsun.nuztrack.data
 
 import net.namibsun.nuztrack.constants.enums.RunStatus
-import net.namibsun.nuztrack.testbuilders.NuzlockeRunBuilder
+import net.namibsun.nuztrack.testbuilders.model.NuzlockeRunBuilder
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.mockito.AdditionalAnswers

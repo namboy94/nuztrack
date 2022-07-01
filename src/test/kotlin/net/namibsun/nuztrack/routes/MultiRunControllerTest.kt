@@ -1,6 +1,5 @@
 package net.namibsun.nuztrack.routes;
 
-import TeamMemberBuilder
 import net.namibsun.nuztrack.constants.ValidationException
 import net.namibsun.nuztrack.constants.enums.ErrorMessages
 import net.namibsun.nuztrack.constants.enums.Games
@@ -10,10 +9,11 @@ import net.namibsun.nuztrack.data.NuzlockeRunService
 import net.namibsun.nuztrack.data.TeamMemberService
 import net.namibsun.nuztrack.data.events.DeathEventService
 import net.namibsun.nuztrack.data.events.EncounterEventService
-import net.namibsun.nuztrack.testbuilders.DeathEventBuilder
-import net.namibsun.nuztrack.testbuilders.EncounterEventBuilder
-import net.namibsun.nuztrack.testbuilders.MultiRunNuzlockeBuilder
-import net.namibsun.nuztrack.testbuilders.NuzlockeRunBuilder
+import net.namibsun.nuztrack.testbuilders.model.MultiRunNuzlockeBuilder
+import net.namibsun.nuztrack.testbuilders.model.NuzlockeRunBuilder
+import net.namibsun.nuztrack.testbuilders.model.TeamMemberBuilder
+import net.namibsun.nuztrack.testbuilders.model.events.DeathEventBuilder
+import net.namibsun.nuztrack.testbuilders.model.events.EncounterEventBuilder
 import net.namibsun.nuztrack.testbuilders.transfer.CreateMultiRunTOBuilder
 import net.namibsun.nuztrack.transfer.MultiRunOptionTO
 import org.assertj.core.api.Assertions.assertThat

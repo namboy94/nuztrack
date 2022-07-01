@@ -3,7 +3,7 @@ package net.namibsun.nuztrack.transfer
 import net.namibsun.nuztrack.constants.ValidationException
 import net.namibsun.nuztrack.constants.enums.ErrorMessages
 import net.namibsun.nuztrack.constants.enums.Games
-import net.namibsun.nuztrack.testbuilders.NuzlockeRunBuilder
+import net.namibsun.nuztrack.testbuilders.model.NuzlockeRunBuilder
 import net.namibsun.nuztrack.testbuilders.transfer.CreateMultiRunTOBuilder
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
