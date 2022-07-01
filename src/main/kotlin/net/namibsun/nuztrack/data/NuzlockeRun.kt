@@ -1,9 +1,12 @@
 package net.namibsun.nuztrack.data
 
+import net.namibsun.nuztrack.constants.enums.EventType
 import net.namibsun.nuztrack.constants.enums.Games
 import net.namibsun.nuztrack.constants.enums.Rules
 import net.namibsun.nuztrack.constants.enums.RunStatus
+import net.namibsun.nuztrack.data.events.EncounterEvent
 import net.namibsun.nuztrack.data.events.Event
+import net.namibsun.nuztrack.data.events.EventRepository
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
@@ -45,7 +48,11 @@ interface NuzlockeRunRepository : JpaRepository<NuzlockeRun, Long> {
 }
 
 @Service
-class NuzlockeRunService(val db: NuzlockeRunRepository) {
+class NuzlockeRunService(
+        val db: NuzlockeRunRepository,
+        val eventRepository: EventRepository,
+        val teamMemberRepository: TeamMemberRepository
+) {
 
     fun getRun(id: Long): NuzlockeRun? {
         return this.db.findByIdOrNull(id)
@@ -73,6 +80,13 @@ class NuzlockeRunService(val db: NuzlockeRunRepository) {
     }
 
     fun deleteRun(id: Long) {
+        val events = eventRepository.findAllByNuzlockeRunIdOrderByTimestamp(id)
+        val (encounters, otherEvents) = events.partition { it.eventType == EventType.ENCOUNTER }
+        otherEvents.map { eventRepository.delete(it) }
+        encounters.map { it as EncounterEvent }.filter { it.teamMember != null }.map {
+            teamMemberRepository.delete(it.teamMember!!)
+        }
+        encounters.map { eventRepository.delete(it) }
         db.deleteById(id)
     }
 }
