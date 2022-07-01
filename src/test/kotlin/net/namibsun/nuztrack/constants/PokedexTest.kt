@@ -104,13 +104,24 @@ internal class PokedexTest {
     }
 
     @Test
+    fun generateAbilitySlot() {
+        assertThat(Pokedex.generateAbilitySlot(1, Games.X)).isIn(listOf(1, 3))
+    }
+
+    @Test
     fun generateAbilitySlot_oldGame() {
         assertThat(Pokedex.generateAbilitySlot(1, Games.RED)).isNull()
     }
 
     @Test
-    fun generateAbilitySlot() {
-        assertThat(Pokedex.generateAbilitySlot(1, Games.RUBY)).isIn(listOf(1, 3))
+    fun generateAbilitySlot_hiddenAbilityPossible() {
+        // 1/(2^100) probability of failing
+        assertThat((1..100).map { Pokedex.generateAbilitySlot(1, Games.BLACK) }).contains(3)
+    }
+
+    @Test
+    fun generateAbilitySlot_hiddenAbilityImpossible() {
+        assertThat((1..100).map { Pokedex.generateAbilitySlot(1, Games.DIAMOND) }).doesNotContain(3)
     }
 
     @Test

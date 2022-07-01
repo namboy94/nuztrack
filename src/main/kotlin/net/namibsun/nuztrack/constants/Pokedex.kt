@@ -64,7 +64,9 @@ object Pokedex {
     }
 
     fun generateAbilitySlot(pokedexNumber: Int, game: Games): Int? {
-        val validSlots = getPokemon(pokedexNumber).abilities.filter { it.value != null }.keys
+        val validSlots = getPokemon(pokedexNumber).abilities.filter {
+            it.value != null && (it.key != 3 || game.generation >= 5)
+        }.keys
         return if (game.generation >= 3) validSlots.random() else null
     }
 
