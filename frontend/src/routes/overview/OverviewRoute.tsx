@@ -9,6 +9,7 @@ import {TeamState} from "../../data/team/team.model";
 import {LoadingIndicator} from "../common/components/LoadingIndicator";
 import {useNextGameDialogProps} from "./hooks/NextGameDialog.hooks";
 import {NextGameDialog} from "./components/NextGameDialog";
+import axios from "axios-observable";
 
 export function OverviewRoute(props: RunRouteProps) {
     const {run, notify} = props
@@ -39,7 +40,24 @@ export function OverviewRoute(props: RunRouteProps) {
                 onClick={openNextGameDialog}
                 variant="contained"
             >Next Game</Button>
+            <Button
+                onClick={() => exportRun(run.id)}
+                variant="contained"
+            >Export</Button>
             <NextGameDialog {...nextGameDialogProps}/>
         </>
     )
+}
+
+function exportRun(runId: number) {
+    // TODO Don't do this quick and dirty
+    axios.get(`/api/export/${runId}`).subscribe({
+        next: result => {
+            const a = document.createElement("a")
+            const file = new Blob([JSON.stringify(result.data)])
+            a.href = URL.createObjectURL(file)
+            a.download = "export.json"
+            a.click()
+        }
+    })
 }
