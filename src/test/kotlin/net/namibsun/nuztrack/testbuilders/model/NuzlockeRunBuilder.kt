@@ -8,6 +8,8 @@ import net.namibsun.nuztrack.data.MultiRunNuzlocke
 import net.namibsun.nuztrack.data.NuzlockeRun
 import net.namibsun.nuztrack.data.events.Event
 import net.namibsun.nuztrack.testbuilders.model.events.*
+import net.namibsun.nuztrack.transfer.CreateNuzlockeRunTO
+import net.namibsun.nuztrack.transfer.NuzlockeRunTO
 
 data class NuzlockeRunBuilder(
         var id: Long = 1,
@@ -57,4 +59,8 @@ data class NuzlockeRunBuilder(
                 MilestoneEventBuilder().build()
         ))
     }
+
+    fun buildCreatorTO() = CreateNuzlockeRunTO(name, game.name, rules.map { it.name }, customRules)
+    fun buildTO() = NuzlockeRunTO.fromNuzlockeRun(this.build())
+
 }

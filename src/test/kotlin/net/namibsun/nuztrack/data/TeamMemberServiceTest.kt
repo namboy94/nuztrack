@@ -104,4 +104,11 @@ internal class TeamMemberServiceTest {
         verify(repository, times(1)).getReferenceById(memberTwo.id)
         verify(repository, times(1)).save(memberTwo)
     }
+
+    @Test
+    fun addTeamMember() {
+        val result = service.addTeamMember(memberOne)
+        assertThat(result).isEqualTo(memberOne)
+        verify(repository, times(1)).save(memberOne)
+    }
 }

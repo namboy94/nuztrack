@@ -4,14 +4,10 @@ import net.namibsun.nuztrack.constants.NotFoundException
 import net.namibsun.nuztrack.constants.UnauthorizedException
 import net.namibsun.nuztrack.constants.ValidationException
 import net.namibsun.nuztrack.constants.enums.ErrorMessages
-import net.namibsun.nuztrack.constants.enums.Games
-import net.namibsun.nuztrack.constants.enums.Rules
-import net.namibsun.nuztrack.constants.enums.RunStatus
-import net.namibsun.nuztrack.data.NuzlockeRun
 import net.namibsun.nuztrack.data.NuzlockeRunService
-import net.namibsun.nuztrack.transfer.CreateNuzlockeRunTO
-import net.namibsun.nuztrack.transfer.NuzlockeRunTO
+import net.namibsun.nuztrack.testbuilders.model.NuzlockeRunBuilder
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.*
@@ -20,188 +16,154 @@ import java.security.Principal
 
 internal class RunsControllerTest {
 
-    private val userOne = "Ash"
-    private val userTwo = "Gary"
     private val principal: Principal = mock()
     private val service: NuzlockeRunService = mock()
     private val controller = RunsController(service)
-    private val exampleOne = NuzlockeRun(
-            5, userOne, "First", Games.RED, listOf(Rules.DEATH), listOf("MyRules"), RunStatus.COMPLETED
-    )
-    private val exampleTwo = NuzlockeRun(
-            10, userOne, "Second", Games.YELLOW, listOf(), listOf(), RunStatus.FAILED
-    )
-    private val exampleOneTO = NuzlockeRunTO.fromNuzlockeRun(exampleOne)
-    private val exampleTwoTO = NuzlockeRunTO.fromNuzlockeRun(exampleTwo)
-    private val creatorOne = CreateNuzlockeRunTO(
-            exampleOne.name, exampleOne.game.title, listOf(Rules.DEATH.name.lowercase()), listOf("MyRules")
-    )
+
+    private val runOneBuilder = NuzlockeRunBuilder().id(1)
+    private val runOne = runOneBuilder.build()
+    private val runOneTO = runOneBuilder.buildTO()
+    private val runOneCreator = runOneBuilder.buildCreatorTO()
+
+    private val runTwoBuilder = NuzlockeRunBuilder().id(2)
+    private val runTwo = runTwoBuilder.build()
+    private val runTwoTO = runTwoBuilder.buildTO()
+
+    private val runs = listOf(runOne, runTwo)
+    private val runTOs = listOf(runOneTO, runTwoTO)
+
+    @BeforeEach
+    fun setUp() {
+        whenever(principal.name).thenReturn(runOne.userName)
+        whenever(service.getRuns(any())).thenReturn(listOf())
+        whenever(service.getRuns(runOne.userName)).thenReturn(runs)
+        whenever(service.getRun(runOne.id)).thenReturn(runOne)
+        whenever(service.getRun(runTwo.id)).thenReturn(runTwo)
+        whenever(service.deleteRun(any())).then {}
+    }
 
     @Test
     fun getRuns_existing() {
-        whenever(service.getRuns(userOne)).thenReturn(listOf(exampleOne, exampleTwo))
-        whenever(principal.name).thenReturn(userOne)
-
         val result = controller.getRuns(principal)
 
-        verify(service, times(1)).getRuns(userOne)
+        verify(service, times(1)).getRuns(runOne.userName)
         verify(principal, times(1)).name
-        assertThat(result.body).hasSameElementsAs(listOf(exampleOneTO, exampleTwoTO))
+        assertThat(result.body).hasSameElementsAs(runTOs)
     }
 
     @Test
     fun getRuns_noExisting() {
-        whenever(service.getRuns(userTwo)).thenReturn(listOf())
-        whenever(principal.name).thenReturn(userTwo)
+        whenever(principal.name).thenReturn("Gary")
 
         val result = controller.getRuns(principal)
 
-        verify(service, times(1)).getRuns(userTwo)
+        verify(service, times(1)).getRuns("Gary")
         verify(principal, times(1)).name
         assertThat(result.body).isEmpty()
     }
 
     @Test
     fun createRun_valid() {
-        whenever(principal.name).thenReturn(userOne)
         whenever(service.createRun(
-                exampleOne.userName,
-                exampleOne.name,
-                exampleOne.game,
-                exampleOne.rules,
-                exampleOne.customRules
-        )).thenReturn(exampleOne)
+                runOne.userName,
+                runOne.name,
+                runOne.game,
+                runOne.rules,
+                runOne.customRules
+        )).thenReturn(runOne)
 
-        val result = controller.createRun(creatorOne, principal)
+        val result = controller.createRun(runOneCreator, principal)
 
         assertThat(result.statusCode).isEqualTo(HttpStatus.CREATED)
-        assertThat(result.body).isEqualTo(exampleOneTO)
+        assertThat(result.body).isEqualTo(runOneTO)
         verify(service, times(1)).createRun(
-                exampleOne.userName,
-                exampleOne.name,
-                exampleOne.game,
-                exampleOne.rules,
-                exampleOne.customRules
+                runOne.userName,
+                runOne.name,
+                runOne.game,
+                runOne.rules,
+                runOne.customRules
         )
         verify(principal, times(1)).name
     }
 
     @Test
-    fun createRun_invalidName() {
+    fun createRun_invalidinput() {
         val thrown = assertThrows<ValidationException> {
-            controller.createRun(CreateNuzlockeRunTO("", Games.RED.title, listOf(), listOf()), principal)
+            controller.createRun(NuzlockeRunBuilder().name("").buildCreatorTO(), principal)
         }
 
         assertThat(thrown.message).isEqualTo(ErrorMessages.EMPTY_NAME.message)
-        verify(service, times(0)).createRun(userOne, "", Games.RED, listOf(), listOf())
-    }
-
-    @Test
-    fun createRun_invalidGame() {
-        val thrown = assertThrows<ValidationException> {
-            controller.createRun(CreateNuzlockeRunTO("ABC", "ABC", listOf(), listOf()), principal)
-        }
-
-        assertThat(thrown.message).isEqualTo(ErrorMessages.INVALID_GAME.message)
-        verify(principal, times(0)).name
-        verify(service, times(0)).createRun(any(), any(), any(), any(), any())
-    }
-
-    @Test
-    fun createRun_invalidRule() {
-
-        val thrown = assertThrows<ValidationException> {
-            controller.createRun(CreateNuzlockeRunTO(
-                    "ABC", Games.RED.title, listOf("doesNotExist"), listOf()
-            ), principal)
-        }
-
-        assertThat(thrown.message).isEqualTo(ErrorMessages.INVALID_RULE.message)
-        verify(principal, times(0)).name
         verify(service, times(0)).createRun(any(), any(), any(), any(), any())
     }
 
     @Test
     fun getRun_success() {
-        whenever(principal.name).thenReturn(userOne)
-        whenever(service.getRun(exampleOne.id)).thenReturn(exampleOne)
-
-        val result = controller.getRun(exampleOne.id, principal)
+        val result = controller.getRun(runOne.id, principal)
 
         verify(principal, times(1)).name
-        verify(service, times(1)).getRun(exampleOne.id)
-        assertThat(result.body).isEqualTo(exampleOneTO)
+        verify(service, times(1)).getRun(runOne.id)
+        assertThat(result.body).isEqualTo(runOneTO)
     }
 
     @Test
     fun getRun_doesNotExist() {
-        whenever(principal.name).thenReturn(userOne)
-        whenever(service.getRun(100)).thenReturn(null)
-
         val thrown = assertThrows<NotFoundException> {
-            controller.getRun(100, principal)
+            controller.getRun(1000, principal)
         }
 
         verify(principal, times(1)).name
-        verify(service, times(1)).getRun(100)
+        verify(service, times(1)).getRun(1000)
         assertThat(thrown.message).isEqualTo(ErrorMessages.RUN_NOT_FOUND.message)
     }
 
     @Test
     fun getRun_noAccessRights() {
-        whenever(principal.name).thenReturn(userTwo)
-        whenever(service.getRun(exampleOne.id)).thenReturn(exampleOne)
+        whenever(principal.name).thenReturn("Gary")
+        whenever(service.getRun(runOne.id)).thenReturn(runOne)
 
         val thrown = assertThrows<UnauthorizedException> {
-            controller.getRun(exampleOne.id, principal)
+            controller.getRun(runOne.id, principal)
         }
 
         verify(principal, times(1)).name
-        verify(service, times(1)).getRun(exampleOne.id)
+        verify(service, times(1)).getRun(runOne.id)
         assertThat(thrown.message).isEqualTo(ErrorMessages.NO_ACCESS_TO_RUN.message)
     }
 
     @Test
     fun deleteRun_success() {
-        whenever(principal.name).thenReturn(userOne)
-        whenever(service.getRun(exampleOne.id)).thenReturn(exampleOne)
-        whenever(service.deleteRun(exampleOne.id)).then {}
-
-        val result = controller.deleteRun(exampleOne.id, principal)
+        val result = controller.deleteRun(runOne.id, principal)
 
         verify(principal, times(1)).name
-        verify(service, times(1)).getRun(exampleOne.id)
-        verify(service, times(1)).deleteRun(exampleOne.id)
+        verify(service, times(1)).getRun(runOne.id)
+        verify(service, times(1)).deleteRun(runOne.id)
         assertThat(result.statusCode).isEqualTo(HttpStatus.OK)
     }
 
     @Test
     fun deleteRun_doesNotExist() {
-        whenever(principal.name).thenReturn(userOne)
-        whenever(service.getRun(100)).thenReturn(null)
-
         val thrown = assertThrows<NotFoundException> {
-            controller.deleteRun(100, principal)
+            controller.deleteRun(1000, principal)
         }
 
         verify(principal, times(1)).name
-        verify(service, times(1)).getRun(100)
-        verify(service, times(0)).deleteRun(100)
+        verify(service, times(1)).getRun(1000)
+        verify(service, times(0)).deleteRun(1000)
         assertThat(thrown.message).isEqualTo(ErrorMessages.RUN_NOT_FOUND.message)
     }
 
     @Test
     fun deleteRun_noAccessRights() {
-        whenever(principal.name).thenReturn(userTwo)
-        whenever(service.getRun(exampleOne.id)).thenReturn(exampleOne)
+        whenever(principal.name).thenReturn("Gary")
+        whenever(service.getRun(runOne.id)).thenReturn(runOne)
 
         val thrown = assertThrows<UnauthorizedException> {
-            controller.deleteRun(exampleOne.id, principal)
+            controller.deleteRun(runOne.id, principal)
         }
 
         verify(principal, times(1)).name
-        verify(service, times(1)).getRun(exampleOne.id)
-        verify(service, times(0)).deleteRun(exampleOne.id)
+        verify(service, times(1)).getRun(runOne.id)
+        verify(service, times(0)).deleteRun(runOne.id)
         assertThat(thrown.message).isEqualTo(ErrorMessages.NO_ACCESS_TO_RUN.message)
     }
 }

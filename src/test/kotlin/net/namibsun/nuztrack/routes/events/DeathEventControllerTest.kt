@@ -2,14 +2,18 @@ package net.namibsun.nuztrack.routes.events
 
 import net.namibsun.nuztrack.constants.UnauthorizedException
 import net.namibsun.nuztrack.constants.ValidationException
-import net.namibsun.nuztrack.constants.enums.*
-import net.namibsun.nuztrack.data.*
+import net.namibsun.nuztrack.constants.enums.TeamMemberSwitchType
+import net.namibsun.nuztrack.data.NuzlockeRunService
+import net.namibsun.nuztrack.data.TeamMemberService
 import net.namibsun.nuztrack.data.events.DeathEvent
 import net.namibsun.nuztrack.data.events.DeathEventService
 import net.namibsun.nuztrack.data.events.TeamMemberSwitchEvent
 import net.namibsun.nuztrack.data.events.TeamMemberSwitchEventService
-import net.namibsun.nuztrack.transfer.events.CreateDeathEventTO
+import net.namibsun.nuztrack.testbuilders.model.NuzlockeRunBuilder
+import net.namibsun.nuztrack.testbuilders.model.TeamMemberBuilder
+import net.namibsun.nuztrack.testbuilders.model.events.DeathEventBuilder
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.*
@@ -21,22 +25,22 @@ class DeathEventControllerTest {
     private val service: DeathEventService = mock()
     private val runsService: NuzlockeRunService = mock()
     private val switchService: TeamMemberSwitchEventService = mock()
-
     private val teamMemberService: TeamMemberService = mock()
     private val controller = DeathEventController(service, teamMemberService, switchService, runsService)
 
-    private val user = "Ash"
-    private val run = NuzlockeRun(5, user, "First", Games.RED, listOf(), listOf(), RunStatus.COMPLETED)
-    private val member = TeamMember(1, "Squirtle", 7, 5, Gender.MALE, Natures.BOLD, 1, ENCOUNTER,
-            teamSwitches = mutableListOf(
-                    TeamMemberSwitchEvent(run, "Oak's Lab", TEAM_MEMBER, TeamMemberSwitchType.ADD)))
-    private val creator = CreateDeathEventTO("Location", member.id, 10, "Gary", "Died")
+    private val run = NuzlockeRunBuilder().build()
+    private val member = TeamMemberBuilder().build()
+    private val creator = DeathEventBuilder().teamMember(member).buildCreatorTO()
+
+    @BeforeEach
+    fun setUp() {
+        whenever(principal.name).thenReturn(run.userName)
+        whenever(runsService.getRun(run.id)).thenReturn(run)
+    }
 
     @Test
     fun createDeath() {
-        whenever(principal.name).thenReturn(user)
         whenever(teamMemberService.getTeamMember(run.id, member.id)).thenReturn(member)
-        whenever(runsService.getRun(run.id)).thenReturn(run)
         whenever(service.createDeathEvent(eq(run), eq(creator.location), eq(member), eq(creator.level),
                 eq(creator.opponent), eq(creator.description), any(), any())).thenReturn(
                 DeathEvent(run, creator.location, member, creator.level, creator.opponent, creator.description))
@@ -69,10 +73,7 @@ class DeathEventControllerTest {
 
     @Test
     fun createDeathEvent_validationError() {
-        whenever(principal.name).thenReturn(user)
-        whenever(runsService.getRun(run.id)).thenReturn(run)
-
-        val brokenCreator = CreateDeathEventTO("", 0, 0, "", "")
+        val brokenCreator = DeathEventBuilder().location("").buildCreatorTO()
 
         assertThrows<ValidationException> { controller.createDeathEvent(run.id, brokenCreator, principal) }
         verify(principal, times(1)).name

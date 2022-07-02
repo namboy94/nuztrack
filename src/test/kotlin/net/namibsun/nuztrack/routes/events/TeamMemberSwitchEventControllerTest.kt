@@ -2,12 +2,15 @@ package net.namibsun.nuztrack.routes.events
 
 import net.namibsun.nuztrack.constants.UnauthorizedException
 import net.namibsun.nuztrack.constants.ValidationException
-import net.namibsun.nuztrack.constants.enums.*
-import net.namibsun.nuztrack.data.*
-import net.namibsun.nuztrack.data.events.TeamMemberSwitchEvent
+import net.namibsun.nuztrack.constants.enums.TeamMemberSwitchType
+import net.namibsun.nuztrack.data.NuzlockeRunService
+import net.namibsun.nuztrack.data.TeamMemberService
 import net.namibsun.nuztrack.data.events.TeamMemberSwitchEventService
-import net.namibsun.nuztrack.transfer.events.CreateTeamMemberSwitchEventTO
+import net.namibsun.nuztrack.testbuilders.model.NuzlockeRunBuilder
+import net.namibsun.nuztrack.testbuilders.model.TeamMemberBuilder
+import net.namibsun.nuztrack.testbuilders.model.events.TeamMemberSwitchEventBuilder
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.*
@@ -19,24 +22,32 @@ class TeamMemberSwitchEventControllerTest {
     private val principal: Principal = mock()
     private val service: TeamMemberSwitchEventService = mock()
     private val runsService: NuzlockeRunService = mock()
-
     private val teamMemberService: TeamMemberService = mock()
     private val controller = TeamMemberSwitchEventController(service, teamMemberService, runsService)
 
-    private val user = "Ash"
-    private val run = NuzlockeRun(5, user, "First", Games.RED, listOf(), listOf(), RunStatus.COMPLETED)
-    private val member = TeamMember(1, "Squirtle", 7, 5, Gender.MALE, Natures.BOLD, 1, ENCOUNTER)
-    private val creator = CreateTeamMemberSwitchEventTO("Location", member.id, "ADD")
+    private val run = NuzlockeRunBuilder().build()
+    private val member = TeamMemberBuilder().build()
+    private val switchBuilder = TeamMemberSwitchEventBuilder().nuzlockeRun(run).teamMember(member)
+    private val teamMemberSwitch = switchBuilder.build()
+    private val creator = switchBuilder.buildCreatorTO()
+
+    @BeforeEach
+    fun setUp() {
+        whenever(principal.name).thenReturn(run.userName)
+        whenever(teamMemberService.getTeamMember(run.id, member.id)).thenReturn(member)
+        whenever(runsService.getRun(run.id)).thenReturn(run)
+        whenever(teamMemberService.getTeam(run.id)).thenReturn(Triple(listOf(), listOf(member), listOf()))
+    }
 
     @Test
     fun createTeamMemberSwitch() {
-        whenever(principal.name).thenReturn(user)
-        whenever(teamMemberService.getTeamMember(run.id, member.id)).thenReturn(member)
-        whenever(runsService.getRun(run.id)).thenReturn(run)
-        whenever(service.createTeamMemberSwitchEvent(eq(run), eq(creator.location), eq(member),
-                eq(TeamMemberSwitchType.ADD), any(), any())).thenReturn(
-                        TeamMemberSwitchEvent(run, creator.location, member, TeamMemberSwitchType.ADD))
-        whenever(teamMemberService.getTeam(run.id)).thenReturn(Triple(listOf(), listOf(member), listOf()))
+        whenever(
+                service.createTeamMemberSwitchEvent(
+                        eq(run), eq(creator.location), eq(member), eq(TeamMemberSwitchType.ADD), any(), any()
+                )
+        ).thenReturn(
+                teamMemberSwitch
+        )
 
         val result = controller.createTeamMemberSwitchEvent(run.id, creator, principal)
         val body = result.body!!
@@ -49,17 +60,15 @@ class TeamMemberSwitchEventControllerTest {
         verify(principal, times(1)).name
         verify(runsService, times(1)).getRun(any())
         verify(teamMemberService, times(2)).getTeamMember(run.id, member.id)
-        verify(service, times(1)).createTeamMemberSwitchEvent(eq(run), eq(creator.location), eq(member),
-                eq(TeamMemberSwitchType.ADD), any(), any())
+        verify(service, times(1)).createTeamMemberSwitchEvent(
+                eq(run), eq(creator.location), eq(member), eq(TeamMemberSwitchType.ADD), any(), any()
+        )
         verify(teamMemberService, times(1)).getTeam(run.id)
     }
 
     @Test
     fun createTeamMemberSwitchEvent_validationError() {
-        whenever(principal.name).thenReturn(user)
-        whenever(runsService.getRun(run.id)).thenReturn(run)
-
-        val brokenCreator = CreateTeamMemberSwitchEventTO("", 0, "")
+        val brokenCreator = TeamMemberSwitchEventBuilder().location("").buildCreatorTO()
 
         assertThrows<ValidationException> { controller.createTeamMemberSwitchEvent(run.id, brokenCreator, principal) }
         verify(principal, times(1)).name
@@ -69,7 +78,6 @@ class TeamMemberSwitchEventControllerTest {
     @Test
     fun createTeamMemberSwitchEvent_unauthorized() {
         whenever(principal.name).thenReturn("OtherUser")
-        whenever(runsService.getRun(run.id)).thenReturn(run)
 
         assertThrows<UnauthorizedException> { controller.createTeamMemberSwitchEvent(run.id, creator, principal) }
         verify(principal, times(1)).name

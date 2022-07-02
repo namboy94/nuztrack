@@ -2,14 +2,12 @@ package net.namibsun.nuztrack.routes.events
 
 import net.namibsun.nuztrack.constants.UnauthorizedException
 import net.namibsun.nuztrack.constants.ValidationException
-import net.namibsun.nuztrack.constants.enums.Games
-import net.namibsun.nuztrack.constants.enums.RunStatus
-import net.namibsun.nuztrack.data.NuzlockeRun
 import net.namibsun.nuztrack.data.NuzlockeRunService
-import net.namibsun.nuztrack.data.events.NoteEvent
 import net.namibsun.nuztrack.data.events.NoteEventService
-import net.namibsun.nuztrack.transfer.events.CreateNoteEventTO
+import net.namibsun.nuztrack.testbuilders.model.NuzlockeRunBuilder
+import net.namibsun.nuztrack.testbuilders.model.events.NoteEventBuilder
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.*
@@ -24,16 +22,22 @@ class NoteEventControllerTest {
 
     private val controller = NoteEventController(service, runsService)
 
-    private val user = "Ash"
-    private val run = NuzlockeRun(5, user, "First", Games.RED, listOf(), listOf(), RunStatus.COMPLETED)
-    private val creator = CreateNoteEventTO("Mahogany Town", "Saw a ghost")
+    private val run = NuzlockeRunBuilder().build()
+    private val noteBuilder = NoteEventBuilder().nuzlockeRun(run)
+    private val note = noteBuilder.build()
+    private val creator = noteBuilder.buildCreatorTO()
+
+    @BeforeEach
+    fun setUp() {
+        whenever(principal.name).thenReturn(run.userName)
+        whenever(runsService.getRun(run.id)).thenReturn(run)
+    }
 
     @Test
     fun createNote() {
-        whenever(principal.name).thenReturn(user)
-        whenever(runsService.getRun(run.id)).thenReturn(run)
         whenever(service.createNoteEvent(eq(run), eq(creator.location), eq(creator.text), any(), any())).thenReturn(
-                NoteEvent(run, creator.location, creator.text))
+                note
+        )
 
         val result = controller.createNoteEvent(run.id, creator, principal)
         val body = result.body!!
@@ -49,10 +53,7 @@ class NoteEventControllerTest {
 
     @Test
     fun createNoteEvent_validationError() {
-        whenever(principal.name).thenReturn(user)
-        whenever(runsService.getRun(run.id)).thenReturn(run)
-
-        val brokenCreator = CreateNoteEventTO("", "")
+        val brokenCreator = NoteEventBuilder().location("").buildCreatorTO()
 
         assertThrows<ValidationException> { controller.createNoteEvent(run.id, brokenCreator, principal) }
         verify(principal, times(1)).name
@@ -62,7 +63,6 @@ class NoteEventControllerTest {
     @Test
     fun createEvolutionEvent_unauthorized() {
         whenever(principal.name).thenReturn("OtherUser")
-        whenever(runsService.getRun(run.id)).thenReturn(run)
 
         assertThrows<UnauthorizedException> { controller.createNoteEvent(run.id, creator, principal) }
         verify(principal, times(1)).name

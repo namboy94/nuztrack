@@ -8,11 +8,8 @@ import net.namibsun.nuztrack.transfer.events.MilestoneEventTO
 import java.util.*
 
 class MilestoneEventBuilder(
-        var nuzlockeRun: NuzlockeRun = NuzlockeRunBuilder().build(),
-        var location: String = "Pallet Town",
-        var milestone: String = "String",
-        var id: Long = 1,
-        var timestamp: Date = Date()
+        var nuzlockeRun: NuzlockeRun = NuzlockeRunBuilder().build(), var location: String = "Pewter City",
+        var milestone: String = "Boulder Badge", var id: Long = 1, var timestamp: Date = Date()
 ) {
     fun nuzlockeRun(nuzlockeRun: NuzlockeRun) = apply { this.nuzlockeRun = nuzlockeRun }
     fun location(location: String) = apply { this.location = location }

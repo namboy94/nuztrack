@@ -1,10 +1,9 @@
 package net.namibsun.nuztrack.routes
 
-import net.namibsun.nuztrack.constants.enums.*
-import net.namibsun.nuztrack.data.*
-import net.namibsun.nuztrack.data.events.DeathEvent
-import net.namibsun.nuztrack.data.events.EncounterEvent
-import net.namibsun.nuztrack.data.events.TeamMemberSwitchEvent
+import net.namibsun.nuztrack.data.NuzlockeRunService
+import net.namibsun.nuztrack.data.TeamMemberService
+import net.namibsun.nuztrack.testbuilders.model.NuzlockeRunBuilder
+import net.namibsun.nuztrack.testbuilders.model.TeamMemberBuilder
 import net.namibsun.nuztrack.transfer.TeamMemberTO
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -22,52 +21,27 @@ internal class TeamMemberControllerTest {
     private val service: TeamMemberService = mock()
     private val controller = TeamMemberController(service, runsService)
 
-    private val user = "Ash"
-    private val nuzlockeRun = NuzlockeRun(
-            5, user, "First", Games.RED, listOf(Rules.ONLY_FIRST_ENCOUNTER), listOf(), RunStatus.COMPLETED
-    )
-
-    private val teamMemberOne = TeamMember(
-            1, "A", 1, 1, Gender.MALE, Natures.BOLD, 1,
-            EncounterEvent(nuzlockeRun, "A", 1, 1, true),
-            teamSwitches = mutableListOf(
-                    TeamMemberSwitchEvent(nuzlockeRun, "A", TEAM_MEMBER, TeamMemberSwitchType.ADD)
-            )
-    )
-    private val teamMemberTwo = TeamMember(
-            1, "B", 1, 1, Gender.MALE, Natures.ADAMANT, 1,
-            EncounterEvent(nuzlockeRun, "B", 1, 1, true),
-            teamSwitches = mutableListOf(
-                    TeamMemberSwitchEvent(nuzlockeRun, "B", TEAM_MEMBER, TeamMemberSwitchType.ADD),
-                    TeamMemberSwitchEvent(nuzlockeRun, "B", TEAM_MEMBER, TeamMemberSwitchType.REMOVE)
-            )
-    )
-    private val teamMemberThree = TeamMember(
-            1, "C", 1, 1, Gender.MALE, Natures.NAUGHTY, 1,
-            EncounterEvent(nuzlockeRun, "C", 1, 1, true),
-            teamSwitches = mutableListOf(
-                    TeamMemberSwitchEvent(nuzlockeRun, "C", TEAM_MEMBER, TeamMemberSwitchType.ADD)
-            ),
-            death = DeathEvent(nuzlockeRun, "C", TEAM_MEMBER, 1, "C", "C")
-    )
-
+    private val run = NuzlockeRunBuilder().build()
+    private val memberOne = TeamMemberBuilder().id(1).isActive().build()
+    private val memberTwo = TeamMemberBuilder().id(2).isBulbasaur().build()
+    private val memberThree = TeamMemberBuilder().id(3).isCharizard().isDead().build()
+    private val team = Triple(listOf(memberOne), listOf(memberTwo), listOf(memberThree))
 
     @Test
     fun getTeam() {
-        whenever(service.getTeam(nuzlockeRun.id))
-                .thenReturn(Triple(listOf(teamMemberOne), listOf(teamMemberTwo), listOf(teamMemberThree)))
-        whenever(runsService.getRun(nuzlockeRun.id)).thenReturn(nuzlockeRun)
-        whenever(principal.name).thenReturn(user)
+        whenever(service.getTeam(run.id)).thenReturn(team)
+        whenever(runsService.getRun(run.id)).thenReturn(run)
+        whenever(principal.name).thenReturn(run.userName)
 
-        val result = controller.getTeam(nuzlockeRun.id, principal)
+        val result = controller.getTeam(run.id, principal)
 
         assertThat(result.statusCode).isEqualTo(HttpStatus.OK)
-        assertThat(result.body!!.active[0]).isEqualTo(TeamMemberTO.fromTeamMember(teamMemberOne))
-        assertThat(result.body!!.boxed[0]).isEqualTo(TeamMemberTO.fromTeamMember(teamMemberTwo))
-        assertThat(result.body!!.dead[0]).isEqualTo(TeamMemberTO.fromTeamMember(teamMemberThree))
+        assertThat(result.body!!.active[0]).isEqualTo(TeamMemberTO.fromTeamMember(memberOne))
+        assertThat(result.body!!.boxed[0]).isEqualTo(TeamMemberTO.fromTeamMember(memberTwo))
+        assertThat(result.body!!.dead[0]).isEqualTo(TeamMemberTO.fromTeamMember(memberThree))
 
         verify(principal, times(1)).name
-        verify(service, times(1)).getTeam(nuzlockeRun.id)
-        verify(runsService, times(1)).getRun(nuzlockeRun.id)
+        verify(service, times(1)).getTeam(run.id)
+        verify(runsService, times(1)).getRun(run.id)
     }
 }

@@ -2,15 +2,14 @@ package net.namibsun.nuztrack.routes.events
 
 import net.namibsun.nuztrack.constants.UnauthorizedException
 import net.namibsun.nuztrack.constants.ValidationException
-import net.namibsun.nuztrack.constants.enums.Games
-import net.namibsun.nuztrack.constants.enums.Gender
-import net.namibsun.nuztrack.constants.enums.Natures
-import net.namibsun.nuztrack.constants.enums.RunStatus
-import net.namibsun.nuztrack.data.*
-import net.namibsun.nuztrack.data.events.EvolutionEvent
+import net.namibsun.nuztrack.data.NuzlockeRunService
+import net.namibsun.nuztrack.data.TeamMemberService
 import net.namibsun.nuztrack.data.events.EvolutionEventService
-import net.namibsun.nuztrack.transfer.events.CreateEvolutionEventTO
+import net.namibsun.nuztrack.testbuilders.model.NuzlockeRunBuilder
+import net.namibsun.nuztrack.testbuilders.model.TeamMemberBuilder
+import net.namibsun.nuztrack.testbuilders.model.events.EvolutionEventBuilder
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.*
@@ -22,26 +21,32 @@ class EvolutionEventControllerTest {
     private val principal: Principal = mock()
     private val service: EvolutionEventService = mock()
     private val runsService: NuzlockeRunService = mock()
-
     private val teamMemberService: TeamMemberService = mock()
     private val controller = EvolutionEventController(service, teamMemberService, runsService)
 
-    private val user = "Ash"
-    private val run = NuzlockeRun(5, user, "First", Games.RED, listOf(), listOf(), RunStatus.COMPLETED)
-    private val member = TeamMember(1, "Squirtle", 7, 5, Gender.MALE, Natures.BOLD, 1, ENCOUNTER)
-    private val creator = CreateEvolutionEventTO("Location", member.id, 16, 8)
+    private val run = NuzlockeRunBuilder().build()
+    private val member = TeamMemberBuilder().build()
+    private val evolutionBuilder = EvolutionEventBuilder().teamMember(member).nuzlockeRun(run)
+    private val evolution = evolutionBuilder.build()
+    private val creator = evolutionBuilder.buildCreatorTO()
+
+    @BeforeEach
+    fun setUp() {
+        whenever(principal.name).thenReturn(run.userName)
+        whenever(runsService.getRun(run.id)).thenReturn(run)
+        whenever(teamMemberService.getTeamMember(run.id, member.id)).thenReturn(member)
+        whenever(teamMemberService.setLevel(member.id, creator.level)).thenReturn(member)
+        whenever(teamMemberService.evolveTo(member.id, creator.newPokedexNumber)).thenReturn(member)
+    }
 
     @Test
     fun createEvolution() {
-        whenever(principal.name).thenReturn(user)
-        whenever(teamMemberService.getTeamMember(run.id, member.id)).thenReturn(member)
-        whenever(runsService.getRun(run.id)).thenReturn(run)
-        whenever(service.createEvolutionEvent(eq(run), eq(creator.location), eq(member), eq(creator.level),
-                eq(creator.newPokedexNumber), any(), any())).thenReturn(
-                EvolutionEvent(run, creator.location, member, creator.level, member.pokedexNumber,
-                        creator.newPokedexNumber))
-        whenever(teamMemberService.setLevel(member.id, creator.level)).thenReturn(member)
-        whenever(teamMemberService.evolveTo(member.id, creator.newPokedexNumber)).thenReturn(member)
+        whenever(
+                service.createEvolutionEvent(
+                        eq(run), eq(creator.location), eq(member), eq(creator.level), eq(creator.newPokedexNumber),
+                        any(), any()
+                )
+        ).thenReturn(evolution)
 
         val result = controller.createEvolutionEvent(run.id, creator, principal)
         val body = result.body!!
@@ -56,18 +61,16 @@ class EvolutionEventControllerTest {
         verify(principal, times(1)).name
         verify(runsService, times(1)).getRun(any())
         verify(teamMemberService, times(2)).getTeamMember(run.id, member.id)
-        verify(service, times(1)).createEvolutionEvent(eq(run), eq(creator.location), eq(member), eq(creator.level),
-                eq(creator.newPokedexNumber), any(), any())
+        verify(service, times(1)).createEvolutionEvent(
+                eq(run), eq(creator.location), eq(member), eq(creator.level), eq(creator.newPokedexNumber), any(), any()
+        )
         verify(teamMemberService, times(1)).setLevel(member.id, creator.level)
         verify(teamMemberService, times(1)).evolveTo(member.id, creator.newPokedexNumber)
     }
 
     @Test
     fun createEvolutionEvent_validationError() {
-        whenever(principal.name).thenReturn(user)
-        whenever(runsService.getRun(run.id)).thenReturn(run)
-
-        val brokenCreator = CreateEvolutionEventTO("", 0, 0, 0)
+        val brokenCreator = EvolutionEventBuilder().location("").buildCreatorTO()
 
         assertThrows<ValidationException> { controller.createEvolutionEvent(run.id, brokenCreator, principal) }
         verify(principal, times(1)).name
@@ -77,7 +80,6 @@ class EvolutionEventControllerTest {
     @Test
     fun createEvolutionEvent_unauthorized() {
         whenever(principal.name).thenReturn("OtherUser")
-        whenever(runsService.getRun(run.id)).thenReturn(run)
 
         assertThrows<UnauthorizedException> { controller.createEvolutionEvent(run.id, creator, principal) }
         verify(principal, times(1)).name
