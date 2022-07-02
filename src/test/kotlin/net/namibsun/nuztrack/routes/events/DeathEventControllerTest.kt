@@ -27,10 +27,9 @@ class DeathEventControllerTest {
 
     private val user = "Ash"
     private val run = NuzlockeRun(5, user, "First", Games.RED, listOf(), listOf(), RunStatus.COMPLETED)
-    private val member = TeamMember(
-            1, "Squirtle", 7, 5, Gender.MALE, Natures.BOLD, 1, ENCOUNTER,
-            teamSwitches = mutableListOf(TeamMemberSwitchEvent(run, "Oak's Lab", TEAM_MEMBER, TeamMemberSwitchType.ADD))
-    )
+    private val member = TeamMember(1, "Squirtle", 7, 5, Gender.MALE, Natures.BOLD, 1, ENCOUNTER,
+            teamSwitches = mutableListOf(
+                    TeamMemberSwitchEvent(run, "Oak's Lab", TEAM_MEMBER, TeamMemberSwitchType.ADD)))
     private val creator = CreateDeathEventTO("Location", member.id, 10, "Gary", "Died")
 
     @Test
@@ -38,12 +37,12 @@ class DeathEventControllerTest {
         whenever(principal.name).thenReturn(user)
         whenever(teamMemberService.getTeamMember(run.id, member.id)).thenReturn(member)
         whenever(runsService.getRun(run.id)).thenReturn(run)
-        whenever(service.createDeathEvent(
-                run, creator.location, member, creator.level, creator.opponent, creator.description
-        )).thenReturn(DeathEvent(run, creator.location, member, creator.level, creator.opponent, creator.description))
-        whenever(switchService.createTeamMemberSwitchEvent(
-                run, creator.location, member, TeamMemberSwitchType.REMOVE
-        )).thenReturn(TeamMemberSwitchEvent(run, creator.location, member, TeamMemberSwitchType.REMOVE))
+        whenever(service.createDeathEvent(eq(run), eq(creator.location), eq(member), eq(creator.level),
+                eq(creator.opponent), eq(creator.description), any(), any())).thenReturn(
+                DeathEvent(run, creator.location, member, creator.level, creator.opponent, creator.description))
+        whenever(switchService.createTeamMemberSwitchEvent(eq(run), eq(creator.location), eq(member),
+                eq(TeamMemberSwitchType.REMOVE), any(), any())).thenReturn(
+                TeamMemberSwitchEvent(run, creator.location, member, TeamMemberSwitchType.REMOVE))
         whenever(teamMemberService.setLevel(member.id, creator.level)).thenReturn(member)
         whenever(teamMemberService.getTeam(run.id)).thenReturn(Triple(listOf(member), listOf(), listOf()))
 
@@ -60,12 +59,10 @@ class DeathEventControllerTest {
         verify(principal, times(1)).name
         verify(runsService, times(1)).getRun(any())
         verify(teamMemberService, times(2)).getTeamMember(run.id, member.id)
-        verify(service, times(1)).createDeathEvent(
-                run, creator.location, member, creator.level, creator.opponent, creator.description
-        )
-        verify(switchService, times(1)).createTeamMemberSwitchEvent(
-                run, creator.location, member, TeamMemberSwitchType.REMOVE
-        )
+        verify(service, times(1)).createDeathEvent(eq(run), eq(creator.location), eq(member), eq(creator.level),
+                eq(creator.opponent), eq(creator.description), any(), any())
+        verify(switchService, times(1)).createTeamMemberSwitchEvent(eq(run), eq(creator.location), eq(member),
+                eq(TeamMemberSwitchType.REMOVE), any(), any())
         verify(teamMemberService, times(1)).setLevel(member.id, creator.level)
         verify(teamMemberService, times(1)).getTeam(run.id)
     }

@@ -53,23 +53,21 @@ internal class MultiRunControllerTest {
         whenever(principal.name).thenReturn(existingRun.userName)
         whenever(runsService.getRun(existingRun.id)).thenReturn(existingRun)
         whenever(runsService.createRun(any(), any(), any(), any(), any())).thenReturn(newRun)
-        whenever(encounterService.createEncounterEvent(any(), any(), any(), any(), any())).thenAnswer { args ->
+        whenever(encounterService.createEncounterEvent(any(), any(), any(), any(), any(), any(),
+                any())).thenAnswer { args ->
             EncounterEventBuilder().location(args.getArgument(1)).pokedexNumber(args.getArgument(2)).build()
         }
         whenever(teamMemberService.createTeamMember(any(), any(), any(), any(), any())).thenAnswer { args ->
             TeamMemberBuilder().encounter(args.getArgument(0)).build()
         }
-        whenever(deathService.createDeathEvent(any(), any(), any(), any(), any(), any())).thenAnswer { args ->
+        whenever(deathService.createDeathEvent(any(), any(), any(), any(), any(), any(), any(),
+                any())).thenAnswer { args ->
             DeathEventBuilder().teamMember(args.getArgument(2)).build()
         }
-        whenever(teamMemberService.getTeam(existingRun.id)).thenReturn(Triple(
-                listOf(teamMemberOne),
-                listOf(teamMemberTwo),
-                listOf(teamMemberThree)
-        ))
-        whenever(encounterService.getEncounterEvents(existingRun.id)).thenReturn(listOf(
-                encounterOne, encounterTwo, encounterThree, failedEncounter
-        ))
+        whenever(teamMemberService.getTeam(existingRun.id)).thenReturn(
+                Triple(listOf(teamMemberOne), listOf(teamMemberTwo), listOf(teamMemberThree)))
+        whenever(encounterService.getEncounterEvents(existingRun.id)).thenReturn(
+                listOf(encounterOne, encounterTwo, encounterThree, failedEncounter))
         whenever(service.linkRuns(existingRun, newRun)).thenReturn(multiRun)
     }
 
@@ -83,71 +81,55 @@ internal class MultiRunControllerTest {
     @Test
     fun createMultiRun_allOptions() {
         setUpMocks()
-        val creator = CreateMultiRunTOBuilder()
-                .runId(existingRun.id)
-                .name(newRun.name)
-                .game(newRun.game.name)
-                .options(MultiRunOptions.values().map { it.name })
-                .build()
+        val creator = CreateMultiRunTOBuilder().runId(existingRun.id).name(newRun.name).game(newRun.game.name)
+                .options(MultiRunOptions.values().map { it.name }).build()
         val result = controller.createMultiRun(creator, principal)
         val newRunResult = result.body!!
 
         assertThat(result.statusCode).isEqualTo(HttpStatus.CREATED)
         assertThat(newRunResult.name).isEqualTo(newRun.name)
 
-        verify(runsService, times(1)).createRun(
-                newRun.userName, newRun.name, newRun.game, newRun.rules, newRun.customRules
-        )
+        verify(runsService, times(1)).createRun(newRun.userName, newRun.name, newRun.game, newRun.rules,
+                newRun.customRules)
         verify(service, times(1)).linkRuns(existingRun, newRun)
-        verify(encounterService, times(3)).createEncounterEvent(
-                eq(newRun), eq("Previous Game"), any(), any(), eq(true)
-        )
-        verify(encounterService, times(1)).createEncounterEvent(
-                eq(newRun), eq("Previous Game"), any(), any(), eq(false)
-        )
+        verify(encounterService, times(3)).createEncounterEvent(eq(newRun), eq("Previous Game"), any(), any(), eq(true),
+                any(), any())
+        verify(encounterService, times(1)).createEncounterEvent(eq(newRun), eq("Previous Game"), any(), any(),
+                eq(false), any(), any())
         verify(teamMemberService, times(3)).createTeamMember(any(), any(), any(), any(), any())
-        verify(deathService, times(1)).createDeathEvent(
-                eq(newRun), eq("Previous Game"), any(), eq(death.level), eq(death.opponent), eq(death.description)
-        )
+        verify(deathService, times(1)).createDeathEvent(eq(newRun), eq("Previous Game"), any(), eq(death.level),
+                eq(death.opponent), eq(death.description), any(), any())
     }
 
     @Test
     fun createMultiRun_noOptions() {
         setUpMocks()
-        val creator = CreateMultiRunTOBuilder()
-                .runId(existingRun.id)
-                .name(newRun.name)
-                .game(newRun.game.name)
-                .options(listOf())
-                .build()
+        val creator = CreateMultiRunTOBuilder().runId(existingRun.id).name(newRun.name).game(newRun.game.name)
+                .options(listOf()).build()
         val result = controller.createMultiRun(creator, principal)
         val newRunResult = result.body!!
 
         assertThat(result.statusCode).isEqualTo(HttpStatus.CREATED)
         assertThat(newRunResult.name).isEqualTo(newRun.name)
 
-        verify(runsService, times(1)).createRun(
-                newRun.userName, newRun.name, newRun.game, newRun.rules, newRun.customRules
-        )
+        verify(runsService, times(1)).createRun(newRun.userName, newRun.name, newRun.game, newRun.rules,
+                newRun.customRules)
         verify(service, times(1)).linkRuns(existingRun, newRun)
-        verify(encounterService, times(0)).createEncounterEvent(any(), any(), any(), any(), any())
-        verify(encounterService, times(0)).createEncounterEvent(any(), any(), any(), any(), any())
+        verify(encounterService, times(0)).createEncounterEvent(any(), any(), any(), any(), any(), any(), any())
         verify(teamMemberService, times(0)).createTeamMember(any(), any(), any(), any(), any())
-        verify(deathService, times(0)).createDeathEvent(any(), any(), any(), any(), any(), any())
+        verify(deathService, times(0)).createDeathEvent(any(), any(), any(), any(), any(), any(), any(), any())
     }
 
     @Test
     fun createMultiRun_invalidCreator() {
         setUpMocks()
-        val creator = CreateMultiRunTOBuilder()
-                .runId(existingRun.id)
-                .name(newRun.name)
-                .game(Games.RED.name)
-                .options(listOf())
-                .build()
+        val creator =
+                CreateMultiRunTOBuilder().runId(existingRun.id).name(newRun.name).game(Games.RED.name).options(listOf())
+                        .build()
 
-        assertThat(assertThrows<ValidationException> { controller.createMultiRun(creator, principal) }.message)
-                .isEqualTo(ErrorMessages.MULTI_RUN_BACKWARDS.message)
+        assertThat(
+                assertThrows<ValidationException> { controller.createMultiRun(creator, principal) }.message).isEqualTo(
+                ErrorMessages.MULTI_RUN_BACKWARDS.message)
         verify(runsService, times(0)).createRun(any(), any(), any(), any(), any())
     }
 }

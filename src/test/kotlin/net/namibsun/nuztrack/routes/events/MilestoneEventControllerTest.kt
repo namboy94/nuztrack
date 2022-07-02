@@ -12,10 +12,7 @@ import net.namibsun.nuztrack.transfer.events.CreateMilestoneEventTO
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.times
-import org.mockito.kotlin.verify
-import org.mockito.kotlin.whenever
+import org.mockito.kotlin.*
 import org.springframework.http.HttpStatus
 import java.security.Principal
 
@@ -35,9 +32,8 @@ class MilestoneEventControllerTest {
     fun createMilestone() {
         whenever(principal.name).thenReturn(user)
         whenever(runsService.getRun(run.id)).thenReturn(run)
-        whenever(service.createMilestoneEvent(run, creator.location, creator.milestone)).thenReturn(
-                MilestoneEvent(run, creator.location, creator.milestone)
-        )
+        whenever(service.createMilestoneEvent(eq(run), eq(creator.location), eq(creator.milestone), any(),
+                any())).thenReturn(MilestoneEvent(run, creator.location, creator.milestone))
 
         val result = controller.createMilestoneEvent(run.id, creator, principal)
         val body = result.body!!
@@ -48,7 +44,8 @@ class MilestoneEventControllerTest {
 
         verify(principal, times(1)).name
         verify(runsService, times(1)).getRun(run.id)
-        verify(service, times(1)).createMilestoneEvent(run, creator.location, creator.milestone)
+        verify(service, times(1)).createMilestoneEvent(eq(run), eq(creator.location), eq(creator.milestone), any(),
+                any())
     }
 
     @Test

@@ -11,41 +11,25 @@ import net.namibsun.nuztrack.util.validateEmptyLocation
 import net.namibsun.nuztrack.util.validateLevel
 import net.namibsun.nuztrack.util.validateTeamMember
 
-data class DeathEventTO(
-        val event: EventTO,
-        val teamMemberId: Long,
-        val level: Int,
-        val opponent: String,
-        val description: String
-) {
+data class DeathEventTO(val event: EventTO, val teamMemberId: Long, val level: Int, val opponent: String,
+                        val description: String) {
     companion object {
         fun fromDeathEvent(event: DeathEvent): DeathEventTO {
-            return DeathEventTO(
-                    EventTO.fromEvent(event),
-                    event.teamMember.id,
-                    event.level,
-                    event.opponent,
-                    event.description
-            )
+            return DeathEventTO(EventTO.fromEvent(event), event.teamMember.id, event.level, event.opponent,
+                    event.description)
         }
     }
 
     fun toDeathEvent(run: NuzlockeRun, teamMember: TeamMember, keepId: Boolean = false): DeathEvent {
-        return DeathEvent(
-                run, event.location, teamMember, level, opponent, description,
-                if (keepId) event.id else 0, parseDateFromIsoString(event.timestamp)
-        )
+        return DeathEvent(run, event.location, teamMember, level, opponent, description, if (keepId) event.id else 0,
+                parseDateFromIsoString(event.timestamp))
     }
 }
 
-data class CreateDeathEventTO(
-        val location: String,
-        val teamMemberId: Long,
-        val level: Int,
-        val opponent: String,
-        val description: String
-) {
+data class CreateDeathEventTO(val location: String, val teamMemberId: Long, val level: Int, val opponent: String,
+                              val description: String) {
     fun validate(run: NuzlockeRun, service: TeamMemberService) {
+        println(description)
         validateEmptyLocation(location)
         if (opponent.isEmpty()) {
             throw ValidationException(ErrorMessages.MISSING_OPPONENT)

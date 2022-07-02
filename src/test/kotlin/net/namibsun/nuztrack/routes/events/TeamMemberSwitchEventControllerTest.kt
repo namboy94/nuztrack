@@ -33,8 +33,9 @@ class TeamMemberSwitchEventControllerTest {
         whenever(principal.name).thenReturn(user)
         whenever(teamMemberService.getTeamMember(run.id, member.id)).thenReturn(member)
         whenever(runsService.getRun(run.id)).thenReturn(run)
-        whenever(service.createTeamMemberSwitchEvent(run, creator.location, member, TeamMemberSwitchType.ADD))
-                .thenReturn(TeamMemberSwitchEvent(run, creator.location, member, TeamMemberSwitchType.ADD))
+        whenever(service.createTeamMemberSwitchEvent(eq(run), eq(creator.location), eq(member),
+                eq(TeamMemberSwitchType.ADD), any(), any())).thenReturn(
+                        TeamMemberSwitchEvent(run, creator.location, member, TeamMemberSwitchType.ADD))
         whenever(teamMemberService.getTeam(run.id)).thenReturn(Triple(listOf(), listOf(member), listOf()))
 
         val result = controller.createTeamMemberSwitchEvent(run.id, creator, principal)
@@ -48,7 +49,8 @@ class TeamMemberSwitchEventControllerTest {
         verify(principal, times(1)).name
         verify(runsService, times(1)).getRun(any())
         verify(teamMemberService, times(2)).getTeamMember(run.id, member.id)
-        verify(service, times(1)).createTeamMemberSwitchEvent(run, creator.location, member, TeamMemberSwitchType.ADD)
+        verify(service, times(1)).createTeamMemberSwitchEvent(eq(run), eq(creator.location), eq(member),
+                eq(TeamMemberSwitchType.ADD), any(), any())
         verify(teamMemberService, times(1)).getTeam(run.id)
     }
 

@@ -36,11 +36,10 @@ class EvolutionEventControllerTest {
         whenever(principal.name).thenReturn(user)
         whenever(teamMemberService.getTeamMember(run.id, member.id)).thenReturn(member)
         whenever(runsService.getRun(run.id)).thenReturn(run)
-        whenever(service.createEvolutionEvent(
-                run, creator.location, member, creator.level, creator.newPokedexNumber
-        )).thenReturn(EvolutionEvent(
-                run, creator.location, member, creator.level, member.pokedexNumber, creator.newPokedexNumber
-        ))
+        whenever(service.createEvolutionEvent(eq(run), eq(creator.location), eq(member), eq(creator.level),
+                eq(creator.newPokedexNumber), any(), any())).thenReturn(
+                EvolutionEvent(run, creator.location, member, creator.level, member.pokedexNumber,
+                        creator.newPokedexNumber))
         whenever(teamMemberService.setLevel(member.id, creator.level)).thenReturn(member)
         whenever(teamMemberService.evolveTo(member.id, creator.newPokedexNumber)).thenReturn(member)
 
@@ -57,9 +56,8 @@ class EvolutionEventControllerTest {
         verify(principal, times(1)).name
         verify(runsService, times(1)).getRun(any())
         verify(teamMemberService, times(2)).getTeamMember(run.id, member.id)
-        verify(service, times(1)).createEvolutionEvent(
-                run, creator.location, member, creator.level, creator.newPokedexNumber
-        )
+        verify(service, times(1)).createEvolutionEvent(eq(run), eq(creator.location), eq(member), eq(creator.level),
+                eq(creator.newPokedexNumber), any(), any())
         verify(teamMemberService, times(1)).setLevel(member.id, creator.level)
         verify(teamMemberService, times(1)).evolveTo(member.id, creator.newPokedexNumber)
     }

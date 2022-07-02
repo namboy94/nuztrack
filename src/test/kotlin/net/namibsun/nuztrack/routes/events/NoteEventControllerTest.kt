@@ -12,10 +12,7 @@ import net.namibsun.nuztrack.transfer.events.CreateNoteEventTO
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.times
-import org.mockito.kotlin.verify
-import org.mockito.kotlin.whenever
+import org.mockito.kotlin.*
 import org.springframework.http.HttpStatus
 import java.security.Principal
 
@@ -35,9 +32,8 @@ class NoteEventControllerTest {
     fun createNote() {
         whenever(principal.name).thenReturn(user)
         whenever(runsService.getRun(run.id)).thenReturn(run)
-        whenever(service.createNoteEvent(run, creator.location, creator.text)).thenReturn(
-                NoteEvent(run, creator.location, creator.text)
-        )
+        whenever(service.createNoteEvent(eq(run), eq(creator.location), eq(creator.text), any(), any())).thenReturn(
+                NoteEvent(run, creator.location, creator.text))
 
         val result = controller.createNoteEvent(run.id, creator, principal)
         val body = result.body!!
@@ -48,7 +44,7 @@ class NoteEventControllerTest {
 
         verify(principal, times(1)).name
         verify(runsService, times(1)).getRun(run.id)
-        verify(service, times(1)).createNoteEvent(run, creator.location, creator.text)
+        verify(service, times(1)).createNoteEvent(eq(run), eq(creator.location), eq(creator.text), any(), any())
     }
 
     @Test

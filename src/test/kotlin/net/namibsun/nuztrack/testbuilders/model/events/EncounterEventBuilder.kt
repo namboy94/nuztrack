@@ -4,15 +4,13 @@ import net.namibsun.nuztrack.data.NuzlockeRun
 import net.namibsun.nuztrack.data.TeamMember
 import net.namibsun.nuztrack.data.events.EncounterEvent
 import net.namibsun.nuztrack.testbuilders.model.NuzlockeRunBuilder
+import net.namibsun.nuztrack.transfer.events.CreateEncounterEventTO
+import net.namibsun.nuztrack.transfer.events.CreateEncounterPokemonTO
+import net.namibsun.nuztrack.transfer.events.EncounterEventTO
 
-data class EncounterEventBuilder(
-        var nuzlockeRun: NuzlockeRun = NuzlockeRunBuilder().build(),
-        var location: String = "Pallet Town",
-        var pokedexNumber: Int = 7,
-        var level: Int = 5,
-        var caught: Boolean = false,
-        var teamMember: TeamMember? = null
-) {
+data class EncounterEventBuilder(var nuzlockeRun: NuzlockeRun = NuzlockeRunBuilder().build(),
+                                 var location: String = "Pallet Town", var pokedexNumber: Int = 7, var level: Int = 5,
+                                 var caught: Boolean = false, var teamMember: TeamMember? = null) {
     fun nuzlockeRun(nuzlockeRun: NuzlockeRun) = apply { this.nuzlockeRun = nuzlockeRun }
     fun location(location: String) = apply { this.location = location }
     fun pokedexNumber(pokedexNumber: Int) = apply { this.pokedexNumber = pokedexNumber }
@@ -27,4 +25,17 @@ data class EncounterEventBuilder(
         }
         return encounter
     }
+
+    fun buildCreatorTO(): CreateEncounterEventTO {
+        val teamMember = this.build().teamMember
+        val pokemonCreator = if (teamMember == null) {
+            null
+        } else {
+            CreateEncounterPokemonTO(teamMember.nickname, teamMember.gender?.name, teamMember.nature?.name,
+                    teamMember.abilitySlot)
+        }
+        return CreateEncounterEventTO(location, pokedexNumber, level, caught, pokemonCreator)
+    }
+
+    fun buildTO() = EncounterEventTO.fromEncounterEvent(this.build())
 }
