@@ -12,6 +12,7 @@ import net.namibsun.nuztrack.transfer.NuzlockeRunTO
 import net.namibsun.nuztrack.transfer.TeamTO
 import net.namibsun.nuztrack.transfer.events.EventLogTO
 import net.namibsun.nuztrack.util.Authenticator
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
@@ -62,7 +63,9 @@ class ImportExportController(
         eventsData.encounters.map {
             val encounter = eventService.addEvent(it.toEncounterEvent(run)) as EncounterEvent
             if (encounter.caught && it.teamMemberId != null && it.teamMemberId in teamMembers) {
-                newTeamMembers[it.teamMemberId] = teamMembers[it.teamMemberId]!!.toTeamMember(encounter)
+                newTeamMembers[it.teamMemberId] = teamService.addTeamMember(
+                        teamMembers[it.teamMemberId]!!.toTeamMember(encounter)
+                )
             }
         }
         eventsData.deaths.filter { it.teamMemberId in newTeamMembers }.map {
@@ -76,6 +79,6 @@ class ImportExportController(
         }
         eventsData.notes.map { eventService.addEvent(it.toNoteEvent(run)) }
         eventsData.milestones.map { eventService.addEvent(it.toMilestoneEvent(run)) }
-        return ResponseEntity.ok(Unit)
+        return ResponseEntity<Unit>(Unit, HttpStatus.CREATED)
     }
 }

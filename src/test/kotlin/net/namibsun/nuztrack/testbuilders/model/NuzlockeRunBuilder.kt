@@ -3,9 +3,11 @@ package net.namibsun.nuztrack.testbuilders.model
 import net.namibsun.nuztrack.constants.enums.Games
 import net.namibsun.nuztrack.constants.enums.Rules
 import net.namibsun.nuztrack.constants.enums.RunStatus
+import net.namibsun.nuztrack.constants.enums.TeamMemberSwitchType
 import net.namibsun.nuztrack.data.MultiRunNuzlocke
 import net.namibsun.nuztrack.data.NuzlockeRun
 import net.namibsun.nuztrack.data.events.Event
+import net.namibsun.nuztrack.testbuilders.model.events.*
 
 data class NuzlockeRunBuilder(
         var id: Long = 1,
@@ -27,5 +29,32 @@ data class NuzlockeRunBuilder(
     fun status(status: RunStatus) = apply { this.status = status }
     fun events(events: MutableList<Event>) = apply { this.events = events }
     fun multiRun(multiRun: MultiRunNuzlocke) = apply { this.multiRun = multiRun }
-    fun build() = NuzlockeRun(id, userName, name, game, rules, customRules, status, events, multiRun)
+    fun build(): NuzlockeRun {
+        val run = NuzlockeRun(id, userName, name, game, rules, customRules, status, events, multiRun)
+        run.events.map { it.nuzlockeRun = run }
+        return run
+    }
+
+    fun addDefaultEvents() = apply {
+        val teamMemberOne = TeamMemberBuilder().nickname("One").encounter(
+                EncounterEventBuilder().caught(true).build()
+        ).build()
+        val teamMemberTwo = TeamMemberBuilder().nickname("Two").encounter(
+                EncounterEventBuilder().caught(true).build()
+        ).build()
+        val teamMemberThree = TeamMemberBuilder().nickname("Three").encounter(
+                EncounterEventBuilder().caught(true).build()
+        ).build()
+        this.events.addAll(mutableListOf(
+                teamMemberOne.encounter,
+                teamMemberTwo.encounter,
+                teamMemberThree.encounter,
+                DeathEventBuilder().teamMember(teamMemberThree).build(),
+                EvolutionEventBuilder().teamMember(teamMemberOne).build(),
+                TeamMemberSwitchEventBuilder().teamMember(teamMemberOne).switchType(TeamMemberSwitchType.ADD)
+                        .build(),
+                NoteEventBuilder().build(),
+                MilestoneEventBuilder().build()
+        ))
+    }
 }

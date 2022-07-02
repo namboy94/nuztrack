@@ -103,4 +103,8 @@ class TeamMemberService(val db: TeamMemberRepository) {
         member.pokedexNumber = newPokedexNumber
         return db.save(member)
     }
+
+    fun addTeamMember(teamMember: TeamMember): TeamMember {
+        return db.save(teamMember)
+    }
 }
