@@ -7,20 +7,29 @@ import net.namibsun.nuztrack.testbuilders.model.NuzlockeRunBuilder
 import net.namibsun.nuztrack.testbuilders.model.TeamMemberBuilder
 import net.namibsun.nuztrack.transfer.events.CreateDeathEventTO
 import net.namibsun.nuztrack.transfer.events.DeathEventTO
+import java.util.*
 
-data class DeathEventBuilder(var nuzlockeRun: NuzlockeRun = NuzlockeRunBuilder().build(),
-                             var location: String = "Pallet Town",
-                             var teamMember: TeamMember = TeamMemberBuilder().build(), var level: Int = 24,
-                             var opponent: String = "BLUE", var description: String = "Died to Alakazam's Psychic") {
-
+data class DeathEventBuilder(
+        var nuzlockeRun: NuzlockeRun = NuzlockeRunBuilder().build(),
+        var location: String = "Pallet Town",
+        var teamMember: TeamMember = TeamMemberBuilder().build(),
+        var level: Int = 24,
+        var opponent: String = "BLUE",
+        var description: String = "Died to Alakazam's Psychic",
+        var id: Long = 1,
+        var timestamp: Date = Date()
+) {
     fun nuzlockeRun(nuzlockeRun: NuzlockeRun) = apply { this.nuzlockeRun = nuzlockeRun }
     fun location(location: String) = apply { this.location = location }
     fun teamMember(teamMember: TeamMember) = apply { this.teamMember = teamMember }
     fun level(level: Int) = apply { this.level = level }
     fun opponent(opponent: String) = apply { this.opponent = opponent }
     fun description(description: String) = apply { this.description = description }
+    fun id(id: Long) = apply { this.id = id }
+    fun timestamp(timestamp: Date) = apply { this.timestamp = timestamp }
+
     fun build(): DeathEvent {
-        val death = DeathEvent(nuzlockeRun, location, teamMember, level, opponent, description)
+        val death = DeathEvent(nuzlockeRun, location, teamMember, level, opponent, description, id, timestamp)
         teamMember.death = death
         return death
     }

@@ -3,8 +3,8 @@ package net.namibsun.nuztrack.util
 import net.namibsun.nuztrack.constants.NotFoundException
 import net.namibsun.nuztrack.constants.UnauthorizedException
 import net.namibsun.nuztrack.constants.enums.ErrorMessages
-import net.namibsun.nuztrack.data.NUZLOCKE_RUN
 import net.namibsun.nuztrack.data.NuzlockeRunService
+import net.namibsun.nuztrack.testbuilders.model.NuzlockeRunBuilder
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -17,37 +17,39 @@ internal class AuthenticatorTest {
 
     private val runService: NuzlockeRunService = mock()
     private val authenticator = Authenticator(runService)
+    private val run = NuzlockeRunBuilder().build()
+
 
     @Test
     fun loadAuthenticatedRun_success() {
-        whenever(runService.getRun(NUZLOCKE_RUN.id)).thenReturn(NUZLOCKE_RUN)
+        whenever(runService.getRun(run.id)).thenReturn(run)
 
-        val run = authenticator.loadAuthenticatedRun(NUZLOCKE_RUN.id, NUZLOCKE_RUN.userName)
+        val run = authenticator.loadAuthenticatedRun(run.id, run.userName)
 
-        assertThat(run.game).isEqualTo(NUZLOCKE_RUN.game)
-        verify(runService, times(1)).getRun(NUZLOCKE_RUN.id)
+        assertThat(run.game).isEqualTo(run.game)
+        verify(runService, times(1)).getRun(run.id)
     }
 
     @Test
     fun loadAuthenticatedRun_unauthorized() {
-        whenever(runService.getRun(NUZLOCKE_RUN.id)).thenReturn(NUZLOCKE_RUN)
+        whenever(runService.getRun(run.id)).thenReturn(run)
 
         assertThat(assertThrows<UnauthorizedException> {
-            authenticator.loadAuthenticatedRun(NUZLOCKE_RUN.id, "NotTheRealUser")
+            authenticator.loadAuthenticatedRun(run.id, "NotTheRealUser")
         }.message).isEqualTo(ErrorMessages.NO_ACCESS_TO_RUN.message)
 
-        verify(runService, times(1)).getRun(NUZLOCKE_RUN.id)
+        verify(runService, times(1)).getRun(run.id)
     }
 
     @Test
     fun loadAuthenticatedRun_runDoesNotExist() {
-        whenever(runService.getRun(NUZLOCKE_RUN.id)).thenReturn(null)
+        whenever(runService.getRun(run.id)).thenReturn(null)
 
         assertThat(assertThrows<NotFoundException> {
-            authenticator.loadAuthenticatedRun(NUZLOCKE_RUN.id, NUZLOCKE_RUN.userName)
+            authenticator.loadAuthenticatedRun(run.id, run.userName)
         }.message).isEqualTo(ErrorMessages.RUN_NOT_FOUND.message)
 
-        verify(runService, times(1)).getRun(NUZLOCKE_RUN.id)
+        verify(runService, times(1)).getRun(run.id)
     }
 
 }

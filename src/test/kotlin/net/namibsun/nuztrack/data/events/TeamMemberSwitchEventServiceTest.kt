@@ -1,32 +1,26 @@
 package net.namibsun.nuztrack.data.events
 
 import net.namibsun.nuztrack.constants.enums.TeamMemberSwitchType
-import net.namibsun.nuztrack.data.NUZLOCKE_RUN
-import net.namibsun.nuztrack.data.TEAM_MEMBER
+import net.namibsun.nuztrack.testbuilders.model.NuzlockeRunBuilder
+import net.namibsun.nuztrack.testbuilders.model.TeamMemberBuilder
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import org.mockito.AdditionalAnswers
 import org.mockito.kotlin.*
 
 class TeamMemberSwitchEventServiceTest {
     private val repository: EventRepository = mock()
     private val service = TeamMemberSwitchEventService(repository)
 
-    private val events = listOf<Event>(
-            TeamMemberSwitchEvent(NUZLOCKE_RUN, "Pallet Town", TEAM_MEMBER, TeamMemberSwitchType.ADD),
-            TeamMemberSwitchEvent(NUZLOCKE_RUN, "Pokemon League", TEAM_MEMBER, TeamMemberSwitchType.REMOVE)
-    )
-
     @Test
     fun createTeamMemberSwitchEvent() {
-        whenever(repository.save(any<TeamMemberSwitchEvent>()))
-                .then(AdditionalAnswers.returnsFirstArg<TeamMemberSwitchEvent>())
+        whenever(repository.save(any<TeamMemberSwitchEvent>())).thenAnswer { it.getArgument(0) }
 
-        val teamSwitch = service.createTeamMemberSwitchEvent(
-                NUZLOCKE_RUN, "Pallet Town", TEAM_MEMBER, TeamMemberSwitchType.ADD
-        )
+        val run = NuzlockeRunBuilder().build()
+        val member = TeamMemberBuilder().build()
 
-        assertThat(teamSwitch.teamMember).isEqualTo(TEAM_MEMBER)
+        val teamSwitch = service.createTeamMemberSwitchEvent(run, "Pallet Town", member, TeamMemberSwitchType.ADD)
+
+        assertThat(teamSwitch.teamMember).isEqualTo(member)
         assertThat(teamSwitch.switchType).isEqualTo(TeamMemberSwitchType.ADD)
         verify(repository, times(1)).save(any<TeamMemberSwitchEvent>())
     }

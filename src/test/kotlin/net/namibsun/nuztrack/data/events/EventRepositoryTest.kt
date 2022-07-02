@@ -1,8 +1,10 @@
 package net.namibsun.nuztrack.data.events
 
 import net.namibsun.nuztrack.constants.enums.EventType
-import net.namibsun.nuztrack.data.NUZLOCKE_RUN
 import net.namibsun.nuztrack.data.NuzlockeRunRepository
+import net.namibsun.nuztrack.testbuilders.model.NuzlockeRunBuilder
+import net.namibsun.nuztrack.testbuilders.model.events.MilestoneEventBuilder
+import net.namibsun.nuztrack.testbuilders.model.events.NoteEventBuilder
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -25,24 +27,26 @@ class EventRepositoryTest {
 
     @Test
     fun findAllByEventType() {
-        val run = runRepository.save(NUZLOCKE_RUN)
+        val run = runRepository.save(NuzlockeRunBuilder().build())
 
-        repository.save(NoteEvent(run, "A", "Hello World"))
-        repository.save(MilestoneEvent(run, "B", "Badge 1"))
-        repository.saveAndFlush(MilestoneEvent(run, "C", "Badge 2"))
+        val note = repository.save(NoteEventBuilder().nuzlockeRun(run).build())
+        val milestone = repository.save(MilestoneEventBuilder().nuzlockeRun(run).build())
+        repository.saveAndFlush(MilestoneEventBuilder().nuzlockeRun(run).build())
 
         assertThat(repository.findAllByEventTypeOrderByTimestamp(EventType.EVOLUTION).size).isEqualTo(0)
         assertThat(repository.findAllByEventTypeOrderByTimestamp(EventType.NOTE).size).isEqualTo(1)
         assertThat(repository.findAllByEventTypeOrderByTimestamp(EventType.MILESTONE).size).isEqualTo(2)
         assertThat((repository.findAllByEventTypeOrderByTimestamp(EventType.NOTE)[0] as NoteEvent).text)
-                .isEqualTo("Hello World")
+                .isEqualTo(note.text)
+        assertThat((repository.findAllByEventTypeOrderByTimestamp(EventType.MILESTONE)[0] as MilestoneEvent).milestone)
+                .isEqualTo(milestone.milestone)
     }
 
     @Test
     @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
     fun eventsAccessibleByRun() {
-        val run = runRepository.save(NUZLOCKE_RUN)
-        eventRepository.save(NoteEvent(run, "A", "A"))
+        val run = runRepository.save(NuzlockeRunBuilder().build())
+        eventRepository.save(NoteEventBuilder().nuzlockeRun(run).build())
 
         TestTransaction.flagForCommit()
         TestTransaction.end()
@@ -55,11 +59,11 @@ class EventRepositoryTest {
 
     @Test
     fun timestampGeneration() {
-        val run = runRepository.save(NUZLOCKE_RUN)
-        val one = repository.save(NoteEvent(run, "A", "A"))
+        val run = runRepository.save(NuzlockeRunBuilder().build())
+        val one = repository.save(NoteEventBuilder().nuzlockeRun(run).build())
         Thread.sleep(1000)
-        val two = repository.save(NoteEvent(run, "B", "B"))
-        val three = repository.save(NoteEvent(run, "C", "C"))
+        val two = repository.save(NoteEventBuilder().nuzlockeRun(run).build())
+        val three = repository.save(NoteEventBuilder().nuzlockeRun(run).build())
 
         val deltaOne = two.timestamp.time - one.timestamp.time
         val deltaTwo = three.timestamp.time - two.timestamp.time
@@ -69,9 +73,9 @@ class EventRepositoryTest {
 
     @Test
     fun findAllByNuzlockeRunId() {
-        val run = runRepository.save(NUZLOCKE_RUN)
-        eventRepository.save(NoteEvent(run, "A", "A"))
-        eventRepository.save(NoteEvent(run, "A", "A"))
+        val run = runRepository.save(NuzlockeRunBuilder().build())
+        eventRepository.save(NoteEventBuilder().nuzlockeRun(run).build())
+        eventRepository.save(NoteEventBuilder().nuzlockeRun(run).build())
 
         assertThat(repository.findAllByNuzlockeRunIdOrderByTimestamp(run.id).size).isEqualTo(2)
         assertThat(repository.findAllByNuzlockeRunIdOrderByTimestamp(1000).size).isEqualTo(0)

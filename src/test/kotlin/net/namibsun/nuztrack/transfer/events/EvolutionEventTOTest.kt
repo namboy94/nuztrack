@@ -1,8 +1,6 @@
 package net.namibsun.nuztrack.transfer.events
 
-import net.namibsun.nuztrack.data.NUZLOCKE_RUN
-import net.namibsun.nuztrack.data.TEAM_MEMBER
-import net.namibsun.nuztrack.data.events.EvolutionEvent
+import net.namibsun.nuztrack.testbuilders.model.events.EvolutionEventBuilder
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -10,7 +8,7 @@ import org.junit.jupiter.api.Test
 internal class EvolutionEventTOTest {
     @Test
     fun testConverting() {
-        val event = EvolutionEvent(NUZLOCKE_RUN, "A", TEAM_MEMBER, 50, 1, 2)
+        val event = EvolutionEventBuilder().build()
         val converted = EvolutionEventTO.fromEvolutionEvent(event)
         assertThat(converted.event.id).isEqualTo(event.id)
         assertThat(converted.teamMemberId).isEqualTo(event.teamMember.id)

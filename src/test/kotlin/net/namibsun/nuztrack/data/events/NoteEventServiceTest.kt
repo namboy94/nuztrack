@@ -1,27 +1,23 @@
 package net.namibsun.nuztrack.data.events
 
-import net.namibsun.nuztrack.data.NUZLOCKE_RUN
+import net.namibsun.nuztrack.testbuilders.model.NuzlockeRunBuilder
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import org.mockito.AdditionalAnswers
 import org.mockito.kotlin.*
 
 class NoteEventServiceTest {
     private val repository: EventRepository = mock()
     private val service = NoteEventService(repository)
 
-    private val events = listOf<Event>(
-            NoteEvent(NUZLOCKE_RUN, "Pallet Town", "Hello World"),
-            NoteEvent(NUZLOCKE_RUN, "Pokemon League", "Goodbye")
-    )
-
     @Test
     fun createNoteEvent() {
-        whenever(repository.save(any<NoteEvent>())).then(AdditionalAnswers.returnsFirstArg<NoteEvent>())
+        whenever(repository.save(any<NoteEvent>())).thenAnswer { it.getArgument(0) }
 
-        val note = service.createNoteEvent(NUZLOCKE_RUN, "Pallet Town", "Game Start")
+        val run = NuzlockeRunBuilder().build()
+        val note = service.createNoteEvent(run, "Pallet Town", "Game Start")
 
         assertThat(note.location).isEqualTo("Pallet Town")
+        assertThat(note.text).isEqualTo("Game Start")
         verify(repository, times(1)).save(any<NoteEvent>())
     }
 }

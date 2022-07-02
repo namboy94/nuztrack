@@ -9,4 +9,9 @@ class DateFormatterTest {
     fun testFormattingDate() {
         assertThat(formatDateToIsoString(Date(1584239133273))).isEqualTo("2020-03-15T02:25:33.273Z")
     }
+
+    @Test
+    fun testParsingDateString() {
+        assertThat(parseDateFromIsoString("2020-03-15T02:25:33.273Z")).isEqualTo(Date(1584239133273))
+    }
 }

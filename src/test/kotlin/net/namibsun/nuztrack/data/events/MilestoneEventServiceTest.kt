@@ -1,34 +1,20 @@
 package net.namibsun.nuztrack.data.events
 
-import net.namibsun.nuztrack.constants.enums.EventType
-import net.namibsun.nuztrack.data.NUZLOCKE_RUN
+import net.namibsun.nuztrack.testbuilders.model.NuzlockeRunBuilder
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import org.mockito.AdditionalAnswers
 import org.mockito.kotlin.*
 
 class MilestoneEventServiceTest {
+    private val run = NuzlockeRunBuilder().build()
     private val repository: EventRepository = mock()
     private val service = MilestoneEventService(repository)
 
-    private val events = listOf<Event>(
-            MilestoneEvent(NUZLOCKE_RUN, "Pallet Town", "Pokedex"),
-            MilestoneEvent(NUZLOCKE_RUN, "Pokemon League", "Champion")
-    )
-
-    @Test
-    fun getAllEvents() {
-        whenever(repository.findAllByEventTypeAndNuzlockeRunIdOrderByTimestamp(EventType.MILESTONE, 1))
-                .thenReturn(events)
-        assertThat(service.getMilestoneEvents(1)).isEqualTo(events)
-        verify(repository, times(1)).findAllByEventTypeAndNuzlockeRunIdOrderByTimestamp(EventType.MILESTONE, 1)
-    }
-
     @Test
     fun createMilestoneEvent() {
-        whenever(repository.save(any<MilestoneEvent>())).then(AdditionalAnswers.returnsFirstArg<MilestoneEvent>())
+        whenever(repository.save(any<MilestoneEvent>())).thenAnswer { it.getArgument(0) }
 
-        val milestone = service.createMilestoneEvent(NUZLOCKE_RUN, "Pallet Town", "Pokedex")
+        val milestone = service.createMilestoneEvent(run, "Pallet Town", "Pokedex")
 
         assertThat(milestone.location).isEqualTo("Pallet Town")
         assertThat(milestone.milestone).isEqualTo("Pokedex")

@@ -1,18 +1,14 @@
 package net.namibsun.nuztrack.transfer
 
-import net.namibsun.nuztrack.constants.enums.Games
-import net.namibsun.nuztrack.constants.enums.Rules
 import net.namibsun.nuztrack.constants.enums.RunStatus
-import net.namibsun.nuztrack.data.NuzlockeRun
+import net.namibsun.nuztrack.testbuilders.model.NuzlockeRunBuilder
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 internal class NuzlockeRunTOTest {
     @Test
     fun testConverting() {
-        val run = NuzlockeRun(
-            100, "A", "B", Games.RED, listOf(Rules.DEATH), listOf("TEST"), RunStatus.ACTIVE
-        )
+        val run = NuzlockeRunBuilder().build()
         val converted = NuzlockeRunTO.fromNuzlockeRun(run)
         assertThat(converted.id).isEqualTo(run.id)
         assertThat(converted.userName).isEqualTo(run.userName)

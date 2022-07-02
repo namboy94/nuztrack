@@ -1,7 +1,14 @@
 package net.namibsun.nuztrack.data.events
 
-import net.namibsun.nuztrack.constants.enums.*
-import net.namibsun.nuztrack.data.*
+import net.namibsun.nuztrack.constants.enums.EventType
+import net.namibsun.nuztrack.data.NuzlockeRunRepository
+import net.namibsun.nuztrack.data.TeamMemberRepository
+import net.namibsun.nuztrack.testbuilders.model.NuzlockeRunBuilder
+import net.namibsun.nuztrack.testbuilders.model.TeamMemberBuilder
+import net.namibsun.nuztrack.testbuilders.model.events.DeathEventBuilder
+import net.namibsun.nuztrack.testbuilders.model.events.EncounterEventBuilder
+import net.namibsun.nuztrack.testbuilders.model.events.EvolutionEventBuilder
+import net.namibsun.nuztrack.testbuilders.model.events.TeamMemberSwitchEventBuilder
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -24,17 +31,14 @@ class TeamMemberRepositoryTest {
 
     @Test
     fun findAllForNuzlockeRun() {
-        val runOne = runRepository.save(NUZLOCKE_RUN)
-        val runTwo = runRepository.save(NuzlockeRun(
-                0, "AAAAAA", "AAA", Games.SILVER,
-                listOf(), listOf(), RunStatus.COMPLETED
-        ))
-        val encounterOne = eventRepository.save(EncounterEvent(runOne, "A", 1, 1, true))
-        val encounterTwo = eventRepository.save(EncounterEvent(runOne, "A", 1, 1, true))
-        val encounterThree = eventRepository.save(EncounterEvent(runTwo, "A", 1, 1, true))
-        repository.save(TeamMember(0, "NICK", 1, 1, Gender.MALE, Natures.BRAVE, 1, encounterOne))
-        repository.save(TeamMember(0, "NICK", 1, 1, Gender.MALE, Natures.BRAVE, 1, encounterTwo))
-        repository.save(TeamMember(0, "NICK", 1, 1, Gender.MALE, Natures.BRAVE, 1, encounterThree))
+        val runOne = runRepository.save(NuzlockeRunBuilder().id(1).build())
+        val runTwo = runRepository.save(NuzlockeRunBuilder().id(2).build())
+        val encounterOne = eventRepository.save(EncounterEventBuilder().nuzlockeRun(runOne).caught(true).build())
+        val encounterTwo = eventRepository.save(EncounterEventBuilder().nuzlockeRun(runOne).caught(true).build())
+        val encounterThree = eventRepository.save(EncounterEventBuilder().nuzlockeRun(runTwo).caught(true).build())
+        repository.save(TeamMemberBuilder().encounter(encounterOne).build())
+        repository.save(TeamMemberBuilder().encounter(encounterTwo).isBulbasaur().build())
+        repository.save(TeamMemberBuilder().encounter(encounterThree).isCharizard().build())
 
         assertThat(repository.findAll().size).isEqualTo(3)
         assertThat(repository.findAllByNuzlockeRunId(runOne.id).size).isEqualTo(2)
@@ -44,23 +48,27 @@ class TeamMemberRepositoryTest {
     @Test
     @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
     fun testAddEventsForTeamMember() {
-        val run = runRepository.save(NUZLOCKE_RUN)
-        val encounter = eventRepository.save(EncounterEvent(run, "A", 1, 1, true))
+        val run = runRepository.save(NuzlockeRunBuilder().build())
+        val encounter = eventRepository.save(EncounterEventBuilder().nuzlockeRun(run).caught(true).build())
+        val teamMember = repository.save(TeamMemberBuilder().encounter(encounter).isCharizard().build())
 
-        val teamMember = repository.save(TeamMember(
-                nickname = "B",
-                pokedexNumber = 1,
-                level = 2,
-                gender = Gender.MALE,
-                nature = Natures.BRAVE,
-                abilitySlot = 1,
-                encounter = encounter
-        ))
-        eventRepository.save(EvolutionEvent(run, "A", teamMember, 15, 1, 2))
-        eventRepository.save(EvolutionEvent(run, "B", teamMember, 30, 2, 3))
-        eventRepository.save(DeathEvent(run, "C", teamMember, 25, "C", "C"))
-        eventRepository.save(TeamMemberSwitchEvent(run, "X", teamMember, TeamMemberSwitchType.ADD))
-        eventRepository.save(TeamMemberSwitchEvent(run, "X", teamMember, TeamMemberSwitchType.REMOVE))
+        eventRepository.save(EvolutionEventBuilder()
+                .teamMember(teamMember)
+                .nuzlockeRun(run)
+                .newPokedexNumber(5)
+                .previousPokedexNumber(4)
+                .build()
+        )
+        eventRepository.save(EvolutionEventBuilder()
+                .teamMember(teamMember)
+                .nuzlockeRun(run)
+                .newPokedexNumber(6)
+                .previousPokedexNumber(5)
+                .build()
+        )
+        eventRepository.save(DeathEventBuilder().nuzlockeRun(run).teamMember(teamMember).build())
+        eventRepository.save(TeamMemberSwitchEventBuilder().nuzlockeRun(run).teamMember(teamMember).isAdd().build())
+        eventRepository.save(TeamMemberSwitchEventBuilder().nuzlockeRun(run).teamMember(teamMember).isRemove().build())
 
         TestTransaction.flagForCommit()
         TestTransaction.end()
@@ -87,9 +95,9 @@ class TeamMemberRepositoryTest {
 
     @Test
     fun getTeamMemberByIdAndNuzlockeRunId() {
-        val run = runRepository.save(NUZLOCKE_RUN)
-        val encounter = eventRepository.save(EncounterEvent(run, "A", 1, 1, true))
-        val member = repository.save(TeamMember(0, "NICK", 1, 1, Gender.MALE, Natures.BRAVE, 1, encounter))
+        val run = runRepository.save(NuzlockeRunBuilder().build())
+        val encounter = eventRepository.save(EncounterEventBuilder().nuzlockeRun(run).caught(true).build())
+        val member = repository.save(TeamMemberBuilder().encounter(encounter).isCharizard().build())
 
         assertThat(repository.getTeamMemberByIdAndNuzlockeRunId(run.id, member.id)).isEqualTo(member)
         assertThat(repository.getTeamMemberByIdAndNuzlockeRunId(1000, member.id)).isNull()

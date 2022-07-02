@@ -20,7 +20,7 @@ class MultiRunNuzlockeServiceTest {
     @Test
     fun linkRuns_withExisting() {
         whenever(repository.save(any<MultiRunNuzlocke>())).thenReturn(multiRun)
-        whenever(runRepository.save(any<NuzlockeRun>())).thenAnswer { args -> args.getArgument(0) }
+        whenever(runRepository.save(any<NuzlockeRun>())).thenAnswer { it.getArgument(0) }
 
         val result = service.linkRuns(multiRun.runs[0], newRun)
 
@@ -33,7 +33,7 @@ class MultiRunNuzlockeServiceTest {
     @Test
     fun linkRuns_withTwoNew() {
         whenever(repository.save(any<MultiRunNuzlocke>())).thenReturn(multiRun)
-        whenever(runRepository.save(any<NuzlockeRun>())).thenAnswer { args -> args.getArgument(0) }
+        whenever(runRepository.save(any<NuzlockeRun>())).thenAnswer { it.getArgument(0) }
 
         val result = service.linkRuns(otherRun, newRun)
 
