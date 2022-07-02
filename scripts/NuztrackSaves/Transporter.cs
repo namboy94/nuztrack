@@ -112,14 +112,13 @@ public class Transporter
             {
                 genderName = "Genderless";
             }
-
-            pokemon.Gender = (int) (Gender) Enum.Parse(typeof(Gender), genderName);
+            pokemon.SetGender((int) (Gender) Enum.Parse(typeof(Gender), genderName));
         }
 
         if (nuztrackPokemon.Nature != null)
         {
             var natureName = textInfo.ToTitleCase(nuztrackPokemon.Nature.ToLower());
-            pokemon.Nature = (int) (Nature) Enum.Parse(typeof(Nature), natureName);
+            pokemon.SetNature((int) (Nature) Enum.Parse(typeof(Nature), natureName));
         }
 
         if (nuztrackPokemon.AbilitySlot != null)
