@@ -11,6 +11,7 @@ import net.namibsun.nuztrack.data.NuzlockeRun
 import net.namibsun.nuztrack.data.events.EncounterEvent
 import net.namibsun.nuztrack.data.events.EncounterEventService
 import net.namibsun.nuztrack.transfer.PokemonSpeciesTO
+import net.namibsun.nuztrack.util.parseDateFromIsoString
 import net.namibsun.nuztrack.util.validateEmptyLocation
 import net.namibsun.nuztrack.util.validateLevel
 
@@ -31,6 +32,13 @@ data class EncounterEventTO(
                     event.teamMember?.id
             )
         }
+    }
+
+    fun toEncounterEvent(run: NuzlockeRun, keepId: Boolean = false): EncounterEvent {
+        return EncounterEvent(
+                run, event.location, pokedexNumber, level, caught, null,
+                if (keepId) event.id else 0, parseDateFromIsoString(event.timestamp)
+        )
     }
 }
 

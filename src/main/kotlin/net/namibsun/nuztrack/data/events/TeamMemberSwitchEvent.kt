@@ -5,6 +5,7 @@ import net.namibsun.nuztrack.constants.enums.TeamMemberSwitchType
 import net.namibsun.nuztrack.data.NuzlockeRun
 import net.namibsun.nuztrack.data.TeamMember
 import org.springframework.stereotype.Service
+import java.util.*
 import javax.persistence.*
 
 @Suppress("JpaDataSourceORMInspection")
@@ -18,9 +19,12 @@ class TeamMemberSwitchEvent(
         @JoinColumn(name = "team_member_id", nullable = false)
         var teamMember: TeamMember,
 
-        @Column val switchType: TeamMemberSwitchType
+        @Column val switchType: TeamMemberSwitchType,
 
-) : Event(nuzlockeRun = nuzlockeRun, location = location, eventType = EventType.TEAM_MEMBER_SWITCH)
+        id: Long = 0,
+        timestamp: Date = Date()
+
+) : Event(id = id, timestamp = timestamp, nuzlockeRun = nuzlockeRun, location = location, eventType = EventType.TEAM_MEMBER_SWITCH)
 
 @Service
 class TeamMemberSwitchEventService(val db: EventRepository) {
@@ -28,8 +32,10 @@ class TeamMemberSwitchEventService(val db: EventRepository) {
             nuzlockeRun: NuzlockeRun,
             location: String,
             teamMember: TeamMember,
-            switchType: TeamMemberSwitchType
+            switchType: TeamMemberSwitchType,
+            id: Long = 0,
+            timestamp: Date = Date()
     ): TeamMemberSwitchEvent {
-        return db.save(TeamMemberSwitchEvent(nuzlockeRun, location, teamMember, switchType))
+        return db.save(TeamMemberSwitchEvent(nuzlockeRun, location, teamMember, switchType, id, timestamp))
     }
 }

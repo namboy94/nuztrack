@@ -6,6 +6,7 @@ import net.namibsun.nuztrack.constants.enums.ErrorMessages
 import net.namibsun.nuztrack.data.NuzlockeRun
 import net.namibsun.nuztrack.data.events.MilestoneEvent
 import net.namibsun.nuztrack.data.events.MilestoneEventService
+import net.namibsun.nuztrack.util.parseDateFromIsoString
 import net.namibsun.nuztrack.util.validateEmptyLocation
 
 data class MilestoneEventTO(val event: EventTO, val milestone: String) {
@@ -13,6 +14,12 @@ data class MilestoneEventTO(val event: EventTO, val milestone: String) {
         fun fromMilestoneEvent(event: MilestoneEvent): MilestoneEventTO {
             return MilestoneEventTO(EventTO.fromEvent(event), event.milestone)
         }
+    }
+
+    fun toMilestoneEvent(run: NuzlockeRun, keepId: Boolean = false): MilestoneEvent {
+        return MilestoneEvent(
+                run, event.location, milestone, if (keepId) event.id else 0, parseDateFromIsoString(event.timestamp)
+        )
     }
 }
 
@@ -28,7 +35,7 @@ data class CreateMilestoneEventTO(
         if (existingMilestones.contains(milestone)) {
             throw ValidationException(ErrorMessages.MILESTONE_ALREADY_REACHED)
         }
-        
+
         val realMilestone = validMilestones.firstOrNull { it.name == milestone }
                 ?: throw ValidationException(ErrorMessages.INVALID_MILESTONE)
         if (realMilestone.location != location) {

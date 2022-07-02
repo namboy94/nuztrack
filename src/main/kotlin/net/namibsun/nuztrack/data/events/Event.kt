@@ -39,6 +39,10 @@ interface EventRepository : JpaRepository<Event, Long> {
 
 @Service
 class EventService(val db: EventRepository) {
+    fun addEvent(event: Event): Event {
+        return db.save(event)
+    }
+
     fun getAllEvents(runId: Long): List<Event> {
         return db.findAllByNuzlockeRunIdOrderByTimestamp(runId)
     }

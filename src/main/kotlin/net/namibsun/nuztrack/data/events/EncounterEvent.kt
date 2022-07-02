@@ -4,6 +4,7 @@ import net.namibsun.nuztrack.constants.enums.EventType
 import net.namibsun.nuztrack.data.NuzlockeRun
 import net.namibsun.nuztrack.data.TeamMember
 import org.springframework.stereotype.Service
+import java.util.*
 import javax.persistence.*
 
 @Suppress("JpaDataSourceORMInspection")
@@ -17,14 +18,19 @@ class EncounterEvent(
         @Column val caught: Boolean,
 
         @OneToOne(mappedBy = "encounter", cascade = [CascadeType.ALL])
-        var teamMember: TeamMember? = null
+        var teamMember: TeamMember? = null,
 
-) : Event(nuzlockeRun = nuzlockeRun, location = location, eventType = EventType.ENCOUNTER)
+        id: Long = 0,
+        timestamp: Date = Date()
+
+) : Event(id = id, timestamp = timestamp, nuzlockeRun = nuzlockeRun, location = location, eventType = EventType.ENCOUNTER)
 
 @Service
 class EncounterEventService(val db: EventRepository) {
     fun getEncounterEvents(runId: Long): List<EncounterEvent> {
-        return db.findAllByEventTypeAndNuzlockeRunIdOrderByTimestamp(EventType.ENCOUNTER, runId).map { it as EncounterEvent }
+        return db.findAllByEventTypeAndNuzlockeRunIdOrderByTimestamp(EventType.ENCOUNTER, runId).map {
+            it as EncounterEvent
+        }
     }
 
     fun createEncounterEvent(
@@ -32,9 +38,11 @@ class EncounterEventService(val db: EventRepository) {
             location: String,
             pokedexNumber: Int,
             level: Int,
-            caught: Boolean
+            caught: Boolean,
+            id: Long = 0,
+            timestamp: Date = Date()
     ): EncounterEvent {
-        return db.save(EncounterEvent(nuzlockeRun, location, pokedexNumber, level, caught))
+        return db.save(EncounterEvent(nuzlockeRun, location, pokedexNumber, level, caught, null, id, timestamp))
     }
 
     fun getLocationsWithEncounters(runId: Long): List<String> {

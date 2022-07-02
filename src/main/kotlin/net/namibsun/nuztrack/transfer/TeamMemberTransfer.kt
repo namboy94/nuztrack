@@ -1,6 +1,9 @@
 package net.namibsun.nuztrack.transfer
 
+import net.namibsun.nuztrack.constants.enums.Gender
+import net.namibsun.nuztrack.constants.enums.Natures
 import net.namibsun.nuztrack.data.TeamMember
+import net.namibsun.nuztrack.data.events.EncounterEvent
 
 data class TeamTO(val active: List<TeamMemberTO>, val boxed: List<TeamMemberTO>, val dead: List<TeamMemberTO>) {
     companion object {
@@ -44,5 +47,18 @@ data class TeamMemberTO(
                     teamMember.teamSwitches.map { it.id }
             )
         }
+    }
+
+    fun toTeamMember(encounter: EncounterEvent, keepId: Boolean = false): TeamMember {
+        return TeamMember(
+                if (keepId) id else 0,
+                nickname,
+                pokedexNumber,
+                level,
+                Gender.valueOfWithChecks(gender),
+                Natures.valueOfWithChecks(nature),
+                abilitySlot,
+                encounter
+        )
     }
 }

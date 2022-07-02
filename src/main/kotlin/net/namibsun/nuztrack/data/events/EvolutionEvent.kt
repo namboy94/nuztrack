@@ -4,6 +4,7 @@ import net.namibsun.nuztrack.constants.enums.EventType
 import net.namibsun.nuztrack.data.NuzlockeRun
 import net.namibsun.nuztrack.data.TeamMember
 import org.springframework.stereotype.Service
+import java.util.*
 import javax.persistence.*
 
 @Suppress("JpaDataSourceORMInspection")
@@ -19,9 +20,12 @@ class EvolutionEvent(
 
         @Column val level: Int,
         @Column val previousPokedexNumber: Int,
-        @Column val newPokedexNumber: Int
+        @Column val newPokedexNumber: Int,
 
-) : Event(nuzlockeRun = nuzlockeRun, location = location, eventType = EventType.EVOLUTION)
+        id: Long = 0,
+        timestamp: Date = Date()
+
+) : Event(id = id, timestamp = timestamp, nuzlockeRun = nuzlockeRun, location = location, eventType = EventType.EVOLUTION)
 
 @Service
 class EvolutionEventService(val db: EventRepository) {
@@ -30,10 +34,15 @@ class EvolutionEventService(val db: EventRepository) {
             location: String,
             teamMember: TeamMember,
             level: Int,
-            newPokedexNumber: Int
+            newPokedexNumber: Int,
+            previousPokedexNumber: Int? = null,
+            id: Long = 0,
+            timestamp: Date = Date()
     ): EvolutionEvent {
+        val previous = previousPokedexNumber ?: teamMember.pokedexNumber
+
         return db.save(EvolutionEvent(
-                nuzlockeRun, location, teamMember, level, teamMember.pokedexNumber, newPokedexNumber
+                nuzlockeRun, location, teamMember, level, previous, newPokedexNumber, id, timestamp
         ))
     }
 }

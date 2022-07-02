@@ -3,8 +3,10 @@ package net.namibsun.nuztrack.transfer.events
 import net.namibsun.nuztrack.constants.ValidationException
 import net.namibsun.nuztrack.constants.enums.ErrorMessages
 import net.namibsun.nuztrack.data.NuzlockeRun
+import net.namibsun.nuztrack.data.TeamMember
 import net.namibsun.nuztrack.data.TeamMemberService
 import net.namibsun.nuztrack.data.events.DeathEvent
+import net.namibsun.nuztrack.util.parseDateFromIsoString
 import net.namibsun.nuztrack.util.validateEmptyLocation
 import net.namibsun.nuztrack.util.validateLevel
 import net.namibsun.nuztrack.util.validateTeamMember
@@ -26,6 +28,13 @@ data class DeathEventTO(
                     event.description
             )
         }
+    }
+
+    fun toDeathEvent(run: NuzlockeRun, teamMember: TeamMember, keepId: Boolean = false): DeathEvent {
+        return DeathEvent(
+                run, event.location, teamMember, level, opponent, description,
+                if (keepId) event.id else 0, parseDateFromIsoString(event.timestamp)
+        )
     }
 }
 
