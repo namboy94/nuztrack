@@ -11,7 +11,9 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.*
+import org.springframework.core.io.ClassPathResource
 import org.springframework.http.HttpStatus
+import org.springframework.mock.web.MockMultipartFile
 import java.security.Principal
 
 internal class RunsControllerTest {
@@ -64,24 +66,18 @@ internal class RunsControllerTest {
 
     @Test
     fun createRun_valid() {
-        whenever(service.createRun(
-                runOne.userName,
-                runOne.name,
-                runOne.game,
-                runOne.rules,
-                runOne.customRules
-        )).thenReturn(runOne)
+        whenever(
+                service.createRun(
+                        runOne.userName, runOne.name, runOne.game, runOne.rules, runOne.customRules
+                )
+        ).thenReturn(runOne)
 
         val result = controller.createRun(runOneCreator, principal)
 
         assertThat(result.statusCode).isEqualTo(HttpStatus.CREATED)
         assertThat(result.body).isEqualTo(runOneTO)
         verify(service, times(1)).createRun(
-                runOne.userName,
-                runOne.name,
-                runOne.game,
-                runOne.rules,
-                runOne.customRules
+                runOne.userName, runOne.name, runOne.game, runOne.rules, runOne.customRules
         )
         verify(principal, times(1)).name
     }
@@ -165,5 +161,46 @@ internal class RunsControllerTest {
         verify(service, times(1)).getRun(runOne.id)
         verify(service, times(0)).deleteRun(runOne.id)
         assertThat(thrown.message).isEqualTo(ErrorMessages.NO_ACCESS_TO_RUN.message)
+    }
+
+    @Test
+    fun testUploadingSaveFile() {
+        whenever(service.assignSavefile(any(), any())).thenReturn(runOne)
+
+        val data = MockMultipartFile("yellow.srm", ClassPathResource("saves/yellow.srm").inputStream)
+        val result = controller.uploadSavefile(runOne.id, data, principal)
+
+        assertThat(result.statusCode).isEqualTo(HttpStatus.OK)
+        verify(service, times(1)).assignSavefile(runOne.id, data.bytes)
+    }
+
+    @Test
+    fun testUploadingSaveFile_unauthorized() {
+        whenever(principal.name).thenReturn("Gary")
+
+        val data = MockMultipartFile("yellow.srm", null)
+        assertThrows<UnauthorizedException> { controller.uploadSavefile(runOne.id, data, principal) }
+
+        verify(service, times(0)).assignSavefile(any(), any())
+    }
+
+    @Test
+    fun testDownloadingSaveFile() {
+        val data = MockMultipartFile("yellow.srm", ClassPathResource("saves/yellow.srm").inputStream)
+        val run = NuzlockeRunBuilder().saveFile(data.bytes).id(3).build()
+
+        whenever(service.getRun(run.id)).thenReturn(run)
+
+        val result = controller.downloadSavefile(run.id, principal)
+
+        assertThat(result.statusCode).isEqualTo(HttpStatus.OK)
+        assertThat(result.body!!).isEqualTo(data.bytes)
+        verify(service, times(1)).getRun(run.id)
+    }
+
+    @Test
+    fun testDownloadingSaveFile_unauthorized() {
+        whenever(principal.name).thenReturn("Gary")
+        assertThrows<UnauthorizedException> { controller.downloadSavefile(runOne.id, principal) }
     }
 }

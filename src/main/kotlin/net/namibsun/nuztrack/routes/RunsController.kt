@@ -9,6 +9,7 @@ import net.namibsun.nuztrack.util.Authenticator
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
 import java.security.Principal
 
 @RestController
@@ -48,5 +49,20 @@ class RunsController(val service: NuzlockeRunService) {
         this.authenticator.loadAuthenticatedRun(id, principal.name)
         this.service.deleteRun(id)
         return ResponseEntity.ok(null)
+    }
+
+    @PostMapping("/api/runs/{id}/savefile")
+    @ResponseBody
+    fun uploadSavefile(@PathVariable id: Long, savefile: MultipartFile, principal: Principal): ResponseEntity<Unit> {
+        val run = authenticator.loadAuthenticatedRun(id, principal.name)
+        service.assignSavefile(run.id, savefile.bytes)
+        return ResponseEntity.ok(null)
+    }
+
+    @PostMapping("/api/runs/{id}/savefile")
+    @ResponseBody
+    fun downloadSavefile(@PathVariable id: Long, principal: Principal): ResponseEntity<ByteArray> {
+        val run = authenticator.loadAuthenticatedRun(id, principal.name)
+        return ResponseEntity.ok(run.saveFile)
     }
 }

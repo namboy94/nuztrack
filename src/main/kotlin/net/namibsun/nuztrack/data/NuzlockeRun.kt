@@ -17,9 +17,7 @@ import javax.persistence.*
 @Entity
 @Table(name = "nuzlocke_run")
 class NuzlockeRun(
-        @Id
-        @GeneratedValue
-        val id: Long = 0, // TODO Outside of Constructor
+        @Id @GeneratedValue val id: Long = 0, // TODO Outside of Constructor
 
         @Column val userName: String,
 
@@ -33,13 +31,13 @@ class NuzlockeRun(
 
         @Enumerated(EnumType.STRING) val status: RunStatus,
 
-        @OneToMany(mappedBy = "nuzlockeRun", cascade = [CascadeType.ALL])
-        @OrderBy("timestamp")
+        @OneToMany(mappedBy = "nuzlockeRun", cascade = [CascadeType.ALL]) @OrderBy("timestamp")
         var events: MutableList<Event> = mutableListOf(),
 
         @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.PERSIST])
-        @JoinColumn(name = "multi_run_nuzlocke_id", nullable = true)
-        var multiRun: MultiRunNuzlocke? = null,
+        @JoinColumn(name = "multi_run_nuzlocke_id", nullable = true) var multiRun: MultiRunNuzlocke? = null,
+
+        @Column @Lob var saveFile: ByteArray? = null
 )
 
 @Repository
@@ -49,8 +47,7 @@ interface NuzlockeRunRepository : JpaRepository<NuzlockeRun, Long> {
 
 @Service
 class NuzlockeRunService(
-        val db: NuzlockeRunRepository,
-        val eventRepository: EventRepository,
+        val db: NuzlockeRunRepository, val eventRepository: EventRepository,
         val teamMemberRepository: TeamMemberRepository
 ) {
 
@@ -63,20 +60,14 @@ class NuzlockeRunService(
     }
 
     fun createRun(
-            userName: String,
-            name: String,
-            game: Games,
-            rules: List<Rules>,
-            customRules: List<String>
+            userName: String, name: String, game: Games, rules: List<Rules>, customRules: List<String>
     ): NuzlockeRun {
-        return db.save(NuzlockeRun(
-                userName = userName,
-                name = name,
-                game = game,
-                rules = rules,
-                customRules = customRules,
-                status = RunStatus.ACTIVE
-        ))
+        return db.save(
+                NuzlockeRun(
+                        userName = userName, name = name, game = game, rules = rules, customRules = customRules,
+                        status = RunStatus.ACTIVE
+                )
+        )
     }
 
     fun deleteRun(id: Long) {
@@ -88,5 +79,11 @@ class NuzlockeRunService(
         }
         encounters.map { eventRepository.delete(it) }
         db.deleteById(id)
+    }
+
+    fun assignSavefile(runId: Long, data: ByteArray): NuzlockeRun {
+        val run = db.getReferenceById(runId)
+        run.saveFile = data
+        return db.save(run)
     }
 }

@@ -31,8 +31,17 @@ public class Transporter
         var party = sourceGame.PartyData;
         var sourceBox = sourceGame.BoxData;
         var targetBox = targetGame.BoxData;
+        
         FillBoxWithParty(sourceBox, party);
-        FillTargetBoxAndConvert(targetGame.PKMType, targetBox, sourceBox);
+        var transferTargets = new List<PKM>();
+        foreach (var pokemon in sourceBox)
+        {
+            if (pokemon.Species > 0)
+            {
+                transferTargets.Add(pokemon);
+            }
+        }
+        FillTargetBoxAndConvert(targetGame.PKMType, targetGame.Generation, targetBox, transferTargets);
         
         AdjustPartyToNuztrackSave(targetBox, targetGame);
         
@@ -61,14 +70,36 @@ public class Transporter
             }
     }
 
-    private void FillTargetBoxAndConvert(Type format, IList<PKM> targetBox, IList<PKM> sourceBox)
+    private void FillTargetBoxAndConvert(Type format, int targetGeneration, IList<PKM> targetBox, List<PKM> transferTargets)
     {
-        for (int i = 0; i < sourceBox.Count; i++)
+        for (int i = 0; i < targetBox.Count && transferTargets.Count > 0; i++)
         {
-            targetBox[i] = EntityConverter.ConvertToType(sourceBox[i], format, out _)!;
+            if (targetBox[i].Species > 0)
+            {
+                continue;
+            }
+
+            var sourcePokemon = transferTargets[0];
+            transferTargets.RemoveAt(0);
+            if (sourcePokemon.Generation < 3 && targetGeneration >= 3)
+            {
+                sourcePokemon = ConvertLegacyToModern(sourcePokemon);
+            }
+            targetBox[i] = EntityConverter.ConvertToType(sourcePokemon, format, out _)!;
         }
     }
-    
+
+    private PKM ConvertLegacyToModern(PKM pokemon)
+    {
+        var gen3 = new PK3();
+        gen3.CurrentLevel = pokemon.CurrentLevel;
+        gen3.Species = pokemon.Species;
+        gen3.Ball = pokemon.Ball;
+        gen3.Nickname = pokemon.Nickname;
+        gen3.Gender = pokemon.Gender;
+        return gen3;
+    }
+
     private void AdjustPartyToNuztrackSave(IList<PKM> party, SaveFile targetGame)
     {
         for (var i = 0; i < party.Count; i++)
@@ -76,6 +107,7 @@ public class Transporter
             var pokemon = party[i];
             if (pokemon.Species == 0)
             {
+                party[i] = targetGame.BlankPKM;
                 continue;
             }
             AdjustPokemonToNuztrackSave(pokemon);

@@ -12,15 +12,11 @@ import net.namibsun.nuztrack.transfer.CreateNuzlockeRunTO
 import net.namibsun.nuztrack.transfer.NuzlockeRunTO
 
 data class NuzlockeRunBuilder(
-        var id: Long = 1,
-        var userName: String = "Ash Ketchum",
-        var name: String = "My First Nuzlocke",
-        var game: Games = Games.FIRERED,
-        var rules: List<Rules> = Rules.defaultRules(),
-        var customRules: List<String> = listOf("Meowth has 9 lives"),
-        var status: RunStatus = RunStatus.ACTIVE,
-        var events: MutableList<Event> = mutableListOf(),
-        var multiRun: MultiRunNuzlocke? = null,
+        var id: Long = 1, var userName: String = "Ash Ketchum", var name: String = "My First Nuzlocke",
+        var game: Games = Games.FIRERED, var rules: List<Rules> = Rules.defaultRules(),
+        var customRules: List<String> = listOf("Meowth has 9 lives"), var status: RunStatus = RunStatus.ACTIVE,
+        var events: MutableList<Event> = mutableListOf(), var multiRun: MultiRunNuzlocke? = null,
+        var saveFile: List<Byte>? = null
 ) {
     fun id(id: Long) = apply { this.id = id }
     fun userName(userName: String) = apply { this.userName = userName }
@@ -31,8 +27,12 @@ data class NuzlockeRunBuilder(
     fun status(status: RunStatus) = apply { this.status = status }
     fun events(events: MutableList<Event>) = apply { this.events = events }
     fun multiRun(multiRun: MultiRunNuzlocke) = apply { this.multiRun = multiRun }
+    fun saveFile(saveFile: ByteArray) = apply { this.saveFile = saveFile.toList() }
+
     fun build(): NuzlockeRun {
-        val run = NuzlockeRun(id, userName, name, game, rules, customRules, status, events, multiRun)
+        val run = NuzlockeRun(
+                id, userName, name, game, rules, customRules, status, events, multiRun, saveFile?.toByteArray()
+        )
         run.events.map { it.nuzlockeRun = run }
         return run
     }
@@ -47,17 +47,15 @@ data class NuzlockeRunBuilder(
         val teamMemberThree = TeamMemberBuilder().nickname("Three").encounter(
                 EncounterEventBuilder().caught(true).build()
         ).build()
-        this.events.addAll(mutableListOf(
-                teamMemberOne.encounter,
-                teamMemberTwo.encounter,
-                teamMemberThree.encounter,
-                DeathEventBuilder().teamMember(teamMemberThree).build(),
-                EvolutionEventBuilder().teamMember(teamMemberOne).build(),
-                TeamMemberSwitchEventBuilder().teamMember(teamMemberOne).switchType(TeamMemberSwitchType.ADD)
-                        .build(),
-                NoteEventBuilder().build(),
-                MilestoneEventBuilder().build()
-        ))
+        this.events.addAll(
+                mutableListOf(
+                        teamMemberOne.encounter, teamMemberTwo.encounter, teamMemberThree.encounter,
+                        DeathEventBuilder().teamMember(teamMemberThree).build(),
+                        EvolutionEventBuilder().teamMember(teamMemberOne).build(),
+                        TeamMemberSwitchEventBuilder().teamMember(teamMemberOne).switchType(TeamMemberSwitchType.ADD)
+                                .build(), NoteEventBuilder().build(), MilestoneEventBuilder().build()
+                )
+        )
     }
 
     fun buildCreatorTO() = CreateNuzlockeRunTO(name, game.name, rules.map { it.name }, customRules)

@@ -1,4 +1,5 @@
 ﻿using CommandLine;
+using PKHeX.Core;
 
 namespace NuztrackSaves;
 
@@ -8,12 +9,18 @@ internal class NuztrackSaveModifier
     {
         CliOptions.Parse(args).WithParsed(options =>
         {
-            var transporter = new Transporter(
-                new NuztrackSave(options.RunFile), 
-                options.SourceFile, 
-                options.TargetFile
-            );
-            transporter.Transport();
+            if (options.Mode == "PRINT")
+            {
+                new SaveReader(options.SourceFile, options.TargetFile).printJson();
+            }
+            else
+            {
+                new Transporter(
+                    new NuztrackSave(options.RunFile!), 
+                    options.SourceFile, 
+                    options.TargetFile
+                ).Transport();
+            }
         });
     }
 }
