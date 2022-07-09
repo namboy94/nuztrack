@@ -167,7 +167,7 @@ internal class RunsControllerTest {
     fun testUploadingSaveFile() {
         whenever(service.assignSavefile(any(), any())).thenReturn(runOne)
 
-        val data = MockMultipartFile("yellow.srm", ClassPathResource("saves/yellow.srm").inputStream)
+        val data = MockMultipartFile("YELLOW.sav", ClassPathResource("saves/YELLOW.sav").inputStream)
         val result = controller.uploadSavefile(runOne.id, data, principal)
 
         assertThat(result.statusCode).isEqualTo(HttpStatus.OK)
@@ -186,7 +186,7 @@ internal class RunsControllerTest {
 
     @Test
     fun testDownloadingSaveFile() {
-        val data = MockMultipartFile("yellow.srm", ClassPathResource("saves/yellow.srm").inputStream)
+        val data = MockMultipartFile("YELLOW.sav", ClassPathResource("saves/YELLOW.sav").inputStream)
         val run = NuzlockeRunBuilder().saveFile(data.bytes).id(3).build()
 
         whenever(service.getRun(run.id)).thenReturn(run)
