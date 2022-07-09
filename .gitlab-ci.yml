@@ -32,6 +32,7 @@ test_backend:
   stage: test
   tags: [ docker ]
   script:
+    - export DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
     - mvn -B clean verify
     - cat target/site/jacoco/index.html | grep -o 'Total[^%]*%'
   coverage: '/Total.*?([0-9]{1,3})%/'
