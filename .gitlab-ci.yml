@@ -21,7 +21,7 @@ compile_dotnet_script:
   tags: [ docker ]
   script:
     - cd scripts/NuztrackSaves
-    - dotnet build
+    - dotnet publish
   artifacts:
     paths:
       - scripts/NuztrackSaves/bin
