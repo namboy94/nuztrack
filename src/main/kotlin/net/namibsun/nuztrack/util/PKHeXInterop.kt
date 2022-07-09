@@ -13,7 +13,7 @@ fun readPokemonDetailsWithPKHeX(sourceData: ByteArray): List<PKHeXPokemon>? {
     sourceFile.writeBytes(sourceData)
 
     val call = ProcessBuilder(
-            "dotnet", "run", "--project", "scripts/NuztrackSaves",
+            "scripts/NuztrackSaves/bin/Debug/net6.0/NuztrackSaves",
             "--mode", "PRINT",
             "--source", sourceFile.absolutePath,
             "--target", targetFile.absolutePath
@@ -46,7 +46,7 @@ fun transferRunWithPKHeX(sourceData: ByteArray, targetData: ByteArray, nuztrackE
     jacksonObjectMapper().writeValue(exportFile, nuztrackExport)
 
     val call = ProcessBuilder(
-            "dotnet", "run", "--project", "scripts/NuztrackSaves",
+            "scripts/NuztrackSaves/bin/Debug/net6.0/NuztrackSaves",
             "--mode", "TRANSPORT",
             "--source", sourceFile.absolutePath,
             "--target", targetFile.absolutePath,

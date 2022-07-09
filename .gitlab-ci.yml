@@ -1,5 +1,6 @@
 stages:
   - mirror
+  - prepare
   - test
   - deploy
 
@@ -13,6 +14,18 @@ github_mirror:
     - chmod 0600 ~/.ssh/id_rsa
   script:
     - git-mirror-pusher git@github.com:namboy94/nuztrack.git main kotlin
+
+compile_dotnet_script:
+  image: mcr.microsoft.com/dotnet/sdk:6.0
+  stage: prepare
+  tags: [ docker ]
+  script:
+    - cd scripts/NuztrackSaves
+    - dotnet build
+  artifacts:
+    paths:
+      - scripts/NuztrackSaves/bin
+    expire_in: 1 day
 
 test_backend:
   image: maven:3-openjdk-18
