@@ -57,10 +57,10 @@ class RunsController(val service: NuzlockeRunService, val teamMemberService: Tea
 
     @PostMapping("/api/runs/{id}/savefile")
     @ResponseBody
-    fun uploadSavefile(@PathVariable id: Long, savefile: MultipartFile, principal: Principal): ResponseEntity<Unit> {
+    fun uploadSavefile(@PathVariable id: Long, @RequestParam("file") file: MultipartFile, principal: Principal): ResponseEntity<Unit> {
         val run = authenticator.loadAuthenticatedRun(id, principal.name)
 
-        val savefileTeamMembers = readPokemonDetailsWithPKHeX(savefile.bytes)
+        val savefileTeamMembers = readPokemonDetailsWithPKHeX(file.bytes)
                 ?: throw ValidationException(ErrorMessages.BAD_SAVE)
         val existingTeamMembers = teamMemberService.getAllTeamMembers(run.id).associateBy { it.nickname }
 
@@ -68,7 +68,7 @@ class RunsController(val service: NuzlockeRunService, val teamMemberService: Tea
             teamMemberService.setLevel(existingTeamMembers[it.nickName]!!.id, it.level)
         }
 
-        service.assignSavefile(run.id, savefile.bytes)
+        service.assignSavefile(run.id, file.bytes)
         return ResponseEntity.ok(null)
     }
 

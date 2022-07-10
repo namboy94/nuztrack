@@ -7,6 +7,7 @@ import net.namibsun.nuztrack.constants.enums.RunStatus
 import net.namibsun.nuztrack.data.events.EncounterEvent
 import net.namibsun.nuztrack.data.events.Event
 import net.namibsun.nuztrack.data.events.EventRepository
+import org.hibernate.annotations.Type
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
@@ -37,7 +38,10 @@ class NuzlockeRun(
         @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.PERSIST])
         @JoinColumn(name = "multi_run_nuzlocke_id", nullable = true) var multiRun: MultiRunNuzlocke? = null,
 
-        @Column @Lob var saveFile: ByteArray? = null
+        @Column
+        @Type(type = "org.hibernate.type.BinaryType")
+        @Lob
+        var saveFile: ByteArray? = null
 )
 
 @Repository

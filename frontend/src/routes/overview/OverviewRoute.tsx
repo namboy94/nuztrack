@@ -44,6 +44,10 @@ export function OverviewRoute(props: RunRouteProps) {
                 onClick={() => exportRun(run.id)}
                 variant="contained"
             >Export</Button>
+            <Button
+                onClick={() => uploadSave(run.id)}
+                variant="contained"
+            >Upload Save</Button>
             <NextGameDialog {...nextGameDialogProps}/>
         </>
     )
@@ -60,4 +64,24 @@ function exportRun(runId: number) {
             a.click()
         }
     })
+}
+
+function uploadSave(runId: number) {
+    const input = document.createElement("input")
+    input.type = "file"
+
+    input.onchange = e => {
+        console.log(JSON.stringify(e))
+        console.log(input.files!![0])
+
+        const formData = new FormData()
+        formData.append("file", input.files!![0])
+        axios.post(`/api/runs/${runId}/savefile`, formData, {
+            headers: {"Content-Type": "multipart/form-data"}
+        }).subscribe({
+            error: e => console.log(JSON.stringify(e)),
+            complete: () => console.log("Complete")
+        })
+    }
+    input.click()
 }
