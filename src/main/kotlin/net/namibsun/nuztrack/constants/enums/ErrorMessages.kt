@@ -40,5 +40,6 @@ enum class ErrorMessages(val message: String) {
     HAS_GENDER_BUT_OLD_GAME("A gender was provided, but this game does not support these."),
     NICKNAME_ALREADY_USED("This nickname has already been used"),
     INVALID_MULTI_RUN_OPTION("This option is not a valid multi-run option"),
-    MULTI_RUN_BACKWARDS("A multi-run can only go to newer generations, not older ones")
+    MULTI_RUN_BACKWARDS("A multi-run can only go to newer generations, not older ones"),
+    BAD_SAVE("The provided save file is invalid")
 }

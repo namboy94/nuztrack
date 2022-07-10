@@ -1,11 +1,15 @@
 package net.namibsun.nuztrack.routes
 
+import net.namibsun.nuztrack.constants.ValidationException
+import net.namibsun.nuztrack.constants.enums.ErrorMessages
 import net.namibsun.nuztrack.constants.enums.Games
 import net.namibsun.nuztrack.constants.enums.Rules
 import net.namibsun.nuztrack.data.NuzlockeRunService
+import net.namibsun.nuztrack.data.TeamMemberService
 import net.namibsun.nuztrack.transfer.CreateNuzlockeRunTO
 import net.namibsun.nuztrack.transfer.NuzlockeRunTO
 import net.namibsun.nuztrack.util.Authenticator
+import net.namibsun.nuztrack.util.readPokemonDetailsWithPKHeX
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -13,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile
 import java.security.Principal
 
 @RestController
-class RunsController(val service: NuzlockeRunService) {
+class RunsController(val service: NuzlockeRunService, val teamMemberService: TeamMemberService) {
 
     val authenticator = Authenticator(service)
 
@@ -55,6 +59,15 @@ class RunsController(val service: NuzlockeRunService) {
     @ResponseBody
     fun uploadSavefile(@PathVariable id: Long, savefile: MultipartFile, principal: Principal): ResponseEntity<Unit> {
         val run = authenticator.loadAuthenticatedRun(id, principal.name)
+
+        val savefileTeamMembers = readPokemonDetailsWithPKHeX(savefile.bytes)
+                ?: throw ValidationException(ErrorMessages.BAD_SAVE)
+        val existingTeamMembers = teamMemberService.getAllTeamMembers(run.id).associateBy { it.nickname }
+
+        savefileTeamMembers.filter { existingTeamMembers.containsKey(it.nickName) }.map {
+            teamMemberService.setLevel(existingTeamMembers[it.nickName]!!.id, it.level)
+        }
+
         service.assignSavefile(run.id, savefile.bytes)
         return ResponseEntity.ok(null)
     }

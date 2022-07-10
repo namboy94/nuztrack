@@ -5,11 +5,14 @@ import net.namibsun.nuztrack.constants.UnauthorizedException
 import net.namibsun.nuztrack.constants.ValidationException
 import net.namibsun.nuztrack.constants.enums.ErrorMessages
 import net.namibsun.nuztrack.data.NuzlockeRunService
+import net.namibsun.nuztrack.data.TeamMemberService
 import net.namibsun.nuztrack.testbuilders.model.NuzlockeRunBuilder
+import net.namibsun.nuztrack.testbuilders.model.TeamMemberBuilder
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable
 import org.mockito.kotlin.*
 import org.springframework.core.io.ClassPathResource
 import org.springframework.http.HttpStatus
@@ -20,7 +23,8 @@ internal class RunsControllerTest {
 
     private val principal: Principal = mock()
     private val service: NuzlockeRunService = mock()
-    private val controller = RunsController(service)
+    private val teamMemberService: TeamMemberService = mock()
+    private val controller = RunsController(service, teamMemberService)
 
     private val runOneBuilder = NuzlockeRunBuilder().id(1)
     private val runOne = runOneBuilder.build()
@@ -163,15 +167,37 @@ internal class RunsControllerTest {
         assertThat(thrown.message).isEqualTo(ErrorMessages.NO_ACCESS_TO_RUN.message)
     }
 
+    @DisabledIfEnvironmentVariable(named = "NO_DOTNET", matches = "1")
     @Test
     fun testUploadingSaveFile() {
+        val team = listOf(
+                TeamMemberBuilder().id(1).level(100).nickname("Pika").build(),
+                TeamMemberBuilder().id(2).level(100).nickname("Bulba").build()
+        )
+
         whenever(service.assignSavefile(any(), any())).thenReturn(runOne)
+        whenever(teamMemberService.getAllTeamMembers(runOne.id)).thenReturn(team)
+        whenever(teamMemberService.setLevel(any(), any())).thenReturn(TeamMemberBuilder().build())
 
         val data = MockMultipartFile("YELLOW.sav", ClassPathResource("saves/YELLOW.sav").inputStream)
         val result = controller.uploadSavefile(runOne.id, data, principal)
 
         assertThat(result.statusCode).isEqualTo(HttpStatus.OK)
         verify(service, times(1)).assignSavefile(runOne.id, data.bytes)
+        verify(teamMemberService, times(1)).getAllTeamMembers(runOne.id)
+        verify(teamMemberService, times(2)).setLevel(any(), any())
+        verify(teamMemberService, times(1)).setLevel(1, 5)
+        verify(teamMemberService, times(1)).setLevel(2, 10)
+    }
+
+    @DisabledIfEnvironmentVariable(named = "NO_DOTNET", matches = "1")
+    @Test
+    fun testUploadingSaveFile_badfile() {
+        val data = MockMultipartFile("YELLOW.sav", ByteArray(0))
+
+        assertThat(assertThrows<ValidationException> {
+            controller.uploadSavefile(runOne.id, data, principal)
+        }.message).isEqualTo(ErrorMessages.BAD_SAVE.message)
     }
 
     @Test
