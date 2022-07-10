@@ -13,9 +13,11 @@ import net.namibsun.nuztrack.transfer.TeamTO
 import net.namibsun.nuztrack.transfer.events.EventLogTO
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable
 import org.springframework.core.io.ClassPathResource
 
-class PKHeXUtilTest {
+@DisabledIfEnvironmentVariable(named = "NO_DOTNET", matches = "1")
+class PKHeXInteropTest {
 
     private val memberBuilder = TeamMemberBuilder().setGame(Games.YELLOW)
     private val pika = memberBuilder.nickname("Pika").pokedexNumber(25).level(5).build()

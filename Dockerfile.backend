@@ -3,9 +3,10 @@ MAINTAINER Hermann Krumrey <hermann@krumreyh.com>
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt update && apt install -y npm openjdk-18-jdk kotlin maven && npm i -g redoc-cli swagger-cli
+RUN apt update && apt install -y npm openjdk-18-jdk kotlin maven dotnet-sdk-6.0 && npm i -g redoc-cli swagger-cli
 ADD . nuztrack
 RUN cd nuztrack/apidoc && bash bundle.sh && cp index.html ../src/main/resources/static/index.html
+RUN cd nuztrack/scripts/NuztrackSaves && dotnet publish -r linux-x64 --self-contained && mv bin/Release/net6.0/linux-x64 /NuztrackSaves
 RUN cd nuztrack && mvn package && mv target/*.jar /app.jar
 RUN rm -rf nuztrack
 

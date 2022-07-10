@@ -6,8 +6,13 @@ import net.namibsun.nuztrack.transfer.NuzlockeRunExportTO
 import net.namibsun.nuztrack.transfer.PKHeXPokemon
 import java.io.File
 
-const val scriptfile = "scripts/NuztrackSaves/bin/Debug/net6.0/linux-x64/NuztrackSaves"
-
+private fun getNuztrackSavesExecutable(): String {
+    return if (System.getenv("spring_profiles_active") == "PROD") {
+        "/NuztrackSaves"
+    } else {
+        "scripts/NuztrackSaves/bin/Debug/net6.0/linux-x64/NuztrackSaves"
+    }
+}
 
 fun readPokemonDetailsWithPKHeX(sourceData: ByteArray): List<PKHeXPokemon>? {
     val sourceFile = File.createTempFile("nuztrack-", "-src.sav")
@@ -16,7 +21,7 @@ fun readPokemonDetailsWithPKHeX(sourceData: ByteArray): List<PKHeXPokemon>? {
     sourceFile.writeBytes(sourceData)
 
     val call = ProcessBuilder(
-            scriptfile,
+            getNuztrackSavesExecutable(),
             "--mode", "PRINT",
             "--source", sourceFile.absolutePath,
             "--target", targetFile.absolutePath
@@ -49,7 +54,7 @@ fun transferRunWithPKHeX(sourceData: ByteArray, targetData: ByteArray, nuztrackE
     jacksonObjectMapper().writeValue(exportFile, nuztrackExport)
 
     val call = ProcessBuilder(
-            scriptfile,
+            getNuztrackSavesExecutable(),
             "--mode", "TRANSPORT",
             "--source", sourceFile.absolutePath,
             "--target", targetFile.absolutePath,

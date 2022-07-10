@@ -1,6 +1,5 @@
 stages:
   - mirror
-  - prepare
   - test
   - deploy
 
@@ -15,24 +14,12 @@ github_mirror:
   script:
     - git-mirror-pusher git@github.com:namboy94/nuztrack.git main kotlin
 
-compile_dotnet_script:
-  image: mcr.microsoft.com/dotnet/sdk:6.0
-  stage: prepare
-  tags: [ docker ]
-  script:
-    - cd scripts/NuztrackSaves
-    - dotnet publish -r linux-x64 --self-contained
-  artifacts:
-    paths:
-      - scripts/NuztrackSaves/bin
-    expire_in: 1 day
-
 test_backend:
   image: maven:3-openjdk-18
   stage: test
   tags: [ docker ]
   script:
-    - export DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
+    - export NO_DOTNET=1
     - mvn -B clean verify
     - cat target/site/jacoco/index.html | grep -o 'Total[^%]*%'
   coverage: '/Total.*?([0-9]{1,3})%/'
