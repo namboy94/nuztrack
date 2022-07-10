@@ -72,7 +72,7 @@ class RunsController(val service: NuzlockeRunService, val teamMemberService: Tea
         return ResponseEntity.ok(null)
     }
 
-    @PostMapping("/api/runs/{id}/savefile")
+    @GetMapping("/api/runs/{id}/savefile")
     @ResponseBody
     fun downloadSavefile(@PathVariable id: Long, principal: Principal): ResponseEntity<ByteArray> {
         val run = authenticator.loadAuthenticatedRun(id, principal.name)
