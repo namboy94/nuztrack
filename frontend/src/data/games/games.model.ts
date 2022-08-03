@@ -42,3 +42,9 @@ export class GameLocationRegistry {
         return this.milestoneNameMapping.get(milestoneName) ?? null
     }
 }
+
+export const DEFAULT_GAME: Game = {
+    generation: 3,
+    key: "FIRERED",
+    title: "FireRed"
+}

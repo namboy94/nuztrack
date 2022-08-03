@@ -1,192 +1,171 @@
 import {act, renderHook} from "@testing-library/react";
-import {useCreateNewRunDialogProps} from "./CreateNewRunDialog.hooks";
-import {CreateNewRunDialogProps} from "../components/CreateNewRunDialog";
-import {NUZLOCKE_RUN, NUZLOCKE_RUN_CREATOR} from "../../../data/runs/runs.testconstants";
-import {runsService} from "../../../data/runs/runs.service";
+import {CreateNewRunDialogViewModel, useCreateNewRunDialogViewModel} from "./CreateNewRunDialog.hooks";
 import {of, throwError} from "rxjs";
 import {gamesService} from "../../../data/games/games.service";
 import {GAME_4, GAMES} from "../../../data/games/games.testconstants";
 import {rulesService} from "../../../data/rules/rules.service";
 import {RULES_DETAILS} from "../../../data/rules/rules.testconstants";
+import {getInteractions, getState} from "../../../util/viewmodel";
+import {runsService} from "../../../data/runs/runs.service";
+import {NUZLOCKE_RUN, NUZLOCKE_RUN_CREATOR} from "../../../data/runs/runs.testconstants";
+import {DEFAULT_GAME} from "../../../data/games/games.model";
 
 describe("useCreateNewRunDialogProps", () => {
 
     const notify = jest.fn()
 
-    function createMocksAndRender(): { current: [(() => void), CreateNewRunDialogProps] } {
+    afterEach(() => {
+        jest.resetAllMocks()
+    })
+
+    function createMocksAndRender(): { current: CreateNewRunDialogViewModel } {
         jest.spyOn(gamesService, "getGames$").mockReturnValue(of(GAMES))
         jest.spyOn(rulesService, "getRulesDetails$").mockReturnValue(of(RULES_DETAILS))
-        return renderHook(() => useCreateNewRunDialogProps(notify)).result
+        return renderHook(() => useCreateNewRunDialogViewModel(notify)).result
     }
 
-    it("should test the data loading", (done) => {
-        const props = createMocksAndRender().current[1]
-        expect(props.games).toEqual(GAMES)
-        expect(props.rulesDetails).toEqual(RULES_DETAILS)
+    it("should test the data loading", () => {
+        const state = getState(createMocksAndRender())
+        expect(state.allGames).toEqual(GAMES)
+        expect(state.rulesDetails).toEqual(RULES_DETAILS)
+        expect(state.loading).toBeFalsy()
         expect(gamesService.getGames$).toHaveBeenCalledTimes(1)
         expect(rulesService.getRulesDetails$).toHaveBeenCalledTimes(1)
-        done()
     })
 
-    it("should test opening the dialog", (done) => {
+    it("should test opening the dialog", () => {
         const result = createMocksAndRender()
-        let [openFn, props] = result.current
 
-        expect(props.open).toBeFalsy()
-
-        act(() => openFn())
-
-        props = result.current[1]
-        expect(props.open).toBeTruthy()
-
-        done()
+        expect(getState(result).open).toBeFalsy()
+        act(getInteractions(result).open)
+        expect(getState(result).open).toBeTruthy()
     })
-    it("should test closing the dialog", (done) => {
+    it("should test closing the dialog", () => {
         const result = createMocksAndRender()
-        let [openFn, props] = result.current
+        act(() => {
+            getInteractions(result).open()
+            getInteractions(result).onChangeName("TEST")
+        })
+        expect(getState(result).open).toBeTruthy()
+        expect(getState(result).name).toEqual("TEST")
+
+        act(() => getInteractions(result).onClose())
+
+        expect(getState(result).open).toBeFalsy()
+        expect(getState(result).name).toEqual("")
+    })
+    it("should test resetting state", () => {
+        const result = createMocksAndRender()
 
         act(() => {
-            openFn()
-            props.state.setName("TEST")
+            getInteractions(result).onChangeName("TEST")
+            getInteractions(result).onChangeGame(GAME_4)
+            getInteractions(result).toggleRule(true, "ABC")
+            getInteractions(result).onChangeCustomRules(["XYZ"])
         })
-        props = result.current[1]
-        expect(props.open).toBeTruthy()
-        expect(props.state.name).toEqual("TEST")
 
-        act(() => props.onClose())
-        props = result.current[1]
-        expect(props.open).toBeFalsy()
-        expect(props.state.name).toEqual("")
+        expect(getState(result).name).toEqual("TEST")
+        expect(getState(result).game).toEqual(GAME_4)
+        expect(getState(result).rules).toEqual([...RULES_DETAILS.defaultRules, "ABC"])
+        expect(getState(result).customRules).toEqual(["XYZ"])
 
-        done()
+        act(() => getInteractions(result).onClose())
+
+        expect(getState(result).name).toEqual("")
+        expect(getState(result).game).toEqual(DEFAULT_GAME)
+        expect(getState(result).rules).toEqual(RULES_DETAILS.defaultRules)
+        expect(getState(result).customRules).toEqual([])
     })
-    it("should test resetting state", (done) => {
-        const result = createMocksAndRender()
-        let props = result.current[1]
-
-        act(() => {
-            props.state.setName("TEST")
-            props.state.setGame(GAME_4)
-            props.state.setRules(["ABC"])
-            props.state.setCustomRules(["XYZ"])
-        })
-        props = result.current[1]
-        expect(props.state.name).toEqual("TEST")
-        expect(props.state.game).toEqual(GAME_4)
-        expect(props.state.rules).toEqual(["ABC"])
-        expect(props.state.customRules).toEqual(["XYZ"])
-
-        act(() => props.state.reset())
-        props = result.current[1]
-        expect(props.state.name).toEqual("")
-        expect(props.state.game).toEqual(GAMES[0])
-        expect(props.state.rules).toEqual(RULES_DETAILS.defaultRules)
-        expect(props.state.customRules).toEqual([])
-
-        done()
-    })
-    it("should test submitting successfully", (done) => {
+    it("should test submitting successfully", () => {
         jest.spyOn(runsService, "addRun$").mockReturnValue(of(NUZLOCKE_RUN))
 
         const result = createMocksAndRender()
-        let [openFn, props] = result.current
 
+        RULES_DETAILS.defaultRules.map(ruleKey => act(
+            () => getInteractions(result).toggleRule(false, ruleKey)
+        ))
         act(() => {
-            openFn()
-            props.state.setName(NUZLOCKE_RUN_CREATOR.name)
-            props.state.setGame(NUZLOCKE_RUN_CREATOR.game)
-            props.state.setRules(NUZLOCKE_RUN_CREATOR.rules)
-            props.state.setCustomRules(NUZLOCKE_RUN_CREATOR.customRules)
+            getInteractions(result).open()
+            getInteractions(result).onChangeName(NUZLOCKE_RUN_CREATOR.name)
+            getInteractions(result).onChangeGame(NUZLOCKE_RUN_CREATOR.game)
+            NUZLOCKE_RUN_CREATOR.rules.map(ruleKey => getInteractions(result).toggleRule(true, ruleKey))
+            getInteractions(result).onChangeCustomRules(NUZLOCKE_RUN_CREATOR.customRules)
         })
-        props = result.current[1]
-        expect(props.open).toBeTruthy()
-        expect(props.state.name).toEqual(NUZLOCKE_RUN_CREATOR.name)
-        expect(props.state.game).toEqual(NUZLOCKE_RUN_CREATOR.game)
-        expect(props.state.rules).toEqual(NUZLOCKE_RUN_CREATOR.rules)
-        expect(props.state.customRules).toEqual(NUZLOCKE_RUN_CREATOR.customRules)
 
-        act(() => props.submit())
-        props = result.current[1]
+        expect(getState(result).open).toBeTruthy()
+        expect(getState(result).name).toEqual(NUZLOCKE_RUN_CREATOR.name)
+        expect(getState(result).game).toEqual(NUZLOCKE_RUN_CREATOR.game)
+        expect(getState(result).rules).toEqual(NUZLOCKE_RUN_CREATOR.rules)
+        expect(getState(result).customRules).toEqual(NUZLOCKE_RUN_CREATOR.customRules)
 
-        expect(props.open).toBeFalsy()
-        expect(props.state.name).toEqual("")
-        expect(props.state.game).toEqual(GAMES[0])
-        expect(props.state.rules).toEqual(RULES_DETAILS.defaultRules)
-        expect(props.state.customRules).toEqual([])
+        act(() => getInteractions(result).submit())
+
+        expect(getState(result).open).toBeFalsy()
+        expect(getState(result).name).toEqual("")
+        expect(getState(result).game).toEqual(DEFAULT_GAME)
+        expect(getState(result).rules).toEqual(RULES_DETAILS.defaultRules)
+        expect(getState(result).customRules).toEqual([])
 
         expect(runsService.addRun$).toHaveBeenCalledTimes(1)
         expect(runsService.addRun$).toHaveBeenCalledWith(NUZLOCKE_RUN_CREATOR)
         expect(notify).toHaveBeenCalledTimes(1)
         expect(notify).toHaveBeenCalledWith(expect.anything(), "success")
-        done()
     })
 
-    it("should test submitting unsuccessfully", (done) => {
+    it("should test submitting unsuccessfully", () => {
         jest.spyOn(runsService, "addRun$").mockReturnValue(throwError(() => {
             throw {response: {data: {reason: "TEST"}}}
         }))
 
         const result = createMocksAndRender()
-        let [openFn, props] = result.current
 
         act(() => {
-            openFn()
+            getInteractions(result).open()
+            getInteractions(result).submit()
         })
-        props = result.current[1]
-        expect(props.open).toBeTruthy()
 
-        act(() => props.submit())
-        props = result.current[1]
-
-        expect(props.open).toBeTruthy()
-
+        expect(getState(result).open).toBeTruthy()
         expect(runsService.addRun$).toHaveBeenCalledTimes(1)
         expect(notify).toHaveBeenCalledTimes(1)
         expect(notify).toHaveBeenCalledWith("Failed to create Nuzlocke Run: 'TEST'", "error")
-        done()
     })
 
-    it("should not submit twice", (done) => {
+    it("should not submit twice", () => {
         jest.spyOn(runsService, "addRun$").mockReturnValue(of(NUZLOCKE_RUN))
 
         const result = createMocksAndRender()
-        let props = result.current[1]
+
+        RULES_DETAILS.defaultRules.map(ruleKey => act(
+            () => getInteractions(result).toggleRule(false, ruleKey)
+        ))
 
         act(() => {
-            props.state.setName(NUZLOCKE_RUN_CREATOR.name)
-            props.state.setGame(NUZLOCKE_RUN_CREATOR.game)
-            props.state.setRules(NUZLOCKE_RUN_CREATOR.rules)
-            props.state.setCustomRules(NUZLOCKE_RUN_CREATOR.customRules)
+            getInteractions(result).onChangeName(NUZLOCKE_RUN_CREATOR.name)
+            getInteractions(result).onChangeGame(NUZLOCKE_RUN_CREATOR.game)
+            NUZLOCKE_RUN_CREATOR.rules.map(ruleKey => getInteractions(result).toggleRule(true, ruleKey))
+            getInteractions(result).onChangeCustomRules(NUZLOCKE_RUN_CREATOR.customRules)
         })
-        props = result.current[1]
 
-        act(() => props.submit())
-        props = result.current[1]
-
-        act(() => props.submit())
-        props = result.current[1]
+        act(() => getInteractions(result).submit())
+        act(() => getInteractions(result).submit())
 
         expect(runsService.addRun$).toHaveBeenCalledTimes(1)
         expect(runsService.addRun$).toHaveBeenCalledWith(NUZLOCKE_RUN_CREATOR)
         expect(notify).toHaveBeenCalledTimes(1)
         expect(notify).toHaveBeenCalledWith(expect.anything(), "success")
-        done()
     })
 
-    it("should be initialized correctly", (done) => {
+    it("should be initialized correctly", () => {
         jest.spyOn(gamesService, "getGames$").mockReturnValue(of(undefined))
         jest.spyOn(rulesService, "getRulesDetails$").mockReturnValue(of(undefined))
-        let props = renderHook(() => useCreateNewRunDialogProps(notify)).result.current[1]
-        expect(props.state.game).toEqual({"generation": 1, "key": "RED", "title": "Red"})
-        expect(props.state.rules).toEqual([])
+        let result = renderHook(() => useCreateNewRunDialogViewModel(notify)).result
+        expect(getState(result).game).toEqual(DEFAULT_GAME)
+        expect(getState(result).rules).toEqual([])
 
         jest.spyOn(gamesService, "getGames$").mockReturnValue(of(GAMES))
         jest.spyOn(rulesService, "getRulesDetails$").mockReturnValue(of(RULES_DETAILS))
-        props = renderHook(() => useCreateNewRunDialogProps(notify)).result.current[1]
-        expect(props.state.game).toEqual(GAMES[0])
-        expect(props.state.rules).toEqual(RULES_DETAILS.defaultRules)
-
-        done()
+        result = renderHook(() => useCreateNewRunDialogViewModel(notify)).result
+        expect(getState(result).game).toEqual(DEFAULT_GAME)
+        expect(getState(result).rules).toEqual(RULES_DETAILS.defaultRules)
     })
-
 })

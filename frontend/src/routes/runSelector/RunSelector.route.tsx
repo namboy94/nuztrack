@@ -4,7 +4,7 @@ import * as React from "react";
 import AddIcon from '@mui/icons-material/Add';
 import {useDeleteRunDialogProps} from "./hooks/DeleteRunDialog.hooks";
 import {CreateNewRunDialog} from "./components/CreateNewRunDialog";
-import {useCreateNewRunDialogProps} from "./hooks/CreateNewRunDialog.hooks";
+import {useCreateNewRunDialogViewModel} from "./hooks/CreateNewRunDialog.hooks";
 import {RouteProps} from "../common/RouteProps";
 import {DeleteRunDialog} from "./components/DeleteRunDialog";
 import {useRunsTableProps} from "./hooks/RunsTable.hooks";
@@ -15,7 +15,7 @@ export function RunSelectorRoute(props: RouteProps) {
 
     const loading = useRunSelectorDataLoader()
     const [openDeleteDialog, deleteDialogProps] = useDeleteRunDialogProps(props.notify)
-    const [openCreateDialog, createDialogProps] = useCreateNewRunDialogProps(props.notify)
+    const createDialogProps = useCreateNewRunDialogViewModel(props.notify)
     const runsTableProps = useRunsTableProps(props.notify, openDeleteDialog)
 
     if (loading) {
@@ -28,7 +28,7 @@ export function RunSelectorRoute(props: RouteProps) {
                     variant="contained"
                     size={"large"}
                     startIcon={<AddIcon/>}
-                    onClick={openCreateDialog}>
+                    onClick={createDialogProps.interactions.open}>
                 Create New Nuzlocke Run
             </Button>
 
