@@ -1,6 +1,6 @@
 import axios from "axios-observable";
 import {NUZLOCKE_RUN_2_TO, NUZLOCKE_RUN_CREATOR_TO, NUZLOCKE_RUN_TO} from "./runs.testconstants";
-import {buildResponse} from "../../util/test/axios";
+import {buildResponse} from "../../util/axios";
 import {runsApi} from "./runs.api";
 
 describe("API Tests for /runs", () => {

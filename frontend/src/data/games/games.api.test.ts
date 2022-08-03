@@ -1,5 +1,5 @@
 import axios from "axios-observable";
-import {buildResponse} from "../../util/test/axios";
+import {buildResponse} from "../../util/axios";
 import {GAME_LOCATION_PALLET_TO, GAME_LOCATION_VIRIDIAN_TO, GAMES_TO} from "./games.testconstants";
 import {gamesApi} from "./games.api";
 

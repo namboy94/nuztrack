@@ -1,6 +1,6 @@
 import axios from "axios-observable";
 import {NATURES_TO, POKEDEX_TO} from "./pokedex.testconstants";
-import {buildResponse} from "../../util/test/axios";
+import {buildResponse} from "../../util/axios";
 import {pokedexApi} from "./pokedex.api";
 
 describe("PokedexApi", () => {

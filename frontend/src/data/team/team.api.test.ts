@@ -1,5 +1,5 @@
 import axios from "axios-observable";
-import {buildResponse} from "../../util/test/axios";
+import {buildResponse} from "../../util/axios";
 import {TEAM_TO} from "./team.testconstants";
 import {teamApi} from "./team.api";
 

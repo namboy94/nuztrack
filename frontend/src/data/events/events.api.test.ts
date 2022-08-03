@@ -1,5 +1,5 @@
 import axios from "axios-observable";
-import {buildResponse} from "../../util/test/axios";
+import {buildResponse} from "../../util/axios";
 import {
     CREATE_DEATH_EVENT_TO,
     CREATE_ENCOUNTER_EVENT_TO,
