@@ -47,11 +47,12 @@ describe("RunSelectorRoute", () => {
         })
 
         const nameInput = screen.getByTestId("name-input")
-        const createButton = screen.getByTestId("create-button")
+        const createButton = screen.getByTestId("submit-button")
         const gameInput = screen.getByTestId("game-input")
-        const customRulesInput = screen.getByTestId("custom-rules-input")
+        const customRulesInput = screen.getByTestId("freeform-list-input")
 
         fireEvent.focus(gameInput)
+        fireEvent.keyDown(gameInput, {key: "ArrowDown"})
         fireEvent.keyDown(gameInput, {key: "ArrowDown"})
         fireEvent.keyDown(gameInput, {key: "ArrowDown"})
         fireEvent.keyDown(gameInput, {key: "Enter"})

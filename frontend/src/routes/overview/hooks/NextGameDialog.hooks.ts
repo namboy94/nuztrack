@@ -2,11 +2,11 @@ import {CreateMultiRun, MultiRunOption, NuzlockeRun} from "../../../data/runs/ru
 import {NotificationFN} from "../../../global/Snackbar";
 import {NextGameDialogProps, NextGameDialogState} from "../components/NextGameDialog";
 import {useState} from "react";
-import {useQuery, useSubmitter} from "../../../util/observable.hooks";
+import {useQuery, useSubmitter} from "../../../util/hooks/observable";
 import {gamesService} from "../../../data/games/games.service";
 import {runsService} from "../../../data/runs/runs.service";
 import {Game} from "../../../data/games/games.model";
-import {useResetState} from "../../../util/state.hook";
+import {useResetState} from "../../../util/hooks/state";
 
 export function useNextGameDialogProps(run: NuzlockeRun, notify: NotificationFN): [() => void, NextGameDialogProps] {
     const [open, setOpen] = useState(false)

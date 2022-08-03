@@ -1,5 +1,5 @@
 import {NuzlockeRun} from "../../../data/runs/runs.model";
-import {useQuery} from "../../../util/observable.hooks";
+import {useQuery} from "../../../util/hooks/observable";
 import {eventsService} from "../../../data/events/events.service";
 import {EventLogProps} from "../components/EventLog";
 import {pokedexService} from "../../../data/pokedex/pokedex.service";

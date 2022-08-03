@@ -1,5 +1,5 @@
 import {NuzlockeRun} from "../../../data/runs/runs.model";
-import {useService} from "../../../util/observable.hooks";
+import {useService} from "../../../util/hooks/observable";
 import {eventsService} from "../../../data/events/events.service";
 import {pokedexService} from "../../../data/pokedex/pokedex.service";
 import {gamesService} from "../../../data/games/games.service";

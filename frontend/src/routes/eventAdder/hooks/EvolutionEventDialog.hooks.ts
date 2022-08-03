@@ -1,12 +1,12 @@
 import {NuzlockeRun} from "../../../data/runs/runs.model";
 import {NotificationFN} from "../../../global/Snackbar";
 import {useState} from "react";
-import {useQuery, useSubmitter} from "../../../util/observable.hooks";
+import {useQuery, useSubmitter} from "../../../util/hooks/observable";
 import {pokedexService} from "../../../data/pokedex/pokedex.service";
 import {EvolutionEventDialogProps, EvolutionEventDialogState} from "../components/EvolutionEventDialog";
 import {gamesService} from "../../../data/games/games.service";
 import {teamService} from "../../../data/team/team.service";
-import {useResetState} from "../../../util/state.hook";
+import {useResetState} from "../../../util/hooks/state";
 import {TeamMember} from "../../../data/team/team.model";
 import {PokemonSpecies} from "../../../data/pokedex/pokedex.model";
 import {CreateEvolutionEvent} from "../../../data/events/events.model";

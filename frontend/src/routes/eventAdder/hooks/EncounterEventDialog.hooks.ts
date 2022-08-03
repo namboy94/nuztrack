@@ -1,5 +1,5 @@
 import {NuzlockeRun} from "../../../data/runs/runs.model";
-import {useQuery, useSubmitter} from "../../../util/observable.hooks";
+import {useQuery, useSubmitter} from "../../../util/hooks/observable";
 import {pokedexService} from "../../../data/pokedex/pokedex.service";
 import {eventsService} from "../../../data/events/events.service";
 import {gamesService} from "../../../data/games/games.service";
@@ -10,7 +10,7 @@ import {NotificationFN} from "../../../global/Snackbar";
 import {CreateEncounterEvent, CreateEncounterPokemon} from "../../../data/events/events.model";
 import {Pokedex, PokemonSpecies} from "../../../data/pokedex/pokedex.model";
 import {GameLocationRegistry} from "../../../data/games/games.model";
-import {useResetState} from "../../../util/state.hook";
+import {useResetState} from "../../../util/hooks/state";
 
 export function useEncounterEventDialogProps(
     run: NuzlockeRun,

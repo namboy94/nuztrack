@@ -1,39 +1,48 @@
 import {useState} from "react";
 import {NuzlockeRun} from "../../../data/runs/runs.model";
-import {DeleteRunDialogProps} from "../components/DeleteRunDialog";
 import {runsService} from "../../../data/runs/runs.service";
 import {NotificationFN} from "../../../global/Snackbar";
+import {ViewModel} from "../../../util/viewmodel";
 
-export function useDeleteRunDialogProps(notify: NotificationFN): [(run: NuzlockeRun) => void, DeleteRunDialogProps] {
+export interface DeleteRunDialogState {
+    open: boolean,
+    run: NuzlockeRun | undefined
+}
+
+export interface DeleteRunDialogInteractions {
+    open: (run: NuzlockeRun) => void
+    onClose: () => void
+    submit: () => void
+}
+
+export type DeleteRunDialogViewModel = ViewModel<DeleteRunDialogState, DeleteRunDialogInteractions>
+
+export function useDeleteRunDialogViewModel(notify: NotificationFN): DeleteRunDialogViewModel {
+
     const [open, setOpen] = useState(false)
-    const [run, setRun] = useState<NuzlockeRun | null>(null)
+    const [run, setRun] = useState<NuzlockeRun>()
 
     const openDialog = (run: NuzlockeRun) => {
         setRun(run)
         setOpen(true)
     }
-    const closeDialog = () => {
+    const onClose = () => {
         setOpen(false)
-        setRun(null)
+        setRun(undefined)
     }
-    const deleteRun = () => {
-        if (run !== null) {
+    const submit = () => {
+        if (run !== undefined) {
             runsService.deleteRun$(run.id).subscribe({
                 complete: () => {
-                    closeDialog()
+                    onClose()
                     notify(`Run ${run.name} has been deleted`, "info")
                 }
             })
         }
     }
 
-    const props = {
-        open: open,
-        run: run,
-        onClose: closeDialog,
-        deleteRun: deleteRun
+    return {
+        state: {run: run, open: open},
+        interactions: {open: openDialog, onClose: onClose, submit: submit}
     }
-
-    return [openDialog, props]
-
 }

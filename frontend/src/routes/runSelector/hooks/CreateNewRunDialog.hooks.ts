@@ -5,8 +5,8 @@ import {gamesService} from "../../../data/games/games.service";
 import {RulesDetails} from "../../../data/rules/rules.model";
 import {DEFAULT_GAME, Game} from "../../../data/games/games.model";
 import {NotificationFN} from "../../../global/Snackbar";
-import {useQuery, useSubmitter} from "../../../util/observable.hooks";
-import {useResetState} from "../../../util/state.hook";
+import {useQuery, useSubmitter} from "../../../util/hooks/observable";
+import {useResetState} from "../../../util/hooks/state";
 import {ViewModel} from "../../../util/viewmodel";
 
 export interface CreateNewRunDialogState {

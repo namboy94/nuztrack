@@ -8,6 +8,6 @@ export interface CancelButtonProps {
 
 export function CancelButton(props: CancelButtonProps) {
     return <Button data-testid="cancel-button"
-                   variant="contained" color="error"
+                   variant="contained" color="info"
                    onClick={props.onClick}>{props.title ?? "Cancel"}</Button>
 }

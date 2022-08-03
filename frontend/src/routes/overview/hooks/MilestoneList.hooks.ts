@@ -1,6 +1,6 @@
 import {NuzlockeRun} from "../../../data/runs/runs.model";
 import {NotificationFN} from "../../../global/Snackbar";
-import {useQuery} from "../../../util/observable.hooks"
+import {useQuery} from "../../../util/hooks/observable"
 import {gamesService} from "../../../data/games/games.service";
 import {eventsService} from "../../../data/events/events.service";
 import {MilestoneListProps} from "../components/MilestoneList";

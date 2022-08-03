@@ -1,7 +1,7 @@
 import {TeamMemberGridProps} from "../components/TeamMemberGrid";
 import {NuzlockeRun} from "../../../data/runs/runs.model";
 import {NotificationFN} from "../../../global/Snackbar";
-import {useQuery} from "../../../util/observable.hooks";
+import {useQuery} from "../../../util/hooks/observable";
 import {pokedexService} from "../../../data/pokedex/pokedex.service";
 import {teamService} from "../../../data/team/team.service";
 import {TeamMember, TeamState} from "../../../data/team/team.model";

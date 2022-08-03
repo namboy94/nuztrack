@@ -1,81 +1,60 @@
-import {DeleteRunDialogProps} from "../components/DeleteRunDialog";
 import {act, renderHook} from "@testing-library/react";
-import {useDeleteRunDialogProps} from "./DeleteRunDialog.hooks";
-import {NuzlockeRun} from "../../../data/runs/runs.model";
+import {DeleteRunDialogViewModel, useDeleteRunDialogViewModel} from "./DeleteRunDialog.hooks";
 import {NUZLOCKE_RUN} from "../../../data/runs/runs.testconstants";
 import {runsService} from "../../../data/runs/runs.service";
 import {EMPTY} from "rxjs";
+import {getInteractions, getState} from "../../../util/viewmodel";
 
 describe("useDeleteRunDialogProps", () => {
 
     const notify = jest.fn()
 
-    function createMocksAndRender(): { current: [((run: NuzlockeRun) => void), DeleteRunDialogProps] } {
+    afterEach(() => {
+        jest.resetAllMocks()
+    })
+
+    function createMocksAndRender(): { current: DeleteRunDialogViewModel } {
         jest.spyOn(runsService, "deleteRun$").mockReturnValue(EMPTY)
-        return renderHook(() => useDeleteRunDialogProps(notify)).result
+        return renderHook(() => useDeleteRunDialogViewModel(notify)).result
     }
 
-    it("should open the dialog", (done) => {
+    it("should open the dialog", () => {
         const result = createMocksAndRender()
-        let [openFn, props] = result.current
 
-        expect(props.open).toBeFalsy()
-        expect(props.run).toBeNull()
+        expect(getState(result).open).toBeFalsy()
+        expect(getState(result).run).toBeUndefined()
 
-        act(() => {
-            openFn(NUZLOCKE_RUN)
-        })
+        act(() => getInteractions(result).open(NUZLOCKE_RUN))
 
-        props = result.current[1]
-        expect(props.open).toBeTruthy()
-        expect(props.run).toEqual(NUZLOCKE_RUN)
-
-        done()
+        expect(getState(result).open).toBeTruthy()
+        expect(getState(result).run).toEqual(NUZLOCKE_RUN)
     })
-    it("should close the dialog", (done) => {
+    it("should close the dialog", () => {
         const result = createMocksAndRender()
-        let [openFn, props] = result.current
 
-        act(() => {
-            openFn(NUZLOCKE_RUN)
-        })
+        act(() => getInteractions(result).open(NUZLOCKE_RUN))
 
-        props = result.current[1]
-        expect(props.open).toBeTruthy()
-        expect(props.run).toEqual(NUZLOCKE_RUN)
+        expect(getState(result).open).toBeTruthy()
+        expect(getState(result).run).toEqual(NUZLOCKE_RUN)
 
-        act(() => {
-            props.onClose()
-        })
+        act(() => getInteractions(result).onClose())
 
-        props = result.current[1]
-        expect(props.open).toBeFalsy()
-        expect(props.run).toBeNull()
-
-        done()
+        expect(getState(result).open).toBeFalsy()
+        expect(getState(result).run).toBeUndefined()
     })
-    it("should delete a run", (done) => {
+    it("should delete a run", () => {
         const result = createMocksAndRender()
-        let [openFn, props] = result.current
 
-        act(() => {
-            openFn(NUZLOCKE_RUN)
-        })
+        act(() => getInteractions(result).open(NUZLOCKE_RUN))
 
-        props = result.current[1]
-        expect(props.open).toBeTruthy()
-        expect(props.run).toEqual(NUZLOCKE_RUN)
+        expect(getState(result).open).toBeTruthy()
+        expect(getState(result).run).toEqual(NUZLOCKE_RUN)
 
-        act(() => {
-            props.deleteRun()
-        })
+        act(() => getInteractions(result).submit())
 
-        props = result.current[1]
-        expect(props.open).toBeFalsy()
-        expect(props.run).toBeNull()
+        expect(getState(result).open).toBeFalsy()
+        expect(getState(result).run).toBeUndefined()
         expect(runsService.deleteRun$).toHaveBeenCalledTimes(1)
         expect(runsService.deleteRun$).toHaveBeenCalledWith(NUZLOCKE_RUN.id)
-
-        done()
     })
 })

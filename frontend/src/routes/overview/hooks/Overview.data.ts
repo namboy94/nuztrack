@@ -1,4 +1,4 @@
-import {useService} from "../../../util/observable.hooks";
+import {useService} from "../../../util/hooks/observable";
 import {gamesService} from "../../../data/games/games.service";
 import {NuzlockeRun} from "../../../data/runs/runs.model";
 import {eventsService} from "../../../data/events/events.service";

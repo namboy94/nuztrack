@@ -1,37 +1,22 @@
-import {NuzlockeRun} from "../../../data/runs/runs.model";
-import {Button, Dialog, DialogActions, DialogTitle} from "@mui/material";
+import {Dialog, DialogActions, DialogTitle} from "@mui/material";
 import React from "react";
+import {DeleteRunDialogViewModel} from "../hooks/DeleteRunDialog.hooks";
+import {CancelButton} from "../../common/inputs/CancelButton";
+import {DeleteButton} from "../../common/inputs/DeleteButton";
 
-export interface DeleteRunDialogProps {
-    open: boolean
-    onClose: () => void
-    run: NuzlockeRun | null
-    deleteRun: () => void
-}
+export function DeleteRunDialog(props: DeleteRunDialogViewModel) {
+    const {state, interactions} = props
 
-export function DeleteRunDialog(props: DeleteRunDialogProps) {
-    const {open, run, onClose, deleteRun} = props
-
-    if (run === null) {
+    if (state.run === undefined) {
         return <></>
     }
 
     return (
-        <Dialog open={open} onClose={onClose}>
-            <DialogTitle data-testid="title">Delete Run '{run.name}'?</DialogTitle>
+        <Dialog open={state.open} onClose={interactions.onClose}>
+            <DialogTitle data-testid="title">Delete Run '{state.run.name}'?</DialogTitle>
             <DialogActions>
-                <Button data-testid="cancel-button"
-                        variant="contained"
-                        color="info"
-                        onClick={onClose}>
-                    Cancel
-                </Button>
-                <Button data-testid="delete-button"
-                        variant="contained"
-                        color="error"
-                        onClick={deleteRun}>
-                    Delete
-                </Button>
+                <CancelButton onClick={interactions.onClose}/>
+                <DeleteButton onClick={interactions.submit}/>
             </DialogActions>
         </Dialog>
     )

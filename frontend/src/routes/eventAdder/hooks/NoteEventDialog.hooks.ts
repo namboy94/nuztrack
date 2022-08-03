@@ -1,10 +1,10 @@
 import {NuzlockeRun} from "../../../data/runs/runs.model";
 import {NotificationFN} from "../../../global/Snackbar";
-import {useQuery, useSubmitter} from "../../../util/observable.hooks";
+import {useQuery, useSubmitter} from "../../../util/hooks/observable";
 import {gamesService} from "../../../data/games/games.service";
 import {useState} from "react";
 import {NoteEventDialogProps, NoteEventDialogState} from "../components/NoteEventDialog";
-import {useResetState} from "../../../util/state.hook";
+import {useResetState} from "../../../util/hooks/state";
 import {CreateNoteEvent} from "../../../data/events/events.model";
 import {eventsService} from "../../../data/events/events.service";
 
