@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {runsService} from "../../../data/runs/runs.service";
 import {rulesService} from "../../../data/rules/rules.service";
 import {gamesService} from "../../../data/games/games.service";
@@ -44,12 +44,12 @@ export function useCreateNewRunDialogViewModel(notify: NotificationFN): CreateNe
     const [rules, setRules] = useState<string[]>([])
     const [customRules, setCustomRules, resetCustomRules] = useResetState<string[]>([])
 
-    const reset = useCallback(() => {
+    const reset = () => {
         resetGame()
         resetName()
         setRules(rulesDetails?.defaultRules ?? [])
         resetCustomRules()
-    }, [resetGame, resetName, setRules, resetCustomRules, rulesDetails?.defaultRules])
+    }
 
     const toggleRule = (active: boolean, ruleOption: string) => {
         if (active) {
@@ -59,7 +59,7 @@ export function useCreateNewRunDialogViewModel(notify: NotificationFN): CreateNe
         }
     }
 
-    useEffect(() => reset(), [rulesDetails, allGames, reset])
+    useEffect(() => reset(), [rulesDetails, allGames])
 
     const openDialog = () => setOpen(true)
     const onClose = () => {
