@@ -8,7 +8,7 @@ export function useService<T>(serviceFunction: () => Observable<T>, deps: Depend
             complete: () => setLoading(false)
         })
         return () => subscription.unsubscribe()
-    }, deps)
+    }, [deps])
     return loading
 }
 

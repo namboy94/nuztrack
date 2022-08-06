@@ -2,13 +2,13 @@ import {Route, Routes} from "react-router-dom";
 import React from "react";
 import {NotificationFN} from "./Snackbar";
 import {RunSelectorRoute} from "../routes/runSelector/RunSelector.route";
-import {useQuery} from "../util/observable.hooks";
 import {runsService} from "../data/runs/runs.service";
 import {EventAdderRoute} from "../routes/eventAdder/EventAdder.route";
 import {EventLogRoute} from "../routes/eventLog/EventLogRoute";
 import {OverviewRoute} from "../routes/overview/OverviewRoute";
 import {TeamRoute} from "../routes/team/TeamRoute";
 import {RouteProps, RunRouteProps} from "../routes/common/RouteProps";
+import {useQuery} from "../util/hooks/observable";
 
 export interface RouterProps {
     notify: NotificationFN

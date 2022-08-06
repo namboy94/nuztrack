@@ -9,9 +9,9 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import HomeIcon from '@mui/icons-material/Home';
 import {Link, useLocation} from "react-router-dom";
-import {useQuery} from "../util/observable.hooks";
 import {runsService} from "../data/runs/runs.service";
 import {navigatorStructure} from "../global/Navigator.structure";
+import {useQuery} from "../util/hooks/observable";
 
 const item = {
     py: '2px',
