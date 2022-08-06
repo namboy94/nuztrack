@@ -7,74 +7,68 @@ import {gamesService} from "../../../data/games/games.service";
 import {LOCATION_REGISTRY} from "../../../data/games/games.testconstants";
 import {act, renderHook} from "@testing-library/react";
 import {NUZLOCKE_RUN} from "../../../data/runs/runs.testconstants";
-import {DeathEventDialogProps} from "../components/DeathEventDialog";
-import {useDeathEventDialogProps} from "./DeathEventDialog.hooks";
+import {DeathEventDialogViewModel, useDeathEventDialogViewModel} from "./DeathEventDialog.hooks";
 import {eventsService} from "../../../data/events/events.service";
 import {DEATH_EVENT} from "../../../data/events/events.testconstants";
 import {CreateDeathEvent} from "../../../data/events/events.model";
-
-type PropsGetter = () => DeathEventDialogProps
+import {getInteractions, getState} from "../../../util/viewmodel";
 
 describe("useDeathEventDialogProps", () => {
 
     const notify = jest.fn()
 
-    function createMocksAndRender(): [() => void, PropsGetter] {
+    function createMocksAndRender(): { current: DeathEventDialogViewModel } {
         jest.spyOn(pokedexService, "getPokedex$").mockReturnValue(of(POKEDEX))
         jest.spyOn(teamService, "getActiveTeamMembers$").mockReturnValue(of([TEAM_MEMBER_1]))
         jest.spyOn(teamService, "getBoxedTeamMembers$").mockReturnValue(of([TEAM_MEMBER_3]))
         jest.spyOn(gamesService, "getGameLocationRegistry$").mockReturnValue(of(LOCATION_REGISTRY))
-        const result = renderHook(() => useDeathEventDialogProps(NUZLOCKE_RUN, notify)).result
-        return [result.current[0], () => result.current[1]]
+        return renderHook(() => useDeathEventDialogViewModel(NUZLOCKE_RUN, notify)).result
     }
 
-    function fillFields(propsGetter: PropsGetter) {
-        const props = propsGetter()
+    function fillFields(hookResult: { current: DeathEventDialogViewModel }) {
+        const interactions = getInteractions(hookResult)
         act(() => {
-            props.state.setLocation("LOCATION")
-            props.state.setTeamMember(TEAM_MEMBER_1)
-            props.state.setLevel(16)
-            props.state.setOpponent("OPPONENT")
-            props.state.setDescription("DESCRIPTION")
+            interactions.onChangeLocation("LOCATION")
+            interactions.onChangeTeamMember(TEAM_MEMBER_1)
+            interactions.onChangeLevel(16)
+            interactions.onChangeOpponent("OPPONENT")
+            interactions.onChangeDescription("DESCRIPTION")
         })
     }
 
-    it("should test loading the data", (done) => {
-        const props = createMocksAndRender()[1]()
+    it("should test loading the data", () => {
+        const result = createMocksAndRender()
 
-        expect(props.pokedex).toEqual(POKEDEX)
-        expect(props.activeTeamMembers).toEqual([TEAM_MEMBER_1])
-        expect(props.boxedTeamMembers).toEqual([TEAM_MEMBER_3])
-        expect(props.locations).toEqual(LOCATION_REGISTRY.getLocationNames())
+        expect(getState(result).pokedex).toEqual(POKEDEX)
+        expect(getState(result).activeTeamMembers).toEqual([TEAM_MEMBER_1])
+        expect(getState(result).boxedTeamMembers).toEqual([TEAM_MEMBER_3])
+        expect(getState(result).locations).toEqual(LOCATION_REGISTRY.getLocationNames())
 
         expect(pokedexService.getPokedex$).toHaveBeenCalledTimes(1)
         expect(teamService.getActiveTeamMembers$).toHaveBeenCalledTimes(1)
         expect(teamService.getBoxedTeamMembers$).toHaveBeenCalledTimes(1)
         expect(gamesService.getGameLocationRegistry$).toHaveBeenCalledTimes(1)
-        done()
     })
     it("should reset level if team member is switched", (done) => {
-        const [openFn, propsGetter] = createMocksAndRender()
+        const result = createMocksAndRender()
 
-        act(openFn)
-        fillFields(propsGetter)
+        act(() => getInteractions(result).openDialog())
+        fillFields(result)
 
-        let props = propsGetter()
-        act(() => props.state.setTeamMember(TEAM_MEMBER_3))
-        props = propsGetter()
+        act(() => getInteractions(result).onChangeTeamMember(TEAM_MEMBER_3))
 
-        expect(props.state.level).toEqual(TEAM_MEMBER_3.level)
+        expect(getState(result).level).toEqual(TEAM_MEMBER_3.level)
 
         done()
     })
     it("should submit successfully", (done) => {
         jest.spyOn(eventsService, "createDeathEvent$").mockReturnValue(of(DEATH_EVENT))
 
-        const [openFn, propsGetter] = createMocksAndRender()
+        const result = createMocksAndRender()
 
-        act(openFn)
-        fillFields(propsGetter)
-        act(propsGetter().submit)
+        act(() => getInteractions(result).openDialog())
+        fillFields(result)
+        act(getInteractions(result).submit)
 
         const expected: CreateDeathEvent = {
             location: "LOCATION",
@@ -95,11 +89,11 @@ describe("useDeathEventDialogProps", () => {
             throw {response: {data: {reason: "TEST"}}}
         }))
 
-        const [openFn, propsGetter] = createMocksAndRender()
+        const result = createMocksAndRender()
 
-        act(openFn)
-        fillFields(propsGetter)
-        act(propsGetter().submit)
+        act(() => getInteractions(result).openDialog())
+        fillFields(result)
+        act(getInteractions(result).submit)
 
         expect(eventsService.createDeathEvent$).toHaveBeenCalledTimes(1)
         expect(notify).toHaveBeenCalledTimes(1)

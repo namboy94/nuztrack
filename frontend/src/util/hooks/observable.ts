@@ -8,6 +8,7 @@ export function useService<T>(serviceFunction: () => Observable<T>, deps: Depend
             complete: () => setLoading(false)
         })
         return () => subscription.unsubscribe()
+        // eslint-disable-next-line
     }, deps)
     return loading
 }
@@ -22,6 +23,7 @@ export function useQuery<T>(queryFunction: () => Observable<T>, initial: T, deps
             }
         })
         return () => subscription.unsubscribe()
+        // eslint-disable-next-line
     }, deps)
     return queryResult
 }

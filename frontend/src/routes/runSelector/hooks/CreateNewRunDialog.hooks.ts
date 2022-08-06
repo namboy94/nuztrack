@@ -59,6 +59,7 @@ export function useCreateNewRunDialogViewModel(notify: NotificationFN): CreateNe
         }
     }
 
+    // eslint-disable-next-line
     useEffect(() => reset(), [rulesDetails, allGames])
 
     const openDialog = () => setOpen(true)

@@ -10,7 +10,7 @@ import {NoteEventDialog} from "./components/NoteEventDialog";
 import {useEvolutionEventDialogProps} from "./hooks/EvolutionEventDialog.hooks";
 import {EvolutionEventDialog} from "./components/EvolutionEventDialog";
 import {DeathEventDialog} from "./components/DeathEventDialog";
-import {useDeathEventDialogProps} from "./hooks/DeathEventDialog.hooks";
+import {useDeathEventDialogViewModel} from "./hooks/DeathEventDialog.hooks";
 import {useMilestoneEventDialogProps} from "./hooks/MilestoneEventDialog.hooks";
 import {MilestoneEventDialog} from "./components/MilestoneEventDialog";
 import {useTeamMemberSwitchEventDialogProps} from "./hooks/TeamMemberSwitchEventDialog.hooks";
@@ -24,7 +24,7 @@ export function EventAdderRoute(props: RunRouteProps) {
     const [openEncounterEventDialog, encounterEventDialogProps] = useEncounterEventDialogProps(props.run, props.notify)
     const [openNoteEventDialog, noteEventDialogProps] = useNoteEventDialogProps(props.run, props.notify)
     const [openEvolutionEventDialog, evolutionEventDialogProps] = useEvolutionEventDialogProps(props.run, props.notify)
-    const [openDeathEventDialog, deathEventDialogProps] = useDeathEventDialogProps(props.run, props.notify)
+    const deathEventDialogViewModel = useDeathEventDialogViewModel(props.run, props.notify)
     const [openMilestoneEventDialog, milestoneEventDialogProps] = useMilestoneEventDialogProps(props.run, props.notify)
     const [openRemoveTeamMemberDialog, removeTeamMemberDialogProps] =
         useTeamMemberSwitchEventDialogProps(props.run, props.notify, SwitchType.REMOVE)
@@ -68,7 +68,7 @@ export function EventAdderRoute(props: RunRouteProps) {
                     variant="contained"
                     size={"large"}
                     startIcon={<AddIcon/>}
-                    onClick={openDeathEventDialog}>
+                    onClick={deathEventDialogViewModel.interactions.openDialog}>
                 Death
             </Button>
             <Button data-testid="open-milestone-dialog-button"
@@ -98,7 +98,7 @@ export function EventAdderRoute(props: RunRouteProps) {
             <EncounterEventDialog {...encounterEventDialogProps}/>
             <NoteEventDialog {...noteEventDialogProps}/>
             <EvolutionEventDialog {...evolutionEventDialogProps}/>
-            <DeathEventDialog {...deathEventDialogProps}/>
+            <DeathEventDialog {...deathEventDialogViewModel}/>
             <MilestoneEventDialog {...milestoneEventDialogProps}/>
             <TeamMemberSwitchEventDialog {...removeTeamMemberDialogProps}/>
             <TeamMemberSwitchEventDialog {...addTeamMemberDialogProps}/>

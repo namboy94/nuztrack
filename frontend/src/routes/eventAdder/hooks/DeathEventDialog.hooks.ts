@@ -9,13 +9,13 @@ import {teamService} from "../../../data/team/team.service";
 import {useResetState} from "../../../util/hooks/state";
 import {TeamMember} from "../../../data/team/team.model";
 import {ViewModel} from "../../../util/viewmodel";
-import {Pokedex} from "../../../data/pokedex/pokedex.model";
-import {GameLocation} from "../../../data/games/games.model";
+import {Pokedex, PokemonSpecies} from "../../../data/pokedex/pokedex.model";
 
 export interface DeathEventDialogState {
+    loading: boolean
     open: boolean
     pokedex: Pokedex
-    locations: GameLocation[]
+    locations: string[]
     activeTeamMembers: TeamMember[]
     boxedTeamMembers: TeamMember[]
     location: string
@@ -39,7 +39,7 @@ export interface DeathEventDialogInteractions {
 
 export type DeathEventDialogViewModel = ViewModel<DeathEventDialogState, DeathEventDialogInteractions>
 
-export function useDeathEventDialogProps(run: NuzlockeRun, notify: NotificationFN): DeathEventDialogViewModel {
+export function useDeathEventDialogViewModel(run: NuzlockeRun, notify: NotificationFN): DeathEventDialogViewModel {
     const pokedex = useQuery(() => pokedexService.getPokedex$(), undefined, [])
     const locations = useQuery(
         () => gamesService.getGameLocationRegistry$(run.game), undefined, []
@@ -91,9 +91,10 @@ export function useDeathEventDialogProps(run: NuzlockeRun, notify: NotificationF
 
     return {
         state: {
+            loading: pokedex === undefined || locations === undefined,
             open: open,
-            pokedex: pokedex,
-            locations: locations,
+            pokedex: pokedex ?? new Pokedex(new Map<number, PokemonSpecies>()),
+            locations: locations ?? [],
             activeTeamMembers: activeTeamMembers,
             boxedTeamMembers: boxedTeamMembers,
             location: location,

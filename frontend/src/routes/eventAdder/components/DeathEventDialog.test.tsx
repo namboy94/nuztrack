@@ -2,49 +2,47 @@ import {POKEDEX} from "../../../data/pokedex/pokedex.testconstants";
 import {TEAM_MEMBER_1, TEAM_MEMBER_3} from "../../../data/team/team.testconstants";
 import {LOCATION_REGISTRY} from "../../../data/games/games.testconstants";
 import {act, fireEvent, render, screen, within} from "@testing-library/react";
-import {DeathEventDialog, DeathEventDialogProps, DeathEventDialogState} from "./DeathEventDialog";
+import {DeathEventDialog} from "./DeathEventDialog";
+import {DeathEventDialogViewModel} from "../hooks/DeathEventDialog.hooks";
 
 describe("DeathEventDialog", () => {
-    const reset = jest.fn()
-    const setLocation = jest.fn()
+    const onChangeLocation = jest.fn()
+    const openDialog = jest.fn()
     const onClose = jest.fn()
     const submit = jest.fn()
-    const setOpponent = jest.fn()
-    const setDescription = jest.fn()
-    const setTeamMember = jest.fn()
-    const setLevel = jest.fn()
+    const onChangeOpponent = jest.fn()
+    const onChangeDescription = jest.fn()
+    const onChangeTeamMember = jest.fn()
+    const onChangeLevel = jest.fn()
 
-    function renderComponent(loading: boolean = false): DeathEventDialogProps {
-        const state: DeathEventDialogState = {
-            description: "DESC",
-            opponent: "OPPO",
-            setDescription: setDescription,
-            setOpponent: setOpponent,
-            level: 16,
-            setLevel: setLevel,
-            setTeamMember: setTeamMember,
-            teamMember: TEAM_MEMBER_1,
-            location: "Location",
-            reset: reset,
-            setLocation: setLocation
+    function renderComponent(loading: boolean = false): DeathEventDialogViewModel {
+        const vm: DeathEventDialogViewModel = {
+            state: {
+                loading: loading,
+                open: true,
+                pokedex: POKEDEX,
+                locations: LOCATION_REGISTRY.getLocationNames(),
+                activeTeamMembers: [TEAM_MEMBER_1],
+                boxedTeamMembers: [TEAM_MEMBER_3],
+                location: "Location",
+                level: 16,
+                teamMember: TEAM_MEMBER_1,
+                opponent: "OPPO",
+                description: "DESC"
+            },
+            interactions: {
+                onChangeTeamMember: onChangeTeamMember,
+                onClose: onClose,
+                openDialog: openDialog,
+                onChangeDescription: onChangeDescription,
+                onChangeLevel: onChangeLevel,
+                onChangeOpponent: onChangeOpponent,
+                onChangeLocation: onChangeLocation,
+                submit: submit
+            }
         }
-        const props: DeathEventDialogProps = {
-            activeTeamMembers: [TEAM_MEMBER_1],
-            boxedTeamMembers: [TEAM_MEMBER_3],
-            pokedex: POKEDEX,
-            locations: LOCATION_REGISTRY.getLocationNames(),
-            open: true,
-            state: state,
-            submit: submit,
-            onClose: onClose
-        }
-
-        if (loading) {
-            props.pokedex = undefined
-        }
-
-        render(<DeathEventDialog {...props} />)
-        return props
+        render(<DeathEventDialog {...vm} />)
+        return vm
     }
 
     it("should render all components correctly", (done) => {
@@ -84,8 +82,8 @@ describe("DeathEventDialog", () => {
         fireEvent.change(within(locationInput).getByRole("combobox"), {target: {value: "AAAAA"}})
         fireEvent.keyDown(locationInput, {key: "Enter"})
 
-        expect(setLocation).toHaveBeenCalledTimes(1)
-        expect(setLocation).toHaveBeenCalledWith("AAAAA")
+        expect(onChangeLocation).toHaveBeenCalledTimes(1)
+        expect(onChangeLocation).toHaveBeenCalledWith("AAAAA")
         done()
     })
     it("should change the team member", (done) => {
@@ -101,8 +99,8 @@ describe("DeathEventDialog", () => {
         fireEvent.keyDown(teamMemberInput, {key: "ArrowDown"})
         fireEvent.keyDown(teamMemberInput, {key: "Enter"})
 
-        expect(setTeamMember).toHaveBeenCalledTimes(1)
-        expect(setTeamMember).toHaveBeenCalledWith(TEAM_MEMBER_3)
+        expect(onChangeTeamMember).toHaveBeenCalledTimes(1)
+        expect(onChangeTeamMember).toHaveBeenCalledWith(TEAM_MEMBER_3)
         done()
     })
     it("should change the level", (done) => {
@@ -111,8 +109,8 @@ describe("DeathEventDialog", () => {
 
         fireEvent.change(within(levelInput).getByRole("spinbutton"), {target: {value: 85}})
 
-        expect(setLevel).toHaveBeenCalledTimes(1)
-        expect(setLevel).toHaveBeenCalledWith(85)
+        expect(onChangeLevel).toHaveBeenCalledTimes(1)
+        expect(onChangeLevel).toHaveBeenCalledWith(85)
 
         done()
     })
@@ -122,8 +120,8 @@ describe("DeathEventDialog", () => {
 
         fireEvent.change(within(levelInput).getByRole("spinbutton"), {target: {value: 85}})
 
-        expect(setLevel).toHaveBeenCalledTimes(1)
-        expect(setLevel).toHaveBeenCalledWith(85)
+        expect(onChangeLevel).toHaveBeenCalledTimes(1)
+        expect(onChangeLevel).toHaveBeenCalledWith(85)
 
         done()
     })
@@ -133,8 +131,8 @@ describe("DeathEventDialog", () => {
 
         fireEvent.change(within(opponentInput).getByRole("textbox"), {target: {value: "AAAAA"}})
 
-        expect(setOpponent).toHaveBeenCalledTimes(1)
-        expect(setOpponent).toHaveBeenCalledWith("AAAAA")
+        expect(onChangeOpponent).toHaveBeenCalledTimes(1)
+        expect(onChangeOpponent).toHaveBeenCalledWith("AAAAA")
 
         done()
     })
@@ -144,8 +142,8 @@ describe("DeathEventDialog", () => {
 
         fireEvent.change(within(descriptionInput).getByRole("textbox"), {target: {value: "AAAAA"}})
 
-        expect(setDescription).toHaveBeenCalledTimes(1)
-        expect(setDescription).toHaveBeenCalledWith("AAAAA")
+        expect(onChangeDescription).toHaveBeenCalledTimes(1)
+        expect(onChangeDescription).toHaveBeenCalledWith("AAAAA")
 
         done()
     })
