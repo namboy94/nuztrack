@@ -1,7 +1,8 @@
 import {NuzlockeRun} from "../../../data/runs/runs.model";
-import {Box, Button, Card, CardActions, CardMedia, Stack, Typography} from "@mui/material";
+import {Box, Card, CardActions, CardMedia, Stack, Typography} from "@mui/material";
 import {BACKEND_URL} from "../../../util/config";
 import * as React from "react";
+import {DeleteButton, GenericButton} from "../../common/inputs/Button";
 
 export interface RunsTableEntryProps {
     run: NuzlockeRun
@@ -52,23 +53,15 @@ export function RunsTableEntry(props: RunsTableEntryProps) {
                 <Box sx={titleStyleBase}>
                     <CardActions style={{justifyContent: 'right'}}>
                         <Stack direction={"column"}>
-                            <Button data-testid="open-delete-button"
-                                    color="error"
-                                    variant="contained"
-                                    style={{margin: 3}}
-                                    onClick={() => openDeleteDialog(run)}>
-                                Delete
-                            </Button>
-                            <Button data-testid="select-button"
-                                    color={buttonColor}
-                                    variant="contained"
-                                    style={{margin: 3}}
-                                    onClick={() => buttonFn(run)}>
-                                {buttonText}
-                            </Button>
+                            <DeleteButton onClick={() => openDeleteDialog(run)} testId={"open-delete-button"}/>
+                            <GenericButton
+                                onClick={() => buttonFn(run)}
+                                color={buttonColor}
+                                title={buttonText}
+                                style={{margin: 3}}
+                                testId={"select-button"}
+                            />
                         </Stack>
-
-
                     </CardActions>
                 </Box>
             </Box>

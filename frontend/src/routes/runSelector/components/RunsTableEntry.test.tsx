@@ -2,7 +2,6 @@ import {RunsTableEntry, RunsTableEntryProps} from "./RunsTableEntry";
 import {NuzlockeRun} from "../../../data/runs/runs.model";
 import {NUZLOCKE_RUN} from "../../../data/runs/runs.testconstants";
 import {render, screen} from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 
 describe("RunsTableEntry", () => {
 
@@ -53,37 +52,6 @@ describe("RunsTableEntry", () => {
 
         const selectButton = screen.getByTestId("select-button")
         expect(selectButton.textContent).toEqual("Select")
-
-        done()
-    })
-
-    it("should push the select button", (done) => {
-        renderComponent(false)
-
-        const selectButton = screen.getByTestId("select-button")
-        userEvent.click(selectButton)
-
-        expect(selectActiveRun).toHaveBeenCalledTimes(1)
-
-        done()
-    })
-    it("should push the delete button", (done) => {
-        renderComponent(false)
-
-        const selectButton = screen.getByTestId("open-delete-button")
-        userEvent.click(selectButton)
-
-        expect(openDeleteDialog).toHaveBeenCalledTimes(1)
-
-        done()
-    })
-    it("should push the close button", (done) => {
-        renderComponent(true)
-
-        const selectButton = screen.getByTestId("select-button")
-        userEvent.click(selectButton)
-
-        expect(closeRun).toHaveBeenCalledTimes(1)
 
         done()
     })

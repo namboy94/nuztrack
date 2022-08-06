@@ -1,15 +1,28 @@
-import {RunsTableProps} from "../components/RunsTable";
 import {runsService} from "../../../data/runs/runs.service";
 import {NuzlockeRun} from "../../../data/runs/runs.model";
 import {useQuery} from "../../../util/hooks/observable";
 import {useNavigate} from "react-router";
 import {NotificationFN} from "../../../global/Snackbar";
 import {useCloseRun} from "../../common/hooks/closeRun.hook";
+import {ViewModel} from "../../../util/viewmodel";
 
-export function useRunsTableProps(
+export interface RunsTableState {
+    runs: NuzlockeRun[]
+    activeRun: NuzlockeRun | undefined
+}
+
+export interface RunsTableInteractions {
+    openDeleteDialog: (run: NuzlockeRun) => void
+    selectActiveRun: (run: NuzlockeRun) => void
+    closeRun: (run: NuzlockeRun) => void
+}
+
+export type RunsTableViewModel = ViewModel<RunsTableState, RunsTableInteractions>
+
+export function useRunsTableViewModel(
     notify: NotificationFN,
     openDeleteDialog: (run: NuzlockeRun) => void,
-): RunsTableProps {
+): RunsTableViewModel {
     const navigate = useNavigate()
     const runs = useQuery(() => runsService.getRuns$(), [], [])
     const activeRun = useQuery(() => runsService.getActiveRun$(), undefined, [])
@@ -22,11 +35,14 @@ export function useRunsTableProps(
     }
 
     return {
-        runs: runs,
-        openDeleteDialog: openDeleteDialog,
-        activeRun: activeRun,
-        selectActiveRun: selectActiveRun,
-        closeRun: closeRun
+        state: {
+            activeRun: activeRun,
+            runs: runs
+        },
+        interactions: {
+            openDeleteDialog: openDeleteDialog,
+            selectActiveRun: selectActiveRun,
+            closeRun: closeRun
+        }
     }
-
 }

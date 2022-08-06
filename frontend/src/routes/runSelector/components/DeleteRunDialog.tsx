@@ -1,8 +1,7 @@
 import {Dialog, DialogActions, DialogTitle} from "@mui/material";
 import React from "react";
 import {DeleteRunDialogViewModel} from "../hooks/DeleteRunDialog.hooks";
-import {CancelButton} from "../../common/inputs/CancelButton";
-import {DeleteButton} from "../../common/inputs/DeleteButton";
+import {CancelButton, DeleteButton} from "../../common/inputs/Button";
 
 export function DeleteRunDialog(props: DeleteRunDialogViewModel) {
     const {state, interactions} = props

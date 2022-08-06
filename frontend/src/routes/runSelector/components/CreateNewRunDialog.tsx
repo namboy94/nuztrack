@@ -5,8 +5,7 @@ import {RunNameInput} from "../../common/inputs/RunNameInput";
 import {GameInput} from "../../common/inputs/GameInput";
 import {MultiCheckboxInput} from "../../common/inputs/MultiCheckboxInput";
 import {FreeformListInput} from "../../common/inputs/FreeformListInput";
-import {CancelButton} from "../../common/inputs/CancelButton";
-import {SubmitButton} from "../../common/inputs/SubmitButton";
+import {CancelButton, SubmitButton} from "../../common/inputs/Button";
 
 export function CreateNewRunDialog(props: CreateNewRunDialogViewModel) {
 

@@ -1,24 +1,16 @@
-import {NuzlockeRun} from "../../../data/runs/runs.model";
 import {Grid} from "@mui/material";
 import * as React from "react";
 import {RunsTableEntry} from "./RunsTableEntry";
-
-export interface RunsTableProps {
-    openDeleteDialog: (run: NuzlockeRun) => void
-    runs: NuzlockeRun[]
-    activeRun: NuzlockeRun | undefined
-    selectActiveRun: (run: NuzlockeRun) => void
-    closeRun: (run: NuzlockeRun) => void
-}
+import {RunsTableViewModel} from "../hooks/RunsTable.hooks";
 
 
-export function RunsTable(props: RunsTableProps) {
+export function RunsTable(props: RunsTableViewModel) {
 
-    const {runs, openDeleteDialog, activeRun, selectActiveRun, closeRun} = props
+    const {state, interactions} = props
 
     return (
         <Grid container spacing={2} id="runs">
-            {runs.map((run) =>
+            {state.runs.map((run) =>
                 <Grid
                     data-testid="run-entry-grid"
                     item xs={4}
@@ -26,10 +18,10 @@ export function RunsTable(props: RunsTableProps) {
                 >
                     <RunsTableEntry
                         run={run}
-                        active={run.id === activeRun?.id}
-                        closeRun={closeRun}
-                        openDeleteDialog={openDeleteDialog}
-                        selectActiveRun={selectActiveRun}/>
+                        active={run.id === state.activeRun?.id}
+                        closeRun={interactions.closeRun}
+                        openDeleteDialog={interactions.openDeleteDialog}
+                        selectActiveRun={interactions.selectActiveRun}/>
                 </Grid>
             )}
         </Grid>

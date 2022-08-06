@@ -7,7 +7,7 @@ import {CreateNewRunDialog} from "./components/CreateNewRunDialog";
 import {useCreateNewRunDialogViewModel} from "./hooks/CreateNewRunDialog.hooks";
 import {RouteProps} from "../common/RouteProps";
 import {DeleteRunDialog} from "./components/DeleteRunDialog";
-import {useRunsTableProps} from "./hooks/RunsTable.hooks";
+import {useRunsTableViewModel} from "./hooks/RunsTable.hooks";
 import {RunsTable} from "./components/RunsTable";
 import {LoadingIndicator} from "../common/components/LoadingIndicator";
 
@@ -16,7 +16,7 @@ export function RunSelectorRoute(props: RouteProps) {
     const loading = useRunSelectorDataLoader()
     const deleteRunDialogViewModel = useDeleteRunDialogViewModel(props.notify)
     const createNewRunDialogViewModel = useCreateNewRunDialogViewModel(props.notify)
-    const runsTableProps = useRunsTableProps(props.notify, deleteRunDialogViewModel.interactions.open)
+    const runsTableViewModel = useRunsTableViewModel(props.notify, deleteRunDialogViewModel.interactions.open)
 
     if (loading) {
         return <LoadingIndicator/>
@@ -34,7 +34,7 @@ export function RunSelectorRoute(props: RouteProps) {
 
             <div style={{height: 10}}/>
 
-            <RunsTable {...runsTableProps}/>
+            <RunsTable {...runsTableViewModel}/>
             <CreateNewRunDialog {...createNewRunDialogViewModel}/>
             <DeleteRunDialog {...deleteRunDialogViewModel}/>
         </div>
