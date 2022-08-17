@@ -1,19 +1,18 @@
-import {NuzlockeRun} from "../../../data/runs/runs.model";
-import {NotificationFN} from "../../../global/Snackbar";
-import {useQuery, useSubmitter} from "../../../util/hooks/observable";
-import {eventsService} from "../../../data/events/events.service";
+import {NuzlockeRun} from "../../../../data/runs/runs.model";
+import {NotificationFN} from "../../../../global/Snackbar";
+import {useQuery, useSubmitter} from "../../../../util/hooks/observable";
+import {eventsService} from "../../../../data/events/events.service";
 import {useState} from "react";
-import {pokedexService} from "../../../data/pokedex/pokedex.service";
-import {gamesService} from "../../../data/games/games.service";
-import {teamService} from "../../../data/team/team.service";
-import {useResetState} from "../../../util/hooks/state";
-import {TeamMember} from "../../../data/team/team.model";
-import {ViewModel} from "../../../util/viewmodel";
-import {Pokedex, PokemonSpecies} from "../../../data/pokedex/pokedex.model";
+import {pokedexService} from "../../../../data/pokedex/pokedex.service";
+import {gamesService} from "../../../../data/games/games.service";
+import {teamService} from "../../../../data/team/team.service";
+import {useResetState} from "../../../../util/hooks/state";
+import {TeamMember} from "../../../../data/team/team.model";
+import {ViewModel} from "../../../../util/viewmodel";
+import {Pokedex, PokemonSpecies} from "../../../../data/pokedex/pokedex.model";
+import {DialogInteractions, DialogState} from "../../../common/Dialog";
 
-export interface DeathEventDialogState {
-    loading: boolean
-    open: boolean
+export interface DeathEventDialogState extends DialogState {
     pokedex: Pokedex
     locations: string[]
     activeTeamMembers: TeamMember[]
@@ -25,15 +24,12 @@ export interface DeathEventDialogState {
     description: string
 }
 
-export interface DeathEventDialogInteractions {
-    openDialog: () => void
-    onClose: () => void
+export interface DeathEventDialogInteractions extends DialogInteractions {
     onChangeLocation: (location: string) => void
     onChangeLevel: (level: number) => void
     onChangeTeamMember: (teamMember: TeamMember | null) => void
     onChangeOpponent: (opponent: string) => void
     onChangeDescription: (description: string) => void
-    submit: () => void
 }
 
 
@@ -69,13 +65,13 @@ export function useDeathEventDialogViewModel(run: NuzlockeRun, notify: Notificat
 
     const openDialog = () => setOpen(true)
 
-    const onClose = () => {
+    const closeDialog = () => {
         setOpen(false)
         reset()
     }
 
     const onSubmitSuccess = () => {
-        onClose()
+        closeDialog()
         notify("Successfully created Death Event", "success")
     }
 
@@ -91,7 +87,6 @@ export function useDeathEventDialogViewModel(run: NuzlockeRun, notify: Notificat
 
     return {
         state: {
-            loading: pokedex === undefined || locations === undefined,
             open: open,
             pokedex: pokedex ?? new Pokedex(new Map<number, PokemonSpecies>()),
             locations: locations ?? [],
@@ -105,7 +100,7 @@ export function useDeathEventDialogViewModel(run: NuzlockeRun, notify: Notificat
         },
         interactions: {
             openDialog: openDialog,
-            onClose: onClose,
+            closeDialog: closeDialog,
             onChangeDescription: setDescription,
             onChangeLevel: setLevel,
             onChangeLocation: setLocation,

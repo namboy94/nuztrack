@@ -1,17 +1,17 @@
-import {pokedexService} from "../../../data/pokedex/pokedex.service";
+import {pokedexService} from "../../../../data/pokedex/pokedex.service";
 import {of, throwError} from "rxjs";
-import {POKEDEX} from "../../../data/pokedex/pokedex.testconstants";
-import {teamService} from "../../../data/team/team.service";
-import {TEAM_MEMBER_1, TEAM_MEMBER_3} from "../../../data/team/team.testconstants";
-import {gamesService} from "../../../data/games/games.service";
-import {LOCATION_REGISTRY} from "../../../data/games/games.testconstants";
+import {POKEDEX} from "../../../../data/pokedex/pokedex.testconstants";
+import {teamService} from "../../../../data/team/team.service";
+import {TEAM_MEMBER_1, TEAM_MEMBER_3} from "../../../../data/team/team.testconstants";
+import {gamesService} from "../../../../data/games/games.service";
+import {LOCATION_REGISTRY} from "../../../../data/games/games.testconstants";
 import {act, renderHook} from "@testing-library/react";
-import {NUZLOCKE_RUN} from "../../../data/runs/runs.testconstants";
-import {DeathEventDialogViewModel, useDeathEventDialogViewModel} from "./DeathEventDialog.hooks";
-import {eventsService} from "../../../data/events/events.service";
-import {DEATH_EVENT} from "../../../data/events/events.testconstants";
-import {CreateDeathEvent} from "../../../data/events/events.model";
-import {getInteractions, getState} from "../../../util/viewmodel";
+import {NUZLOCKE_RUN} from "../../../../data/runs/runs.testconstants";
+import {DeathEventDialogViewModel, useDeathEventDialogViewModel} from "./DeathEventDialog.vm";
+import {eventsService} from "../../../../data/events/events.service";
+import {DEATH_EVENT} from "../../../../data/events/events.testconstants";
+import {CreateDeathEvent} from "../../../../data/events/events.model";
+import {getInteractions, getState} from "../../../../util/viewmodel";
 
 describe("useDeathEventDialogProps", () => {
 

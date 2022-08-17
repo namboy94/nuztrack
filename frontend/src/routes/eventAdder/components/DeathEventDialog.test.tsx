@@ -3,22 +3,21 @@ import {TEAM_MEMBER_1, TEAM_MEMBER_3} from "../../../data/team/team.testconstant
 import {LOCATION_REGISTRY} from "../../../data/games/games.testconstants";
 import {act, fireEvent, render, screen, within} from "@testing-library/react";
 import {DeathEventDialog} from "./DeathEventDialog";
-import {DeathEventDialogViewModel} from "../hooks/DeathEventDialog.hooks";
+import {DeathEventDialogViewModel} from "../hooks/vm/DeathEventDialog.vm";
 
 describe("DeathEventDialog", () => {
     const onChangeLocation = jest.fn()
     const openDialog = jest.fn()
-    const onClose = jest.fn()
+    const closeDialog = jest.fn()
     const submit = jest.fn()
     const onChangeOpponent = jest.fn()
     const onChangeDescription = jest.fn()
     const onChangeTeamMember = jest.fn()
     const onChangeLevel = jest.fn()
 
-    function renderComponent(loading: boolean = false): DeathEventDialogViewModel {
+    function renderComponent(): DeathEventDialogViewModel {
         const vm: DeathEventDialogViewModel = {
             state: {
-                loading: loading,
                 open: true,
                 pokedex: POKEDEX,
                 locations: LOCATION_REGISTRY.getLocationNames(),
@@ -32,7 +31,7 @@ describe("DeathEventDialog", () => {
             },
             interactions: {
                 onChangeTeamMember: onChangeTeamMember,
-                onClose: onClose,
+                closeDialog: closeDialog,
                 openDialog: openDialog,
                 onChangeDescription: onChangeDescription,
                 onChangeLevel: onChangeLevel,
@@ -114,17 +113,6 @@ describe("DeathEventDialog", () => {
 
         done()
     })
-    it("should change the level", (done) => {
-        renderComponent()
-        const levelInput = screen.getByTestId("level-input")
-
-        fireEvent.change(within(levelInput).getByRole("spinbutton"), {target: {value: 85}})
-
-        expect(onChangeLevel).toHaveBeenCalledTimes(1)
-        expect(onChangeLevel).toHaveBeenCalledWith(85)
-
-        done()
-    })
     it("should change the opponent", (done) => {
         renderComponent()
         const opponentInput = screen.getByTestId("opponent-input")
@@ -166,12 +154,7 @@ describe("DeathEventDialog", () => {
             fireEvent.click(cancelButton)
         })
 
-        expect(onClose).toHaveBeenCalledTimes(1)
-        done()
-    })
-    it("should not render anything if data is not loaded", (done) => {
-        renderComponent(true)
-        expect(screen.queryByTestId("submit-button")).not.toBeInTheDocument()
+        expect(closeDialog).toHaveBeenCalledTimes(1)
         done()
     })
 })

@@ -3,18 +3,14 @@ import {LocationInput} from "./common/LocationInput";
 import {TeamMemberSelectInput} from "./common/TeamMemberSelectInput";
 import {LevelInput} from "./common/LevelInput";
 import React from "react";
-import {DeathEventDialogViewModel} from "../hooks/DeathEventDialog.hooks";
+import {DeathEventDialogViewModel} from "../hooks/vm/DeathEventDialog.vm";
 
 
 export function DeathEventDialog(props: DeathEventDialogViewModel) {
     const {state, interactions} = props
 
-    if (state.loading) {
-        return <></>
-    }
-
     return (
-        <Dialog open={state.open} onClose={interactions.onClose} fullWidth>
+        <Dialog open={state.open} onClose={interactions.closeDialog} fullWidth>
             <DialogTitle>Add Death</DialogTitle>
             <LocationInput location={state.location} setLocation={interactions.onChangeLocation}
                            locations={state.locations}/>
@@ -38,7 +34,7 @@ export function DeathEventDialog(props: DeathEventDialogViewModel) {
                 value={state.description}
                 onChange={x => interactions.onChangeDescription(x.target.value)}/>
             <DialogActions>
-                <Button data-testid="cancel-button" onClick={interactions.onClose}>Cancel</Button>
+                <Button data-testid="cancel-button" onClick={interactions.closeDialog}>Cancel</Button>
                 <Button data-testid="submit-button" onClick={interactions.submit}>Add</Button>
             </DialogActions>
         </Dialog>

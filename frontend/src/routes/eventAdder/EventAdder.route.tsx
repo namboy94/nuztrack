@@ -10,7 +10,7 @@ import {NoteEventDialog} from "./components/NoteEventDialog";
 import {useEvolutionEventDialogProps} from "./hooks/EvolutionEventDialog.hooks";
 import {EvolutionEventDialog} from "./components/EvolutionEventDialog";
 import {DeathEventDialog} from "./components/DeathEventDialog";
-import {useDeathEventDialogViewModel} from "./hooks/DeathEventDialog.hooks";
+import {useDeathEventDialogViewModel} from "./hooks/vm/DeathEventDialog.vm";
 import {useMilestoneEventDialogProps} from "./hooks/MilestoneEventDialog.hooks";
 import {MilestoneEventDialog} from "./components/MilestoneEventDialog";
 import {useTeamMemberSwitchEventDialogProps} from "./hooks/TeamMemberSwitchEventDialog.hooks";
