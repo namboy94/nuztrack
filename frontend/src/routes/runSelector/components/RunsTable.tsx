@@ -1,7 +1,7 @@
 import {Grid} from "@mui/material";
 import * as React from "react";
 import {RunsTableEntry} from "./RunsTableEntry";
-import {RunsTableViewModel} from "../hooks/RunsTable.hooks";
+import {RunsTableViewModel} from "../hooks/RunsTable.vm";
 
 
 export function RunsTable(props: RunsTableViewModel) {

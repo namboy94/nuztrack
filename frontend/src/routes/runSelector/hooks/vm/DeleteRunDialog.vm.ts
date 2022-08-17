@@ -1,8 +1,8 @@
 import {useState} from "react";
-import {NuzlockeRun} from "../../../data/runs/runs.model";
-import {runsService} from "../../../data/runs/runs.service";
-import {NotificationFN} from "../../../global/Snackbar";
-import {ViewModel} from "../../../util/viewmodel";
+import {NuzlockeRun} from "../../../../data/runs/runs.model";
+import {runsService} from "../../../../data/runs/runs.service";
+import {NotificationFN} from "../../../../global/Snackbar";
+import {ViewModel} from "../../../../util/viewmodel";
 
 export interface DeleteRunDialogState {
     open: boolean,

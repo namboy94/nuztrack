@@ -1,11 +1,11 @@
-import {runsService} from "../../../data/runs/runs.service";
+import {runsService} from "../../../../data/runs/runs.service";
 import {of} from "rxjs";
 import {renderHook} from "@testing-library/react";
-import {NUZLOCKE_RUN, NUZLOCKE_RUN_2} from "../../../data/runs/runs.testconstants";
-import {RunsTableViewModel, useRunsTableViewModel} from "./RunsTable.hooks";
+import {NUZLOCKE_RUN, NUZLOCKE_RUN_2} from "../../../../data/runs/runs.testconstants";
+import {RunsTableViewModel, useRunsTableViewModel} from "./RunsTable.vm";
 import {act} from "react-dom/test-utils";
 import * as router from 'react-router'
-import {getInteractions, getState} from "../../../util/viewmodel";
+import {getInteractions, getState} from "../../../../util/viewmodel";
 
 describe("useRunsTableProps", () => {
 

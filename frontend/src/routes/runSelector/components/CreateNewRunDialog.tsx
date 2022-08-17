@@ -1,6 +1,6 @@
 import {Dialog, DialogActions, DialogContent, DialogTitle, Grid} from "@mui/material";
 import React from "react";
-import {CreateNewRunDialogViewModel} from "../hooks/CreateNewRunDialog.hooks";
+import {CreateNewRunDialogViewModel} from "../hooks/CreateNewRunDialog.vm";
 import {RunNameInput} from "../../common/inputs/RunNameInput";
 import {GameInput} from "../../common/inputs/GameInput";
 import {MultiCheckboxInput} from "../../common/inputs/MultiCheckboxInput";

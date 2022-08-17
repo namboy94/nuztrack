@@ -7,9 +7,9 @@ import {RouteProps} from "../common/RouteProps";
 import {DeleteRunDialog} from "./components/DeleteRunDialog";
 import {RunsTable} from "./components/RunsTable";
 import {LoadingIndicator} from "../common/components/LoadingIndicator";
-import {useRunsTableViewModel} from "./hooks/RunsTable.hooks";
-import {useDeleteRunDialogViewModel} from "./hooks/DeleteRunDialog.hooks";
-import {useCreateNewRunDialogViewModel} from "./hooks/CreateNewRunDialog.hooks";
+import {useRunsTableViewModel} from "./hooks/vm/RunsTable.vm";
+import {useDeleteRunDialogViewModel} from "./hooks/vm/DeleteRunDialog.vm";
+import {useCreateNewRunDialogViewModel} from "./hooks/vm/CreateNewRunDialog.vm";
 
 export function RunSelectorRoute(props: RouteProps) {
 

@@ -2,7 +2,7 @@ import {render, screen} from "@testing-library/react";
 import {DeleteRunDialog} from "./DeleteRunDialog";
 import {NUZLOCKE_RUN} from "../../../data/runs/runs.testconstants";
 import {NuzlockeRun} from "../../../data/runs/runs.model";
-import {DeleteRunDialogViewModel} from "../hooks/DeleteRunDialog.hooks";
+import {DeleteRunDialogViewModel} from "../hooks/DeleteRunDialog.vm";
 
 describe("DeleteRunDialog", () => {
 

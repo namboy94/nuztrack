@@ -1,9 +1,9 @@
 import {act, renderHook} from "@testing-library/react";
-import {DeleteRunDialogViewModel, useDeleteRunDialogViewModel} from "./DeleteRunDialog.hooks";
-import {NUZLOCKE_RUN} from "../../../data/runs/runs.testconstants";
-import {runsService} from "../../../data/runs/runs.service";
+import {DeleteRunDialogViewModel, useDeleteRunDialogViewModel} from "./DeleteRunDialog.vm";
+import {NUZLOCKE_RUN} from "../../../../data/runs/runs.testconstants";
+import {runsService} from "../../../../data/runs/runs.service";
 import {EMPTY} from "rxjs";
-import {getInteractions, getState} from "../../../util/viewmodel";
+import {getInteractions, getState} from "../../../../util/viewmodel";
 
 describe("useDeleteRunDialogProps", () => {
 

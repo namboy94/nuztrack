@@ -1,14 +1,14 @@
 import {act, renderHook} from "@testing-library/react";
-import {CreateNewRunDialogViewModel, useCreateNewRunDialogViewModel} from "./CreateNewRunDialog.hooks";
+import {CreateNewRunDialogViewModel, useCreateNewRunDialogViewModel} from "./CreateNewRunDialog.vm";
 import {of, throwError} from "rxjs";
-import {gamesService} from "../../../data/games/games.service";
-import {GAME_4, GAMES} from "../../../data/games/games.testconstants";
-import {rulesService} from "../../../data/rules/rules.service";
-import {RULES_DETAILS} from "../../../data/rules/rules.testconstants";
-import {getInteractions, getState} from "../../../util/viewmodel";
-import {runsService} from "../../../data/runs/runs.service";
-import {NUZLOCKE_RUN, NUZLOCKE_RUN_CREATOR} from "../../../data/runs/runs.testconstants";
-import {DEFAULT_GAME} from "../../../data/games/games.model";
+import {gamesService} from "../../../../data/games/games.service";
+import {GAME_4, GAMES} from "../../../../data/games/games.testconstants";
+import {rulesService} from "../../../../data/rules/rules.service";
+import {RULES_DETAILS} from "../../../../data/rules/rules.testconstants";
+import {getInteractions, getState} from "../../../../util/viewmodel";
+import {runsService} from "../../../../data/runs/runs.service";
+import {NUZLOCKE_RUN, NUZLOCKE_RUN_CREATOR} from "../../../../data/runs/runs.testconstants";
+import {DEFAULT_GAME} from "../../../../data/games/games.model";
 
 describe("useCreateNewRunDialogProps", () => {
 

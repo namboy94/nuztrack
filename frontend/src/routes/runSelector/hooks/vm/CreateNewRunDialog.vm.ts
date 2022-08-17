@@ -1,12 +1,12 @@
 import {useEffect, useState} from "react";
-import {runsService} from "../../../data/runs/runs.service";
-import {rulesService} from "../../../data/rules/rules.service";
-import {gamesService} from "../../../data/games/games.service";
-import {DEFAULT_GAME, Game} from "../../../data/games/games.model";
-import {NotificationFN} from "../../../global/Snackbar";
-import {useQuery, useSubmitter} from "../../../util/hooks/observable";
-import {useResetState} from "../../../util/hooks/state";
-import {ViewModel} from "../../../util/viewmodel";
+import {runsService} from "../../../../data/runs/runs.service";
+import {rulesService} from "../../../../data/rules/rules.service";
+import {gamesService} from "../../../../data/games/games.service";
+import {DEFAULT_GAME, Game} from "../../../../data/games/games.model";
+import {NotificationFN} from "../../../../global/Snackbar";
+import {useQuery, useSubmitter} from "../../../../util/hooks/observable";
+import {useResetState} from "../../../../util/hooks/state";
+import {ViewModel} from "../../../../util/viewmodel";
 
 export interface CreateNewRunDialogState {
     allGames: Game[]

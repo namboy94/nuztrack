@@ -1,7 +1,7 @@
 import {NUZLOCKE_RUN, NUZLOCKE_RUN_2} from "../../../data/runs/runs.testconstants";
 import {render, screen} from "@testing-library/react";
 import {RunsTable} from "./RunsTable";
-import {RunsTableViewModel} from "../hooks/RunsTable.hooks";
+import {RunsTableViewModel} from "../hooks/RunsTable.vm";
 
 describe("RunsTable", () => {
 

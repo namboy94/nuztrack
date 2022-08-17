@@ -2,7 +2,7 @@ import {render, screen, within} from "@testing-library/react";
 import {CreateNewRunDialog} from "./CreateNewRunDialog";
 import {GAMES} from "../../../data/games/games.testconstants";
 import {RULES_DETAILS} from "../../../data/rules/rules.testconstants";
-import {CreateNewRunDialogInteractions, CreateNewRunDialogState} from "../hooks/CreateNewRunDialog.hooks";
+import {CreateNewRunDialogInteractions, CreateNewRunDialogState} from "../hooks/CreateNewRunDialog.vm";
 
 describe("CreateNewRunDialog", () => {
 
