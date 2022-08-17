@@ -86,23 +86,6 @@ describe("EvolutionEventDialog", () => {
         expect(setLocation).toHaveBeenCalledWith("AAAAA")
         done()
     })
-    it("should change the team member", (done) => {
-        renderComponent()
-
-        const teamMemberInput = screen.getByTestId("team-member-input")
-
-        fireEvent.focus(teamMemberInput)
-        fireEvent.change(
-            within(teamMemberInput).getByRole("combobox"),
-            {target: {value: TEAM_MEMBER_3.nickname}}
-        )
-        fireEvent.keyDown(teamMemberInput, {key: "ArrowDown"})
-        fireEvent.keyDown(teamMemberInput, {key: "Enter"})
-
-        expect(setTeamMember).toHaveBeenCalledTimes(1)
-        expect(setTeamMember).toHaveBeenCalledWith(TEAM_MEMBER_3)
-        done()
-    })
     it("should change the level", (done) => {
         renderComponent()
         const levelInput = screen.getByTestId("level-input")

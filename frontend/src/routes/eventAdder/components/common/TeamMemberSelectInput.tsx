@@ -12,29 +12,26 @@ export interface TeamMemberSelectInputProps {
 }
 
 export function TeamMemberSelectInput(props: TeamMemberSelectInputProps) {
-
-    const {teamMember, activeTeamMembers, boxedTeamMembers, setTeamMember, pokedex} = props
-
     return (
         <Autocomplete
             sx={{margin: 1}}
             data-testid="team-member-input"
-            value={teamMember}
-            options={[...activeTeamMembers, ...boxedTeamMembers]}
-            groupBy={member => activeTeamMembers.includes(member) ? "Active" : "Boxed"}
+            value={props.teamMember}
+            options={[...props.activeTeamMembers, ...props.boxedTeamMembers]}
+            groupBy={member => props.activeTeamMembers.includes(member) ? "Active" : "Boxed"}
             renderOption={(p, option) => (
                 <Box component="li" sx={{'& > img': {mr: 2, flexShrink: 0}}} {...p}>
                     <img
                         loading="lazy"
                         width="100"
-                        src={pokedex.getSpecies(option.pokedexNumber).sprite}
+                        src={props.pokedex.getSpecies(option.pokedexNumber).sprite}
                         alt={option.nickname}
                     />
                     {option.nickname}
                 </Box>
             )}
             getOptionLabel={member => member?.nickname ?? ""}
-            onChange={(_, member) => setTeamMember(member)}
+            onChange={(_, member) => props.setTeamMember(member)}
             renderInput={(params) => <TextField{...params} label="Pokemon"/>}
         />
     )
