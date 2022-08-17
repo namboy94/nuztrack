@@ -1,10 +1,10 @@
 import {runsService} from "../../../data/runs/runs.service";
 import {NuzlockeRun} from "../../../data/runs/runs.model";
-import {useQuery} from "../../../util/hooks/observable";
 import {useNavigate} from "react-router";
 import {NotificationFN} from "../../../global/Snackbar";
 import {useCloseRun} from "../../common/hooks/closeRun.hook";
 import {ViewModel} from "../../../util/viewmodel";
+import {useQuery} from "../../../util/hooks/observable";
 
 export interface RunsTableState {
     runs: NuzlockeRun[]
@@ -26,6 +26,7 @@ export function useRunsTableViewModel(
     const navigate = useNavigate()
     const runs = useQuery(() => runsService.getRuns$(), [], [])
     const activeRun = useQuery(() => runsService.getActiveRun$(), undefined, [])
+    // const activeRun = undefined
     const closeRun = useCloseRun(notify)
 
     const selectActiveRun = (run: NuzlockeRun) => {

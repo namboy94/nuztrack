@@ -10,6 +10,7 @@ export interface GameInputProps {
 
 export function GameInput(props: GameInputProps) {
     return <Autocomplete
+        isOptionEqualToValue={(option, value) => option.key === value.key}
         data-testid="game-input"
         sx={{width: 200}}
         options={props.allGames}

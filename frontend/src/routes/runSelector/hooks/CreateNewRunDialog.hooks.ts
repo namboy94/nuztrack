@@ -83,7 +83,7 @@ export function useCreateNewRunDialogViewModel(notify: NotificationFN): CreateNe
 
     return {
         state: {
-            allGames: allGames ?? [],
+            allGames: allGames ?? [DEFAULT_GAME],
             rulesOptions: rulesDetails?.rules ?? new Map<string, string>(),
             loading: allGames === undefined || rulesDetails === undefined,
             open: open,

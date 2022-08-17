@@ -12,12 +12,13 @@ import userEvent from "@testing-library/user-event";
 import {NuzlockeRunCreatorTO} from "../../data/runs/runs.transfer";
 import {runsRepository} from "../../data/runs/runs.repository";
 
-describe.skip("RunSelectorRoute", () => {
+describe("RunSelectorRoute", () => {
 
     const notify = jest.fn()
     const navigate = jest.fn()
 
     beforeEach(() => {
+        runsRepository.clearRuns()
         jest.spyOn(runsApi, "getRuns$").mockReturnValue(of([NUZLOCKE_RUN_TO]))
         jest.spyOn(runsApi, "postRun$").mockReturnValue(of(NUZLOCKE_RUN_2_TO))
         jest.spyOn(runsApi, "deleteRun$").mockReturnValue(EMPTY)
@@ -27,16 +28,14 @@ describe.skip("RunSelectorRoute", () => {
     })
 
     afterEach(() => {
-        jest.resetAllMocks()
         jest.clearAllMocks()
-        runsRepository.clearRuns()
     })
 
     function renderRoute() {
         render(<RunSelectorRoute notify={notify}/>)
     }
 
-    it("should test creating a new nuzlocke run, deleting a run and selecting a run", (done) => {
+    it("should test creating a new nuzlocke run", () => {
         renderRoute()
 
         expect(screen.getAllByTestId("run-title").length).toEqual(1)
@@ -64,7 +63,7 @@ describe.skip("RunSelectorRoute", () => {
 
         const expected: NuzlockeRunCreatorTO = {
             customRules: ["XYZ", "ABC"],
-            game: GAMES_TO[1].key,
+            game: GAMES_TO[3].key,
             name: "MyRun",
             rules: RULES_DETAILS.defaultRules
         }
@@ -72,10 +71,8 @@ describe.skip("RunSelectorRoute", () => {
         expect(runsApi.postRun$).toHaveBeenCalledWith(expected)
 
         expect(screen.getAllByTestId("run-title").length).toEqual(2)
-
-        done()
     })
-    it("should test deleting a nuzlocke run", (done) => {
+    it("should test deleting a nuzlocke run", () => {
         renderRoute()
 
         expect(screen.getAllByTestId("run-title").length).toEqual(1)
@@ -88,15 +85,13 @@ describe.skip("RunSelectorRoute", () => {
 
         expect(runsApi.deleteRun$).toHaveBeenCalledWith(NUZLOCKE_RUN.id)
         expect(runsApi.deleteRun$).toHaveBeenCalledTimes(1)
-        done()
     })
-    it("should test selecting a nuzlocke run", (done) => {
+    it("should test selecting a nuzlocke run", () => {
         renderRoute()
 
         const selectButton = screen.getByTestId("select-button")
         userEvent.click(selectButton)
 
         expect(navigate).toHaveBeenCalledTimes(1)
-        done()
     })
 })
