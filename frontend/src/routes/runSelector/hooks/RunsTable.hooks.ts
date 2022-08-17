@@ -8,7 +8,7 @@ import {ViewModel} from "../../../util/viewmodel";
 
 export interface RunsTableState {
     runs: NuzlockeRun[]
-    activeRun: NuzlockeRun | undefined
+    activeRun: NuzlockeRun | null
 }
 
 export interface RunsTableInteractions {
@@ -36,7 +36,7 @@ export function useRunsTableViewModel(
 
     return {
         state: {
-            activeRun: activeRun,
+            activeRun: activeRun ?? null,
             runs: runs
         },
         interactions: {

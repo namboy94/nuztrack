@@ -10,7 +10,7 @@ describe("DeleteRunDialog", () => {
     const onClose = jest.fn()
     const submit = jest.fn()
 
-    function renderComponent(run: NuzlockeRun | undefined) {
+    function renderComponent(run: NuzlockeRun | null) {
         const props: DeleteRunDialogViewModel = {
             state: {
                 open: true,
@@ -37,7 +37,7 @@ describe("DeleteRunDialog", () => {
     })
 
     it("Should not render without a Nuzlocke Run", () => {
-        renderComponent(undefined)
+        renderComponent(null)
         expect(screen.queryByTestId("delete-button")).not.toBeInTheDocument()
     })
 })

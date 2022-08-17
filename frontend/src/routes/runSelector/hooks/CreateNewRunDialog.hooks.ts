@@ -2,7 +2,6 @@ import {useEffect, useState} from "react";
 import {runsService} from "../../../data/runs/runs.service";
 import {rulesService} from "../../../data/rules/rules.service";
 import {gamesService} from "../../../data/games/games.service";
-import {RulesDetails} from "../../../data/rules/rules.model";
 import {DEFAULT_GAME, Game} from "../../../data/games/games.model";
 import {NotificationFN} from "../../../global/Snackbar";
 import {useQuery, useSubmitter} from "../../../util/hooks/observable";
@@ -11,7 +10,7 @@ import {ViewModel} from "../../../util/viewmodel";
 
 export interface CreateNewRunDialogState {
     allGames: Game[]
-    rulesDetails: RulesDetails
+    rulesOptions: Map<string, string>
     loading: boolean
     open: boolean,
     game: Game
@@ -85,7 +84,7 @@ export function useCreateNewRunDialogViewModel(notify: NotificationFN): CreateNe
     return {
         state: {
             allGames: allGames ?? [],
-            rulesDetails: rulesDetails ?? {rules: new Map<string, string>(), defaultRules: []},
+            rulesOptions: rulesDetails?.rules ?? new Map<string, string>(),
             loading: allGames === undefined || rulesDetails === undefined,
             open: open,
             game: game,

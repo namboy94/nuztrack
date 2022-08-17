@@ -27,7 +27,7 @@ describe("useCreateNewRunDialogProps", () => {
     it("should test the data loading", () => {
         const state = getState(createMocksAndRender())
         expect(state.allGames).toEqual(GAMES)
-        expect(state.rulesDetails).toEqual(RULES_DETAILS)
+        expect(state.rulesOptions).toEqual(RULES_DETAILS.rules)
         expect(state.loading).toBeFalsy()
         expect(gamesService.getGames$).toHaveBeenCalledTimes(1)
         expect(rulesService.getRulesDetails$).toHaveBeenCalledTimes(1)

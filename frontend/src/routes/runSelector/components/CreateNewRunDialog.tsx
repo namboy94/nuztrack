@@ -27,7 +27,7 @@ export function CreateNewRunDialog(props: CreateNewRunDialogViewModel) {
                         <GameInput game={state.game} allGames={state.allGames} onChange={interactions.onChangeGame}/>
                     </Grid>
                 </Grid>
-                <MultiCheckboxInput toggleOption={interactions.toggleRule} options={state.rulesDetails.rules}
+                <MultiCheckboxInput toggleOption={interactions.toggleRule} options={state.rulesOptions}
                                     selected={state.rules} label="rules"/>
                 <FreeformListInput label="Custom Rules" onChange={interactions.onChangeCustomRules}
                                    currentList={state.customRules}/>

@@ -22,7 +22,7 @@ describe("CreateNewRunDialog", () => {
             rules: RULES_DETAILS.defaultRules,
             open: true,
             allGames: GAMES,
-            rulesDetails: RULES_DETAILS,
+            rulesOptions: RULES_DETAILS.rules,
             loading: loading
         }
         const interactions: CreateNewRunDialogInteractions = {

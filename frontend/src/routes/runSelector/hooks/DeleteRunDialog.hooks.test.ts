@@ -22,7 +22,7 @@ describe("useDeleteRunDialogProps", () => {
         const result = createMocksAndRender()
 
         expect(getState(result).open).toBeFalsy()
-        expect(getState(result).run).toBeUndefined()
+        expect(getState(result).run).toBeNull()
 
         act(() => getInteractions(result).open(NUZLOCKE_RUN))
 
@@ -40,7 +40,7 @@ describe("useDeleteRunDialogProps", () => {
         act(() => getInteractions(result).onClose())
 
         expect(getState(result).open).toBeFalsy()
-        expect(getState(result).run).toBeUndefined()
+        expect(getState(result).run).toBeNull()
     })
     it("should delete a run", () => {
         const result = createMocksAndRender()
@@ -53,7 +53,7 @@ describe("useDeleteRunDialogProps", () => {
         act(() => getInteractions(result).submit())
 
         expect(getState(result).open).toBeFalsy()
-        expect(getState(result).run).toBeUndefined()
+        expect(getState(result).run).toBeNull()
         expect(runsService.deleteRun$).toHaveBeenCalledTimes(1)
         expect(runsService.deleteRun$).toHaveBeenCalledWith(NUZLOCKE_RUN.id)
     })

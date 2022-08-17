@@ -6,7 +6,7 @@ import {ViewModel} from "../../../util/viewmodel";
 
 export interface DeleteRunDialogState {
     open: boolean,
-    run: NuzlockeRun | undefined
+    run: NuzlockeRun | null
 }
 
 export interface DeleteRunDialogInteractions {
@@ -20,7 +20,7 @@ export type DeleteRunDialogViewModel = ViewModel<DeleteRunDialogState, DeleteRun
 export function useDeleteRunDialogViewModel(notify: NotificationFN): DeleteRunDialogViewModel {
 
     const [open, setOpen] = useState(false)
-    const [run, setRun] = useState<NuzlockeRun>()
+    const [run, setRun] = useState<NuzlockeRun | null>(null)
 
     const openDialog = (run: NuzlockeRun) => {
         setRun(run)
@@ -28,10 +28,10 @@ export function useDeleteRunDialogViewModel(notify: NotificationFN): DeleteRunDi
     }
     const onClose = () => {
         setOpen(false)
-        setRun(undefined)
+        setRun(null)
     }
     const submit = () => {
-        if (run !== undefined) {
+        if (run !== null) {
             runsService.deleteRun$(run.id).subscribe({
                 complete: () => {
                     onClose()

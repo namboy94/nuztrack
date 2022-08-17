@@ -6,8 +6,8 @@ import {CancelButton, DeleteButton} from "../../common/inputs/Button";
 export function DeleteRunDialog(props: DeleteRunDialogViewModel) {
     const {state, interactions} = props
 
-    if (state.run === undefined) {
-        return <></>
+    if (state.run === null) {
+        return <>No run selected</>
     }
 
     return (
