@@ -1,6 +1,6 @@
 import {Dialog, DialogActions, DialogContent, DialogTitle, Grid} from "@mui/material";
 import React from "react";
-import {CreateNewRunDialogViewModel} from "../hooks/CreateNewRunDialog.vm";
+import {CreateNewRunDialogViewModel} from "../hooks/vm/CreateNewRunDialog.vm";
 import {RunNameInput} from "../../common/inputs/RunNameInput";
 import {GameInput} from "../../common/inputs/GameInput";
 import {MultiCheckboxInput} from "../../common/inputs/MultiCheckboxInput";
@@ -16,7 +16,7 @@ export function CreateNewRunDialog(props: CreateNewRunDialogViewModel) {
     }
 
     return (
-        <Dialog open={state.open} onClose={interactions.onClose}>
+        <Dialog open={state.open} onClose={interactions.closeDialog}>
             <DialogTitle>Create Run</DialogTitle>
             <DialogContent>
                 <Grid container spacing={2}>
@@ -33,7 +33,7 @@ export function CreateNewRunDialog(props: CreateNewRunDialogViewModel) {
                                    currentList={state.customRules}/>
             </DialogContent>
             <DialogActions>
-                <CancelButton onClick={interactions.onClose}/>
+                <CancelButton onClick={interactions.closeDialog}/>
                 <SubmitButton onClick={interactions.submit}/>
             </DialogActions>
         </Dialog>

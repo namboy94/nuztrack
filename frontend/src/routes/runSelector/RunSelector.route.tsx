@@ -16,7 +16,7 @@ export function RunSelectorRoute(props: RouteProps) {
     const loading = useRunSelectorDataLoader()
     const deleteRunDialogViewModel = useDeleteRunDialogViewModel(props.notify)
     const createNewRunDialogViewModel = useCreateNewRunDialogViewModel(props.notify)
-    const runsTableViewModel = useRunsTableViewModel(props.notify, deleteRunDialogViewModel.interactions.open)
+    const runsTableViewModel = useRunsTableViewModel(props.notify, deleteRunDialogViewModel.interactions.openDialog)
 
     if (loading) {
         return <LoadingIndicator/>
@@ -25,10 +25,9 @@ export function RunSelectorRoute(props: RouteProps) {
     return (
         <div>
             <Button data-testid="open-create-button"
-                    variant="contained"
-                    size={"large"}
+                    variant="contained" size={"large"}
                     startIcon={<AddIcon/>}
-                    onClick={createNewRunDialogViewModel.interactions.open}>
+                    onClick={createNewRunDialogViewModel.interactions.openDialog}>
                 Create New Nuzlocke Run
             </Button>
 

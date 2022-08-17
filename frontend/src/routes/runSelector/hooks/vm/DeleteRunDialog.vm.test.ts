@@ -24,7 +24,7 @@ describe("useDeleteRunDialogProps", () => {
         expect(getState(result).open).toBeFalsy()
         expect(getState(result).run).toBeNull()
 
-        act(() => getInteractions(result).open(NUZLOCKE_RUN))
+        act(() => getInteractions(result).openDialog(NUZLOCKE_RUN))
 
         expect(getState(result).open).toBeTruthy()
         expect(getState(result).run).toEqual(NUZLOCKE_RUN)
@@ -32,12 +32,12 @@ describe("useDeleteRunDialogProps", () => {
     it("should close the dialog", () => {
         const result = createMocksAndRender()
 
-        act(() => getInteractions(result).open(NUZLOCKE_RUN))
+        act(() => getInteractions(result).openDialog(NUZLOCKE_RUN))
 
         expect(getState(result).open).toBeTruthy()
         expect(getState(result).run).toEqual(NUZLOCKE_RUN)
 
-        act(() => getInteractions(result).onClose())
+        act(() => getInteractions(result).closeDialog())
 
         expect(getState(result).open).toBeFalsy()
         expect(getState(result).run).toBeNull()
@@ -45,7 +45,7 @@ describe("useDeleteRunDialogProps", () => {
     it("should delete a run", () => {
         const result = createMocksAndRender()
 
-        act(() => getInteractions(result).open(NUZLOCKE_RUN))
+        act(() => getInteractions(result).openDialog(NUZLOCKE_RUN))
 
         expect(getState(result).open).toBeTruthy()
         expect(getState(result).run).toEqual(NUZLOCKE_RUN)

@@ -7,12 +7,12 @@ import {NotificationFN} from "../../../../global/Snackbar";
 import {useQuery, useSubmitter} from "../../../../util/hooks/observable";
 import {useResetState} from "../../../../util/hooks/state";
 import {ViewModel} from "../../../../util/viewmodel";
+import {DialogInteractions, DialogState} from "../../../common/Dialog";
 
-export interface CreateNewRunDialogState {
+export interface CreateNewRunDialogState extends DialogState {
     allGames: Game[]
     rulesOptions: Map<string, string>
     loading: boolean
-    open: boolean,
     game: Game
     name: string
     rules: string[]
@@ -20,10 +20,7 @@ export interface CreateNewRunDialogState {
 }
 
 
-export interface CreateNewRunDialogInteractions {
-    open: () => void
-    onClose: () => void
-    submit: () => void
+export interface CreateNewRunDialogInteractions extends DialogInteractions {
     onChangeGame: (game: Game) => void
     onChangeName: (name: string) => void
     toggleRule: (active: boolean, rule: string) => void
@@ -62,14 +59,14 @@ export function useCreateNewRunDialogViewModel(notify: NotificationFN): CreateNe
     useEffect(() => reset(), [rulesDetails, allGames])
 
     const openDialog = () => setOpen(true)
-    const onClose = () => {
+    const closeDialog = () => {
         setOpen(false)
         reset()
     }
 
     const onSubmitSuccess = () => {
         notify("Succesfully created Nuzlocke Run", "success")
-        onClose()
+        closeDialog()
     }
 
     const onSubmitError = (e: any) => notify(`Failed to create Nuzlocke Run: '${e.response.data.reason}'`, "error")
@@ -93,9 +90,9 @@ export function useCreateNewRunDialogViewModel(notify: NotificationFN): CreateNe
             customRules: customRules
         },
         interactions: {
-            open: openDialog,
             submit: submit,
-            onClose: onClose,
+            openDialog: openDialog,
+            closeDialog: closeDialog,
             onChangeName: setName,
             onChangeGame: setGame,
             toggleRule: toggleRule,

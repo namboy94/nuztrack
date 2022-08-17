@@ -3,16 +3,14 @@ import {NuzlockeRun} from "../../../../data/runs/runs.model";
 import {runsService} from "../../../../data/runs/runs.service";
 import {NotificationFN} from "../../../../global/Snackbar";
 import {ViewModel} from "../../../../util/viewmodel";
+import {DialogInteractions, DialogState} from "../../../common/Dialog";
 
-export interface DeleteRunDialogState {
-    open: boolean,
+export interface DeleteRunDialogState extends DialogState {
     run: NuzlockeRun | null
 }
 
-export interface DeleteRunDialogInteractions {
-    open: (run: NuzlockeRun) => void
-    onClose: () => void
-    submit: () => void
+export interface DeleteRunDialogInteractions extends Omit<DialogInteractions, "openDialog"> {
+    openDialog: (run: NuzlockeRun) => void
 }
 
 export type DeleteRunDialogViewModel = ViewModel<DeleteRunDialogState, DeleteRunDialogInteractions>
@@ -26,7 +24,7 @@ export function useDeleteRunDialogViewModel(notify: NotificationFN): DeleteRunDi
         setRun(run)
         setOpen(true)
     }
-    const onClose = () => {
+    const closeDialog = () => {
         setOpen(false)
         setRun(null)
     }
@@ -34,7 +32,7 @@ export function useDeleteRunDialogViewModel(notify: NotificationFN): DeleteRunDi
         if (run !== null) {
             runsService.deleteRun$(run.id).subscribe({
                 complete: () => {
-                    onClose()
+                    closeDialog()
                     notify(`Run ${run.name} has been deleted`, "info")
                 }
             })
@@ -43,6 +41,10 @@ export function useDeleteRunDialogViewModel(notify: NotificationFN): DeleteRunDi
 
     return {
         state: {run: run, open: open},
-        interactions: {open: openDialog, onClose: onClose, submit: submit}
+        interactions: {
+            openDialog: openDialog,
+            closeDialog: closeDialog,
+            submit: submit
+        }
     }
 }

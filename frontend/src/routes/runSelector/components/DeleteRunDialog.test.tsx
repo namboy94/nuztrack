@@ -2,12 +2,12 @@ import {render, screen} from "@testing-library/react";
 import {DeleteRunDialog} from "./DeleteRunDialog";
 import {NUZLOCKE_RUN} from "../../../data/runs/runs.testconstants";
 import {NuzlockeRun} from "../../../data/runs/runs.model";
-import {DeleteRunDialogViewModel} from "../hooks/DeleteRunDialog.vm";
+import {DeleteRunDialogViewModel} from "../hooks/vm/DeleteRunDialog.vm";
 
 describe("DeleteRunDialog", () => {
 
-    const open = jest.fn()
-    const onClose = jest.fn()
+    const openDialog = jest.fn()
+    const closeDialog = jest.fn()
     const submit = jest.fn()
 
     function renderComponent(run: NuzlockeRun | null) {
@@ -17,8 +17,8 @@ describe("DeleteRunDialog", () => {
                 run: run
             },
             interactions: {
-                open: open,
-                onClose: onClose,
+                openDialog: openDialog,
+                closeDialog: closeDialog,
                 submit: submit
             }
         }

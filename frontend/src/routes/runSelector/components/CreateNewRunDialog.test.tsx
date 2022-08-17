@@ -2,12 +2,12 @@ import {render, screen, within} from "@testing-library/react";
 import {CreateNewRunDialog} from "./CreateNewRunDialog";
 import {GAMES} from "../../../data/games/games.testconstants";
 import {RULES_DETAILS} from "../../../data/rules/rules.testconstants";
-import {CreateNewRunDialogInteractions, CreateNewRunDialogState} from "../hooks/CreateNewRunDialog.vm";
+import {CreateNewRunDialogInteractions, CreateNewRunDialogState} from "../hooks/vm/CreateNewRunDialog.vm";
 
 describe("CreateNewRunDialog", () => {
 
-    const open = jest.fn()
-    const onClose = jest.fn()
+    const openDialog = jest.fn()
+    const closeDialog = jest.fn()
     const submit = jest.fn()
     const onChangeName = jest.fn()
     const onChangeGame = jest.fn()
@@ -26,8 +26,8 @@ describe("CreateNewRunDialog", () => {
             loading: loading
         }
         const interactions: CreateNewRunDialogInteractions = {
-            open: open,
-            onClose: onClose,
+            openDialog: openDialog,
+            closeDialog: closeDialog,
             submit: submit,
             onChangeName: onChangeName,
             onChangeGame: onChangeGame,

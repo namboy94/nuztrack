@@ -37,19 +37,19 @@ describe("useCreateNewRunDialogProps", () => {
         const result = createMocksAndRender()
 
         expect(getState(result).open).toBeFalsy()
-        act(getInteractions(result).open)
+        act(getInteractions(result).openDialog)
         expect(getState(result).open).toBeTruthy()
     })
     it("should test closing the dialog", () => {
         const result = createMocksAndRender()
         act(() => {
-            getInteractions(result).open()
+            getInteractions(result).openDialog()
             getInteractions(result).onChangeName("TEST")
         })
         expect(getState(result).open).toBeTruthy()
         expect(getState(result).name).toEqual("TEST")
 
-        act(() => getInteractions(result).onClose())
+        act(() => getInteractions(result).closeDialog())
 
         expect(getState(result).open).toBeFalsy()
         expect(getState(result).name).toEqual("")
@@ -69,7 +69,7 @@ describe("useCreateNewRunDialogProps", () => {
         expect(getState(result).rules).toEqual([...RULES_DETAILS.defaultRules, "ABC"])
         expect(getState(result).customRules).toEqual(["XYZ"])
 
-        act(() => getInteractions(result).onClose())
+        act(() => getInteractions(result).closeDialog())
 
         expect(getState(result).name).toEqual("")
         expect(getState(result).game).toEqual(DEFAULT_GAME)
@@ -85,7 +85,7 @@ describe("useCreateNewRunDialogProps", () => {
             () => getInteractions(result).toggleRule(false, ruleKey)
         ))
         act(() => {
-            getInteractions(result).open()
+            getInteractions(result).openDialog()
             getInteractions(result).onChangeName(NUZLOCKE_RUN_CREATOR.name)
             getInteractions(result).onChangeGame(NUZLOCKE_RUN_CREATOR.game)
             NUZLOCKE_RUN_CREATOR.rules.map(ruleKey => getInteractions(result).toggleRule(true, ruleKey))
@@ -120,7 +120,7 @@ describe("useCreateNewRunDialogProps", () => {
         const result = createMocksAndRender()
 
         act(() => {
-            getInteractions(result).open()
+            getInteractions(result).openDialog()
             getInteractions(result).submit()
         })
 
