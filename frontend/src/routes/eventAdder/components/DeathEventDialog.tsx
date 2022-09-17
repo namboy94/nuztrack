@@ -1,9 +1,10 @@
-import {Button, Dialog, DialogActions, DialogTitle, TextField} from "@mui/material";
+import {Dialog, DialogActions, DialogTitle, TextField} from "@mui/material";
 import {LocationInput} from "./common/LocationInput";
 import {TeamMemberSelectInput} from "./common/TeamMemberSelectInput";
 import {LevelInput} from "./common/LevelInput";
 import React from "react";
 import {DeathEventDialogViewModel} from "../hooks/vm/DeathEventDialog.vm";
+import {CancelButton, SubmitButton} from "../../common/inputs/Button";
 
 
 export function DeathEventDialog(props: DeathEventDialogViewModel) {
@@ -35,8 +36,8 @@ export function DeathEventDialog(props: DeathEventDialogViewModel) {
                 value={state.description}
                 onChange={x => interactions.onChangeDescription(x.target.value)}/>
             <DialogActions>
-                <Button data-testid="cancel-button" onClick={interactions.closeDialog}>Cancel</Button>
-                <Button data-testid="submit-button" onClick={interactions.submit}>Add</Button>
+                <CancelButton onClick={interactions.closeDialog}/>
+                <SubmitButton onClick={interactions.submit}/>
             </DialogActions>
         </Dialog>
     )
