@@ -63,17 +63,6 @@ describe("TeamMemberSwitchEventDialog", () => {
         expect(within(teamMemberInput).getByRole("combobox").getAttribute("value")).toEqual("")
         done()
     })
-    it("should select a location", (done) => {
-        renderComponent()
-        const locationInput = screen.getByTestId("location-input")
-
-        fireEvent.change(within(locationInput).getByRole("combobox"), {target: {value: "AAAAA"}})
-        fireEvent.keyDown(locationInput, {key: "Enter"})
-
-        expect(setLocation).toHaveBeenCalledTimes(1)
-        expect(setLocation).toHaveBeenCalledWith("AAAAA")
-        done()
-    })
     it("should add a team member", (done) => {
         renderComponent(SwitchType.ADD)
 

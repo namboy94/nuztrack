@@ -74,17 +74,6 @@ describe("DeathEventDialog", () => {
         expect(within(opponentInput).getByRole("textbox").textContent).toEqual(props.state.opponent)
         done()
     })
-    it("should select a location", (done) => {
-        renderComponent()
-        const locationInput = screen.getByTestId("location-input")
-
-        fireEvent.change(within(locationInput).getByRole("combobox"), {target: {value: "AAAAA"}})
-        fireEvent.keyDown(locationInput, {key: "Enter"})
-
-        expect(onChangeLocation).toHaveBeenCalledTimes(1)
-        expect(onChangeLocation).toHaveBeenCalledWith("AAAAA")
-        done()
-    })
     it("should change the level", (done) => {
         renderComponent()
         const levelInput = screen.getByTestId("level-input")

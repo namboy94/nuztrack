@@ -105,18 +105,6 @@ describe("EncounterEventDialog", () => {
 
         done()
     })
-    it("should test changing the location", (done) => {
-        renderComponent()
-        const locationInput = screen.getByTestId("location-input")
-
-        fireEvent.change(within(locationInput).getByRole("combobox"), {target: {value: "Test"}})
-        fireEvent.keyDown(locationInput, {key: "Enter"})
-
-        expect(setLocation).toHaveBeenCalledTimes(1)
-        expect(setLocation).toHaveBeenCalledWith("Test")
-
-        done()
-    })
     it("should test changing the pokemon species", (done) => {
         renderComponent()
         const pokemonSpeciesInput = screen.getByTestId("pokemon-species-input")
@@ -141,17 +129,6 @@ describe("EncounterEventDialog", () => {
 
         expect(setGender).toHaveBeenCalledTimes(1)
         expect(setGender).toHaveBeenCalledWith(Gender.FEMALE)
-
-        done()
-    })
-    it("should test changing the level", (done) => {
-        renderComponent()
-        const levelInput = screen.getByTestId("level-input")
-
-        fireEvent.change(within(levelInput).getByRole("spinbutton"), {target: {value: 85}})
-
-        expect(setLevel).toHaveBeenCalledTimes(1)
-        expect(setLevel).toHaveBeenCalledWith(85)
 
         done()
     })

@@ -75,28 +75,6 @@ describe("EvolutionEventDialog", () => {
             .toEqual(props.state.evolutionTarget!!.name)
         done()
     })
-    it("should select a location", (done) => {
-        renderComponent()
-        const locationInput = screen.getByTestId("location-input")
-
-        fireEvent.change(within(locationInput).getByRole("combobox"), {target: {value: "AAAAA"}})
-        fireEvent.keyDown(locationInput, {key: "Enter"})
-
-        expect(setLocation).toHaveBeenCalledTimes(1)
-        expect(setLocation).toHaveBeenCalledWith("AAAAA")
-        done()
-    })
-    it("should change the level", (done) => {
-        renderComponent()
-        const levelInput = screen.getByTestId("level-input")
-
-        fireEvent.change(within(levelInput).getByRole("spinbutton"), {target: {value: 85}})
-
-        expect(setLevel).toHaveBeenCalledTimes(1)
-        expect(setLevel).toHaveBeenCalledWith(85)
-
-        done()
-    })
     it("should change the evolution target", (done) => {
         renderComponent(false, true)
 

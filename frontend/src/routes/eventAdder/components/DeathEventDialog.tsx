@@ -12,7 +12,8 @@ export function DeathEventDialog(props: DeathEventDialogViewModel) {
     return (
         <Dialog open={state.open} onClose={interactions.closeDialog} fullWidth>
             <DialogTitle>Add Death</DialogTitle>
-            <LocationInput location={state.location} setLocation={interactions.onChangeLocation}
+            <LocationInput location={state.location}
+                           setLocation={interactions.onChangeLocation}
                            locations={state.locations}/>
             <TeamMemberSelectInput
                 teamMember={state.teamMember}
