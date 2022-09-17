@@ -1,7 +1,6 @@
 import {Button, Dialog, DialogActions, DialogTitle} from "@mui/material";
 import React from "react";
 import {LocationInput} from "./common/LocationInput";
-import {LevelInput} from "./common/LevelInput";
 import {TeamMember} from "../../../data/team/team.model";
 import {Pokedex, PokemonSpecies} from "../../../data/pokedex/pokedex.model";
 import {PokemonSpeciesSelectInput} from "./common/PokemonSpeciesSelectInput";
@@ -49,7 +48,8 @@ export function EvolutionEventDialog(props: EvolutionEventDialogProps) {
                 boxedTeamMembers={boxedTeamMembers}
                 pokedex={pokedex}
             />
-            <LevelInput level={state.level} setLevel={state.setLevel}/>
+            {/*<LevelInput level={state.level} setLevel={state.setLevel}/>*/}
+            {/*TODO Re-Add*/}
             <PokemonSpeciesSelectInput
                 pokemonSpecies={state.evolutionTarget}
                 setPokemonSpecies={state.setEvolutionTarget}

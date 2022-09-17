@@ -18,7 +18,6 @@ import {Gender} from "../../../data/team/team.model";
 import {Pokedex, PokemonSpecies} from "../../../data/pokedex/pokedex.model";
 import {NuzlockeRun} from "../../../data/runs/runs.model";
 import {LocationInput} from "./common/LocationInput";
-import {LevelInput} from "./common/LevelInput";
 import {PokemonSpeciesSelectInput} from "./common/PokemonSpeciesSelectInput";
 
 export interface EncounterEventDialogProps {
@@ -77,7 +76,8 @@ export function EncounterEventDialog(props: EncounterEventDialogProps) {
             />
             <Grid container spacing={0}>
                 <Grid item>
-                    <LevelInput level={state.level} setLevel={state.setLevel}/>
+                    {/*<LevelInput level={state.level} setLevel={state.setLevel}/>*/}
+                    {/*TODO Re-Add*/}
                 </Grid>
                 <Grid item>
                     {props.run.game.generation > 1 &&

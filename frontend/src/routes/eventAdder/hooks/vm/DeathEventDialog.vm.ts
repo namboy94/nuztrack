@@ -18,7 +18,7 @@ export interface DeathEventDialogState extends DialogState {
     activeTeamMembers: TeamMember[]
     boxedTeamMembers: TeamMember[]
     location: string
-    level: number
+    level: number | null
     teamMember: TeamMember | null
     opponent: string
     description: string
@@ -26,7 +26,7 @@ export interface DeathEventDialogState extends DialogState {
 
 export interface DeathEventDialogInteractions extends DialogInteractions {
     onChangeLocation: (location: string) => void
-    onChangeLevel: (level: number) => void
+    onChangeLevel: (level: number | null) => void
     onChangeTeamMember: (teamMember: TeamMember | null) => void
     onChangeOpponent: (opponent: string) => void
     onChangeDescription: (description: string) => void
@@ -46,7 +46,7 @@ export function useDeathEventDialogViewModel(run: NuzlockeRun, notify: Notificat
     const [open, setOpen] = useState(false)
     const [location, setLocation, resetLocation] = useResetState("")
     const [teamMember, setTeamMember, resetTeamMember] = useResetState<TeamMember | null>(null)
-    const [level, setLevel, resetLevel] = useResetState(5)
+    const [level, setLevel, resetLevel] = useResetState<number | null>(5)
     const [opponent, setOpponent, resetOpponent] = useResetState("")
     const [description, setDescription, resetDescription] = useResetState("")
 
@@ -79,7 +79,7 @@ export function useDeathEventDialogViewModel(run: NuzlockeRun, notify: Notificat
 
     const submit = useSubmitter(() => eventsService.createDeathEvent$(run.id, {
         description: description,
-        level: level,
+        level: level ?? -1,
         location: location,
         opponent: opponent,
         teamMemberId: teamMember?.id ?? -1
