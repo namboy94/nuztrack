@@ -41,22 +41,32 @@ public class Transporter
                 transferTargets.Add(pokemon);
             }
         }
-        FillTargetBoxAndConvert(targetGame.PKMType, targetGame.Generation, targetBox, transferTargets);
+        FillTargetBoxAndConvert(targetGame.PKMType, targetGame.Generation, targetBox, transferTargets, targetGame);
         
         AdjustPartyToNuztrackSave(targetBox, targetGame);
         
         targetGame.BoxData = targetBox;
         File.WriteAllBytes(_targetSaveFile, targetGame.Write());
     }
-
+    
     private void AdjustTrainerData(SaveFile targetGame, SaveFile sourceGame)
     {
         targetGame.OT = sourceGame.OT;
-        targetGame.TrainerID7 = sourceGame.TrainerID7;
-        targetGame.TrainerSID7 = sourceGame.TrainerSID7;
-        targetGame.Gender = sourceGame.Gender;
-        targetGame.SID = sourceGame.SID;
         targetGame.TID = sourceGame.TID;
+        if (sourceGame.Generation >= 2)
+        {
+            targetGame.Gender = sourceGame.Gender;
+        }
+
+        if (sourceGame.Generation >= 3)
+        {
+            targetGame.SID = sourceGame.SID;
+        }
+        if (sourceGame.Generation >= 7)
+        {
+            targetGame.TrainerID7 = sourceGame.TrainerID7;
+            targetGame.TrainerSID7 = sourceGame.TrainerSID7;
+        }
     }
 
     private void FillBoxWithParty(IList<PKM> box, IList<PKM> party)
@@ -70,7 +80,7 @@ public class Transporter
             }
     }
 
-    private void FillTargetBoxAndConvert(Type format, int targetGeneration, IList<PKM> targetBox, List<PKM> transferTargets)
+    private void FillTargetBoxAndConvert(Type format, int targetGeneration, IList<PKM> targetBox, List<PKM> transferTargets, SaveFile targetFile)
     {
         for (int i = 0; i < targetBox.Count && transferTargets.Count > 0; i++)
         {
@@ -83,20 +93,32 @@ public class Transporter
             transferTargets.RemoveAt(0);
             if (sourcePokemon.Generation < 3 && targetGeneration >= 3)
             {
-                sourcePokemon = ConvertLegacyToModern(sourcePokemon);
+                sourcePokemon = ConvertLegacyToModern(sourcePokemon, targetFile);
             }
             targetBox[i] = EntityConverter.ConvertToType(sourcePokemon, format, out _)!;
         }
     }
 
-    private PKM ConvertLegacyToModern(PKM pokemon)
+    private PKM ConvertLegacyToModern(PKM pokemon, SaveFile targetFile)
     {
-        var gen3 = new PK3();
-        gen3.CurrentLevel = pokemon.CurrentLevel;
-        gen3.Species = pokemon.Species;
-        gen3.Ball = pokemon.Ball;
-        gen3.Nickname = pokemon.Nickname;
-        gen3.Gender = pokemon.Gender;
+        var gen3 = new PK3
+        {
+            TID = targetFile.TID,
+            SID = targetFile.SID,
+            OT_Name = targetFile.OT,
+            OT_Gender = targetFile.Gender,
+            CurrentLevel = pokemon.CurrentLevel,
+            Species = pokemon.Species,
+            Ball = pokemon.Ball,
+            Nickname = pokemon.Nickname,
+            Gender = pokemon.Gender,
+            Move1 = pokemon.Move1,
+            Move2 = pokemon.Move2,
+            Move3 = pokemon.Move3,
+            Move4 = pokemon.Move4
+        };
+        gen3.SetIsShiny(pokemon.IsShiny);
+
         return gen3;
     }
 
@@ -126,7 +148,9 @@ public class Transporter
             Console.WriteLine("Missing nuztrack data for: " + pokemon.Nickname);
             return;
         }
-        
+
+        var isShiny = pokemon.IsShiny;
+
         pokemon.Species = nuztrackPokemon.Species;
         if (pokemon.CurrentLevel != nuztrackPokemon.Level)
         {
@@ -146,16 +170,17 @@ public class Transporter
             }
             pokemon.SetGender((int) (Gender) Enum.Parse(typeof(Gender), genderName));
         }
-
+        
         if (nuztrackPokemon.Nature != null)
         {
             var natureName = textInfo.ToTitleCase(nuztrackPokemon.Nature.ToLower());
             pokemon.SetNature((int) (Nature) Enum.Parse(typeof(Nature), natureName));
         }
-
+        
         if (nuztrackPokemon.AbilitySlot != null)
         {
             pokemon.SetAbilityIndex((int)nuztrackPokemon.AbilitySlot - 1);
         }
+        pokemon.SetIsShiny(isShiny);
     }
 }
