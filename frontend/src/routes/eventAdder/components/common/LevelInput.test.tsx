@@ -28,14 +28,7 @@ describe("LevelInput", () => {
         act(() => userEvent.type(input, "a"))
         expect(setLevel).not.toHaveBeenCalled()
     })
-
-    it("should not accept numbers above 100", () => {
-        const input = renderComponent()
-
-        act(() => userEvent.type(input, "01"))
-        expect(setLevel).toHaveBeenCalledWith(10)
-        expect(setLevel).not.toHaveBeenCalledWith(101)
-    })
+    
     it("should set the value to null if cleared", () => {
         const input = renderComponent()
         act(() => userEvent.clear(input))

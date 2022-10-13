@@ -9,8 +9,9 @@ import {teamService} from "../../../../data/team/team.service";
 import {useResetState} from "../../../../util/hooks/state";
 import {TeamMember} from "../../../../data/team/team.model";
 import {ViewModel} from "../../../../util/viewmodel";
-import {Pokedex, PokemonSpecies} from "../../../../data/pokedex/pokedex.model";
+import {Pokedex} from "../../../../data/pokedex/pokedex.model";
 import {DialogInteractions, DialogState} from "../../../common/Dialog";
+import {useLevelInput} from "../../../common/hooks/levelInput.hook";
 
 export interface DeathEventDialogState extends DialogState {
     pokedex: Pokedex
@@ -46,14 +47,14 @@ export function useDeathEventDialogViewModel(run: NuzlockeRun, notify: Notificat
     const [open, setOpen] = useState(false)
     const [location, setLocation, resetLocation] = useResetState("")
     const [teamMember, setTeamMember, resetTeamMember] = useResetState<TeamMember | null>(null)
-    const [level, setLevel, resetLevel] = useResetState<number | null>(5)
+    const [level, setLevel] = useLevelInput(5)
     const [opponent, setOpponent, resetOpponent] = useResetState("")
     const [description, setDescription, resetDescription] = useResetState("")
 
     const reset = () => {
         resetLocation()
         resetTeamMember()
-        resetLevel()
+        setLevel(5)
         resetOpponent()
         resetDescription()
     }
@@ -88,7 +89,7 @@ export function useDeathEventDialogViewModel(run: NuzlockeRun, notify: Notificat
     return {
         state: {
             open: open,
-            pokedex: pokedex ?? new Pokedex(new Map<number, PokemonSpecies>()),
+            pokedex: pokedex ?? Pokedex.EMPTY,
             locations: locations ?? [],
             activeTeamMembers: activeTeamMembers,
             boxedTeamMembers: boxedTeamMembers,

@@ -1,6 +1,8 @@
 export class Pokedex {
     private data: PokedexData
 
+    static readonly EMPTY = new Pokedex(new Map<number, PokemonSpecies>())
+
     constructor(pokedexData: PokedexData) {
         this.data = pokedexData
     }

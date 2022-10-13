@@ -8,11 +8,11 @@ export interface LevelInputProps {
 
 export function LevelInput(props: LevelInputProps) {
 
-    const setLevel = (value: number) => {
-        const numberValue = !!value ? value : null
-        if (numberValue === null || (numberValue >= 0 && numberValue <= 100)) {
-            props.setLevel(numberValue)
-        }
+    const {level, setLevel} = props
+
+    const onChange = (newValue: string) => {
+        const parsed = parseInt(newValue)
+        setLevel(isNaN(parsed) ? null : parsed)
     }
 
     return (
@@ -22,8 +22,8 @@ export function LevelInput(props: LevelInputProps) {
             label="Level"
             type="number"
             InputProps={{inputProps: {min: 1, max: 100}}}
-            value={props.level || ""}
-            onChange={value => setLevel(parseInt(value.target.value))}
+            value={level || ""}
+            onChange={value => onChange(value.target.value)}
         />
     )
 }
