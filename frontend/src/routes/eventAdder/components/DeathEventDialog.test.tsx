@@ -44,7 +44,7 @@ describe("DeathEventDialog", () => {
         return vm
     }
 
-    it("should render all components correctly", (done) => {
+    it("should render all components correctly", () => {
         const props = renderComponent()
 
         const locationInput = screen.getByTestId("location-input")
@@ -72,20 +72,8 @@ describe("DeathEventDialog", () => {
         expect(within(descriptionInput).getByRole("textbox").getAttribute("value"))
             .toEqual(props.state.description)
         expect(within(opponentInput).getByRole("textbox").textContent).toEqual(props.state.opponent)
-        done()
     })
-    it("should change the level", (done) => {
-        renderComponent()
-        const levelInput = screen.getByTestId("level-input")
-
-        fireEvent.change(within(levelInput).getByRole("spinbutton"), {target: {value: 85}})
-
-        expect(onChangeLevel).toHaveBeenCalledTimes(1)
-        expect(onChangeLevel).toHaveBeenCalledWith(85)
-
-        done()
-    })
-    it("should change the opponent", (done) => {
+    it("should change the opponent", () => {
         renderComponent()
         const opponentInput = screen.getByTestId("opponent-input")
 
@@ -93,10 +81,8 @@ describe("DeathEventDialog", () => {
 
         expect(onChangeOpponent).toHaveBeenCalledTimes(1)
         expect(onChangeOpponent).toHaveBeenCalledWith("AAAAA")
-
-        done()
     })
-    it("should change the description", (done) => {
+    it("should change the description", () => {
         renderComponent()
         const descriptionInput = screen.getByTestId("description-input")
 
@@ -104,10 +90,8 @@ describe("DeathEventDialog", () => {
 
         expect(onChangeDescription).toHaveBeenCalledTimes(1)
         expect(onChangeDescription).toHaveBeenCalledWith("AAAAA")
-
-        done()
     })
-    it("should submit", (done) => {
+    it("should submit", () => {
         renderComponent()
         const submitButton = screen.getByTestId("submit-button")
 
@@ -116,9 +100,8 @@ describe("DeathEventDialog", () => {
         })
 
         expect(submit).toHaveBeenCalledTimes(1)
-        done()
     })
-    it("should cancel", (done) => {
+    it("should cancel", () => {
         renderComponent()
         const cancelButton = screen.getByTestId("cancel-button")
 
@@ -127,6 +110,5 @@ describe("DeathEventDialog", () => {
         })
 
         expect(closeDialog).toHaveBeenCalledTimes(1)
-        done()
     })
 })

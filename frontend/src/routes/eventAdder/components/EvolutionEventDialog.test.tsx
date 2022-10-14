@@ -1,54 +1,48 @@
 import {LOCATION_REGISTRY} from "../../../data/games/games.testconstants";
 import {act, fireEvent, render, screen, within} from "@testing-library/react";
-import {EvolutionEventDialog, EvolutionEventDialogProps, EvolutionEventDialogState} from "./EvolutionEventDialog";
-import {POKEDEX, POKEMON_SPECIES_IVYSAUR, POKEMON_SPECIES_WARTORTLE} from "../../../data/pokedex/pokedex.testconstants";
+import {EvolutionEventDialog} from "./EvolutionEventDialog";
+import {POKEDEX, POKEMON_SPECIES_WARTORTLE} from "../../../data/pokedex/pokedex.testconstants";
 import {TEAM_MEMBER_1, TEAM_MEMBER_3} from "../../../data/team/team.testconstants";
+import {EvolutionEventDialogViewModel} from "../hooks/vm/EvolutionEventDialog.hooks";
 
 describe("EvolutionEventDialog", () => {
 
-    const reset = jest.fn()
-    const setLocation = jest.fn()
-    const onClose = jest.fn()
+    const onChangeLocation = jest.fn()
+    const openDialog = jest.fn()
+    const closeDialog = jest.fn()
     const submit = jest.fn()
-    const setEvolutionTarget = jest.fn()
-    const setTeamMember = jest.fn()
-    const setLevel = jest.fn()
+    const onChangeTeamMember = jest.fn()
+    const onChangeLevel = jest.fn()
+    const onChangeEvolutionTarget = jest.fn()
 
-    function renderComponent(loading: boolean = false, noSelectedEvo: boolean = false): EvolutionEventDialogProps {
-        const state: EvolutionEventDialogState = {
-            evolutionTarget: POKEMON_SPECIES_WARTORTLE,
-            level: 16,
-            setEvolutionTarget: setEvolutionTarget,
-            setLevel: setLevel,
-            setTeamMember: setTeamMember,
-            teamMember: TEAM_MEMBER_1,
-            location: "Location",
-            reset: reset,
-            setLocation: setLocation
+    function renderComponent(): EvolutionEventDialogViewModel {
+        const vm: EvolutionEventDialogViewModel = {
+            state: {
+                open: true,
+                pokedex: POKEDEX,
+                locations: LOCATION_REGISTRY.getLocationNames(),
+                activeTeamMembers: [TEAM_MEMBER_1],
+                boxedTeamMembers: [TEAM_MEMBER_3],
+                location: "Location",
+                level: 16,
+                teamMember: TEAM_MEMBER_1,
+                evolutionTarget: POKEMON_SPECIES_WARTORTLE
+            },
+            interactions: {
+                onChangeTeamMember: onChangeTeamMember,
+                closeDialog: closeDialog,
+                openDialog: openDialog,
+                onChangeLevel: onChangeLevel,
+                onChangeLocation: onChangeLocation,
+                onChangeEvolutionTarget: onChangeEvolutionTarget,
+                submit: submit
+            }
         }
-        const props: EvolutionEventDialogProps = {
-            activeTeamMembers: [TEAM_MEMBER_1],
-            boxedTeamMembers: [TEAM_MEMBER_3],
-            pokedex: POKEDEX,
-            locations: LOCATION_REGISTRY.getLocationNames(),
-            open: true,
-            state: state,
-            submit: submit,
-            onClose: onClose
-        }
-
-        if (noSelectedEvo) {
-            props.state.evolutionTarget = null
-        }
-        if (loading) {
-            props.pokedex = undefined
-        }
-
-        render(<EvolutionEventDialog {...props}/>)
-        return props
+        render(<EvolutionEventDialog {...vm} />)
+        return vm
     }
 
-    it("should correctly render all inputs", (done) => {
+    it("should render all components correctly", () => {
         const props = renderComponent()
 
         const locationInput = screen.getByTestId("location-input")
@@ -72,29 +66,9 @@ describe("EvolutionEventDialog", () => {
         expect(within(levelInput).getByRole("spinbutton").getAttribute("value"))
             .toEqual("16")
         expect(within(evolutionTargetInput).getByRole("combobox").getAttribute("value"))
-            .toEqual(props.state.evolutionTarget!!.name)
-        done()
+            .toEqual(props.state.evolutionTarget?.name)
     })
-    it("should change the evolution target", (done) => {
-        renderComponent(false, true)
-
-        const evolutionTargetInput = screen.getByTestId("pokemon-species-input")
-        expect(within(evolutionTargetInput).getByRole("combobox").getAttribute("value")).toEqual("")
-
-
-        fireEvent.focus(evolutionTargetInput)
-        fireEvent.change(
-            within(evolutionTargetInput).getByRole("combobox"),
-            {target: {value: POKEMON_SPECIES_IVYSAUR.name}}
-        )
-        fireEvent.keyDown(evolutionTargetInput, {key: "ArrowDown"})
-        fireEvent.keyDown(evolutionTargetInput, {key: "Enter"})
-
-        expect(setEvolutionTarget).toHaveBeenCalledTimes(1)
-        expect(setEvolutionTarget).toHaveBeenCalledWith(POKEMON_SPECIES_WARTORTLE)
-        done()
-    })
-    it("should submit", (done) => {
+    it("should submit", () => {
         renderComponent()
         const submitButton = screen.getByTestId("submit-button")
 
@@ -103,9 +77,8 @@ describe("EvolutionEventDialog", () => {
         })
 
         expect(submit).toHaveBeenCalledTimes(1)
-        done()
     })
-    it("should cancel", (done) => {
+    it("should cancel", () => {
         renderComponent()
         const cancelButton = screen.getByTestId("cancel-button")
 
@@ -113,12 +86,6 @@ describe("EvolutionEventDialog", () => {
             fireEvent.click(cancelButton)
         })
 
-        expect(onClose).toHaveBeenCalledTimes(1)
-        done()
-    })
-    it("should not render anything if data is not loaded", (done) => {
-        renderComponent(true)
-        expect(screen.queryByTestId("submit-button")).not.toBeInTheDocument()
-        done()
+        expect(closeDialog).toHaveBeenCalledTimes(1)
     })
 })

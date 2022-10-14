@@ -12,6 +12,7 @@ import {pokedexService} from "../../../data/pokedex/pokedex.service";
 import {POKEDEX} from "../../../data/pokedex/pokedex.testconstants";
 import {teamService} from "../../../data/team/team.service";
 import {TEAM_MEMBER_1, TEAM_MEMBER_3} from "../../../data/team/team.testconstants";
+import {createMocksForTeamMemberEventViewModel} from "./vm/TeamMemberEvent.vm.test";
 
 type PropsGetter = () => TeamMemberSwitchEventDialogProps
 
@@ -20,10 +21,7 @@ describe("useTeamMemberSwitchEventDialogProps", () => {
     const notify = jest.fn()
 
     function createMocksAndRender(mode: SwitchType = SwitchType.ADD): [() => void, PropsGetter] {
-        jest.spyOn(pokedexService, "getPokedex$").mockReturnValue(of(POKEDEX))
-        jest.spyOn(teamService, "getActiveTeamMembers$").mockReturnValue(of([TEAM_MEMBER_1]))
-        jest.spyOn(teamService, "getBoxedTeamMembers$").mockReturnValue(of([TEAM_MEMBER_3]))
-        jest.spyOn(gamesService, "getGameLocationRegistry$").mockReturnValue(of(LOCATION_REGISTRY))
+        createMocksForTeamMemberEventViewModel()
         const result = renderHook(() => useTeamMemberSwitchEventDialogProps(NUZLOCKE_RUN, notify, mode)).result
         return [result.current[0], () => result.current[1]]
     }

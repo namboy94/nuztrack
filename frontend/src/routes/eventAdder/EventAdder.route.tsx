@@ -6,7 +6,7 @@ import {Button} from "@mui/material";
 import * as React from "react";
 import {useNoteEventDialogProps} from "./hooks/NoteEventDialog.hooks";
 import {NoteEventDialog} from "./components/NoteEventDialog";
-import {useEvolutionEventDialogProps} from "./hooks/EvolutionEventDialog.hooks";
+import {useEvolutionEventDialogViewModel} from "./hooks/vm/EvolutionEventDialog.hooks";
 import {EvolutionEventDialog} from "./components/EvolutionEventDialog";
 import {DeathEventDialog} from "./components/DeathEventDialog";
 import {useDeathEventDialogViewModel} from "./hooks/vm/DeathEventDialog.vm";
@@ -23,7 +23,7 @@ export function EventAdderRoute(props: RunRouteProps) {
     const loading = useEventAdderDataLoader(props.run)
     const encounterEventDialogViewModel = useEncounterEventDialogViewModel(props.run, props.notify)
     const [openNoteEventDialog, noteEventDialogProps] = useNoteEventDialogProps(props.run, props.notify)
-    const [openEvolutionEventDialog, evolutionEventDialogProps] = useEvolutionEventDialogProps(props.run, props.notify)
+    const evolutionEventDialogViewModel = useEvolutionEventDialogViewModel(props.run, props.notify)
     const deathEventDialogViewModel = useDeathEventDialogViewModel(props.run, props.notify)
     const [openMilestoneEventDialog, milestoneEventDialogProps] = useMilestoneEventDialogProps(props.run, props.notify)
     const [openRemoveTeamMemberDialog, removeTeamMemberDialogProps] =
@@ -57,7 +57,7 @@ export function EventAdderRoute(props: RunRouteProps) {
                     variant="contained"
                     size={"large"}
                     startIcon={<AddIcon/>}
-                    onClick={openEvolutionEventDialog}>
+                    onClick={evolutionEventDialogViewModel.interactions.openDialog}>
                 Evolution
             </Button>
             <DialogOpenButton
@@ -91,7 +91,7 @@ export function EventAdderRoute(props: RunRouteProps) {
             </Button>
             <EncounterEventDialog {...encounterEventDialogViewModel}/>
             <NoteEventDialog {...noteEventDialogProps}/>
-            <EvolutionEventDialog {...evolutionEventDialogProps}/>
+            <EvolutionEventDialog {...evolutionEventDialogViewModel}/>
             <DeathEventDialog {...deathEventDialogViewModel}/>
             <MilestoneEventDialog {...milestoneEventDialogProps}/>
             <TeamMemberSwitchEventDialog {...removeTeamMemberDialogProps}/>

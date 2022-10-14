@@ -1,68 +1,44 @@
-import {Button, Dialog, DialogActions, DialogTitle} from "@mui/material";
+import {Dialog, DialogActions, DialogTitle} from "@mui/material";
 import React from "react";
 import {LocationInput} from "./common/LocationInput";
-import {TeamMember} from "../../../data/team/team.model";
-import {Pokedex, PokemonSpecies} from "../../../data/pokedex/pokedex.model";
 import {PokemonSpeciesSelectInput} from "./common/PokemonSpeciesSelectInput";
 import {TeamMemberSelectInput} from "./common/TeamMemberSelectInput";
+import {EvolutionEventDialogViewModel} from "../hooks/vm/EvolutionEventDialog.hooks";
+import {LevelInput} from "./common/LevelInput";
+import {CancelButton, SubmitButton} from "../../common/inputs/Button";
 
-export interface EvolutionEventDialogProps {
-    open: boolean
-    onClose: () => void
-    pokedex: Pokedex | undefined
-    locations: string[]
-    state: EvolutionEventDialogState
-    activeTeamMembers: TeamMember[]
-    boxedTeamMembers: TeamMember[]
-    submit: () => void
-}
 
-export interface EvolutionEventDialogState {
-    location: string
-    setLocation: (location: string) => void
-    level: number
-    setLevel: (level: number) => void
-    teamMember: TeamMember | null
-    setTeamMember: (teamMember: TeamMember | null) => void
-    evolutionTarget: PokemonSpecies | null
-    setEvolutionTarget: (species: PokemonSpecies | null) => void
-    reset: () => void
-}
+export function EvolutionEventDialog(props: EvolutionEventDialogViewModel) {
 
-export function EvolutionEventDialog(props: EvolutionEventDialogProps) {
-
-    const {open, onClose, state, locations, activeTeamMembers, boxedTeamMembers, submit, pokedex} = props
-
-    if (pokedex === undefined) {
-        return <></>
-    }
+    const {state, interactions} = props
 
     return (
-        <Dialog open={open} onClose={onClose} fullWidth>
+        <Dialog open={state.open} onClose={interactions.closeDialog} fullWidth>
             <DialogTitle>Add Evolution</DialogTitle>
-            <LocationInput location={state.location} setLocation={state.setLocation} locations={locations}/>
+            <LocationInput location={state.location}
+                           setLocation={interactions.onChangeLocation}
+                           locations={state.locations}/>
             <TeamMemberSelectInput
                 teamMember={state.teamMember}
-                setTeamMember={state.setTeamMember}
-                activeTeamMembers={activeTeamMembers}
-                boxedTeamMembers={boxedTeamMembers}
-                pokedex={pokedex}
+                setTeamMember={interactions.onChangeTeamMember}
+                activeTeamMembers={state.activeTeamMembers}
+                boxedTeamMembers={state.boxedTeamMembers}
+                pokedex={state.pokedex}
             />
-            {/*<LevelInput level={state.level} setLevel={state.setLevel}/>*/}
-            {/*TODO Re-Add*/}
+            <LevelInput level={state.level} setLevel={interactions.onChangeLevel}/>
             <PokemonSpeciesSelectInput
                 pokemonSpecies={state.evolutionTarget}
-                setPokemonSpecies={state.setEvolutionTarget}
+                setPokemonSpecies={interactions.onChangeEvolutionTarget}
                 pokemonSpeciesOptions={
                     state.teamMember !== null
-                        ? pokedex.getEvolutionSpecies(state.teamMember.pokedexNumber)
+                        ? state.pokedex.getEvolutionSpecies(state.teamMember.pokedexNumber)
                         : []
                 }
                 groupFn={_ => "Targets"}
             />
             <DialogActions>
-                <Button data-testid="cancel-button" onClick={onClose}>Cancel</Button>
-                <Button data-testid="submit-button" onClick={submit}>Add</Button>
+                <CancelButton onClick={interactions.closeDialog}/>
+                <SubmitButton onClick={interactions.submit}/>
             </DialogActions>
         </Dialog>
     )

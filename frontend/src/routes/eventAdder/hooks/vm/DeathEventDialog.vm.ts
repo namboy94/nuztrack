@@ -1,78 +1,39 @@
 import {NuzlockeRun} from "../../../../data/runs/runs.model";
 import {NotificationFN} from "../../../../global/Snackbar";
-import {useQuery, useSubmitter} from "../../../../util/hooks/observable";
+import {useSubmitter} from "../../../../util/hooks/observable";
 import {eventsService} from "../../../../data/events/events.service";
-import {useState} from "react";
-import {pokedexService} from "../../../../data/pokedex/pokedex.service";
-import {gamesService} from "../../../../data/games/games.service";
-import {teamService} from "../../../../data/team/team.service";
 import {useResetState} from "../../../../util/hooks/state";
-import {TeamMember} from "../../../../data/team/team.model";
 import {ViewModel} from "../../../../util/viewmodel";
-import {Pokedex} from "../../../../data/pokedex/pokedex.model";
 import {DialogInteractions, DialogState} from "../../../common/Dialog";
-import {useLevelInput} from "../../../common/hooks/levelInput.hook";
+import {TeamMemberEventInteractions, TeamMemberEventState, useTeamMemberEventViewModel} from "./TeamMemberEvent.vm";
 
-export interface DeathEventDialogState extends DialogState {
-    pokedex: Pokedex
-    locations: string[]
-    activeTeamMembers: TeamMember[]
-    boxedTeamMembers: TeamMember[]
-    location: string
-    level: number | null
-    teamMember: TeamMember | null
+export interface DeathEventDialogState extends DialogState, TeamMemberEventState {
     opponent: string
     description: string
 }
 
-export interface DeathEventDialogInteractions extends DialogInteractions {
-    onChangeLocation: (location: string) => void
-    onChangeLevel: (level: number | null) => void
-    onChangeTeamMember: (teamMember: TeamMember | null) => void
+export interface DeathEventDialogInteractions extends DialogInteractions, TeamMemberEventInteractions {
     onChangeOpponent: (opponent: string) => void
     onChangeDescription: (description: string) => void
 }
 
-
 export type DeathEventDialogViewModel = ViewModel<DeathEventDialogState, DeathEventDialogInteractions>
 
 export function useDeathEventDialogViewModel(run: NuzlockeRun, notify: NotificationFN): DeathEventDialogViewModel {
-    const pokedex = useQuery(() => pokedexService.getPokedex$(), undefined, [])
-    const locations = useQuery(
-        () => gamesService.getGameLocationRegistry$(run.game), undefined, []
-    )?.getLocationNames() ?? []
-    const activeTeamMembers = useQuery(() => teamService.getActiveTeamMembers$(run.id), [], [])
-    const boxedTeamMembers = useQuery(() => teamService.getBoxedTeamMembers$(run.id), [], [])
-
-    const [open, setOpen] = useState(false)
-    const [location, setLocation, resetLocation] = useResetState("")
-    const [teamMember, setTeamMember, resetTeamMember] = useResetState<TeamMember | null>(null)
-    const [level, setLevel] = useLevelInput(5)
     const [opponent, setOpponent, resetOpponent] = useResetState("")
     const [description, setDescription, resetDescription] = useResetState("")
 
     const reset = () => {
-        resetLocation()
-        resetTeamMember()
-        setLevel(5)
         resetOpponent()
         resetDescription()
     }
 
-    const onChangeTeamMember = (teamMember: TeamMember | null) => {
-        setTeamMember(teamMember)
-        setLevel(teamMember?.level ?? 5)
-    }
-
-    const openDialog = () => setOpen(true)
-
-    const closeDialog = () => {
-        setOpen(false)
-        reset()
-    }
+    const teamMemberSelectViewModel = useTeamMemberEventViewModel(run, notify, reset)
+    const parentState = teamMemberSelectViewModel.state
+    const parentInteractions = teamMemberSelectViewModel.interactions
 
     const onSubmitSuccess = () => {
-        closeDialog()
+        parentInteractions.closeDialog()
         notify("Successfully created Death Event", "success")
     }
 
@@ -80,33 +41,22 @@ export function useDeathEventDialogViewModel(run: NuzlockeRun, notify: Notificat
 
     const submit = useSubmitter(() => eventsService.createDeathEvent$(run.id, {
         description: description,
-        level: level ?? -1,
-        location: location,
+        level: parentState.level ?? -1,
+        location: parentState.location,
         opponent: opponent,
-        teamMemberId: teamMember?.id ?? -1
+        teamMemberId: parentState.teamMember?.id ?? -1
     }), onSubmitSuccess, onSubmitError)
 
     return {
         state: {
-            open: open,
-            pokedex: pokedex ?? Pokedex.EMPTY,
-            locations: locations ?? [],
-            activeTeamMembers: activeTeamMembers,
-            boxedTeamMembers: boxedTeamMembers,
-            location: location,
-            level: level,
-            teamMember: teamMember,
+            ...parentState,
             opponent: opponent,
             description: description
         },
         interactions: {
-            openDialog: openDialog,
-            closeDialog: closeDialog,
+            ...parentInteractions,
             onChangeDescription: setDescription,
-            onChangeLevel: setLevel,
-            onChangeLocation: setLocation,
             onChangeOpponent: setOpponent,
-            onChangeTeamMember: onChangeTeamMember,
             submit: submit
         }
     }
