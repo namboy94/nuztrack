@@ -3,7 +3,7 @@ import React from "react";
 import {LocationInput} from "./common/LocationInput";
 import {PokemonSpeciesSelectInput} from "./common/PokemonSpeciesSelectInput";
 import {TeamMemberSelectInput} from "./common/TeamMemberSelectInput";
-import {EvolutionEventDialogViewModel} from "../hooks/vm/EvolutionEventDialog.hooks";
+import {EvolutionEventDialogViewModel} from "../hooks/vm/EvolutionEventDialog.vm";
 import {LevelInput} from "./common/LevelInput";
 import {CancelButton, SubmitButton} from "../../common/inputs/Button";
 

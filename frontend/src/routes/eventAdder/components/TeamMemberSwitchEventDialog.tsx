@@ -1,54 +1,31 @@
 import {SwitchType} from "../../../data/events/events.model";
-import {TeamMember} from "../../../data/team/team.model";
-import {Button, Dialog, DialogActions, DialogTitle} from "@mui/material";
+import {Dialog, DialogActions, DialogTitle} from "@mui/material";
 import React from "react";
 import {TeamMemberSelectInput} from "./common/TeamMemberSelectInput";
-import {Pokedex} from "../../../data/pokedex/pokedex.model";
 import {LocationInput} from "./common/LocationInput";
+import {TeamMemberSwitchEventDialogViewModel} from "../hooks/vm/TeamMemberSwitchEventDialog.vm";
+import {CancelButton, SubmitButton} from "../../common/inputs/Button";
 
-export interface TeamMemberSwitchEventDialogProps {
-    open: boolean
-    onClose: () => void
-    mode: SwitchType
-    state: TeamMemberSwitchEventDialogState
-    activeTeamMembers: TeamMember[]
-    boxedTeamMembers: TeamMember[]
-    pokedex: Pokedex | undefined
-    locations: string[]
-    submit: () => void
-}
-
-export interface TeamMemberSwitchEventDialogState {
-    teamMember: TeamMember | null
-    setTeamMember: (teamMember: TeamMember | null) => void
-    location: string,
-    setLocation: (location: string) => void
-    reset: () => void
-}
-
-export function TeamMemberSwitchEventDialog(props: TeamMemberSwitchEventDialogProps) {
-    const {open, onClose, mode, state, submit, pokedex, locations, activeTeamMembers, boxedTeamMembers} = props
-
-    if (pokedex === undefined) {
-        return <></>
-    }
+export function TeamMemberSwitchEventDialog(props: TeamMemberSwitchEventDialogViewModel) {
+    const {state, interactions} = props
 
     return (
-        <Dialog open={open} onClose={onClose}>
+        <Dialog open={state.open} onClose={interactions.closeDialog}>
             <DialogTitle>
-                {mode == SwitchType.ADD ? "Add Team Member to Party" : "Remove Team Member from Party"}
+                {state.mode == SwitchType.ADD ? "Add Team Member to Party" : "Remove Team Member from Party"}
             </DialogTitle>
-            <LocationInput location={state.location} setLocation={state.setLocation} locations={locations}/>
+            <LocationInput location={state.location} setLocation={interactions.onChangeLocation}
+                           locations={state.locations}/>
             <TeamMemberSelectInput
                 teamMember={state.teamMember}
-                setTeamMember={state.setTeamMember}
-                activeTeamMembers={mode == SwitchType.REMOVE ? activeTeamMembers : []}
-                boxedTeamMembers={mode == SwitchType.ADD ? boxedTeamMembers : []}
-                pokedex={pokedex}
+                setTeamMember={interactions.onChangeTeamMember}
+                activeTeamMembers={state.mode == SwitchType.REMOVE ? state.activeTeamMembers : []}
+                boxedTeamMembers={state.mode == SwitchType.ADD ? state.boxedTeamMembers : []}
+                pokedex={state.pokedex}
             />
             <DialogActions>
-                <Button data-testid="cancel-button" onClick={onClose}>Cancel</Button>
-                <Button data-testid="submit-button" onClick={submit}>Submit</Button>
+                <CancelButton onClick={interactions.closeDialog}/>
+                <SubmitButton onClick={interactions.submit}/>
             </DialogActions>
         </Dialog>
     )

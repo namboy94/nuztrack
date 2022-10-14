@@ -1,53 +1,45 @@
 import {act, fireEvent, render, screen, within} from "@testing-library/react";
 import {LOCATION_REGISTRY} from "../../../data/games/games.testconstants";
-import {
-    TeamMemberSwitchEventDialog,
-    TeamMemberSwitchEventDialogProps,
-    TeamMemberSwitchEventDialogState
-} from "./TeamMemberSwitchEventDialog";
+import {TeamMemberSwitchEventDialog} from "./TeamMemberSwitchEventDialog";
 import {TEAM_MEMBER_1, TEAM_MEMBER_3} from "../../../data/team/team.testconstants";
 import {POKEDEX} from "../../../data/pokedex/pokedex.testconstants";
 import {SwitchType} from "../../../data/events/events.model";
+import {TeamMemberSwitchEventDialogViewModel} from "../hooks/vm/TeamMemberSwitchEventDialog.vm";
 
 describe("TeamMemberSwitchEventDialog", () => {
 
-    const reset = jest.fn()
-    const setTeamMember = jest.fn()
-    const setLocation = jest.fn()
-    const onClose = jest.fn()
+    const onChangeLocation = jest.fn()
+    const openDialog = jest.fn()
+    const closeDialog = jest.fn()
     const submit = jest.fn()
+    const onChangeTeamMember = jest.fn()
 
-    function renderComponent(
-        mode: SwitchType = SwitchType.ADD,
-        loading: boolean = false
-    ): TeamMemberSwitchEventDialogProps {
-        const state: TeamMemberSwitchEventDialogState = {
-            reset: reset,
-            teamMember: null,
-            setTeamMember: setTeamMember,
-            location: "LOCATION",
-            setLocation: setLocation
+    function renderComponent(mode: SwitchType): TeamMemberSwitchEventDialogViewModel {
+        const vm: TeamMemberSwitchEventDialogViewModel = {
+            state: {
+                open: true,
+                mode: mode,
+                pokedex: POKEDEX,
+                locations: LOCATION_REGISTRY.getLocationNames(),
+                activeTeamMembers: [TEAM_MEMBER_1],
+                boxedTeamMembers: [TEAM_MEMBER_3],
+                location: "Location",
+                teamMember: TEAM_MEMBER_1,
+            },
+            interactions: {
+                onChangeTeamMember: onChangeTeamMember,
+                closeDialog: closeDialog,
+                openDialog: openDialog,
+                onChangeLocation: onChangeLocation,
+                submit: submit
+            }
         }
-        const props: TeamMemberSwitchEventDialogProps = {
-            open: true,
-            state: state,
-            mode: mode,
-            submit: submit,
-            onClose: onClose,
-            pokedex: POKEDEX,
-            locations: LOCATION_REGISTRY.getLocationNames(),
-            activeTeamMembers: [TEAM_MEMBER_1],
-            boxedTeamMembers: [TEAM_MEMBER_3]
-        }
-        if (loading) {
-            props.pokedex = undefined
-        }
-        render(<TeamMemberSwitchEventDialog {...props}/>)
-        return props
+        render(<TeamMemberSwitchEventDialog {...vm} />)
+        return vm
     }
 
-    it("should render all UI elements correctly", (done) => {
-        const props = renderComponent()
+    it("should render all UI elements correctly", () => {
+        const props = renderComponent(SwitchType.ADD)
 
         const locationInput = screen.getByTestId("location-input")
         const teamMemberInput = screen.getByTestId("team-member-input")
@@ -59,46 +51,13 @@ describe("TeamMemberSwitchEventDialog", () => {
         expect(submitButton).toBeInTheDocument()
         expect(cancelButton).toBeInTheDocument()
 
-        expect(within(locationInput).getByRole("combobox").getAttribute("value")).toEqual(props.state.location)
-        expect(within(teamMemberInput).getByRole("combobox").getAttribute("value")).toEqual("")
-        done()
+        expect(within(locationInput).getByRole("combobox").getAttribute("value"))
+            .toEqual(props.state.location)
+        expect(within(teamMemberInput).getByRole("combobox").getAttribute("value"))
+            .toEqual(props.state.teamMember!!.nickname)
     })
-    it("should add a team member", (done) => {
+    it("should submit", () => {
         renderComponent(SwitchType.ADD)
-
-        const teamMemberInput = screen.getByTestId("team-member-input")
-
-        fireEvent.focus(teamMemberInput)
-        fireEvent.change(
-            within(teamMemberInput).getByRole("combobox"),
-            {target: {value: TEAM_MEMBER_3.nickname}}
-        )
-        fireEvent.keyDown(teamMemberInput, {key: "ArrowDown"})
-        fireEvent.keyDown(teamMemberInput, {key: "Enter"})
-
-        expect(setTeamMember).toHaveBeenCalledTimes(1)
-        expect(setTeamMember).toHaveBeenCalledWith(TEAM_MEMBER_3)
-        done()
-    })
-    it("should remove a team member", (done) => {
-        renderComponent(SwitchType.REMOVE)
-
-        const teamMemberInput = screen.getByTestId("team-member-input")
-
-        fireEvent.focus(teamMemberInput)
-        fireEvent.change(
-            within(teamMemberInput).getByRole("combobox"),
-            {target: {value: TEAM_MEMBER_1.nickname}}
-        )
-        fireEvent.keyDown(teamMemberInput, {key: "ArrowDown"})
-        fireEvent.keyDown(teamMemberInput, {key: "Enter"})
-
-        expect(setTeamMember).toHaveBeenCalledTimes(1)
-        expect(setTeamMember).toHaveBeenCalledWith(TEAM_MEMBER_1)
-        done()
-    })
-    it("should submit", (done) => {
-        renderComponent()
         const submitButton = screen.getByTestId("submit-button")
 
         act(() => {
@@ -106,22 +65,15 @@ describe("TeamMemberSwitchEventDialog", () => {
         })
 
         expect(submit).toHaveBeenCalledTimes(1)
-        done()
     })
-    it("should cancel", (done) => {
-        renderComponent()
+    it("should cancel", () => {
+        renderComponent(SwitchType.ADD)
         const cancelButton = screen.getByTestId("cancel-button")
 
         act(() => {
             fireEvent.click(cancelButton)
         })
 
-        expect(onClose).toHaveBeenCalledTimes(1)
-        done()
-    })
-    it("should not render anything if data is not loaded", (done) => {
-        renderComponent(SwitchType.ADD, true)
-        expect(screen.queryByTestId("submit-button")).not.toBeInTheDocument()
-        done()
+        expect(closeDialog).toHaveBeenCalledTimes(1)
     })
 })

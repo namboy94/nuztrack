@@ -2,7 +2,7 @@ import {of, throwError} from "rxjs";
 import {POKEMON_SPECIES_WARTORTLE} from "../../../../data/pokedex/pokedex.testconstants";
 import {act, renderHook} from "@testing-library/react";
 import {TEAM_MEMBER_1, TEAM_MEMBER_3} from "../../../../data/team/team.testconstants";
-import {EvolutionEventDialogViewModel, useEvolutionEventDialogViewModel} from "./EvolutionEventDialog.hooks";
+import {EvolutionEventDialogViewModel, useEvolutionEventDialogViewModel} from "./EvolutionEventDialog.vm";
 import {NUZLOCKE_RUN} from "../../../../data/runs/runs.testconstants";
 import {eventsService} from "../../../../data/events/events.service";
 import {EVOLUTION_EVENT} from "../../../../data/events/events.testconstants";
@@ -19,15 +19,6 @@ describe("useEvolutionEventDialogViewModel", () => {
         return renderHook(() => useEvolutionEventDialogViewModel(NUZLOCKE_RUN, notify)).result
     }
 
-    it("should reset if closed", () => {
-        const result = createMocksAndRender()
-        fillFields(result)
-
-        act(getInteractions(result).closeDialog)
-
-        expect(getState(result).evolutionTarget).toEqual(null)
-    })
-
     function fillFields(hookResult: { current: EvolutionEventDialogViewModel }) {
         const interactions = getInteractions(hookResult)
         act(() => {
@@ -37,6 +28,15 @@ describe("useEvolutionEventDialogViewModel", () => {
             interactions.onChangeEvolutionTarget(POKEMON_SPECIES_WARTORTLE)
         })
     }
+
+    it("should reset if closed", () => {
+        const result = createMocksAndRender()
+        fillFields(result)
+
+        act(getInteractions(result).closeDialog)
+
+        expect(getState(result).evolutionTarget).toEqual(null)
+    })
 
     it("should reset level and evolution target if team member is switched", () => {
         const result = createMocksAndRender()
@@ -49,6 +49,7 @@ describe("useEvolutionEventDialogViewModel", () => {
         expect(getState(result).level).toEqual(TEAM_MEMBER_3.level)
         expect(getState(result).evolutionTarget).toEqual(null)
     })
+
     it("should submit successfully", () => {
         jest.spyOn(eventsService, "createEvolutionEvent$").mockReturnValue(of(EVOLUTION_EVENT))
 
@@ -70,6 +71,7 @@ describe("useEvolutionEventDialogViewModel", () => {
         expect(notify).toHaveBeenCalledWith(expect.anything(), "success")
 
     })
+
     it("should submit unsuccessfully", (done) => {
         jest.spyOn(eventsService, "createEvolutionEvent$").mockReturnValue(throwError(() => {
             throw {response: {data: {reason: "TEST"}}}

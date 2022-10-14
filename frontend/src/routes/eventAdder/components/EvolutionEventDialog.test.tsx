@@ -3,7 +3,7 @@ import {act, fireEvent, render, screen, within} from "@testing-library/react";
 import {EvolutionEventDialog} from "./EvolutionEventDialog";
 import {POKEDEX, POKEMON_SPECIES_WARTORTLE} from "../../../data/pokedex/pokedex.testconstants";
 import {TEAM_MEMBER_1, TEAM_MEMBER_3} from "../../../data/team/team.testconstants";
-import {EvolutionEventDialogViewModel} from "../hooks/vm/EvolutionEventDialog.hooks";
+import {EvolutionEventDialogViewModel} from "../hooks/vm/EvolutionEventDialog.vm";
 
 describe("EvolutionEventDialog", () => {
 
