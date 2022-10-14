@@ -17,6 +17,8 @@ import {SwitchType} from "../../data/events/events.model";
 import {TeamMemberSwitchEventDialog} from "./components/TeamMemberSwitchEventDialog";
 import {LoadingIndicator} from "../common/components/LoadingIndicator";
 import {useEncounterEventDialogViewModel} from "./hooks/vm/EncounterEventDialog.vm";
+import {ViewModel} from "../../util/viewmodel";
+import {DialogInteractions, DialogState} from "../common/Dialog";
 
 export function EventAdderRoute(props: RunRouteProps) {
 
@@ -33,60 +35,34 @@ export function EventAdderRoute(props: RunRouteProps) {
         return <LoadingIndicator/>
     }
 
-    const buttonStyle = {width: "150px", height: "150px", margin: "5px"}
+    interface ButtonInfo {
+        viewModel: ViewModel<DialogState, DialogInteractions>,
+        title: string
+    }
+
+    const buttonInfos: ButtonInfo[] = [
+        {viewModel: encounterEventDialogViewModel, title: "Encounter"},
+        {viewModel: evolutionEventDialogViewModel, title: "Evolution"},
+        {viewModel: deathEventDialogViewModel, title: "Death"},
+        {viewModel: addTeamMemberDialogViewModel, title: "Add Team Member"},
+        {viewModel: removeTeamMemberDialogViewModel, title: "Remove Team Member"},
+        {viewModel: noteEventDialogViewModel, title: "Note"},
+        {viewModel: milestoneEventDialogViewModel, title: "Milestone"},
+    ]
 
     return (
         <>
-            <DialogOpenButton
-                data-testid="open-encounter-dialog-button"
-                title="Encounter"
-                openFn={encounterEventDialogViewModel.interactions.openDialog}
-            />
-            <Button data-testid="open-note-dialog-button"
-                    style={buttonStyle}
-                    variant="contained"
-                    size={"large"}
-                    startIcon={<AddIcon/>}
-                    onClick={noteEventDialogViewModel.interactions.openDialog}>
-                Note
-            </Button>
-            <Button data-testid="open-evolution-dialog-button"
-                    style={buttonStyle}
-                    variant="contained"
-                    size={"large"}
-                    startIcon={<AddIcon/>}
-                    onClick={evolutionEventDialogViewModel.interactions.openDialog}>
-                Evolution
-            </Button>
-            <DialogOpenButton
-                data-testid="open-death-dialog-button"
-                title="Death"
-                openFn={deathEventDialogViewModel.interactions.openDialog}
-            />
-            <Button data-testid="open-milestone-dialog-button"
-                    style={buttonStyle}
-                    variant="contained"
-                    size={"large"}
-                    startIcon={<AddIcon/>}
-                    onClick={milestoneEventDialogViewModel.interactions.openDialog}>
-                Milestone
-            </Button>
-            <Button data-testid="open-remove-team-member-dialog-button"
-                    style={buttonStyle}
-                    variant="contained"
-                    size={"large"}
-                    startIcon={<AddIcon/>}
-                    onClick={removeTeamMemberDialogViewModel.interactions.openDialog}>
-                Remove Team Member
-            </Button>
-            <Button data-testid="open-add-team-member-dialog-button"
-                    style={buttonStyle}
-                    variant="contained"
-                    size={"large"}
-                    startIcon={<AddIcon/>}
-                    onClick={addTeamMemberDialogViewModel.interactions.openDialog}>
-                Add Team Member
-            </Button>
+            {buttonInfos.map((buttonInfo) =>
+                <Button data-testid={`${buttonInfo.title.toLowerCase().replace(/ /gi, "-")}-dialog-button`}
+                        key={buttonInfo.title}
+                        style={{width: "150px", height: "150px", margin: "5px"}}
+                        variant="contained"
+                        size={"large"}
+                        startIcon={<AddIcon/>}
+                        onClick={buttonInfo.viewModel.interactions.openDialog}>
+                    {buttonInfo.title}
+                </Button>
+            )}
             <EncounterEventDialog {...encounterEventDialogViewModel}/>
             <NoteEventDialog {...noteEventDialogViewModel}/>
             <EvolutionEventDialog {...evolutionEventDialogViewModel}/>
@@ -95,23 +71,5 @@ export function EventAdderRoute(props: RunRouteProps) {
             <TeamMemberSwitchEventDialog {...removeTeamMemberDialogViewModel}/>
             <TeamMemberSwitchEventDialog {...addTeamMemberDialogViewModel}/>
         </>
-    )
-}
-
-interface DialogOpenButtonProps {
-    title: string
-    openFn: () => void
-}
-
-function DialogOpenButton(props: DialogOpenButtonProps) {
-    return (
-        <Button data-testid="open-remove-team-member-dialog-button"
-                style={{width: "150px", height: "150px", margin: "5px"}}
-                variant="contained"
-                size={"large"}
-                startIcon={<AddIcon/>}
-                onClick={props.openFn}>
-            {props.title}
-        </Button>
     )
 }
