@@ -4,13 +4,13 @@ import {EncounterEventDialog} from "./components/EncounterEventDialog";
 import AddIcon from "@mui/icons-material/Add";
 import {Button} from "@mui/material";
 import * as React from "react";
-import {useNoteEventDialogProps} from "./hooks/NoteEventDialog.hooks";
+import {useNoteEventDialogViewModel} from "./hooks/vm/NoteEventDialog.hooks";
 import {NoteEventDialog} from "./components/NoteEventDialog";
 import {useEvolutionEventDialogViewModel} from "./hooks/vm/EvolutionEventDialog.vm";
 import {EvolutionEventDialog} from "./components/EvolutionEventDialog";
 import {DeathEventDialog} from "./components/DeathEventDialog";
 import {useDeathEventDialogViewModel} from "./hooks/vm/DeathEventDialog.vm";
-import {useMilestoneEventDialogProps} from "./hooks/MilestoneEventDialog.hooks";
+import {useMilestoneEventDialogViewModel} from "./hooks/vm/MilestoneEventDialog.hooks";
 import {MilestoneEventDialog} from "./components/MilestoneEventDialog";
 import {useTeamMemberSwitchEventDialogViewModel} from "./hooks/vm/TeamMemberSwitchEventDialog.vm";
 import {SwitchType} from "../../data/events/events.model";
@@ -22,10 +22,10 @@ export function EventAdderRoute(props: RunRouteProps) {
 
     const loading = useEventAdderDataLoader(props.run)
     const encounterEventDialogViewModel = useEncounterEventDialogViewModel(props.run, props.notify)
-    const [openNoteEventDialog, noteEventDialogProps] = useNoteEventDialogProps(props.run, props.notify)
+    const noteEventDialogViewModel = useNoteEventDialogViewModel(props.run, props.notify)
     const evolutionEventDialogViewModel = useEvolutionEventDialogViewModel(props.run, props.notify)
     const deathEventDialogViewModel = useDeathEventDialogViewModel(props.run, props.notify)
-    const [openMilestoneEventDialog, milestoneEventDialogProps] = useMilestoneEventDialogProps(props.run, props.notify)
+    const milestoneEventDialogViewModel = useMilestoneEventDialogViewModel(props.run, props.notify)
     const removeTeamMemberDialogViewModel = useTeamMemberSwitchEventDialogViewModel(props.run, props.notify, SwitchType.REMOVE)
     const addTeamMemberDialogViewModel = useTeamMemberSwitchEventDialogViewModel(props.run, props.notify, SwitchType.ADD)
 
@@ -47,7 +47,7 @@ export function EventAdderRoute(props: RunRouteProps) {
                     variant="contained"
                     size={"large"}
                     startIcon={<AddIcon/>}
-                    onClick={openNoteEventDialog}>
+                    onClick={noteEventDialogViewModel.interactions.openDialog}>
                 Note
             </Button>
             <Button data-testid="open-evolution-dialog-button"
@@ -68,7 +68,7 @@ export function EventAdderRoute(props: RunRouteProps) {
                     variant="contained"
                     size={"large"}
                     startIcon={<AddIcon/>}
-                    onClick={openMilestoneEventDialog}>
+                    onClick={milestoneEventDialogViewModel.interactions.openDialog}>
                 Milestone
             </Button>
             <Button data-testid="open-remove-team-member-dialog-button"
@@ -88,10 +88,10 @@ export function EventAdderRoute(props: RunRouteProps) {
                 Add Team Member
             </Button>
             <EncounterEventDialog {...encounterEventDialogViewModel}/>
-            <NoteEventDialog {...noteEventDialogProps}/>
+            <NoteEventDialog {...noteEventDialogViewModel}/>
             <EvolutionEventDialog {...evolutionEventDialogViewModel}/>
             <DeathEventDialog {...deathEventDialogViewModel}/>
-            <MilestoneEventDialog {...milestoneEventDialogProps}/>
+            <MilestoneEventDialog {...milestoneEventDialogViewModel}/>
             <TeamMemberSwitchEventDialog {...removeTeamMemberDialogViewModel}/>
             <TeamMemberSwitchEventDialog {...addTeamMemberDialogViewModel}/>
         </>

@@ -1,39 +1,26 @@
-import {Button, Dialog, DialogActions, DialogTitle, TextField} from "@mui/material";
+import {Dialog, DialogActions, DialogTitle, TextField} from "@mui/material";
 import React from "react";
 import {LocationInput} from "./common/LocationInput";
+import {CancelButton, SubmitButton} from "../../common/inputs/Button";
+import {NoteEventDialogViewModel} from "../hooks/vm/NoteEventDialog.hooks";
 
-export interface NoteEventDialogProps {
-    open: boolean
-    onClose: () => void
-    state: NoteEventDialogState
-    locations: string[]
-    submit: () => void
-}
-
-export interface NoteEventDialogState {
-    text: string
-    setText: (text: string) => void
-    location: string
-    setLocation: (location: string) => void
-    reset: () => void
-}
-
-export function NoteEventDialog(props: NoteEventDialogProps) {
-    const {open, onClose, locations, state, submit} = props
+export function NoteEventDialog(props: NoteEventDialogViewModel) {
+    const {state, interactions} = props
 
     return (
-        <Dialog open={open} onClose={onClose}>
+        <Dialog open={state.open} onClose={interactions.closeDialog}>
             <DialogTitle>Add Note</DialogTitle>
-            <LocationInput location={state.location} setLocation={state.setLocation} locations={locations}/>
+            <LocationInput location={state.location} setLocation={interactions.onChangeLocation}
+                           locations={state.locations}/>
             <TextField
                 data-testid="note-text-input"
                 multiline
                 label="Note"
-                value={state.text}
-                onChange={x => state.setText(x.target.value)}/>
+                value={state.note}
+                onChange={x => interactions.onChangeNote(x.target.value)}/>
             <DialogActions>
-                <Button data-testid="cancel-button" onClick={onClose}>Cancel</Button>
-                <Button data-testid="submit-button" onClick={submit}>Add</Button>
+                <CancelButton onClick={interactions.closeDialog}/>
+                <SubmitButton onClick={interactions.submit}/>
             </DialogActions>
         </Dialog>
     )

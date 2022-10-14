@@ -1,32 +1,19 @@
-import {Autocomplete, Box, Button, Dialog, DialogActions, DialogTitle, TextField} from "@mui/material";
+import {Autocomplete, Box, Dialog, DialogActions, DialogTitle, TextField} from "@mui/material";
 import React from "react";
-import {Milestone} from "../../../data/games/games.model";
+import {MilestoneEventDialogViewModel} from "../hooks/vm/MilestoneEventDialog.hooks";
+import {CancelButton, SubmitButton} from "../../common/inputs/Button";
 
-export interface MilestoneEventDialogProps {
-    open: boolean
-    onClose: () => void
-    milestones: Milestone[]
-    state: MilestoneEventDialogState
-    submit: () => void
-}
+export function MilestoneEventDialog(props: MilestoneEventDialogViewModel) {
 
-export interface MilestoneEventDialogState {
-    milestone: Milestone | null
-    setMilestone: (milestone: Milestone | null) => void
-    reset: () => void
-}
-
-export function MilestoneEventDialog(props: MilestoneEventDialogProps) {
-
-    const {open, onClose, milestones, state, submit} = props
+    const {state, interactions} = props
 
     return (
-        <Dialog open={open} onClose={onClose}>
+        <Dialog open={state.open} onClose={interactions.closeDialog}>
             <DialogTitle>Add Milestone</DialogTitle>
             <Autocomplete
                 data-testid="milestone-input"
                 value={state.milestone}
-                options={milestones}
+                options={state.milestones}
                 renderOption={(p, option) => (
                     <Box component="li" sx={{'& > img': {mr: 2, flexShrink: 0}}} {...p}>
                         <img
@@ -39,12 +26,12 @@ export function MilestoneEventDialog(props: MilestoneEventDialogProps) {
                     </Box>
                 )}
                 getOptionLabel={milestone => milestone.name}
-                onChange={(_, milestone) => state.setMilestone(milestone)}
+                onChange={(_, milestone) => interactions.onChangeMilestone(milestone)}
                 renderInput={(params) => <TextField{...params} label="Milestone"/>}
             />
             <DialogActions>
-                <Button data-testid="cancel-button" onClick={onClose}>Cancel</Button>
-                <Button data-testid="submit-button" onClick={submit}>Add</Button>
+                <CancelButton onClick={interactions.closeDialog}/>
+                <SubmitButton onClick={interactions.submit}/>
             </DialogActions>
         </Dialog>
     )

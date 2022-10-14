@@ -1,32 +1,34 @@
 import {act, fireEvent, render, screen, within} from "@testing-library/react";
 import {MILESTONE, MILESTONE_2} from "../../../data/games/games.testconstants";
-import {MilestoneEventDialog, MilestoneEventDialogProps, MilestoneEventDialogState} from "./MilestoneEventDialog";
+import {MilestoneEventDialog} from "./MilestoneEventDialog";
+import {MilestoneEventDialogViewModel} from "../hooks/vm/MilestoneEventDialog.hooks";
 
 describe("MilestoneEventDialog", () => {
 
-    const reset = jest.fn()
-    const setMilestone = jest.fn()
-    const onClose = jest.fn()
+    const openDialog = jest.fn()
+    const closeDialog = jest.fn()
     const submit = jest.fn()
+    const onChangeMilestone = jest.fn()
 
-    function renderComponent(): MilestoneEventDialogProps {
-        const state: MilestoneEventDialogState = {
-            reset: reset,
-            setMilestone: setMilestone,
-            milestone: MILESTONE
+    function renderComponent(): MilestoneEventDialogViewModel {
+        const vm: MilestoneEventDialogViewModel = {
+            state: {
+                open: true,
+                milestone: MILESTONE,
+                milestones: [MILESTONE, MILESTONE_2]
+            },
+            interactions: {
+                closeDialog: closeDialog,
+                openDialog: openDialog,
+                submit: submit,
+                onChangeMilestone: onChangeMilestone
+            }
         }
-        const props: MilestoneEventDialogProps = {
-            open: true,
-            state: state,
-            submit: submit,
-            onClose: onClose,
-            milestones: [MILESTONE, MILESTONE_2]
-        }
-        render(<MilestoneEventDialog {...props}/>)
-        return props
+        render(<MilestoneEventDialog {...vm} />)
+        return vm
     }
 
-    it("should render all UI elements correctly", (done) => {
+    it("should render all UI elements correctly", () => {
         renderComponent()
 
         const milestoneInput = screen.getByTestId("milestone-input")
@@ -37,23 +39,10 @@ describe("MilestoneEventDialog", () => {
         expect(submitButton).toBeInTheDocument()
         expect(cancelButton).toBeInTheDocument()
 
-        expect(within(milestoneInput).getByRole("combobox").getAttribute("value")).toEqual(MILESTONE.name)
-
-        done()
+        expect(within(milestoneInput).getByRole("combobox").getAttribute("value"))
+            .toEqual(MILESTONE.name)
     })
-    it("should select a milestone", (done) => {
-        renderComponent()
-        const milestoneInput = screen.getByTestId("milestone-input")
-
-        fireEvent.change(within(milestoneInput).getByRole("combobox"), {target: {value: "Bould"}})
-        fireEvent.keyDown(milestoneInput, {key: "ArrowDown"})
-        fireEvent.keyDown(milestoneInput, {key: "Enter"})
-
-        expect(setMilestone).toHaveBeenCalledTimes(1)
-        expect(setMilestone).toHaveBeenCalledWith(MILESTONE_2)
-        done()
-    })
-    it("should submit", (done) => {
+    it("should submit", () => {
         renderComponent()
         const submitButton = screen.getByTestId("submit-button")
 
@@ -62,9 +51,8 @@ describe("MilestoneEventDialog", () => {
         })
 
         expect(submit).toHaveBeenCalledTimes(1)
-        done()
     })
-    it("should cancel", (done) => {
+    it("should cancel", () => {
         renderComponent()
         const cancelButton = screen.getByTestId("cancel-button")
 
@@ -72,7 +60,6 @@ describe("MilestoneEventDialog", () => {
             fireEvent.click(cancelButton)
         })
 
-        expect(onClose).toHaveBeenCalledTimes(1)
-        done()
+        expect(closeDialog).toHaveBeenCalledTimes(1)
     })
 })

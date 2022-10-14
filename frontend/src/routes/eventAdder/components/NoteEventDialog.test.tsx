@@ -1,63 +1,63 @@
-import {NoteEventDialog, NoteEventDialogProps, NoteEventDialogState} from "./NoteEventDialog";
+import {NoteEventDialog} from "./NoteEventDialog";
 import {act, fireEvent, render, screen, within} from "@testing-library/react";
 import {LOCATION_REGISTRY} from "../../../data/games/games.testconstants";
+import {NoteEventDialogViewModel} from "../hooks/vm/NoteEventDialog.hooks";
 
 describe("NoteEventDialog", () => {
 
-    const reset = jest.fn()
-    const setLocation = jest.fn()
-    const setText = jest.fn()
-    const onClose = jest.fn()
+    const onChangeLocation = jest.fn()
+    const openDialog = jest.fn()
+    const closeDialog = jest.fn()
     const submit = jest.fn()
+    const onChangeNote = jest.fn()
 
-    function renderComponent(): NoteEventDialogProps {
-        const state: NoteEventDialogState = {
-            location: "Location",
-            text: "Text",
-            reset: reset,
-            setLocation: setLocation,
-            setText: setText
+    function renderComponent(): NoteEventDialogViewModel {
+        const vm: NoteEventDialogViewModel = {
+            state: {
+                open: true,
+                location: "Location",
+                locations: LOCATION_REGISTRY.getLocationNames(),
+                note: "Note"
+            },
+            interactions: {
+                closeDialog: closeDialog,
+                openDialog: openDialog,
+                onChangeNote: onChangeNote,
+                onChangeLocation: onChangeLocation,
+                submit: submit
+            }
         }
-        const props: NoteEventDialogProps = {
-            locations: LOCATION_REGISTRY.getLocationNames(),
-            open: true,
-            state: state,
-            submit: submit,
-            onClose: onClose
-        }
-        render(<NoteEventDialog {...props}/>)
-        return props
+        render(<NoteEventDialog {...vm} />)
+        return vm
     }
 
-    it("should render all UI elements correctly", (done) => {
-        renderComponent()
+    it("should render all components correctly", () => {
+        const props = renderComponent()
 
         const locationInput = screen.getByTestId("location-input")
-        const textInput = screen.getByTestId("note-text-input")
+        const noteInput = screen.getByTestId("note-text-input")
         const submitButton = screen.getByTestId("submit-button")
         const cancelButton = screen.getByTestId("cancel-button")
 
         expect(locationInput).toBeInTheDocument()
-        expect(textInput).toBeInTheDocument()
+        expect(noteInput).toBeInTheDocument()
         expect(submitButton).toBeInTheDocument()
         expect(cancelButton).toBeInTheDocument()
 
-        expect(within(locationInput).getByRole("combobox").getAttribute("value")).toEqual("Location")
-        expect(within(textInput).getByRole("textbox").textContent).toEqual("Text")
-
-        done()
+        expect(within(locationInput).getByRole("combobox").getAttribute("value"))
+            .toEqual(props.state.location)
+        expect(within(noteInput).getByRole("textbox").textContent).toEqual(props.state.note)
     })
-    it("should enter note text", (done) => {
+    it("should enter note text", () => {
         renderComponent()
         const textInput = screen.getByTestId("note-text-input")
         act(() => {
             fireEvent.change(within(textInput).getByRole("textbox"), {target: {value: "AAAAA"}})
         })
-        expect(setText).toHaveBeenCalledTimes(1)
-        expect(setText).toHaveBeenCalledWith("AAAAA")
-        done()
+        expect(onChangeNote).toHaveBeenCalledTimes(1)
+        expect(onChangeNote).toHaveBeenCalledWith("AAAAA")
     })
-    it("should submit", (done) => {
+    it("should submit", () => {
         renderComponent()
         const submitButton = screen.getByTestId("submit-button")
 
@@ -66,9 +66,8 @@ describe("NoteEventDialog", () => {
         })
 
         expect(submit).toHaveBeenCalledTimes(1)
-        done()
     })
-    it("should cancel", (done) => {
+    it("should cancel", () => {
         renderComponent()
         const cancelButton = screen.getByTestId("cancel-button")
 
@@ -76,7 +75,6 @@ describe("NoteEventDialog", () => {
             fireEvent.click(cancelButton)
         })
 
-        expect(onClose).toHaveBeenCalledTimes(1)
-        done()
+        expect(closeDialog).toHaveBeenCalledTimes(1)
     })
 })
