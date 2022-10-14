@@ -1,7 +1,7 @@
 import {POKEDEX} from "../../../data/pokedex/pokedex.testconstants";
 import {TEAM_MEMBER_1, TEAM_MEMBER_3} from "../../../data/team/team.testconstants";
 import {LOCATION_REGISTRY} from "../../../data/games/games.testconstants";
-import {act, fireEvent, render, screen, within} from "@testing-library/react";
+import {fireEvent, render, screen, within} from "@testing-library/react";
 import {DeathEventDialog} from "./DeathEventDialog";
 import {DeathEventDialogViewModel} from "../hooks/vm/DeathEventDialog.vm";
 
@@ -90,25 +90,5 @@ describe("DeathEventDialog", () => {
 
         expect(onChangeDescription).toHaveBeenCalledTimes(1)
         expect(onChangeDescription).toHaveBeenCalledWith("AAAAA")
-    })
-    it("should submit", () => {
-        renderComponent()
-        const submitButton = screen.getByTestId("submit-button")
-
-        act(() => {
-            fireEvent.click(submitButton)
-        })
-
-        expect(submit).toHaveBeenCalledTimes(1)
-    })
-    it("should cancel", () => {
-        renderComponent()
-        const cancelButton = screen.getByTestId("cancel-button")
-
-        act(() => {
-            fireEvent.click(cancelButton)
-        })
-
-        expect(closeDialog).toHaveBeenCalledTimes(1)
     })
 })

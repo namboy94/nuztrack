@@ -1,8 +1,8 @@
-import {Dialog, DialogActions, DialogTitle, TextField} from "@mui/material";
+import {Dialog, DialogTitle, TextField} from "@mui/material";
 import React from "react";
 import {LocationInput} from "./common/LocationInput";
-import {CancelButton, SubmitButton} from "../../common/inputs/Button";
 import {NoteEventDialogViewModel} from "../hooks/vm/NoteEventDialog.hooks";
+import {SubmitCancelDialogActions} from "./common/SubmitCancelDialogActions";
 
 export function NoteEventDialog(props: NoteEventDialogViewModel) {
     const {state, interactions} = props
@@ -18,10 +18,7 @@ export function NoteEventDialog(props: NoteEventDialogViewModel) {
                 label="Note"
                 value={state.note}
                 onChange={x => interactions.onChangeNote(x.target.value)}/>
-            <DialogActions>
-                <CancelButton onClick={interactions.closeDialog}/>
-                <SubmitButton onClick={interactions.submit}/>
-            </DialogActions>
+            <SubmitCancelDialogActions closeDialog={interactions.closeDialog} submit={interactions.submit}/>
         </Dialog>
     )
 }

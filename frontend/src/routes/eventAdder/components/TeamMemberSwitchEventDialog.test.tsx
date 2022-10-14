@@ -1,4 +1,4 @@
-import {act, fireEvent, render, screen, within} from "@testing-library/react";
+import {render, screen, within} from "@testing-library/react";
 import {LOCATION_REGISTRY} from "../../../data/games/games.testconstants";
 import {TeamMemberSwitchEventDialog} from "./TeamMemberSwitchEventDialog";
 import {TEAM_MEMBER_1, TEAM_MEMBER_3} from "../../../data/team/team.testconstants";
@@ -55,25 +55,5 @@ describe("TeamMemberSwitchEventDialog", () => {
             .toEqual(props.state.location)
         expect(within(teamMemberInput).getByRole("combobox").getAttribute("value"))
             .toEqual(props.state.teamMember!!.nickname)
-    })
-    it("should submit", () => {
-        renderComponent(SwitchType.ADD)
-        const submitButton = screen.getByTestId("submit-button")
-
-        act(() => {
-            fireEvent.click(submitButton)
-        })
-
-        expect(submit).toHaveBeenCalledTimes(1)
-    })
-    it("should cancel", () => {
-        renderComponent(SwitchType.ADD)
-        const cancelButton = screen.getByTestId("cancel-button")
-
-        act(() => {
-            fireEvent.click(cancelButton)
-        })
-
-        expect(closeDialog).toHaveBeenCalledTimes(1)
     })
 })

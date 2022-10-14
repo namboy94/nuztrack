@@ -1,7 +1,7 @@
-import {Autocomplete, Box, Dialog, DialogActions, DialogTitle, TextField} from "@mui/material";
+import {Autocomplete, Box, Dialog, DialogTitle, TextField} from "@mui/material";
 import React from "react";
 import {MilestoneEventDialogViewModel} from "../hooks/vm/MilestoneEventDialog.hooks";
-import {CancelButton, SubmitButton} from "../../common/inputs/Button";
+import {SubmitCancelDialogActions} from "./common/SubmitCancelDialogActions";
 
 export function MilestoneEventDialog(props: MilestoneEventDialogViewModel) {
 
@@ -29,10 +29,7 @@ export function MilestoneEventDialog(props: MilestoneEventDialogViewModel) {
                 onChange={(_, milestone) => interactions.onChangeMilestone(milestone)}
                 renderInput={(params) => <TextField{...params} label="Milestone"/>}
             />
-            <DialogActions>
-                <CancelButton onClick={interactions.closeDialog}/>
-                <SubmitButton onClick={interactions.submit}/>
-            </DialogActions>
+            <SubmitCancelDialogActions closeDialog={interactions.closeDialog} submit={interactions.submit}/>
         </Dialog>
     )
 }

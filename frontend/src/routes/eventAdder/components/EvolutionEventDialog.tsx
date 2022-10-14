@@ -1,11 +1,11 @@
-import {Dialog, DialogActions, DialogTitle} from "@mui/material";
+import {Dialog, DialogTitle} from "@mui/material";
 import React from "react";
 import {LocationInput} from "./common/LocationInput";
 import {PokemonSpeciesSelectInput} from "./common/PokemonSpeciesSelectInput";
 import {TeamMemberSelectInput} from "./common/TeamMemberSelectInput";
 import {EvolutionEventDialogViewModel} from "../hooks/vm/EvolutionEventDialog.vm";
 import {LevelInput} from "./common/LevelInput";
-import {CancelButton, SubmitButton} from "../../common/inputs/Button";
+import {SubmitCancelDialogActions} from "./common/SubmitCancelDialogActions";
 
 
 export function EvolutionEventDialog(props: EvolutionEventDialogViewModel) {
@@ -36,10 +36,7 @@ export function EvolutionEventDialog(props: EvolutionEventDialogViewModel) {
                 }
                 groupFn={_ => "Targets"}
             />
-            <DialogActions>
-                <CancelButton onClick={interactions.closeDialog}/>
-                <SubmitButton onClick={interactions.submit}/>
-            </DialogActions>
+            <SubmitCancelDialogActions closeDialog={interactions.closeDialog} submit={interactions.submit}/>
         </Dialog>
     )
 }

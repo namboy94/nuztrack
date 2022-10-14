@@ -105,16 +105,4 @@ describe("EncounterEventDialog", () => {
         expect(onChangeCaught).toHaveBeenCalledTimes(1)
         expect(onChangeCaught).toHaveBeenCalledWith(false)
     })
-    it("should submit", () => {
-        renderComponent()
-        const button = screen.getByTestId("submit-button")
-        fireEvent.click(button)
-        expect(submit).toHaveBeenCalledTimes(1)
-    })
-    it("should cancel", () => {
-        renderComponent()
-        const button = screen.getByTestId("cancel-button")
-        fireEvent.click(button)
-        expect(closeDialog).toHaveBeenCalledTimes(1)
-    })
 })

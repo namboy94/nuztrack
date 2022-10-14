@@ -1,14 +1,14 @@
-import {Checkbox, Collapse, Dialog, DialogActions, DialogTitle, FormControlLabel, FormGroup, Grid} from "@mui/material";
+import {Checkbox, Collapse, Dialog, DialogTitle, FormControlLabel, FormGroup, Grid} from "@mui/material";
 import React from "react";
 import {LocationInput} from "./common/LocationInput";
 import {PokemonSpeciesSelectInput} from "./common/PokemonSpeciesSelectInput";
 import {EncounterEventDialogViewModel} from "../hooks/vm/EncounterEventDialog.vm";
 import {LevelInput} from "./common/LevelInput";
-import {CancelButton, SubmitButton} from "../../common/inputs/Button";
 import {NicknameInput} from "./common/NicknameInput";
 import {NatureInput} from "./common/NatureInput";
 import {AbilitySlotInput} from "./common/AbilitySlotInput";
 import {GenderInput} from "./common/GenderInput";
+import {SubmitCancelDialogActions} from "./common/SubmitCancelDialogActions";
 
 export function EncounterEventDialog(viewModel: EncounterEventDialogViewModel) {
 
@@ -73,10 +73,7 @@ export function EncounterEventDialog(viewModel: EncounterEventDialogViewModel) {
                     </Grid>
                 }
             </Collapse>
-            <DialogActions>
-                <CancelButton onClick={interactions.closeDialog}/>
-                <SubmitButton onClick={interactions.submit}/>
-            </DialogActions>
+            <SubmitCancelDialogActions closeDialog={interactions.closeDialog} submit={interactions.submit}/>
         </Grid>
     </Dialog>)
 }

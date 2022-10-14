@@ -1,4 +1,4 @@
-import {act, fireEvent, render, screen, within} from "@testing-library/react";
+import {render, screen, within} from "@testing-library/react";
 import {MILESTONE, MILESTONE_2} from "../../../data/games/games.testconstants";
 import {MilestoneEventDialog} from "./MilestoneEventDialog";
 import {MilestoneEventDialogViewModel} from "../hooks/vm/MilestoneEventDialog.hooks";
@@ -41,25 +41,5 @@ describe("MilestoneEventDialog", () => {
 
         expect(within(milestoneInput).getByRole("combobox").getAttribute("value"))
             .toEqual(MILESTONE.name)
-    })
-    it("should submit", () => {
-        renderComponent()
-        const submitButton = screen.getByTestId("submit-button")
-
-        act(() => {
-            fireEvent.click(submitButton)
-        })
-
-        expect(submit).toHaveBeenCalledTimes(1)
-    })
-    it("should cancel", () => {
-        renderComponent()
-        const cancelButton = screen.getByTestId("cancel-button")
-
-        act(() => {
-            fireEvent.click(cancelButton)
-        })
-
-        expect(closeDialog).toHaveBeenCalledTimes(1)
     })
 })

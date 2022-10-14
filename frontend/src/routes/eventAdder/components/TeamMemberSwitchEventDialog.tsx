@@ -1,10 +1,10 @@
 import {SwitchType} from "../../../data/events/events.model";
-import {Dialog, DialogActions, DialogTitle} from "@mui/material";
+import {Dialog, DialogTitle} from "@mui/material";
 import React from "react";
 import {TeamMemberSelectInput} from "./common/TeamMemberSelectInput";
 import {LocationInput} from "./common/LocationInput";
 import {TeamMemberSwitchEventDialogViewModel} from "../hooks/vm/TeamMemberSwitchEventDialog.vm";
-import {CancelButton, SubmitButton} from "../../common/inputs/Button";
+import {SubmitCancelDialogActions} from "./common/SubmitCancelDialogActions";
 
 export function TeamMemberSwitchEventDialog(props: TeamMemberSwitchEventDialogViewModel) {
     const {state, interactions} = props
@@ -23,10 +23,7 @@ export function TeamMemberSwitchEventDialog(props: TeamMemberSwitchEventDialogVi
                 boxedTeamMembers={state.mode == SwitchType.ADD ? state.boxedTeamMembers : []}
                 pokedex={state.pokedex}
             />
-            <DialogActions>
-                <CancelButton onClick={interactions.closeDialog}/>
-                <SubmitButton onClick={interactions.submit}/>
-            </DialogActions>
+            <SubmitCancelDialogActions closeDialog={interactions.closeDialog} submit={interactions.submit}/>
         </Dialog>
     )
 }
