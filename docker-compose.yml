@@ -48,7 +48,7 @@ services:
       - data:/var/lib/postgresql/data
     restart: always
   authdb:
-    image: postgres
+    image: postgres:14
     container_name: "nuztrack-auth-db"
     env_file: .env
     environment:
