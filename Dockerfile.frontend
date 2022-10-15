@@ -7,11 +7,11 @@ ARG KEYCLOAK_URL
 ARG BACKEND_URL
 
 RUN apt update && apt install -y npm && npm install -g serve
-ADD frontend nuztrack
+ADD ./frontend /nuztrack
 RUN echo "export const KEYCLOAK_URL=\"$KEYCLOAK_URL\"" > nuztrack/src/util/config.ts
 RUN echo "export const BACKEND_URL=\"$BACKEND_URL\"" >> nuztrack/src/util/config.ts
-RUN cd nuztrack && npm install && npm run build && mv build /app
-#RUN rm -rf nuztrack
+RUN cd /nuztrack && npm install && npm run build && mv build /app
+RUN rm -rf nuztrack
 
 EXPOSE 3000
 CMD ["/usr/local/bin/serve", "-s", "/app", "-l", "3000"]
