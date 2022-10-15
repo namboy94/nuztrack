@@ -20,6 +20,7 @@ test_backend:
   tags: [ docker ]
   script:
     - export NO_DOTNET=1
+    - cd backend
     - mvn -B clean verify
     - cat target/site/jacoco/index.html | grep -o 'Total[^%]*%'
   coverage: '/Total.*?([0-9]{1,3})%/'
