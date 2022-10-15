@@ -23,12 +23,12 @@ export function TeamMemberSwitchLogEntry(props: TeamMemberSwitchLogEntryProps) {
     const pokedexNumber = evolutions.length === 0 ? member.pokedexNumber : evolutions[0]
     const species = pokedex.getSpecies(pokedexNumber)!!
 
-    const title = event.switchType == SwitchType.ADD
+    const title = event.switchType === SwitchType.ADD
         ? `Added ${member.nickname} to the active party`
         : `Removed ${member.nickname} from the active party`
 
     const subtitle = `${event.location}, ${event.timestamp.toString()}`
-    const iconColor = event.switchType == SwitchType.ADD ? "#ebffb5" : "#eaeff1"
+    const iconColor = event.switchType === SwitchType.ADD ? "#ebffb5" : "#eaeff1"
 
     return (
         <ListItem>

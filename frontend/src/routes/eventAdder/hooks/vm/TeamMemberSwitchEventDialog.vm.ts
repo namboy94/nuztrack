@@ -32,12 +32,12 @@ export function useTeamMemberSwitchEventDialogViewModel(
 
     const onSubmitSuccess = () => {
         parentInteractions.closeDialog()
-        const verb = mode == SwitchType.ADD ? "added" : "removed"
+        const verb = mode === SwitchType.ADD ? "added" : "removed"
         notify(`Successfully ${verb} team member`, "success")
     }
 
     const onSubmitError = (e: any) => {
-        const verb = mode == SwitchType.ADD ? "add" : "remove"
+        const verb = mode === SwitchType.ADD ? "add" : "remove"
         notify(`Failed to ${verb} team member: '${e.response.data.reason}'`, "error")
     }
 

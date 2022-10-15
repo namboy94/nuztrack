@@ -29,6 +29,6 @@ export function getSpriteUrl(speciesName: string, game: Game, shiny: boolean) {
     ])
     const gameKey = gameKeys.get(game.key) ?? (game.generation === 7 ? "bank" : "home")
     const shinyKey = shiny ? "shiny" : "normal"
-    const colorExtra = game.generation == 1 ? "-color" : ""
+    const colorExtra = game.generation === 1 ? "-color" : ""
     return `https://img.pokemondb.net/sprites/${gameKey}/${shinyKey}/${speciesName.toLowerCase()}${colorExtra}.png`
 }

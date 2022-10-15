@@ -40,7 +40,7 @@ export function TeamMemberGrid(props: TeamMemberGridProps) {
                         alt={teamMember.nickname}
                     />
                     <CardActions style={{justifyContent: "center"}}>
-                        {state != TeamState.DEAD ?
+                        {state !== TeamState.DEAD ?
                             <Button onClick={() => movePokemon(teamMember)}>
                                 {state === TeamState.ACTIVE ? <ArrowDownwardIcon/> : <ArrowUpwardIcon/>}
                             </Button> : <></>}

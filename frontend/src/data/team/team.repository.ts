@@ -25,7 +25,7 @@ class TeamRepository {
 
     queryTeamMembersByTeamState$(runId: number, teamState: TeamState): Observable<TeamMember[]> {
         return this.teamMemberStore.pipe(selectAllEntitiesApply({
-            filterEntity: e => e.runId === runId && e.teamState == teamState
+            filterEntity: e => e.runId === runId && e.teamState === teamState
         }))
     }
 }

@@ -8,15 +8,11 @@ import Toolbar from '@mui/material/Toolbar';
 import {keycloak} from "../util/keycloak";
 import LogoutIcon from '@mui/icons-material/Logout';
 
-const lightColor = 'rgba(255, 255, 255, 0.7)';
-
 interface HeaderProps {
     onDrawerToggle: () => void;
 }
 
 export default function Header(props: HeaderProps) {
-    const {onDrawerToggle} = props;
-
     return (
         <React.Fragment>
             <AppBar color="primary" position="sticky" elevation={0}>
