@@ -1,38 +1,27 @@
-import {EventRegistry} from "../../../data/events/events.model";
-import {Pokedex} from "../../../data/pokedex/pokedex.model";
 import List from "@mui/material/List";
-import {EventLogEntry} from "./EventLogEntry";
+import {EventLogEntry} from "./entries/EventLogEntry";
 import {Divider} from "@mui/material";
-import {GameLocationRegistry} from "../../../data/games/games.model";
-import {Team} from "../../../data/team/team.model";
+import {EventLogViewModel} from "../hooks/vm/EventLog.vm";
 
-export interface EventLogProps {
-    eventRegistry: EventRegistry | undefined
-    pokedex: Pokedex | undefined
-    locationRegistry: GameLocationRegistry | undefined
-    team: Team | undefined
-}
+export function EventLog(props: EventLogViewModel) {
 
-export function EventLog(props: EventLogProps) {
-
-    const {eventRegistry, pokedex, locationRegistry, team} = props
-
-    if (pokedex === undefined || locationRegistry === undefined || team === undefined || eventRegistry === undefined) {
-        return <></>
-    }
+    const {state} = props
 
     return (
-        <List sx={{width: "100%", bgcolor: 'background.paper'}}>
-            {eventRegistry.getAllEvents().map(event =>
-                <>
+        <List
+            data-testid="event-log-list"
+            sx={{width: "100%", bgcolor: 'background.paper'}}
+        >
+            {state.eventRegistry.getAllEvents().map(event =>
+                <div key={event.id}>
                     <EventLogEntry
-                        eventRegistry={eventRegistry}
+                        eventRegistry={state.eventRegistry}
                         event={event}
-                        pokedex={pokedex}
-                        locationRegistry={locationRegistry}
-                        team={team}/>
+                        pokedex={state.pokedex}
+                        locationRegistry={state.locationRegistry}
+                        team={state.team}/>
                     <Divider variant="inset" component="li"/>
-                </>
+                </div>
             )}
         </List>
     )

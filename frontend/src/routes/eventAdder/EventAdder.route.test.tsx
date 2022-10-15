@@ -1,22 +1,26 @@
-import {EMPTY} from "rxjs";
+import {of} from "rxjs";
 import {NUZLOCKE_RUN} from "../../data/runs/runs.testconstants";
 import {render, screen} from "@testing-library/react";
 import {EventAdderRoute} from "./EventAdder.route";
-import {eventsService} from "../../data/events/events.service";
-import {pokedexService} from "../../data/pokedex/pokedex.service";
-import {gamesService} from "../../data/games/games.service";
-import {teamService} from "../../data/team/team.service";
+import {eventsApi} from "../../data/events/events.api";
+import {EVENT_LOG_TO} from "../../data/events/events.testconstants";
+import {pokedexApi} from "../../data/pokedex/pokedex.api";
+import {NATURES_TO, POKEDEX_TO} from "../../data/pokedex/pokedex.testconstants";
+import {gamesApi} from "../../data/games/games.api";
+import {GAME_LOCATIONS_TO} from "../../data/games/games.testconstants";
+import {teamApi} from "../../data/team/team.api";
+import {TEAM_TO} from "../../data/team/team.testconstants";
 
 describe("EventAdderRoute", () => {
 
     const notify = jest.fn()
 
     beforeEach(() => {
-        jest.spyOn(eventsService, "loadEvents$").mockReturnValue(EMPTY)
-        jest.spyOn(pokedexService, "loadPokedexData$").mockReturnValue(EMPTY)
-        jest.spyOn(pokedexService, "loadNatures$").mockReturnValue(EMPTY)
-        jest.spyOn(gamesService, "loadGameLocations$").mockReturnValue(EMPTY)
-        jest.spyOn(teamService, "loadTeam$").mockReturnValue(EMPTY)
+        jest.spyOn(eventsApi, "getEvents$").mockReturnValue(of(EVENT_LOG_TO))
+        jest.spyOn(pokedexApi, "getPokedex$").mockReturnValue(of(POKEDEX_TO))
+        jest.spyOn(pokedexApi, "getNatures$").mockReturnValue(of(NATURES_TO))
+        jest.spyOn(gamesApi, "getGameLocations$").mockReturnValue(of(GAME_LOCATIONS_TO))
+        jest.spyOn(teamApi, "getTeam$").mockReturnValue(of(TEAM_TO))
     })
 
     afterEach(() => {

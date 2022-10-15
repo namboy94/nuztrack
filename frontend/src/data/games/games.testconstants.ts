@@ -61,6 +61,18 @@ export const GAME_LOCATION_VIRIDIAN_TO: GameLocationTO = {
     milestones: [MILESTONE_TO],
     name: "Viridian City"
 }
-export const GAME_LOCATIONS_TO = [GAME_LOCATION_PALLET_TO, GAME_LOCATION_VIRIDIAN_TO]
-export const GAME_LOCATIONS = [GAME_LOCATION_PALLET, GAME_LOCATION_VIRIDIAN]
-export const LOCATION_REGISTRY = new GameLocationRegistry([GAME_LOCATION_PALLET, GAME_LOCATION_VIRIDIAN])
+export const GAME_LOCATION_PEWTER: GameLocation = {
+    game: GAME_2,
+    encounters: [],
+    milestones: [MILESTONE_2],
+    name: "Pewter City"
+}
+export const GAME_LOCATION_PEWTER_TO: GameLocationTO = {
+    game: GAME_2_TO,
+    encounters: [],
+    milestones: [MILESTONE_2_TO],
+    name: "Pewter City"
+}
+export const GAME_LOCATIONS_TO = [GAME_LOCATION_PALLET_TO, GAME_LOCATION_VIRIDIAN_TO, GAME_LOCATION_PEWTER_TO]
+export const GAME_LOCATIONS = [GAME_LOCATION_PALLET, GAME_LOCATION_VIRIDIAN, GAME_LOCATION_PEWTER]
+export const LOCATION_REGISTRY = new GameLocationRegistry(GAME_LOCATIONS)

@@ -5,7 +5,7 @@ import {pokedexService} from "../../../data/pokedex/pokedex.service";
 import {gamesService} from "../../../data/games/games.service";
 import {teamService} from "../../../data/team/team.service";
 
-export function useEventLogDataLoader(run: NuzlockeRun) {
+export function useEventLogDataLoader(run: NuzlockeRun): boolean {
     const eventsLoading = useService(() => eventsService.loadEvents$(run.id), [])
     const pokedexLoading = useService(() => pokedexService.loadPokedexData$(), [])
     const locationsLoading = useService(() => gamesService.loadGameLocations$(run.game), [])

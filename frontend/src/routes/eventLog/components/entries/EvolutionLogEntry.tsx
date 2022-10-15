@@ -1,7 +1,7 @@
-import {EvolutionEvent} from "../../../data/events/events.model";
-import {Pokedex} from "../../../data/pokedex/pokedex.model";
+import {EvolutionEvent} from "../../../../data/events/events.model";
+import {Pokedex} from "../../../../data/pokedex/pokedex.model";
 import {Avatar, ListItem, ListItemText} from "@mui/material";
-import {Team} from "../../../data/team/team.model";
+import {Team} from "../../../../data/team/team.model";
 
 export interface EvolutionLogEntryProps {
     event: EvolutionEvent
@@ -20,7 +20,7 @@ export function EvolutionLogEntry(props: EvolutionLogEntryProps) {
     const subtitle = `${event.location}, ${event.timestamp.toString()}`
 
     return (
-        <ListItem>
+        <ListItem data-testid="evolution-log-entry">
             <Avatar alt={newSpecies.name} src={newSpecies.sprite} sx={{
                 width: 70,
                 height: 70,

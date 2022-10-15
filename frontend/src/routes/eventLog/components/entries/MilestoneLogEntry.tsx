@@ -1,6 +1,6 @@
-import {MilestoneEvent} from "../../../data/events/events.model";
+import {MilestoneEvent} from "../../../../data/events/events.model";
 import {Avatar, ListItem, ListItemText} from "@mui/material";
-import {GameLocationRegistry} from "../../../data/games/games.model";
+import {GameLocationRegistry} from "../../../../data/games/games.model";
 
 export interface MilestoneLogEntryProps {
     event: MilestoneEvent
@@ -16,7 +16,7 @@ export function MilestoneLogEntry(props: MilestoneLogEntryProps) {
     const subtitle = `${event.location}, ${event.timestamp.toString()}`
 
     return (
-        <ListItem>
+        <ListItem data-testid="milestone-log-entry">
             <Avatar alt={event.milestone} src={image} sx={{
                 width: 70,
                 height: 70,

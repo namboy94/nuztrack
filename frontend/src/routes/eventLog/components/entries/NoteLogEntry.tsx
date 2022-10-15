@@ -1,4 +1,4 @@
-import {NoteEvent} from "../../../data/events/events.model";
+import {NoteEvent} from "../../../../data/events/events.model";
 import {ListItem, ListItemAvatar, ListItemText} from "@mui/material";
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 
@@ -14,7 +14,7 @@ export function NoteLogEntry(props: NoteLogEntryProps) {
     const subtitle = `${event.location}, ${event.timestamp.toString()}`
 
     return (
-        <ListItem>
+        <ListItem data-testid="note-log-entry">
             <ListItemAvatar sx={{
                 backgroundColor: "#b0e1ff",
                 height: 70,

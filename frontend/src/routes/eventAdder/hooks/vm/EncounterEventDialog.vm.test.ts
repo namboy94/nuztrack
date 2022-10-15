@@ -14,6 +14,7 @@ import {gamesService} from "../../../../data/games/games.service";
 import {
     GAME_1,
     GAME_LOCATION_PALLET,
+    GAME_LOCATION_PEWTER,
     GAME_LOCATION_VIRIDIAN,
     LOCATION_REGISTRY
 } from "../../../../data/games/games.testconstants";
@@ -116,7 +117,7 @@ describe("useEncounterEventDialogProps", () => {
 
     it("should test the data loading", () => {
         const state = getState(createMocksAndRender(NUZLOCKE_RUN))
-        expect(state.locations).toEqual([GAME_LOCATION_VIRIDIAN.name])
+        expect(state.locations).toEqual([GAME_LOCATION_VIRIDIAN.name, GAME_LOCATION_PEWTER.name])
         expect(state.pokedex).toEqual(POKEDEX)
         expect(eventsService.getEncounterEvents$).toHaveBeenCalledTimes(1)
         expect(pokedexService.getPokedex$).toHaveBeenCalledTimes(1)

@@ -6,7 +6,7 @@ import {renderHook} from "@testing-library/react";
 import {useRunSelectorDataLoader} from "./RunSelector.data.hook";
 
 describe("useRunSelectorDataLoader", () => {
-    it("should load the data", (done) => {
+    it("should load the data", () => {
         const loadRunsMock = jest.spyOn(runsService, "loadRuns$").mockReturnValue(EMPTY)
         const loadRulesMock = jest.spyOn(rulesService, "loadRulesDetails$").mockReturnValue(EMPTY)
         const loadGamesMock = jest.spyOn(gamesService, "loadGames$").mockReturnValue(EMPTY)
@@ -16,7 +16,5 @@ describe("useRunSelectorDataLoader", () => {
         expect(loadRunsMock).toHaveBeenCalledTimes(1)
         expect(loadRulesMock).toHaveBeenCalledTimes(1)
         expect(loadGamesMock).toHaveBeenCalledTimes(1)
-        done()
-
     })
 })

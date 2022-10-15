@@ -1,7 +1,7 @@
-import {EventRegistry, EvolutionEvent, SwitchType, TeamMemberSwitchEvent} from "../../../data/events/events.model";
-import {Pokedex} from "../../../data/pokedex/pokedex.model";
+import {EventRegistry, EvolutionEvent, SwitchType, TeamMemberSwitchEvent} from "../../../../data/events/events.model";
+import {Pokedex} from "../../../../data/pokedex/pokedex.model";
 import {Avatar, ListItem, ListItemText} from "@mui/material";
-import {Team} from "../../../data/team/team.model";
+import {Team} from "../../../../data/team/team.model";
 
 export interface TeamMemberSwitchLogEntryProps {
     eventRegistry: EventRegistry
@@ -31,7 +31,7 @@ export function TeamMemberSwitchLogEntry(props: TeamMemberSwitchLogEntryProps) {
     const iconColor = event.switchType === SwitchType.ADD ? "#ebffb5" : "#eaeff1"
 
     return (
-        <ListItem>
+        <ListItem data-testid="team-member-switch-log-entry">
             <Avatar alt={species.name} src={species.sprite} sx={{
                 width: 70,
                 height: 70,

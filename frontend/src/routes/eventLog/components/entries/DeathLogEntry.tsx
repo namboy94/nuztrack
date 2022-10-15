@@ -1,7 +1,7 @@
-import {DeathEvent} from "../../../data/events/events.model";
-import {Pokedex} from "../../../data/pokedex/pokedex.model";
+import {DeathEvent} from "../../../../data/events/events.model";
+import {Pokedex} from "../../../../data/pokedex/pokedex.model";
 import {Avatar, ListItem, ListItemText} from "@mui/material";
-import {Team} from "../../../data/team/team.model";
+import {Team} from "../../../../data/team/team.model";
 
 export interface DeathLogEntryProps {
     event: DeathEvent
@@ -21,7 +21,7 @@ export function DeathLogEntry(props: DeathLogEntryProps) {
     const subtitle = `${event.location}, ${event.timestamp.toString()}`
 
     return (
-        <ListItem>
+        <ListItem data-testid="death-log-entry">
             <Avatar alt={species.name} src={species.sprite}
                     sx={{
                         width: 70,

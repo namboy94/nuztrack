@@ -8,7 +8,7 @@ import {NUZLOCKE_RUN} from "../../../data/runs/runs.testconstants";
 import {useEventLogDataLoader} from "./EventLog.data.hook";
 
 describe("useEventLogDataLoader", () => {
-    it("should load the data", (done) => {
+    it("should load the data", () => {
         jest.spyOn(eventsService, "loadEvents$").mockReturnValue(EMPTY)
         jest.spyOn(pokedexService, "loadPokedexData$").mockReturnValue(EMPTY)
         jest.spyOn(gamesService, "loadGameLocations$").mockReturnValue(EMPTY)
@@ -24,6 +24,5 @@ describe("useEventLogDataLoader", () => {
         expect(gamesService.loadGameLocations$).toHaveBeenCalledWith(NUZLOCKE_RUN.game)
         expect(teamService.loadTeam$).toHaveBeenCalledTimes(1)
         expect(teamService.loadTeam$).toHaveBeenCalledWith(NUZLOCKE_RUN.id)
-        done()
     })
 })

@@ -8,7 +8,6 @@ import {
     DeathEventTO,
     EncounterEventTO,
     EventLogTO,
-    EventTO,
     EvolutionEventTO,
     MilestoneEventTO,
     NoteEventTO,
@@ -246,6 +245,25 @@ export const TEAM_MEMBER_SWITCH_EVENT: TeamMemberSwitchEvent = {
     teamMemberId: 2,
     type: EventType.TEAM_MEMBER_SWITCH
 }
+export const TEAM_MEMBER_SWITCH_REMOVE_EVENT_TO: TeamMemberSwitchEventTO = {
+    event: {
+        id: 8,
+        runId: 1,
+        location: "Pewter City",
+        timestamp: "2022-03-20T20:04:10.324Z"
+    },
+    switchType: "REMOVE",
+    teamMemberId: 1
+}
+export const TEAM_MEMBER_SWITCH_REMOVE_EVENT: TeamMemberSwitchEvent = {
+    id: 8,
+    runId: 1,
+    location: "Pewter City",
+    timestamp: new Date("2022-03-20T20:04:10.324Z"),
+    switchType: SwitchType.REMOVE,
+    teamMemberId: 1,
+    type: EventType.TEAM_MEMBER_SWITCH
+}
 export const CREATE_TEAM_MEMBER_SWITCH_EVENT_TO: CreateTeamMemberSwitchEventTO = {
     location: "Mt. Moon",
     switchType: "ADD",
@@ -256,19 +274,13 @@ export const CREATE_TEAM_MEMBER_SWITCH_EVENT: CreateTeamMemberSwitchEvent = {
     switchType: SwitchType.ADD,
     teamMemberId: 2
 }
-export const EVENT_TO: EventTO = {
-    id: 10,
-    runId: 1,
-    location: "Pokemon League",
-    timestamp: "2022-03-25T20:05:10.324Z"
-}
 export const EVENT_LOG_TO: EventLogTO = {
     deaths: [DEATH_EVENT_TO],
     encounters: [ENCOUNTER_EVENT_SUCCESSFUL_TO, ENCOUNTER_EVENT_FAILED_TO],
     evolutions: [EVOLUTION_EVENT_TO],
     milestones: [MILESTONE_EVENT_TO],
     notes: [NOTE_EVENT_TO],
-    teamMemberSwitches: [TEAM_MEMBER_SWITCH_EVENT_TO]
+    teamMemberSwitches: [TEAM_MEMBER_SWITCH_EVENT_TO, TEAM_MEMBER_SWITCH_REMOVE_EVENT_TO]
 }
 export const EVENT_LIST: Event[] = [
     DEATH_EVENT,
@@ -276,6 +288,6 @@ export const EVENT_LIST: Event[] = [
     EVOLUTION_EVENT,
     MILESTONE_EVENT,
     NOTE_EVENT,
-    TEAM_MEMBER_SWITCH_EVENT
+    TEAM_MEMBER_SWITCH_EVENT, TEAM_MEMBER_SWITCH_REMOVE_EVENT
 ]
 export const EVENT_REGISTRY = new EventRegistry(EVENT_LIST)
