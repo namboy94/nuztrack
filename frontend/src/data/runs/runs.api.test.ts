@@ -1,5 +1,11 @@
 import axios from "axios-observable";
-import {NUZLOCKE_RUN_2_TO, NUZLOCKE_RUN_CREATOR_TO, NUZLOCKE_RUN_TO} from "./runs.testconstants";
+import {
+    MULTI_RUN_CREATOR_TO,
+    MULTI_RUN_OPTION_TO,
+    NUZLOCKE_RUN_2_TO,
+    NUZLOCKE_RUN_CREATOR_TO,
+    NUZLOCKE_RUN_TO
+} from "./runs.testconstants";
 import {buildResponse} from "../../util/axios";
 import {runsApi} from "./runs.api";
 
@@ -58,6 +64,32 @@ describe("API Tests for /runs", () => {
             complete: () => {
                 expect(deleteMock).toHaveBeenCalledWith(`/api/runs/${NUZLOCKE_RUN_TO.id}`)
                 expect(deleteMock).toHaveBeenCalledTimes(1)
+                done()
+            }
+        })
+    })
+    it("should test postMultiRun", (done) => {
+        const postMock = jest.spyOn(axios, "post").mockReturnValue(buildResponse(NUZLOCKE_RUN_TO))
+        runsApi.postMultiRun$(MULTI_RUN_CREATOR_TO).subscribe({
+            next: x => {
+                expect(x).toEqual(NUZLOCKE_RUN_TO)
+            },
+            complete: () => {
+                expect(postMock).toHaveBeenCalledWith(`/api/runs/multi`, MULTI_RUN_CREATOR_TO)
+                expect(postMock).toHaveBeenCalledTimes(1)
+                done()
+            }
+        })
+    })
+    it("should test getMultiRunOptions", (done) => {
+        const postMock = jest.spyOn(axios, "get").mockReturnValue(buildResponse([MULTI_RUN_OPTION_TO]))
+        runsApi.getMultiRunOptions$().subscribe({
+            next: x => {
+                expect(x).toEqual([MULTI_RUN_OPTION_TO])
+            },
+            complete: () => {
+                expect(postMock).toHaveBeenCalledWith("/api/runs/multi/options")
+                expect(postMock).toHaveBeenCalledTimes(1)
                 done()
             }
         })

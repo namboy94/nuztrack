@@ -1,5 +1,5 @@
-import {NuzlockeRunCreatorTO, NuzlockeRunTO} from "./runs.transfer";
-import {NuzlockeRun, NuzlockeRunCreator, RunStatus} from "./runs.model";
+import {CreateMultiRunTO, MultiRunOptionTO, NuzlockeRunCreatorTO, NuzlockeRunTO} from "./runs.transfer";
+import {CreateMultiRun, MultiRunOption, NuzlockeRun, NuzlockeRunCreator, RunStatus} from "./runs.model";
 
 export const NUZLOCKE_RUN_TO: NuzlockeRunTO = {
     customRules: ["Meowth has 9 Lives"],
@@ -69,3 +69,24 @@ export const NUZLOCKE_RUN_CREATOR: NuzlockeRunCreator = {
     name: "My first Nuzlocke",
     rules: ["DEATH"]
 }
+export const MULTI_RUN_CREATOR_TO: CreateMultiRunTO = {
+    game: "FIRERED",
+    name: "My next Multirun part",
+    options: [],
+    runId: 1
+}
+export const MULTI_RUN_CREATOR: CreateMultiRun = {
+    game: {
+        title: "FireRed",
+        key: "FIRERED",
+        generation: 3
+    },
+    name: "My next Multirun part",
+    options: [],
+    runId: 1
+}
+export const MULTI_RUN_OPTION_TO: MultiRunOptionTO = {
+    key: "Key",
+    description: "Description"
+}
+export const MULTI_RUN_OPTION: MultiRunOption = MULTI_RUN_OPTION_TO

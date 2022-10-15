@@ -1,5 +1,5 @@
 import {runsRepository} from "./runs.repository";
-import {NUZLOCKE_RUN, NUZLOCKE_RUN_2} from "./runs.testconstants";
+import {MULTI_RUN_OPTION, NUZLOCKE_RUN, NUZLOCKE_RUN_2} from "./runs.testconstants";
 
 describe("Runs Repository", () => {
 
@@ -98,6 +98,15 @@ describe("Runs Repository", () => {
         runsRepository.queryActiveRun$().subscribe({
             next: result => {
                 expect(result).toBeUndefined()
+                done()
+            }
+        })
+    })
+    it("should set multi-run options and fetch them afterwards", (done) => {
+        runsRepository.setMultiRunOptions([MULTI_RUN_OPTION])
+        runsRepository.queryMultiRunOptions$().subscribe({
+            next: result => {
+                expect(result).toEqual([MULTI_RUN_OPTION])
                 done()
             }
         })
