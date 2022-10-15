@@ -4,8 +4,7 @@ MAINTAINER Hermann Krumrey <hermann@krumreyh.com>
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt update && apt install -y wget sudo
-RUN wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb && sudo dpkg -i packages-microsoft-prod.deb && rm packages-microsoft-prod.deb
-RUN apt update && apt install -y npm openjdk-18-jdk kotlin maven dotnet-sdk-6.0 && npm i -g redoc-cli swagger-cli
+RUN apt update && apt install -y npm openjdk-18-jdk kotlin maven dotnet6 && npm i -g redoc-cli swagger-cli
 ADD . nuztrack
 RUN cd nuztrack/apidoc && bash bundle.sh && cp index.html ../src/main/resources/static/index.html
 RUN cd nuztrack/scripts/NuztrackSaves && dotnet publish -r linux-x64 --self-contained && mv bin/Release/net6.0/linux-x64 /NuztrackSaves

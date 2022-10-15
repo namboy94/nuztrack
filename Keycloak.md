@@ -1,5 +1,7 @@
 # Setting up Keycloak
 
+Default username/password: admin/admin
+
 # General
 
 * Create new realm "Nuztrack"
@@ -24,3 +26,4 @@
 
 * Add Client
     * ClientID: 'frontend'
+    * Root-Url: http://localhost:3000
