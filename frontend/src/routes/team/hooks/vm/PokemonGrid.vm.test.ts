@@ -2,13 +2,14 @@ import {NuzlockeRun} from "../../../../data/runs/runs.model";
 import {of} from "rxjs";
 import {pokedexService} from "../../../../data/pokedex/pokedex.service";
 import {POKEDEX} from "../../../../data/pokedex/pokedex.testconstants";
-import {renderHook} from "@testing-library/react";
+import {act, renderHook} from "@testing-library/react";
 import {PokemonGridViewModel, usePokemonGridViewModel} from "./PokemonGrid.vm";
 import {teamService} from "../../../../data/team/team.service";
 import {TeamMember, TeamState} from "../../../../data/team/team.model";
 import {NUZLOCKE_RUN} from "../../../../data/runs/runs.testconstants";
-import {TEAM_MEMBER_1} from "../../../../data/team/team.testconstants";
-import {getState} from "../../../../util/viewmodel";
+import {TEAM_MEMBER_1, TEAM_MEMBER_2, TEAM_MEMBER_3} from "../../../../data/team/team.testconstants";
+import {getInteractions, getState} from "../../../../util/viewmodel";
+import {SwitchType} from "../../../../data/events/events.model";
 
 describe("TeamMemberGridViewModel", () => {
     const notify = jest.fn()
@@ -19,9 +20,69 @@ describe("TeamMemberGridViewModel", () => {
         return renderHook(() => usePokemonGridViewModel(run, notify, state)).result
     }
 
+    function expectAllDialogsClosed(result: { current: PokemonGridViewModel }) {
+        expect(getState(result).selectedTeamMember).toEqual(null)
+        expect(getState(result).infoPageOpen).toEqual(false)
+        expect(getState(result).teamMemberSwitchDialogVm.state.open).toEqual(false)
+    }
+
     it("should load the data", () => {
         const result = createMocksAndRender(NUZLOCKE_RUN, [TEAM_MEMBER_1], TeamState.ACTIVE)
         expect(getState(result).teamMembers).toEqual([TEAM_MEMBER_1])
         expect(getState(result).teamState).toEqual(TeamState.ACTIVE)
+    })
+
+    it("should set the team member if opening the info page", () => {
+        const result = createMocksAndRender(NUZLOCKE_RUN, [TEAM_MEMBER_1], TeamState.ACTIVE)
+
+        expectAllDialogsClosed(result)
+
+        act(() => getInteractions(result).openInfoPage(TEAM_MEMBER_1))
+
+        expect(getState(result).selectedTeamMember).toEqual(TEAM_MEMBER_1)
+        expect(getState(result).infoPageOpen).toEqual(true)
+
+        act(() => getInteractions(result).closePopups())
+
+        expectAllDialogsClosed(result)
+    })
+
+    it("should set the team member if opening the switch remove dialog", () => {
+        const result = createMocksAndRender(NUZLOCKE_RUN, [TEAM_MEMBER_1], TeamState.ACTIVE)
+
+        expectAllDialogsClosed(result)
+
+        act(() => getInteractions(result).openTeamMemberSwitchDialog(TEAM_MEMBER_1))
+
+        expect(getState(result).selectedTeamMember).toEqual(TEAM_MEMBER_1)
+        expect(getState(result).teamMemberSwitchDialogVm.state.open).toEqual(true)
+        expect(getState(result).teamMemberSwitchDialogVm.state.mode).toEqual(SwitchType.REMOVE)
+
+        act(() => getInteractions(result).closePopups())
+
+        expectAllDialogsClosed(result)
+    })
+
+    it("should set the team member if opening the switch add dialog", () => {
+        const result = createMocksAndRender(NUZLOCKE_RUN, [TEAM_MEMBER_3], TeamState.BOXED)
+
+        expectAllDialogsClosed(result)
+
+        act(() => getInteractions(result).openTeamMemberSwitchDialog(TEAM_MEMBER_1))
+
+        expect(getState(result).selectedTeamMember).toEqual(TEAM_MEMBER_1)
+        expect(getState(result).teamMemberSwitchDialogVm.state.open).toEqual(true)
+        expect(getState(result).teamMemberSwitchDialogVm.state.mode).toEqual(SwitchType.ADD)
+
+        act(() => getInteractions(result).closePopups())
+
+        expectAllDialogsClosed(result)
+    })
+
+    it("should not allow dead team members to switch", () => {
+        const result = createMocksAndRender(NUZLOCKE_RUN, [TEAM_MEMBER_2], TeamState.DEAD)
+        expectAllDialogsClosed(result)
+        act(() => getInteractions(result).openTeamMemberSwitchDialog(TEAM_MEMBER_2))
+        expectAllDialogsClosed(result)
     })
 })
