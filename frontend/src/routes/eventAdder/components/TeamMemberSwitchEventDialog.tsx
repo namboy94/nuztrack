@@ -21,7 +21,6 @@ export function TeamMemberSwitchEventDialog(props: TeamMemberSwitchEventDialogVi
                 setTeamMember={interactions.onChangeTeamMember}
                 activeTeamMembers={state.mode === SwitchType.REMOVE ? state.activeTeamMembers : []}
                 boxedTeamMembers={state.mode === SwitchType.ADD ? state.boxedTeamMembers : []}
-                pokedex={state.pokedex}
             />
             <SubmitCancelDialogActions closeDialog={interactions.closeDialog} submit={interactions.submit}/>
         </Dialog>

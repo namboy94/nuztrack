@@ -1,9 +1,11 @@
 package net.namibsun.nuztrack.transfer
 
+import net.namibsun.nuztrack.constants.Pokedex
 import net.namibsun.nuztrack.testbuilders.model.TeamMemberBuilder
 import net.namibsun.nuztrack.testbuilders.model.events.DeathEventBuilder
 import net.namibsun.nuztrack.testbuilders.model.events.EvolutionEventBuilder
 import net.namibsun.nuztrack.testbuilders.model.events.TeamMemberSwitchEventBuilder
+import net.namibsun.nuztrack.util.getSpriteForGameAndPokemon
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -20,5 +22,10 @@ internal class TeamMemberTOTest {
         assertThat(converted.deathId).isEqualTo(member.death!!.id)
         assertThat(converted.evolutionIds).isEqualTo(member.evolutions.map { it.id })
         assertThat(converted.teamSwitchIds).isEqualTo(member.teamSwitches.map { it.id })
+        assertThat(converted.sprite).isEqualTo(getSpriteForGameAndPokemon(
+                Pokedex.getPokemon(member.pokedexNumber),
+                member.encounter.nuzlockeRun.game,
+                false
+        ))
     }
 }

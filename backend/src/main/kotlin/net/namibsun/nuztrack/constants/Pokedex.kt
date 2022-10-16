@@ -26,6 +26,24 @@ object Pokedex {
         return pokedex
     }
 
+    fun getPokedex(game: Games): PokedexTO {
+        val limit = when (game.generation) {
+            1 -> 151
+            2 -> 251
+            3 -> 386
+            4 -> 493
+            5 -> 649
+            6 -> 721
+            7 -> 809
+            8 -> 905
+            else -> getPokedex().size
+        }
+        return pokedex
+                .filter { it.key <= limit }
+                .map { it.value.withGameSpecificSprite(game) }
+                .associateBy { it.pokedexNumber }
+    }
+
     fun getEvolutionChain(pokedexNumber: Int): List<Int> {
         val pokemon = getPokemon(pokedexNumber)
         return traverseEvolutionChain(pokemon.baseSpecies)

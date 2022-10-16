@@ -20,6 +20,7 @@ export interface TeamMember {
     gender: Gender | null
     nature: string | null
     abilitySlot: number | null
+    sprite: string
     encounterId: number
     deathId: number | null
     evolutionIds: number[]

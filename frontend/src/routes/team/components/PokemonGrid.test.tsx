@@ -2,7 +2,6 @@ import {PokemonGridViewModel} from "../hooks/vm/PokemonGrid.vm";
 import {TEAM, TEAM_MEMBER_1} from "../../../data/team/team.testconstants";
 import {POKEDEX, POKEMON_SPECIES_BULBASAUR} from "../../../data/pokedex/pokedex.testconstants";
 import {Gender, TeamState} from "../../../data/team/team.model";
-import {NUZLOCKE_RUN} from "../../../data/runs/runs.testconstants";
 import {act, fireEvent, render, screen} from "@testing-library/react";
 import {PokemonGrid} from "./PokemonGrid";
 import {TeamMemberSwitchEventDialogViewModel} from "../../eventAdder/hooks/vm/TeamMemberSwitchEventDialog.vm";
@@ -57,10 +56,8 @@ describe("PokemonGrid", () => {
         }
         const vm: PokemonGridViewModel = {
             state: {
-                pokedex: POKEDEX,
                 teamMembers: TEAM.getTeamMembers(),
                 teamState: TeamState.ACTIVE,
-                run: NUZLOCKE_RUN,
                 infoPageVm: pokemonInfoVm,
                 teamMemberSwitchDialogVm: teamMemberSwitchDialogVm
             },

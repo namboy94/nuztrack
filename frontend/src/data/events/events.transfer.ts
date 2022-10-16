@@ -11,6 +11,7 @@ export interface EncounterEventTO {
     level: number
     caught: boolean
     teamMemberId: number | null
+    sprite: string
 }
 
 export interface CreateEncounterEventTO {

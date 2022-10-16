@@ -43,7 +43,8 @@ export const ENCOUNTER_EVENT_SUCCESSFUL_TO: EncounterEventTO = {
     caught: true,
     level: 5,
     pokedexNumber: 7,
-    teamMemberId: 1
+    teamMemberId: 1,
+    "sprite": "Squirtle.png"
 }
 export const ENCOUNTER_EVENT_SUCCESSFUL: EncounterEvent = {
     id: 1,
@@ -54,7 +55,8 @@ export const ENCOUNTER_EVENT_SUCCESSFUL: EncounterEvent = {
     level: 5,
     pokedexNumber: 7,
     teamMemberId: 1,
-    type: EventType.ENCOUNTER
+    type: EventType.ENCOUNTER,
+    "sprite": "Squirtle.png"
 }
 
 export const ENCOUNTER_EVENT_FAILED_TO: EncounterEventTO = {
@@ -67,7 +69,8 @@ export const ENCOUNTER_EVENT_FAILED_TO: EncounterEventTO = {
     caught: false,
     level: 3,
     pokedexNumber: 16,
-    teamMemberId: null
+    teamMemberId: null,
+    "sprite": "Pidgey.png"
 }
 export const ENCOUNTER_EVENT_FAILED: EncounterEvent = {
     id: 2,
@@ -78,7 +81,8 @@ export const ENCOUNTER_EVENT_FAILED: EncounterEvent = {
     level: 3,
     pokedexNumber: 16,
     teamMemberId: null,
-    type: EventType.ENCOUNTER
+    type: EventType.ENCOUNTER,
+    "sprite": "Pidgey.png"
 }
 export const CREATE_ENCOUNTER_EVENT_TO: CreateEncounterEventTO = {
     caught: true,

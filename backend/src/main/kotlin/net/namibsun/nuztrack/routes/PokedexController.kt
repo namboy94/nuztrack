@@ -1,13 +1,11 @@
 package net.namibsun.nuztrack.routes
 
 import net.namibsun.nuztrack.constants.Pokedex
+import net.namibsun.nuztrack.constants.enums.Games
 import net.namibsun.nuztrack.constants.enums.Natures
 import net.namibsun.nuztrack.transfer.PokemonSpeciesTO
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.ResponseBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 
 @RestController
@@ -15,8 +13,13 @@ class PokedexController {
 
     @GetMapping("/api/pokedex")
     @ResponseBody
-    fun getPokedex(): ResponseEntity<Map<Int, PokemonSpeciesTO>> {
-        return ResponseEntity.ok(Pokedex.getPokedex())
+    fun getPokedex(@RequestParam("game") game: String?): ResponseEntity<Map<Int, PokemonSpeciesTO>> {
+        val pokedex = if (game == null) {
+            Pokedex.getPokedex()
+        } else {
+            Pokedex.getPokedex(Games.valueOfWithChecks(game))
+        }
+        return ResponseEntity.ok(pokedex)
     }
 
     @GetMapping("/api/pokedex/{pokedexId}")

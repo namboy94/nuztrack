@@ -11,6 +11,7 @@ import net.namibsun.nuztrack.data.NuzlockeRun
 import net.namibsun.nuztrack.data.events.EncounterEvent
 import net.namibsun.nuztrack.data.events.EncounterEventService
 import net.namibsun.nuztrack.transfer.PokemonSpeciesTO
+import net.namibsun.nuztrack.util.getSpriteForGameAndPokemon
 import net.namibsun.nuztrack.util.parseDateFromIsoString
 import net.namibsun.nuztrack.util.validateEmptyLocation
 import net.namibsun.nuztrack.util.validateLevel
@@ -20,16 +21,19 @@ data class EncounterEventTO(
         val pokedexNumber: Int,
         val level: Int,
         val caught: Boolean,
-        val teamMemberId: Long?
+        val teamMemberId: Long?,
+        val sprite: String
 ) {
     companion object {
         fun fromEncounterEvent(event: EncounterEvent): EncounterEventTO {
+            val species = Pokedex.getPokemon(event.pokedexNumber)
             return EncounterEventTO(
                     EventTO.fromEvent(event),
                     event.pokedexNumber,
                     event.level,
                     event.caught,
-                    event.teamMember?.id
+                    event.teamMember?.id,
+                    getSpriteForGameAndPokemon(species, event.nuzlockeRun.game, false) // TODO shiny
             )
         }
     }

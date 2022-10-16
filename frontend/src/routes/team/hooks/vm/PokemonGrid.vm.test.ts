@@ -1,7 +1,5 @@
 import {NuzlockeRun} from "../../../../data/runs/runs.model";
 import {of} from "rxjs";
-import {pokedexService} from "../../../../data/pokedex/pokedex.service";
-import {POKEDEX} from "../../../../data/pokedex/pokedex.testconstants";
 import {act, renderHook} from "@testing-library/react";
 import {PokemonGridViewModel, usePokemonGridViewModel} from "./PokemonGrid.vm";
 import {teamService} from "../../../../data/team/team.service";
@@ -15,7 +13,6 @@ describe("TeamMemberGridViewModel", () => {
     const notify = jest.fn()
 
     function createMocksAndRender(run: NuzlockeRun, team: TeamMember[], state: TeamState): { current: PokemonGridViewModel } {
-        jest.spyOn(pokedexService, "getPokedex$").mockReturnValue(of(POKEDEX))
         jest.spyOn(teamService, "getTeamMembersByState$").mockReturnValue(of(team))
         return renderHook(() => usePokemonGridViewModel(run, notify, state)).result
     }

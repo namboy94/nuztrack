@@ -5,6 +5,7 @@ import {useQuery} from "../../../../util/hooks/observable";
 import {pokedexService} from "../../../../data/pokedex/pokedex.service";
 import {useState} from "react";
 import {useResetState} from "../../../../util/hooks/state";
+import {Game} from "../../../../data/games/games.model";
 
 export interface PokemonInfoState {
     open: boolean
@@ -27,8 +28,8 @@ export interface PokemonInfoInteractions {
 
 export type PokemonInfoViewModel = ViewModel<PokemonInfoState, PokemonInfoInteractions>
 
-export function usePokemonInfoViewModel(): PokemonInfoViewModel {
-    const pokedex = useQuery(() => pokedexService.getPokedex$(), undefined, []) ?? Pokedex.EMPTY
+export function usePokemonInfoViewModel(game: Game): PokemonInfoViewModel {
+    const pokedex = useQuery(() => pokedexService.getPokedex$(game), undefined, []) ?? Pokedex.EMPTY
 
     const [open, setOpen] = useState(false)
     const [teamMember, setTeamMember, resetTeamMember] = useResetState<TeamMember | null>(null)

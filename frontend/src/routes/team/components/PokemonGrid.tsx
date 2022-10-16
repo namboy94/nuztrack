@@ -12,8 +12,6 @@ export function PokemonGrid(props: PokemonGridViewModel) {
             <PokemonGridItem
                 key={teamMember.id}
                 teamMember={teamMember}
-                pokedex={state.pokedex}
-                game={state.run.game}
                 teamState={state.teamState}
                 openTeamMemberSwitchDialog={() => interactions.openTeamMemberSwitchDialog(teamMember)}
                 openInfoPage={() => interactions.openInfoPage(teamMember)}

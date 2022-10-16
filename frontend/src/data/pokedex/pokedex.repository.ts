@@ -2,15 +2,16 @@ import {Natures, PokedexData} from "./pokedex.model";
 import {createStore} from "@ngneat/elf";
 import {selectEntity, setEntities, withEntities} from "@ngneat/elf-entities";
 import {map, Observable} from "rxjs";
+import {Game} from "../games/games.model";
 
 interface PokedexDataWrapper {
-    id: number,
+    id: string,
     data: PokedexData
 }
 
 interface NaturesWrapper {
     id: number,
-    data: Natures
+    data: Natures,
 }
 
 class PokedexRepository {
@@ -25,8 +26,8 @@ class PokedexRepository {
         withEntities<NaturesWrapper>()
     )
 
-    setPokedexData(pokedexData: PokedexData) {
-        const data: PokedexDataWrapper = {id: 1, data: pokedexData}
+    setPokedexData(pokedexData: PokedexData, game: Game) {
+        const data: PokedexDataWrapper = {id: game.key, data: pokedexData}
         this.pokedexDataStore.update(setEntities([data]))
     }
 
@@ -35,9 +36,9 @@ class PokedexRepository {
         this.naturesStore.update(setEntities([data]))
     }
 
-    queryPokedexData$(): Observable<PokedexData | undefined> {
+    queryPokedexData$(game: Game): Observable<PokedexData | undefined> {
         return this.pokedexDataStore.pipe(
-            selectEntity(1),
+            selectEntity(game.key),
             map(wrapper => wrapper?.data)
         )
     }

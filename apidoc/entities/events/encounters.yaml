@@ -41,6 +41,7 @@ EncounterEventTO:
     - gender
     - caught
     - teamMemberId
+    - sprite
   properties:
     event:
       $ref: "./common.yaml#/EventTO"
@@ -52,3 +53,5 @@ EncounterEventTO:
       $ref: "../../types/events/encounters.yaml#/caught"
     teamMemberId:
       $ref: "../../types/events/common.yaml#/nullableTeamMemberId"
+    sprite:
+      $ref: "../../types/pokedex.yaml#/sprite"

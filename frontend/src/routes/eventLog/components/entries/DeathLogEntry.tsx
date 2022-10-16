@@ -22,7 +22,7 @@ export function DeathLogEntry(props: DeathLogEntryProps) {
 
     return (
         <ListItem data-testid="death-log-entry">
-            <Avatar alt={species.name} src={species.sprite}
+            <Avatar alt={species.name} src={member.sprite}
                     sx={{
                         width: 70,
                         height: 70,

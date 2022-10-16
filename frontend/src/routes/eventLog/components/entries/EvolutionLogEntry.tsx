@@ -21,7 +21,7 @@ export function EvolutionLogEntry(props: EvolutionLogEntryProps) {
 
     return (
         <ListItem data-testid="evolution-log-entry">
-            <Avatar alt={newSpecies.name} src={newSpecies.sprite} sx={{
+            <Avatar alt={newSpecies.name} src={member.sprite} sx={{
                 width: 70,
                 height: 70,
                 marginRight: 3,

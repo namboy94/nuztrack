@@ -29,6 +29,7 @@ TeamMemberTO:
     - gender
     - nature
     - abilitySlot
+    - sprite
     - encounterId
     - deathId
     - evolutionIds
@@ -48,6 +49,8 @@ TeamMemberTO:
       $ref: "../types/team_members.yaml#/nature"
     abilitySlot:
       $ref: "../types/team_members.yaml#/abilitySlot"
+    sprite:
+      $ref: "../types/pokedex.yaml#/sprite"
     encounterId:
       $ref: "../types/events/encounters.yaml#/id"
     deathId:

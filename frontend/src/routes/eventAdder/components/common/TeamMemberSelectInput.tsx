@@ -1,14 +1,12 @@
 import {Autocomplete, Box, TextField} from "@mui/material";
 import React from "react";
 import {TeamMember} from "../../../../data/team/team.model";
-import {Pokedex} from "../../../../data/pokedex/pokedex.model";
 
 export interface TeamMemberSelectInputProps {
     teamMember: TeamMember | null
     setTeamMember: (teamMember: TeamMember | null) => void
     activeTeamMembers: TeamMember[]
     boxedTeamMembers: TeamMember[]
-    pokedex: Pokedex
 }
 
 export function TeamMemberSelectInput(props: TeamMemberSelectInputProps) {
@@ -24,7 +22,7 @@ export function TeamMemberSelectInput(props: TeamMemberSelectInputProps) {
                     <img
                         loading="lazy"
                         width="100"
-                        src={props.pokedex.getSpecies(option.pokedexNumber).sprite}
+                        src={option.sprite}
                         alt={option.nickname}
                     />
                     {option.nickname}

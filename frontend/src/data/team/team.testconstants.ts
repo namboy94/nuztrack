@@ -12,7 +12,8 @@ export const TEAM_MEMBER_1_TO: TeamMemberTO = {
     nature: "BOLD",
     nickname: "Bubbles",
     pokedexNumber: 7,
-    teamSwitchIds: []
+    teamSwitchIds: [],
+    sprite: "Squirtle.png"
 }
 export const TEAM_MEMBER_1: TeamMember = {
     teamState: TeamState.ACTIVE,
@@ -27,7 +28,8 @@ export const TEAM_MEMBER_1: TeamMember = {
     nature: "BOLD",
     nickname: "Bubbles",
     pokedexNumber: 7,
-    teamSwitchIds: []
+    teamSwitchIds: [],
+    sprite: "Squirtle.png"
 }
 export const TEAM_MEMBER_2_TO: TeamMemberTO = {
     abilitySlot: null,
@@ -40,7 +42,8 @@ export const TEAM_MEMBER_2_TO: TeamMemberTO = {
     nature: null,
     nickname: "Char",
     pokedexNumber: 4,
-    teamSwitchIds: [2]
+    teamSwitchIds: [2],
+    sprite: "Charmander.png"
 }
 export const TEAM_MEMBER_2: TeamMember = {
     runId: 1,
@@ -55,7 +58,8 @@ export const TEAM_MEMBER_2: TeamMember = {
     nature: null,
     nickname: "Char",
     pokedexNumber: 4,
-    teamSwitchIds: [2]
+    teamSwitchIds: [2],
+    sprite: "Charmander.png"
 }
 export const TEAM_MEMBER_3_TO: TeamMemberTO = {
     abilitySlot: 3,
@@ -68,7 +72,8 @@ export const TEAM_MEMBER_3_TO: TeamMemberTO = {
     nature: "MODEST",
     nickname: "Bulba",
     pokedexNumber: 2,
-    teamSwitchIds: [3, 4, 5]
+    teamSwitchIds: [3, 4, 5],
+    sprite: "Bulbasaur.png"
 }
 export const TEAM_MEMBER_3: TeamMember = {
     runId: 1,
@@ -83,7 +88,8 @@ export const TEAM_MEMBER_3: TeamMember = {
     nature: "MODEST",
     nickname: "Bulba",
     pokedexNumber: 2,
-    teamSwitchIds: [3, 4, 5]
+    teamSwitchIds: [3, 4, 5],
+    sprite: "Bulbasaur.png"
 }
 export const TEAM_TO: TeamTO = {
     active: [TEAM_MEMBER_1_TO],

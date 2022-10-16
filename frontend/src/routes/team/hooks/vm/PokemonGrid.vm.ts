@@ -1,11 +1,9 @@
 import {NuzlockeRun} from "../../../../data/runs/runs.model";
 import {NotificationFN} from "../../../../global/Snackbar";
 import {useQuery} from "../../../../util/hooks/observable";
-import {pokedexService} from "../../../../data/pokedex/pokedex.service";
 import {teamService} from "../../../../data/team/team.service";
 import {TeamMember, TeamState} from "../../../../data/team/team.model";
 import {ViewModel} from "../../../../util/viewmodel";
-import {Pokedex} from "../../../../data/pokedex/pokedex.model";
 import {SwitchType} from "../../../../data/events/events.model";
 import {
     TeamMemberSwitchEventDialogViewModel,
@@ -14,8 +12,6 @@ import {
 import {PokemonInfoViewModel, usePokemonInfoViewModel} from "./PokemonInfo.vm";
 
 export interface PokemonGridState {
-    run: NuzlockeRun,
-    pokedex: Pokedex,
     teamMembers: TeamMember[],
     teamState: TeamState,
     teamMemberSwitchDialogVm: TeamMemberSwitchEventDialogViewModel,
@@ -34,14 +30,13 @@ export type PokemonGridViewModel = ViewModel<PokemonGridState, PokemonGridIntera
 export function usePokemonGridViewModel(
     run: NuzlockeRun, notify: NotificationFN, teamState: TeamState
 ): PokemonGridViewModel {
-    const pokedex = useQuery(() => pokedexService.getPokedex$(), undefined, [])
     const teamMembers = useQuery(
         () => teamService.getTeamMembersByState$(run.id, teamState), [], []
     )
 
     const switchType = calculateTeamMemberSwitchType(teamState)
     const teamMemberSwitchDialogVm = useTeamMemberSwitchEventDialogViewModel(run, notify, switchType ?? SwitchType.REMOVE)
-    const pokemonInfoVm = usePokemonInfoViewModel()
+    const pokemonInfoVm = usePokemonInfoViewModel(run.game)
 
     const openTeamMemberSwitchDialog = (teamMember: TeamMember) => {
 
@@ -68,8 +63,6 @@ export function usePokemonGridViewModel(
 
     return {
         state: {
-            run: run,
-            pokedex: pokedex ?? Pokedex.EMPTY,
             teamMembers: teamMembers,
             teamState: teamState,
             teamMemberSwitchDialogVm: teamMemberSwitchDialogVm,

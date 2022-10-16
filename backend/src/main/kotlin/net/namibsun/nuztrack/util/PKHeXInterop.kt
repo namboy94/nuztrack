@@ -10,7 +10,7 @@ private fun getNuztrackSavesExecutable(): String {
     return if (System.getenv("spring_profiles_active") == "PROD") {
         "/PKHEX/NuztrackSaves"
     } else {
-        "scripts/NuztrackSaves/bin/Debug/net6.0/linux-x64/NuztrackSaves"
+        "../scripts/NuztrackSaves/bin/Debug/net6.0/linux-x64/NuztrackSaves"
     }
 }
 

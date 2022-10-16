@@ -24,7 +24,7 @@ export function EncounterLogEntry(props: EncounterLogEntryProps) {
 
     return (
         <ListItem data-testid="encounter-log-entry">
-            <Avatar alt={species.name} src={species.sprite} style={{filter: filter}} sx={{
+            <Avatar alt={species.name} src={event.sprite} style={{filter: filter}} sx={{
                 width: 70,
                 height: 70,
                 marginRight: 3,

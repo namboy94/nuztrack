@@ -27,6 +27,7 @@ export interface EncounterEvent extends Event {
     level: number
     caught: boolean
     teamMemberId: number | null
+    sprite: string
 }
 
 export interface CreateEncounterEvent {

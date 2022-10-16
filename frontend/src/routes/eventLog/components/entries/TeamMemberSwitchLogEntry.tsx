@@ -32,7 +32,7 @@ export function TeamMemberSwitchLogEntry(props: TeamMemberSwitchLogEntryProps) {
 
     return (
         <ListItem data-testid="team-member-switch-log-entry">
-            <Avatar alt={species.name} src={species.sprite} sx={{
+            <Avatar alt={species.name} src={member.sprite} sx={{
                 width: 70,
                 height: 70,
                 marginRight: 3,

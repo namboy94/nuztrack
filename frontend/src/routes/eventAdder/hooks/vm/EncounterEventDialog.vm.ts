@@ -49,7 +49,7 @@ export function useEncounterEventDialogViewModel(
     notify: NotificationFN
 ): EncounterEventDialogViewModel {
 
-    const pokedex = useQuery(() => pokedexService.getPokedex$(), undefined, [])
+    const pokedex = useQuery(() => pokedexService.getPokedex$(run.game), undefined, [])
     const encounters = useQuery(() => eventsService.getEncounterEvents$(run.id), [], [])
     const locationRegistry = useQuery(() => gamesService.getGameLocationRegistry$(run.game), undefined, [])
     const encounterLocations = encounters.map(encounter => encounter.location)

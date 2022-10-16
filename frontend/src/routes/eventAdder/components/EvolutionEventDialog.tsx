@@ -23,7 +23,6 @@ export function EvolutionEventDialog(props: EvolutionEventDialogViewModel) {
                 setTeamMember={interactions.onChangeTeamMember}
                 activeTeamMembers={state.activeTeamMembers}
                 boxedTeamMembers={state.boxedTeamMembers}
-                pokedex={state.pokedex}
             />
             <LevelInput level={state.level} setLevel={interactions.onChangeLevel}/>
             <PokemonSpeciesSelectInput

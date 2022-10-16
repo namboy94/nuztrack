@@ -10,7 +10,7 @@ export function useOverviewDataLoader(run: NuzlockeRun): boolean {
     const locationsLoading = useService(() => gamesService.loadGameLocations$(run.game), [])
     const eventsLoading = useService(() => eventsService.loadEvents$(run.id), [])
     const teamLoading = useService(() => teamService.loadTeam$(run.id), [])
-    const pokedexLoading = useService(() => pokedexService.loadPokedexData$(), [])
+    const pokedexLoading = useService(() => pokedexService.loadPokedexData$(run.game), [])
     const gamesLoading = useService(() => gamesService.loadGames$(), [])
     const multiRunOptionsLoading = useService(() => runsService.loadMultiRunOptions$(), [])
     return eventsLoading || locationsLoading || teamLoading || pokedexLoading || gamesLoading || multiRunOptionsLoading

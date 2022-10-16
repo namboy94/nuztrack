@@ -25,7 +25,7 @@ export type EventLogViewModel = ViewModel<EventLogState, EventLogInteractions>
 
 export function useEventLogViewModel(run: NuzlockeRun): EventLogViewModel {
     const eventRegistry = useQuery(() => eventsService.getEventRegistry$(run.id), undefined, [])
-    const pokedex = useQuery(() => pokedexService.getPokedex$(), undefined, [])
+    const pokedex = useQuery(() => pokedexService.getPokedex$(run.game), undefined, [])
     const team = useQuery(() => teamService.getTeam$(run.id), undefined, [])
     const locationRegistry = useQuery(
         () => gamesService.getGameLocationRegistry$(run.game), undefined, []

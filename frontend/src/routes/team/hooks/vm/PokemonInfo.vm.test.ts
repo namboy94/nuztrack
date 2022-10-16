@@ -6,11 +6,12 @@ import {getInteractions, getState} from "../../../../util/viewmodel";
 import {TEAM_MEMBER_1} from "../../../../data/team/team.testconstants";
 import {PokemonInfoViewModel, usePokemonInfoViewModel} from "./PokemonInfo.vm";
 import {Gender} from "../../../../data/team/team.model";
+import {NUZLOCKE_RUN} from "../../../../data/runs/runs.testconstants";
 
 describe("PokemonInfoViewModel", () => {
     function createMocksAndRender(): { current: PokemonInfoViewModel } {
         jest.spyOn(pokedexService, "getPokedex$").mockReturnValue(of(POKEDEX))
-        return renderHook(() => usePokemonInfoViewModel()).result
+        return renderHook(() => usePokemonInfoViewModel(NUZLOCKE_RUN.game)).result
     }
 
     function fillEntries(result: { current: PokemonInfoViewModel }) {

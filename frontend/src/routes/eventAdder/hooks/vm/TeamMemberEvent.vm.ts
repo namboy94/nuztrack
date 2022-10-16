@@ -38,7 +38,7 @@ export function useTeamMemberEventViewModel(
     notify: NotificationFN,
     extraReset: () => void
 ): TeamMemberEventViewModel {
-    const pokedex = useQuery(() => pokedexService.getPokedex$(), undefined, [])
+    const pokedex = useQuery(() => pokedexService.getPokedex$(run.game), undefined, [])
     const locations = useQuery(
         () => gamesService.getGameLocationRegistry$(run.game), undefined, []
     )?.getLocationNames() ?? []

@@ -4,14 +4,9 @@ import Paper from "@mui/material/Paper";
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import InfoIcon from '@mui/icons-material/Info';
-import {getSpriteUrl} from "../../../util/sprites";
-import {Pokedex} from "../../../data/pokedex/pokedex.model";
-import {Game} from "../../../data/games/games.model";
 
 export interface PokemonGridItemProps {
     teamMember: TeamMember,
-    pokedex: Pokedex,
-    game: Game,
     teamState: TeamState,
     openTeamMemberSwitchDialog: () => void,
     openInfoPage: () => void
@@ -19,7 +14,7 @@ export interface PokemonGridItemProps {
 
 export function PokemonGridItem(props: PokemonGridItemProps) {
 
-    const {teamMember, pokedex, game, teamState, openTeamMemberSwitchDialog, openInfoPage} = props
+    const {teamMember, teamState, openTeamMemberSwitchDialog, openInfoPage} = props
 
     return (
         <Grid item data-testid="pokemon-card" key={teamMember.id}>
@@ -34,7 +29,7 @@ export function PokemonGridItem(props: PokemonGridItemProps) {
                         data-testid="pokemon-card-image"
                         onClick={openInfoPage}
                         style={{backgroundColor: "#DDDDDD", borderRadius: "15px"}}
-                        image={getSpriteUrl(pokedex.getSpecies(teamMember.pokedexNumber)!!.name, game, false)}
+                        image={teamMember.sprite}
                         component="img"
                         height="120"
                         alt={teamMember.nickname}

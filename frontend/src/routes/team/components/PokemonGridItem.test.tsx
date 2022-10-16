@@ -1,6 +1,4 @@
 import {PokemonGridItem, PokemonGridItemProps} from "./PokemonGridItem";
-import {GAME_1} from "../../../data/games/games.testconstants";
-import {POKEDEX} from "../../../data/pokedex/pokedex.testconstants";
 import {TEAM_MEMBER_1} from "../../../data/team/team.testconstants";
 import {TeamState} from "../../../data/team/team.model";
 import {act, fireEvent, render, screen} from "@testing-library/react";
@@ -14,8 +12,6 @@ describe("PokemonGridItem", () => {
         const props: PokemonGridItemProps = {
             openInfoPage: openInfoPage,
             openTeamMemberSwitchDialog: openTeamMemberSwitchDialog,
-            game: GAME_1,
-            pokedex: POKEDEX,
             teamMember: TEAM_MEMBER_1,
             teamState: TeamState.ACTIVE
         }

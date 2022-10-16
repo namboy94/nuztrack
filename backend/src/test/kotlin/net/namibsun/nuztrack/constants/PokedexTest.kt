@@ -19,6 +19,27 @@ internal class PokedexTest {
     }
 
     @Test
+    fun getPokedex_gameSpecific() {
+        val pokedex = Pokedex.getPokedex(Games.RED)
+        assertThat(pokedex[7]!!.sprite).isNotEqualTo(Pokedex.getPokedex()[7]!!.sprite)
+        assertThat(pokedex[7]!!.sprite).contains("pokemondb.net")
+        assertThat(pokedex).containsKey(151)
+        assertThat(pokedex).doesNotContainKey(152)
+    }
+
+    @Test
+    fun getPokedex_limits() {
+        assertThat(Pokedex.getPokedex(Games.SWORD).size).isEqualTo(Pokedex.getPokedex().size)
+        assertThat(Pokedex.getPokedex(Games.ULTRA_SUN).size).isEqualTo(809)
+        assertThat(Pokedex.getPokedex(Games.X).size).isEqualTo(721)
+        assertThat(Pokedex.getPokedex(Games.BLACK).size).isEqualTo(649)
+        assertThat(Pokedex.getPokedex(Games.PEARL).size).isEqualTo(493)
+        assertThat(Pokedex.getPokedex(Games.EMERALD).size).isEqualTo(386)
+        assertThat(Pokedex.getPokedex(Games.SILVER).size).isEqualTo(251)
+        assertThat(Pokedex.getPokedex(Games.RED).size).isEqualTo(151)
+    }
+
+    @Test
     fun getPokemon_success() {
         assertThat(Pokedex.getPokemon(7)).isEqualTo(PokemonSpeciesTOBuilder().build())
     }

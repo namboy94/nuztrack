@@ -1,9 +1,11 @@
 package net.namibsun.nuztrack.transfer
 
+import net.namibsun.nuztrack.constants.Pokedex
 import net.namibsun.nuztrack.constants.enums.Gender
 import net.namibsun.nuztrack.constants.enums.Natures
 import net.namibsun.nuztrack.data.TeamMember
 import net.namibsun.nuztrack.data.events.EncounterEvent
+import net.namibsun.nuztrack.util.getSpriteForGameAndPokemon
 
 data class TeamTO(val active: List<TeamMemberTO>, val boxed: List<TeamMemberTO>, val dead: List<TeamMemberTO>) {
     companion object {
@@ -26,6 +28,7 @@ data class TeamMemberTO(
         val gender: String?,
         val nature: String?,
         val abilitySlot: Int?,
+        val sprite: String,
         val encounterId: Long,
         val deathId: Long?,
         val evolutionIds: List<Long>,
@@ -33,6 +36,8 @@ data class TeamMemberTO(
 ) {
     companion object {
         fun fromTeamMember(teamMember: TeamMember): TeamMemberTO {
+            val game = teamMember.encounter.nuzlockeRun.game
+            val species = Pokedex.getPokemon(teamMember.pokedexNumber)
             return TeamMemberTO(
                     teamMember.id,
                     teamMember.nickname,
@@ -41,6 +46,7 @@ data class TeamMemberTO(
                     teamMember.gender?.name,
                     teamMember.nature?.name,
                     teamMember.abilitySlot,
+                    getSpriteForGameAndPokemon(species, game, false), // TODO shiny
                     teamMember.encounter.id,
                     teamMember.death?.id,
                     teamMember.evolutions.map { it.id },

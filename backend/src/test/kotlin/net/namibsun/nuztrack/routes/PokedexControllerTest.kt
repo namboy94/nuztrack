@@ -3,6 +3,7 @@ package net.namibsun.nuztrack.routes
 import net.namibsun.nuztrack.constants.NotFoundException
 import net.namibsun.nuztrack.constants.Pokedex
 import net.namibsun.nuztrack.constants.enums.ErrorMessages
+import net.namibsun.nuztrack.constants.enums.Games
 import net.namibsun.nuztrack.constants.enums.Natures
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -13,9 +14,16 @@ internal class PokedexControllerTest {
     private val controller = PokedexController()
 
     @Test
-    fun getPokedex() {
-        val pokedex = controller.getPokedex().body!!
+    fun getPokedex_default() {
+        val pokedex = controller.getPokedex(null).body!!
         assertThat(pokedex[123]).isEqualTo(Pokedex.getPokemon(123))
+    }
+
+    @Test
+    fun getPokedex_gameSpecific() {
+        val pokedex = controller.getPokedex(Games.FIRERED.name).body!!
+        assertThat(pokedex[123]!!.name).isEqualTo(Pokedex.getPokemon(123).name)
+        assertThat(pokedex[123]!!.sprite).isNotEqualTo(Pokedex.getPokemon(123).sprite)
     }
 
     @Test

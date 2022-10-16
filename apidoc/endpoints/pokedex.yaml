@@ -2,6 +2,14 @@ get:
   tags: [ "Information" ]
   summary: "Get Pokedex"
   description: "Retrieves information about all available Pokémon"
+  parameters:
+    - in: query
+      name: game
+      schema:
+        type: integer
+      required: false
+      example: "FIRERED"
+      description: "The game for which to get the Pokedex data. Can be left blank for default values."
   responses:
     "200":
       description: "Success"
