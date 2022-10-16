@@ -21,8 +21,7 @@ describe("TeamMemberGridViewModel", () => {
     }
 
     function expectAllDialogsClosed(result: { current: PokemonGridViewModel }) {
-        expect(getState(result).selectedTeamMember).toEqual(null)
-        expect(getState(result).infoPageOpen).toEqual(false)
+        expect(getState(result).infoPageVm.state.open).toEqual(false)
         expect(getState(result).teamMemberSwitchDialogVm.state.open).toEqual(false)
     }
 
@@ -39,8 +38,8 @@ describe("TeamMemberGridViewModel", () => {
 
         act(() => getInteractions(result).openInfoPage(TEAM_MEMBER_1))
 
-        expect(getState(result).selectedTeamMember).toEqual(TEAM_MEMBER_1)
-        expect(getState(result).infoPageOpen).toEqual(true)
+        expect(getState(result).infoPageVm.state.nickname).toEqual(TEAM_MEMBER_1.nickname)
+        expect(getState(result).infoPageVm.state.open).toEqual(true)
 
         act(() => getInteractions(result).closePopups())
 
@@ -54,7 +53,7 @@ describe("TeamMemberGridViewModel", () => {
 
         act(() => getInteractions(result).openTeamMemberSwitchDialog(TEAM_MEMBER_1))
 
-        expect(getState(result).selectedTeamMember).toEqual(TEAM_MEMBER_1)
+        expect(getState(result).teamMemberSwitchDialogVm.state.teamMember).toEqual(TEAM_MEMBER_1)
         expect(getState(result).teamMemberSwitchDialogVm.state.open).toEqual(true)
         expect(getState(result).teamMemberSwitchDialogVm.state.mode).toEqual(SwitchType.REMOVE)
 
@@ -68,9 +67,9 @@ describe("TeamMemberGridViewModel", () => {
 
         expectAllDialogsClosed(result)
 
-        act(() => getInteractions(result).openTeamMemberSwitchDialog(TEAM_MEMBER_1))
+        act(() => getInteractions(result).openTeamMemberSwitchDialog(TEAM_MEMBER_3))
 
-        expect(getState(result).selectedTeamMember).toEqual(TEAM_MEMBER_1)
+        expect(getState(result).teamMemberSwitchDialogVm.state.teamMember).toEqual(TEAM_MEMBER_3)
         expect(getState(result).teamMemberSwitchDialogVm.state.open).toEqual(true)
         expect(getState(result).teamMemberSwitchDialogVm.state.mode).toEqual(SwitchType.ADD)
 

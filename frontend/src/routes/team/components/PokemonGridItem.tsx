@@ -44,7 +44,7 @@ export function PokemonGridItem(props: PokemonGridItemProps) {
                             <Button data-testid="team-member-switch-button" onClick={openTeamMemberSwitchDialog}>
                                 {teamState === TeamState.ACTIVE ? <ArrowDownwardIcon/> : <ArrowUpwardIcon/>}
                             </Button> : <></>}
-                        <Button data-testid="info-button" onClick={openInfoPage}><InfoIcon/></Button>
+                        <Button data-testid="pokemon-info-button" onClick={openInfoPage}><InfoIcon/></Button>
                     </CardActions>
                 </Card>
             </Paper>

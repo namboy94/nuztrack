@@ -12,9 +12,9 @@ describe("PokemonGridItem", () => {
 
     function renderComponent() {
         const props: PokemonGridItemProps = {
-            game: GAME_1,
-            openTeamMemberSwitchDialog: openTeamMemberSwitchDialog,
             openInfoPage: openInfoPage,
+            openTeamMemberSwitchDialog: openTeamMemberSwitchDialog,
+            game: GAME_1,
             pokedex: POKEDEX,
             teamMember: TEAM_MEMBER_1,
             teamState: TeamState.ACTIVE
@@ -27,7 +27,7 @@ describe("PokemonGridItem", () => {
         expect(screen.getByTestId("pokemon-title")).toBeInTheDocument()
         expect(screen.getByTestId("pokemon-card-image")).toBeInTheDocument()
         expect(screen.getByTestId("team-member-switch-button")).toBeInTheDocument()
-        expect(screen.getByTestId("info-button")).toBeInTheDocument()
+        expect(screen.getByTestId("pokemon-info-button")).toBeInTheDocument()
     })
 
     it("should press the team member switch button", () => {
@@ -37,21 +37,11 @@ describe("PokemonGridItem", () => {
         })
         expect(openTeamMemberSwitchDialog).toHaveBeenCalledTimes(1)
     })
-
-    it("should press the info page button", () => {
+    it("should press the team member switch button", () => {
         renderComponent()
         act(() => {
-            fireEvent.click(screen.getByTestId("info-button"))
+            fireEvent.click(screen.getByTestId("pokemon-info-button"))
         })
         expect(openInfoPage).toHaveBeenCalledTimes(1)
     })
-
-    it("should press the sprite and show the info page", () => {
-        renderComponent()
-        act(() => {
-            fireEvent.click(screen.getByTestId("pokemon-card-image"))
-        })
-        expect(openInfoPage).toHaveBeenCalledTimes(1)
-    })
-
 })

@@ -2,6 +2,22 @@ export class Pokedex {
     private data: PokedexData
 
     static readonly EMPTY = new Pokedex(new Map<number, PokemonSpecies>())
+    static readonly DEFAULT_POKEMON = {
+        pokedexNumber: 1,
+        abilities: {
+            1: "Overgrow",
+            2: null,
+            3: "Solar Power"
+        },
+        baseSpecies: 1,
+        evolutions: [2],
+        name: "Bulbasaur",
+        sprite: "http://bulbasaur.png",
+        types: {
+            primary: "GRASS",
+            secondary: "POISON"
+        }
+    }
 
     constructor(pokedexData: PokedexData) {
         this.data = pokedexData
@@ -12,7 +28,7 @@ export class Pokedex {
     }
 
     getSpecies(pokedexNumber: number): PokemonSpecies {
-        return this.data.get(pokedexNumber) ?? this.data.get(1)!!
+        return this.data.get(pokedexNumber) ?? Pokedex.DEFAULT_POKEMON
     }
 
     getValidAbilitySlots(pokedexNumber: number): number[] {

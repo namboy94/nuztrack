@@ -6,22 +6,20 @@ import {teamService} from "../../../../data/team/team.service";
 import {TeamMember, TeamState} from "../../../../data/team/team.model";
 import {ViewModel} from "../../../../util/viewmodel";
 import {Pokedex} from "../../../../data/pokedex/pokedex.model";
-import {useResetState} from "../../../../util/hooks/state";
-import {useState} from "react";
 import {SwitchType} from "../../../../data/events/events.model";
 import {
     TeamMemberSwitchEventDialogViewModel,
     useTeamMemberSwitchEventDialogViewModel
 } from "../../../eventAdder/hooks/vm/TeamMemberSwitchEventDialog.vm";
+import {PokemonInfoViewModel, usePokemonInfoViewModel} from "./PokemonInfo.vm";
 
 export interface PokemonGridState {
     run: NuzlockeRun,
     pokedex: Pokedex,
     teamMembers: TeamMember[],
     teamState: TeamState,
-    selectedTeamMember: TeamMember | null,
-    infoPageOpen: boolean,
     teamMemberSwitchDialogVm: TeamMemberSwitchEventDialogViewModel,
+    infoPageVm: PokemonInfoViewModel
 }
 
 export interface PokemonGridInteractions {
@@ -43,9 +41,7 @@ export function usePokemonGridViewModel(
 
     const switchType = calculateTeamMemberSwitchType(teamState)
     const teamMemberSwitchDialogVm = useTeamMemberSwitchEventDialogViewModel(run, notify, switchType ?? SwitchType.REMOVE)
-
-    const [selectedTeamMember, setSelectedTeamMember, resetSelectedTeamMember] = useResetState<TeamMember | null>(null)
-    const [infoPageOpen, setInfoPageOpen] = useState(false)
+    const pokemonInfoVm = usePokemonInfoViewModel()
 
     const openTeamMemberSwitchDialog = (teamMember: TeamMember) => {
 
@@ -54,26 +50,21 @@ export function usePokemonGridViewModel(
         const valid = validAdd || validRemove
 
         if (valid) {
-            setSelectedTeamMember(teamMember)
             teamMemberSwitchDialogVm.interactions.onChangeTeamMember(teamMember)
             teamMemberSwitchDialogVm.interactions.openDialog()
         } else {
-            resetSelectedTeamMember()
             console.log("Invalid team member switch operation")
         }
     }
 
     const openInfoPage = (teamMember: TeamMember) => {
-        setSelectedTeamMember(teamMember)
-        setInfoPageOpen(true)
+        pokemonInfoVm.interactions.openDialog(teamMember)
     }
 
     const closePopups = () => {
-        resetSelectedTeamMember()
-        setInfoPageOpen(false)
         teamMemberSwitchDialogVm.interactions.closeDialog()
+        pokemonInfoVm.interactions.closeDialog()
     }
-
 
     return {
         state: {
@@ -81,9 +72,8 @@ export function usePokemonGridViewModel(
             pokedex: pokedex ?? Pokedex.EMPTY,
             teamMembers: teamMembers,
             teamState: teamState,
-            selectedTeamMember: selectedTeamMember,
-            infoPageOpen: infoPageOpen,
             teamMemberSwitchDialogVm: teamMemberSwitchDialogVm,
+            infoPageVm: pokemonInfoVm
         },
         interactions: {
             notify: notify,

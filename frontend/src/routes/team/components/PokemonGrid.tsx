@@ -1,6 +1,7 @@
 import {Grid} from "@mui/material";
 import {PokemonGridViewModel} from "../hooks/vm/PokemonGrid.vm";
 import {PokemonGridItem} from "./PokemonGridItem";
+import {PokemonInfo} from "./PokemonInfo";
 
 
 export function PokemonGrid(props: PokemonGridViewModel) {
@@ -15,8 +16,9 @@ export function PokemonGrid(props: PokemonGridViewModel) {
                 game={state.run.game}
                 teamState={state.teamState}
                 openTeamMemberSwitchDialog={() => interactions.openTeamMemberSwitchDialog(teamMember)}
-                openInfoPage={() => console.log("TODO")}
+                openInfoPage={() => interactions.openInfoPage(teamMember)}
             />
         )}
+        <PokemonInfo {...state.infoPageVm}/>
     </Grid>
 }
