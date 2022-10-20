@@ -5,7 +5,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV spring_profiles_active="prod"
 
 RUN apt update && apt install -y wget sudo
-RUN apt update && apt install -y npm openjdk-18-jdk kotlin maven dotnet6 && npm i -g redoc-cli swagger-cli
+RUN apt update && apt install -y npm openjdk-18-jdk kotlin dotnet6 && npm i -g redoc-cli swagger-cli
 RUN mkdir /nuztrack
 ADD ./backend /nuztrack/backend
 ADD ./apidoc /nuztrack/apidoc
@@ -13,7 +13,7 @@ ADD ./scripts /nuztrack/scripts
 RUN cd /nuztrack/apidoc && bash bundle.sh && cp index.html ../backend/src/main/resources/static/index.html
 RUN cd /nuztrack/scripts/NuztrackSaves && dotnet publish -r linux-x64 && mv bin/Debug/net6.0/linux-x64 /PKHEX
 RUN ls
-RUN cd /nuztrack/backend && mvn package -q -Dmaven.test.skip=true && mv target/*.jar /app.jar
+RUN cd /nuztrack/backend && ./gradlew bootJar && rm build/libs/*-plain* && mv build/libs/*.jar /app.jar
 RUN rm -rf nuztrack
 
 EXPOSE 8080

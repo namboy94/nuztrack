@@ -15,14 +15,14 @@ github_mirror:
     - git-mirror-pusher git@github.com:namboy94/nuztrack.git main kotlin
 
 test_backend:
-  image: maven:3-openjdk-18
+  image: gradle:7.5.1-jdk17
   stage: test
   tags: [ docker ]
   script:
     - export NO_DOTNET=1
     - cd backend
-    - mvn -B clean verify
-    - cat target/site/jacoco/index.html | grep -o 'Total[^%]*%'
+    - gradle clean build
+    - cat build/jacocoReports/test/html/index.html | grep -o 'Total[^%]*%'
   coverage: '/Total.*?([0-9]{1,3})%/'
 
 test_frontend:
