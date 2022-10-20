@@ -1,14 +1,9 @@
-import java.net.URI
-
 plugins {
     `kotlin-dsl`
 }
 
 repositories {
     mavenCentral()
-//    maven {
-//        url = URI("https://plugins.gradle.org/m2/")
-//    }
 }
 
 dependencies {
