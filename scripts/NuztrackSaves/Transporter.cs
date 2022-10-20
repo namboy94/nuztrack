@@ -41,7 +41,7 @@ public class Transporter
                 transferTargets.Add(pokemon);
             }
         }
-        FillTargetBoxAndConvert(targetGame.PKMType, targetGame.Generation, targetBox, transferTargets, targetGame);
+        FillTargetBoxAndConvert(targetGame.PKMType, sourceGame.Generation, targetGame.Generation, targetBox, transferTargets, targetGame);
         
         AdjustPartyToNuztrackSave(targetBox, targetGame);
         
@@ -80,7 +80,7 @@ public class Transporter
             }
     }
 
-    private void FillTargetBoxAndConvert(Type format, int targetGeneration, IList<PKM> targetBox, List<PKM> transferTargets, SaveFile targetFile)
+    private void FillTargetBoxAndConvert(Type format, int sourceGeneration, int targetGeneration, IList<PKM> targetBox, List<PKM> transferTargets, SaveFile targetFile)
     {
         for (int i = 0; i < targetBox.Count && transferTargets.Count > 0; i++)
         {
@@ -91,7 +91,7 @@ public class Transporter
 
             var sourcePokemon = transferTargets[0];
             transferTargets.RemoveAt(0);
-            if (sourcePokemon.Generation < 3 && targetGeneration >= 3)
+            if (sourceGeneration < 3 && targetGeneration >= 3)
             {
                 sourcePokemon = ConvertLegacyToModern(sourcePokemon, targetFile);
             }
@@ -101,6 +101,7 @@ public class Transporter
 
     private PKM ConvertLegacyToModern(PKM pokemon, SaveFile targetFile)
     {
+        Console.WriteLine($"Converting {pokemon.Nickname} to PK3");
         var gen3 = new PK3
         {
             TID = targetFile.TID,
@@ -115,8 +116,11 @@ public class Transporter
             Move1 = pokemon.Move1,
             Move2 = pokemon.Move2,
             Move3 = pokemon.Move3,
-            Move4 = pokemon.Move4
+            Move4 = pokemon.Move4,
+            IVs = GenerateRandomIVs(),
         };
+        Console.WriteLine(pokemon.Generation);
+        Console.WriteLine(gen3.Generation);
         gen3.SetIsShiny(pokemon.IsShiny);
 
         return gen3;
@@ -155,10 +159,16 @@ public class Transporter
         if (pokemon.CurrentLevel != nuztrackPokemon.Level)
         {
             pokemon.CurrentLevel = -1;
-            pokemon.Moves = new LegalityAnalysis(pokemon).GetSuggestedCurrentMoves();
+            pokemon.Moves = new LegalityAnalysis(new PK3 {Species=pokemon.Species, CurrentLevel = 5}).GetSuggestedCurrentMoves(); // TODO Generation
             pokemon.CurrentLevel = nuztrackPokemon.Level;
             pokemon.EVs = new[] {0, 0, 0, 0, 0, 0};
         }
+        
+        if (pokemon.IVs.Sum() == 0)
+        {
+            pokemon.IVs = GenerateRandomIVs();
+        }
+
 
         var textInfo = new CultureInfo("en-US", false).TextInfo;
         if (nuztrackPokemon.Gender != null)
@@ -182,5 +192,19 @@ public class Transporter
             pokemon.SetAbilityIndex((int)nuztrackPokemon.AbilitySlot - 1);
         }
         pokemon.SetIsShiny(isShiny);
+    }
+
+    private int[] GenerateRandomIVs()
+    {
+        Random random = new Random();
+        return new int[]
+        {
+            random.Next(32),
+            random.Next(32),
+            random.Next(32),
+            random.Next(32),
+            random.Next(32),
+            random.Next(32),
+        };
     }
 }
