@@ -7,7 +7,8 @@ import net.namibsun.nuztrack.transfer.PKHeXPokemon
 import java.io.File
 
 private fun getNuztrackSavesExecutable(): String {
-    return if (System.getenv("spring_profiles_active").lowercase().contains("prod")) {
+    val profiles = System.getenv("spring_profiles_active")?.lowercase() ?: ""
+    return if (profiles.contains("prod")) {
         "/PKHEX/NuztrackSaves"
     } else {
         "../scripts/NuztrackSaves/bin/Debug/net6.0/linux-x64/NuztrackSaves"
